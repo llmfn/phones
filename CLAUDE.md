@@ -7,21 +7,25 @@ enable/disable each layer.
 
 ## Layout
 
-- `web/` — static SvelteKit frontend (Cloudflare Pages, no server logic): the
-  three-zone UI (layer sidebar, chat canvas, trace panel). See `web/ARCHITECTURE.md`.
-- `api/` — the layered recommender backend that owns the 8 layers and builds the
-  trace. Stack not yet chosen. See `api/ARCHITECTURE.md`.
+- `app/` — a single Python (Flask) app that serves both the UI and the backend
+  API. It owns the 8 layers and builds the trace.
+  - `app/app.py` — Flask routes: `/` (the page) and `POST /api/recommend`.
+  - `app/templates/index.html` — the single page.
+  - `app/static/css/styles.css` — styling.
+  - `app/static/js/` — browser-native JS modules (`app.js` bootstrap, `api.js`
+    fetch wrappers, `state.js`, `render.js`, `events.js`).
 - `docs/specs.md` — the product design spec, and the **source of truth for the
-  `POST /api/recommend` contract** that joins `web/` and `api/`.
+  `POST /api/recommend` contract**.
+- `docs/mockups.md` — low-fidelity ASCII layouts (the visual surface only).
 
-Neither `web/` nor `api/` exists yet — the repo is currently at the spec stage.
+There is no separate `web/` or `api/` deployment — one Python app serves the UI
+and the API same-origin.
 
 ### Docs boundary
 
-- `docs/specs.md` = *what* the system should do (design spec, API contract).
-- `web/ARCHITECTURE.md` / `api/ARCHITECTURE.md` = *how/why* each side is built
-  (tech choices, internal structure). They reference the contract in
-  `docs/specs.md` rather than redefining it.
+- `docs/specs.md` = *what* the system should do (design spec + API contract).
+- `docs/mockups.md` = the *visual* surface only (ASCII layouts of each UI state);
+  it references the contract in `docs/specs.md` rather than redefining it.
 <!-- 
 ## Task tracking (`.tasks/`)
 
@@ -87,3 +91,5 @@ Free-form prose describing what and why. May use sub-headings for longer tasks.
 ## Tasks
 
 Use PLAN.md for tracking the development. 
+
+Never refer to PLAN.md or Task name/numbers in the code or docstrings.

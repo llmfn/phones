@@ -1,95 +1,166 @@
-## Design Spec: `phones.llmfn.com`
+# Design Spec: `phones.llmfn.com`
 
 ## Overview
-A single Python web app that serves the UI and owns the backend API. The frontend is plain HTML, CSS, and browser-native JavaScript modules served by the Python app. No separate Svelte frontend, build step, or user-configured backend URL is required.
+
+A single Python web app that serves the UI and owns the backend API. The app is
+a **product-search interface, not a chatbot**: one search box, a results grid of
+phones, and a filter rail, with a trace panel that exposes what ran underneath.
+
+The eight course layers (search, prompt, schema, context, state, memory, tools,
+evals) each change this same surface. **Which layer is active is owned by the
+backend** — there is no layer selector in the UI. The frontend sends a query and
+renders whatever products, facets, and trace come back.
+
+The visual design (zero state, search state, filter-selected state) lives in
+`docs/mockups.md`. This spec owns behavior and the `POST /api/recommend`
+contract.
 
 
 ## Tech Stack
-- **Backend:** Python web app
-- **Frontend:** Server-rendered/static `index.html` plus plain CSS and browser-native JavaScript modules
-- **Styling:** `static/css/styles.css`
-- **State:** Plain JavaScript state object plus localStorage persistence for chat/session UI state
-- **Suggested frontend module layout:**
-  - `static/js/app.js` — app bootstrap and top-level orchestration
-  - `static/js/api.js` — `fetch` wrappers for backend endpoints
-  - `static/js/state.js` — in-memory state, persistence helpers, derived layer state
-  - `static/js/render.js` — DOM rendering for chat, products, trace, and controls
-  - `static/js/events.js` — event binding and user interaction handlers
-- **No:** SvelteKit, frontend build step, separate frontend deployment, client-configured backend URL
+
+- **Backend:** Python (Flask), a single app serving both the UI and the API.
+- **Frontend:** server-rendered `index.html` plus plain CSS and browser-native
+  JavaScript modules served by the Python app.
+- **Styling:** `app/static/css/styles.css`
+- **State:** plain JavaScript state object plus localStorage for session/UI state.
+- **Frontend module layout:**
+  - `app/static/js/app.js` — app bootstrap and top-level orchestration
+  - `app/static/js/api.js` — `fetch` wrappers for backend endpoints
+  - `app/static/js/state.js` — in-memory state, persistence helpers
+  - `app/static/js/render.js` — DOM rendering for results, filters, and trace
+  - `app/static/js/events.js` — event binding and user interaction handlers
+- **No:** SvelteKit, frontend build step, separate frontend deployment, or
+  client-configured backend URL. All API calls are same-origin.
 
 
-## Layout — Two Panels
+## Layout — two states, three zones
+
+The UI has two states and the search box is the anchor that persists across both
+(see `docs/mockups.md` for the ASCII layouts):
+
+- **Zero state:** a bare, centered search box. No catalogue, filters, or trace.
+- **Search state:** the box slides up into a slim top bar at the **same width**,
+  and three zones resolve around the results:
 
 ```
-┌──────────────────────┬─────────────────────┐
-│ App Canvas           │ Control + Trace     │
-│ (Chat UI)            │ (Layer + Debugger)  │
-│ flex-1               │ 360px               │
-└──────────────────────┴─────────────────────┘
+┌────────────────────────────────────────────────────────────┐
+│                       [ search box ]                       │
+├──────────────┬───────────────────────────┬─────────────────┤
+│ Filters      │ Results grid              │ Trace           │
+│ (fixed rail) │ (flexes, capped ~1200px)  │ (fixed rail)    │
+└──────────────┴───────────────────────────┴─────────────────┘
 ```
 
+The shell is fixed-width (~1200px) and centered. The two side rails are fixed;
+only the results column flexes.
 
-## Panel 1 — App Canvas
 
-- Chat interface: message bubbles (user right, assistant left)
-- Input bar pinned to bottom with Send button
-- Shows product cards when recommendations are returned (image, name, price, match score)
-- Error states rendered inline as a styled error bubble (not a toast)
-- "Simulate API Failure" button in the top-right corner of this panel
-- Sends a `simulate_failure=true` value with the next request
+## Zone — Search box (top bar)
 
----
+- A single search box, constant width in both states; only its position changes.
+- Placeholder carries the app's identity (e.g. "Find a phone — describe what you
+  need"). Placeholder wording may vary by active layer; the empty page is
+  otherwise identical across layers.
+- **Active filter chips** render directly below the search box once any filter is
+  applied: `[brand: Apple x]  [clear all]`. Each chip's `x` removes that one
+  filter; `clear all` removes them all. Removing a filter re-queries.
 
-## Panel 2 — Control + Trace
 
-Top controls:
+## Zone — Filters (left rail)
 
-- App title: `phones.llmfn.com`
-- Current layer dropdown with layers 1–8
-- Selecting Layer N automatically enables layers 1 through N
-- Layers after the selected layer are disabled/skipped
-- Optional phase control for the selected/current layer if the backend supports phase variants
-- "Reset to defaults" button
+- **Brand:** checkboxes with facet counts in parentheses, e.g. `Apple (1)`.
+  Counts come from the API response and reflect the **current result set**.
+- **Price:** a range slider whose bounds come from the API response.
+- **Reset** clears all filters.
+- Applying or changing any filter **re-queries the backend** (see contract):
+  filters are sent in the request; the response returns a narrowed result set and
+  recomputed facets. Active filters are also mirrored as chips under the search
+  box.
 
-Trace display:
 
-- Updates after every query
-- Rendered as a vertical timeline of named steps
-- Each step row: layer badge + layer name + latency ms
-- Expandable: shows raw input JSON -> raw output JSON
-- Steps from disabled layers are rendered as grey/skipped rows, not hidden
+## Zone — Results grid (center)
+
+- A grid of phone cards. Each card shows **image, name, and price**.
+- A result count header (e.g. `6 results`).
+- No match score is shown on cards.
+- Empty results render an inline empty state (e.g. keyword search returning
+  nothing for a vibe query at Layer 1).
+
+
+## Zone — Trace (right rail)
+
+- Header is just a `TRACE` label and a "copy as JSON" button. **No layer
+  selector** — the active layer is read from the trace rows, not chosen here.
+- A vertical timeline of named steps, one row per layer.
+- Each step row: layer badge + layer name + latency ms + status.
+- Expandable: shows raw input JSON → raw output JSON.
+- Layers above the active layer render as grey/skipped rows, not hidden.
 - Color coding:
   - Green: success
   - Yellow: fallback triggered
   - Red: error
   - Grey: layer skipped
-- "Copy trace as JSON" button at the top
+- The UI renders whatever trace array comes back — the backend owns trace logic
+  entirely.
 
----
 
 ## API Contract
 
-Every query sends one POST to `/api/recommend`:
+Every query (initial search or re-filter) sends one POST to `/api/recommend`.
+
+**Identity is carried in a header, not the body.** The frontend generates a UUID
+once per browser, persists it, and sends it on every request as a dummy bearer
+token:
+
+```
+Authorization: Bearer <uuid>
+Content-Type: application/json
+```
+
+This stands in for real auth: there is no verification, but the backend reads the
+UUID to identify the user so the state/memory layers can attribute history to
+them. Keeping it in a header (rather than the payload) keeps it seamless and out
+of the per-query body.
+
+Request body:
 
 ```json
 {
-  "query": "string",
-  "current_layer": 4,
-  "active_layers": [1, 2, 3, 4],
-  "phase": { "4": "A" },
-  "simulate_failure": false,
-  "session_id": "uuid"
+  "query": "good phone for my mom",
+  "filters": {
+    "brands": ["Apple"],
+    "price": { "min": 10000, "max": 90000 }
+  }
 }
 ```
 
-`active_layers` is derived from `current_layer`, so selecting Layer 4 means layers 1, 2, 3, and 4 are active. The frontend uses same-origin API calls because the Python app serves both the UI and backend routes.
+- `query` — the user's search text.
+- `filters` — optional; omitted or empty on the first search. `brands` is a list
+  of selected brand values; `price` is the selected `{min, max}` range.
+
+The backend decides which layer is active (via its own config); the frontend
+does not send a layer.
 
 Expected response:
 
 ```json
 {
-  "answer": "string",
-  "products": [],
+  "products": [
+    {
+      "id": "samsung-a54",
+      "name": "Galaxy A54",
+      "brand": "Samsung",
+      "price": 38999,
+      "image": "https://.../a54.jpg"
+    }
+  ],
+  "facets": {
+    "brand": [
+      { "value": "Samsung", "count": 2 },
+      { "value": "Apple",   "count": 1 }
+    ],
+    "price": { "min": 13499, "max": 52999 }
+  },
   "trace": [
     {
       "layer": 2,
@@ -98,50 +169,58 @@ Expected response:
       "output": {},
       "status": "success",
       "latency_ms": 120
+    },
+    {
+      "layer": 3,
+      "name": "Schema",
+      "input": {},
+      "output": {},
+      "status": "skip",
+      "latency_ms": 0
     }
   ]
 }
 ```
 
-The UI renders whatever trace array comes back — the backend owns trace logic entirely.
+- `products` — the ranked result set. Each product carries `id`, `name`, `brand`,
+  `price`, and `image`. No score field.
+- `facets` — `brand` is a list of `{value, count}` scoped to the current result
+  set; `price` is the `{min, max}` slider bounds. Facets are authoritative from
+  the backend.
+- `trace` — array of step objects; backend-owned. `status` is one of `success`,
+  `fallback`, `error`, `skip`.
 
----
+There is no `answer` field. If a later layer needs a natural-language summary, it
+is added deliberately.
+
 
 ## State & Persistence (localStorage)
 
 | Key | Value |
 |---|---|
-| `llmfn_current_layer` | selected layer number |
-| `llmfn_phase_state` | `{1: "A", 2: "B", ...}` if phase variants are enabled |
-| `llmfn_chat_history` | array of message objects |
+| `llmfn_user_id` | stable uuid, generated once, sent as the `Authorization: Bearer` header on every request |
+| `llmfn_last_query` | the last submitted query (to restore the search state) |
+| `llmfn_last_filters` | the last applied `filters` object |
 
----
+There is no chat history — the app is not a chatbot.
 
-## Layer Dependency Rules
-
-Enforced by the current-layer dropdown:
-
-- Layer 1 means only Layer 1 is active
-- Layer 2 means Layers 1–2 are active
-- Layer 3 means Layers 1–3 are active
-- This continues through Layer 8
-- Previous layers are always enabled automatically
-- Later layers are skipped and shown as grey/skipped rows in the trace when present
-
----
 
 ## Routing
 
-Single route only: `/`
+- `GET /` — the single page (zero state on load; resolves to search state after
+  the first query).
+- `POST /api/recommend` — the contract above.
 
 No other pages. No auth. No navigation.
 
----
 
 ## Constraints
 
-- No SvelteKit or frontend framework build requirement
-- No separate frontend deployment
-- Keep JavaScript modular; avoid a single large unstructured `app.js`
-- All frontend API calls use same-origin backend routes
-- CORS configuration is not part of the primary local app path because the Python app serves both UI and API
+- Minimal chrome: no app title or URL in the UI; the placeholder carries identity.
+- Fixed-width, centered shell (~1200px); side rails fixed, results column flexes.
+- The search box is constant width across both states — it moves, not resizes.
+- No SvelteKit or frontend framework build requirement; no separate frontend
+  deployment.
+- Keep JavaScript modular; avoid a single large unstructured `app.js`.
+- All frontend API calls are same-origin; the Python app serves both UI and API,
+  so CORS is not part of the primary local path.
