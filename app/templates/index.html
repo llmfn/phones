@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>phones.llmfn.com</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <!-- Panel 1: App Canvas (chat) -->
+      <section class="canvas" aria-label="App canvas">
+        <button id="simulate-failure" class="btn btn-ghost canvas-corner" type="button">
+          Simulate API Failure
+        </button>
+        <div id="chat" class="chat" aria-live="polite"></div>
+        <form id="composer" class="composer">
+          <input
+            id="query"
+            class="query-input"
+            type="text"
+            placeholder="Ask for a phone recommendation…"
+            autocomplete="off"
+          />
+          <button class="btn btn-primary" type="submit">Send</button>
+        </form>
+      </section>
+
+      <!-- Panel 2: Control + Trace -->
+      <aside class="panel" aria-label="Control and trace">
+        <header class="panel-head">
+          <h1 class="title">phones.llmfn.com</h1>
+        </header>
+
+        <div class="controls">
+          <label class="control" for="layer-select">
+            <span>Current layer</span>
+            <select id="layer-select">
+              <option value="1">1 — Search</option>
+              <option value="2">2 — Prompt</option>
+              <option value="3">3 — Schema</option>
+              <option value="4">4 — Context</option>
+              <option value="5">5 — State</option>
+              <option value="6">6 — Memory</option>
+              <option value="7">7 — Tool Use</option>
+              <option value="8">8 — Evals</option>
+            </select>
+          </label>
+          <p id="active-hint" class="active-hint"></p>
+          <button id="reset" class="btn btn-ghost" type="button">Reset to defaults</button>
+        </div>
+
+        <div class="trace-head">
+          <h2 class="trace-title">Trace</h2>
+          <button id="copy-trace" class="btn btn-ghost btn-sm" type="button">
+            Copy trace as JSON
+          </button>
+        </div>
+        <ol id="trace" class="trace"></ol>
+      </aside>
+    </main>
+
+    <script type="module" src="/static/js/app.js"></script>
+  </body>
+</html>

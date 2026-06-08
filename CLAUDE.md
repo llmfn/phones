@@ -22,7 +22,7 @@ Neither `web/` nor `api/` exists yet — the repo is currently at the spec stage
 - `web/ARCHITECTURE.md` / `api/ARCHITECTURE.md` = *how/why* each side is built
   (tech choices, internal structure). They reference the contract in
   `docs/specs.md` rather than redefining it.
-
+<!-- 
 ## Task tracking (`.tasks/`)
 
 Work is tracked as plain markdown files in `.tasks/`. Read them, follow these
@@ -82,4 +82,8 @@ Free-form prose describing what and why. May use sub-headings for longer tasks.
 
 ### Conventions
 
-- Keep DESCRIPTION accurate if scope changes; the acceptance criteria define done.
+- Keep DESCRIPTION accurate if scope changes; the acceptance criteria define done. -->
+
+## Tasks
+
+Use PLAN.md for tracking the development. 
