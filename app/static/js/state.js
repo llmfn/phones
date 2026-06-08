@@ -1,14 +1,13 @@
-// In-memory app state plus localStorage persistence and derived helpers.
-// localStorage keys are defined by docs/specs.md.
+// In-memory app state plus localStorage persistence.
+// Keys are defined by docs/specs.md: a stable user id (sent as a bearer token),
+// the last query, and the last applied filters. There is no chat history — this
+// is a product-search app, not a chatbot.
 
 const KEYS = {
-  currentLayer: "llmfn_current_layer",
-  phaseState: "llmfn_phase_state",
-  chatHistory: "llmfn_chat_history",
-  sessionId: "llmfn_session_id", // not in the spec table, but needed for the API
+  userId: "llmfn_user_id",
+  lastQuery: "llmfn_last_query",
+  lastFilters: "llmfn_last_filters",
 };
-
-const DEFAULT_LAYER = 1;
 
 function read(key, fallback) {
   try {
@@ -27,60 +26,84 @@ function write(key, value) {
   }
 }
 
-function makeSessionId() {
+function makeUserId() {
   if (crypto?.randomUUID) return crypto.randomUUID();
-  return "sess-" + Math.random().toString(16).slice(2);
+  return "user-" + Math.random().toString(16).slice(2);
+}
+
+function emptyFilters() {
+  return { brands: [], price: null };
 }
 
 export const state = {
-  currentLayer: read(KEYS.currentLayer, DEFAULT_LAYER),
-  phaseState: read(KEYS.phaseState, {}),
-  chatHistory: read(KEYS.chatHistory, []),
-  sessionId: read(KEYS.sessionId, null),
-  // Session-only: applies to the next request, never persisted.
-  simulateFailureNext: false,
-  // Latest trace returned by the backend (for Copy trace as JSON).
+  userId: read(KEYS.userId, null),
+  query: read(KEYS.lastQuery, ""),
+  filters: read(KEYS.lastFilters, emptyFilters()),
+  // Full price bounds from the unfiltered catalogue, so the slider track stays
+  // stable even though facet bounds narrow with filtering. Captured on the
+  // first unfiltered response.
+  priceBounds: null,
+  // Latest trace returned by the backend (for "copy as JSON").
   lastTrace: [],
 };
 
-if (!state.sessionId) {
-  state.sessionId = makeSessionId();
-  write(KEYS.sessionId, state.sessionId);
+if (!state.userId) {
+  state.userId = makeUserId();
+  write(KEYS.userId, state.userId);
 }
 
-// active_layers is derived: selecting layer N enables 1..N.
-export function activeLayers() {
-  return Array.from({ length: state.currentLayer }, (_, i) => i + 1);
-}
-
-export function setCurrentLayer(n) {
-  state.currentLayer = n;
-  write(KEYS.currentLayer, n);
-}
-
-export function addMessage(message) {
-  state.chatHistory.push(message);
-  write(KEYS.chatHistory, state.chatHistory);
-}
-
-export function resetDefaults() {
-  setCurrentLayer(DEFAULT_LAYER);
-  state.phaseState = {};
-  write(KEYS.phaseState, state.phaseState);
-  state.chatHistory = [];
-  write(KEYS.chatHistory, state.chatHistory);
-  state.simulateFailureNext = false;
-  state.lastTrace = [];
-}
-
-// Build the POST /api/recommend payload from current state.
-export function buildPayload(query) {
+// Round price bounds outward to the nearest 500 so every slider stop is a clean
+// number (13000, 13500, ...) and the step stays uniform across the whole track.
+export function niceBounds(bounds) {
   return {
-    query,
-    current_layer: state.currentLayer,
-    active_layers: activeLayers(),
-    phase: state.phaseState,
-    simulate_failure: state.simulateFailureNext,
-    session_id: state.sessionId,
+    min: Math.floor(bounds.min / 500) * 500,
+    max: Math.ceil(bounds.max / 500) * 500,
   };
+}
+
+export function hasFilters() {
+  return state.filters.brands.length > 0 || state.filters.price !== null;
+}
+
+export function setQuery(q) {
+  state.query = q;
+  write(KEYS.lastQuery, q);
+}
+
+export function toggleBrand(brand) {
+  const brands = state.filters.brands;
+  const i = brands.indexOf(brand);
+  if (i === -1) brands.push(brand);
+  else brands.splice(i, 1);
+  persistFilters();
+}
+
+export function removeBrand(brand) {
+  state.filters.brands = state.filters.brands.filter((b) => b !== brand);
+  persistFilters();
+}
+
+export function setPrice(min, max) {
+  state.filters.price = { min, max };
+  persistFilters();
+}
+
+export function clearPrice() {
+  state.filters.price = null;
+  persistFilters();
+}
+
+export function clearFilters() {
+  state.filters = emptyFilters();
+  persistFilters();
+}
+
+function persistFilters() {
+  write(KEYS.lastFilters, state.filters);
+}
+
+// The POST /api/recommend body: query + filters only. Identity travels in the
+// Authorization header (see api.js), not the payload.
+export function buildPayload() {
+  return { query: state.query, filters: state.filters };
 }

@@ -1,14 +1,18 @@
-// App bootstrap and top-level orchestration.
+// App bootstrap. Boots into the zero state; if a previous query was persisted,
+// restores the search state by re-running it.
 
-import { state, activeLayers } from "./state.js";
-import { renderHistory, renderTrace, renderControls } from "./render.js";
-import { bindEvents } from "./events.js";
+import { state } from "./state.js";
+import { setAppState } from "./render.js";
+import { bindEvents, runQuery } from "./events.js";
 
 function init() {
-  renderControls(state.currentLayer, activeLayers());
-  renderHistory(state.chatHistory);
-  renderTrace(state.lastTrace);
   bindEvents();
+  if (state.query) {
+    document.getElementById("query").value = state.query;
+    runQuery();
+  } else {
+    setAppState("zero");
+  }
 }
 
 if (document.readyState === "loading") {

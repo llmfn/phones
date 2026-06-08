@@ -70,7 +70,12 @@ only the results column flexes.
 
 - **Brand:** checkboxes with facet counts in parentheses, e.g. `Apple (1)`.
   Counts come from the API response and reflect the **current result set**.
-- **Price:** a range slider whose bounds come from the API response.
+- **Price:** a dual-thumb range slider selecting a `{min, max}` window. Its
+  bounds come from the API's `price` facet, rounded outward to the nearest ₹500
+  so every step lands on a clean value (step ₹500). The bounds are taken from
+  the first unfiltered response and held stable, so the track does not shrink as
+  filtering narrows the facet. Leaving both thumbs at the full range applies no
+  price filter.
 - **Reset** clears all filters.
 - Applying or changing any filter **re-queries the backend** (see contract):
   filters are sent in the request; the response returns a narrowed result set and
@@ -80,7 +85,7 @@ only the results column flexes.
 
 ## Zone — Results grid (center)
 
-- A grid of phone cards. Each card shows **image, name, and price**.
+- A grid of phone cards. Each card shows **image, brand, name, and price**.
 - A result count header (e.g. `6 results`).
 - No match score is shown on cards.
 - Empty results render an inline empty state (e.g. keyword search returning
@@ -154,13 +159,17 @@ Expected response:
       "image": "https://.../a54.jpg"
     }
   ],
-  "facets": {
-    "brand": [
-      { "value": "Samsung", "count": 2 },
-      { "value": "Apple",   "count": 1 }
-    ],
-    "price": { "min": 13499, "max": 52999 }
-  },
+  "facets": [
+    {
+      "type": "categorical",
+      "field": "brand",
+      "values": [
+        { "value": "Samsung", "count": 2 },
+        { "value": "Apple",   "count": 1 }
+      ]
+    },
+    { "type": "range", "field": "price", "min": 13499, "max": 52999 }
+  ],
   "trace": [
     {
       "layer": 2,
@@ -184,9 +193,11 @@ Expected response:
 
 - `products` — the ranked result set. Each product carries `id`, `name`, `brand`,
   `price`, and `image`. No score field.
-- `facets` — `brand` is a list of `{value, count}` scoped to the current result
-  set; `price` is the `{min, max}` slider bounds. Facets are authoritative from
-  the backend.
+- `facets` — a list of facet objects, discriminated by `type`, so new facets are
+  added by appending data rather than changing the shape. A `categorical` facet
+  (e.g. `brand`) carries a `field` and a list of `{value, count}` scoped to the
+  current result set; a `range` facet (e.g. `price`) carries a `field` and
+  `{min, max}` bounds. Facets are authoritative from the backend.
 - `trace` — array of step objects; backend-owned. `status` is one of `success`,
   `fallback`, `error`, `skip`.
 

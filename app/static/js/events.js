@@ -1,79 +1,125 @@
-// Event binding and user-interaction handlers.
+// Event binding and the query orchestration. Every search and every filter
+// change re-queries the backend (see docs/specs.md); the response drives the
+// results grid, facets, chips, and trace.
 
 import { recommend } from "./api.js";
 import {
   state,
-  activeLayers,
-  setCurrentLayer,
-  addMessage,
-  resetDefaults,
+  hasFilters,
+  niceBounds,
+  setQuery,
+  toggleBrand,
+  removeBrand,
+  setPrice,
+  clearPrice,
+  clearFilters,
   buildPayload,
 } from "./state.js";
-import { renderMessage, renderHistory, renderTrace, renderControls } from "./render.js";
+import {
+  setAppState,
+  renderResults,
+  renderFilters,
+  renderChips,
+  renderTrace,
+  updatePriceUI,
+} from "./render.js";
 
-function refreshControls() {
-  renderControls(state.currentLayer, activeLayers());
+export async function runQuery() {
+  setAppState("search");
+  const payload = buildPayload();
+
+  let data;
+  try {
+    data = await recommend(payload);
+  } catch (err) {
+    renderResults([]);
+    document.getElementById("results-head").textContent = err.message;
+    renderTrace([]);
+    return;
+  }
+
+  // Capture the stable full price bounds the first time we see an unfiltered
+  // result, so the slider track does not collapse as filters narrow it.
+  if (!hasFilters()) {
+    const price = (data.facets ?? []).find((f) => f.type === "range");
+    if (price) state.priceBounds = niceBounds({ min: price.min, max: price.max });
+  }
+
+  renderResults(data.products ?? []);
+  renderFilters(data.facets ?? [], state.filters, state.priceBounds);
+  renderChips(state.filters);
+  state.lastTrace = data.trace ?? [];
+  renderTrace(state.lastTrace);
 }
 
-async function handleSend(query) {
-  const text = query.trim();
-  if (!text) return;
-
-  const userMsg = { role: "user", content: text };
-  addMessage(userMsg);
-  renderMessage(userMsg);
-
-  const payload = buildPayload(text);
-  // Simulate-failure is one-shot: consume it for this request only.
-  state.simulateFailureNext = false;
-
-  try {
-    const data = await recommend(payload);
-    const assistantMsg = {
-      role: "assistant",
-      content: data.answer ?? "",
-      products: data.products ?? [],
-    };
-    addMessage(assistantMsg);
-    renderMessage(assistantMsg);
-    state.lastTrace = data.trace ?? [];
-    renderTrace(state.lastTrace);
-  } catch (err) {
-    const errMsg = { role: "error", content: err.message };
-    addMessage(errMsg);
-    renderMessage(errMsg);
-    state.lastTrace = [];
-    renderTrace(state.lastTrace);
+// Stop the dragged thumb from crossing the other one.
+function clampThumbs(dragged) {
+  const lo = document.getElementById("price-min");
+  const hi = document.getElementById("price-max");
+  if (Number(lo.value) > Number(hi.value)) {
+    if (dragged === lo) lo.value = hi.value;
+    else hi.value = lo.value;
   }
 }
 
+function priceFromInputs() {
+  const lo = Number(document.getElementById("price-min").value);
+  const hi = Number(document.getElementById("price-max").value);
+  // Treat "full range" as no filter, so it does not show up as a chip.
+  const bounds = state.priceBounds;
+  if (bounds && lo <= bounds.min && hi >= bounds.max) clearPrice();
+  else setPrice(lo, hi);
+}
+
 export function bindEvents() {
-  const composer = document.getElementById("composer");
-  const queryInput = document.getElementById("query");
-  composer.addEventListener("submit", (e) => {
+  document.getElementById("search-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    const value = queryInput.value;
-    queryInput.value = "";
-    handleSend(value);
+    const value = document.getElementById("query").value.trim();
+    if (!value) return;
+    setQuery(value);
+    // A brand-new search starts from a clean filter set.
+    clearFilters();
+    state.priceBounds = null;
+    runQuery();
   });
 
-  document.getElementById("layer-select").addEventListener("change", (e) => {
-    setCurrentLayer(Number(e.target.value));
-    refreshControls();
+  // Live feedback while dragging either thumb (no network call).
+  document.getElementById("filters").addEventListener("input", (e) => {
+    if (e.target.matches('input[type="range"]')) {
+      clampThumbs(e.target);
+      updatePriceUI();
+    }
+  });
+
+  document.getElementById("filters").addEventListener("change", (e) => {
+    const t = e.target;
+    if (t.matches('input[type="checkbox"][data-brand]')) {
+      toggleBrand(t.dataset.brand);
+      runQuery();
+    } else if (t.matches('input[type="range"]')) {
+      clampThumbs(t);
+      priceFromInputs();
+      runQuery();
+    }
+  });
+
+  document.getElementById("chips").addEventListener("click", (e) => {
+    const t = e.target;
+    if (t.dataset.removeBrand !== undefined) {
+      removeBrand(t.dataset.removeBrand);
+      runQuery();
+    } else if (t.dataset.removePrice !== undefined) {
+      clearPrice();
+      runQuery();
+    } else if (t.classList.contains("chip-clear")) {
+      clearFilters();
+      runQuery();
+    }
   });
 
   document.getElementById("reset").addEventListener("click", () => {
-    resetDefaults();
-    document.getElementById("simulate-failure").classList.remove("armed");
-    renderHistory(state.chatHistory);
-    renderTrace(state.lastTrace);
-    refreshControls();
-  });
-
-  const simBtn = document.getElementById("simulate-failure");
-  simBtn.addEventListener("click", () => {
-    state.simulateFailureNext = !state.simulateFailureNext;
-    simBtn.classList.toggle("armed", state.simulateFailureNext);
+    clearFilters();
+    runQuery();
   });
 
   document.getElementById("copy-trace").addEventListener("click", async () => {
@@ -81,7 +127,6 @@ export function bindEvents() {
     try {
       await navigator.clipboard.writeText(json);
     } catch {
-      // Clipboard API can be blocked (insecure context); fall back to a prompt.
       window.prompt("Copy trace JSON:", json);
     }
   });
