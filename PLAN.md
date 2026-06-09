@@ -21,11 +21,13 @@
 - The search and filters should work
 
 
+## Task 4: Layer 1: Add search interface
+
+* Add sample phones data in data/ with each phone as a JSON document
+* Added schema.sql to sqlite. Use FTS5. 
+* Add a script to import the data into a database
+* Add layer1 - search
+
 ## BACKLOG
 
-**Layer 1: Add search interface**
-
-* Add data and loan phones into the datababse
-* Add search interface and show products after search
-* Add filters on the left
-* The trace panel doesn't show anything.
+None

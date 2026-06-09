@@ -7,9 +7,11 @@ Register new layers in ``_LAYERS`` as they are implemented.
 from .. import config
 from .base import Layer
 from .layer0_dummy_data import Layer0
+from .layer1_search import Layer1
 
 _LAYERS: dict[int, type[Layer]] = {
     0: Layer0,
+    1: Layer1,
 }
 
 
