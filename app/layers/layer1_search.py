@@ -12,10 +12,11 @@ mom") -- words like "mom" match nothing, so the whole query returns no results
 (the empty state in docs/specs.md). The trace shows that brittleness directly:
 per-token match counts, zeros included.
 
-**semantic** embeds the query and ranks phones by cosine similarity against
-their pre-embedded narratives (see ``app/search/embeddings.py``), top-k. No
-keyword needs to overlap: "for my mom" lands near narratives written about
-ease of use. The trace shows each kept phone's cosine score.
+**semantic** embeds the query and ranks the full catalogue by cosine similarity
+against their pre-embedded narratives (see ``app/search/embeddings.py``). No
+keyword needs to overlap: "for my mom" lands near narratives written about ease
+of use. The trace shows the highest scores without limiting the candidates that
+shared filters receive.
 """
 
 import time
@@ -77,18 +78,20 @@ class Layer1(Layer):
         scored = sorted(
             zip(entries, (cosine(query_vector, v) for v in vectors)),
             key=lambda pair: -pair[1],
-        )[: config.SEMANTIC_TOP_K]
+        )
+        shown_scores = scored[: config.SEMANTIC_TRACE_TOP_N]
         self.add_step(
             input={
                 "mode": "semantic",
                 "query": query,
                 "model": config.EMBEDDING_MODEL,
-                "top_k": config.SEMANTIC_TOP_K,
+                "ranked_candidates": len(scored),
+                "trace_top_n": config.SEMANTIC_TRACE_TOP_N,
             },
             output={
-                "scores": [
+                "shown_scores": [
                     {"id": entry.doc.id, "name": entry.doc.name, "cosine": round(score, 4)}
-                    for entry, score in scored
+                    for entry, score in shown_scores
                 ]
             },
             latency_ms=int((time.perf_counter() - started) * 1000),

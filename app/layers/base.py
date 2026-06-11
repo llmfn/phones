@@ -52,7 +52,7 @@ class Layer:
             result = self._match(entry, filters)
             if result is not None:
                 matches.append((entry, result))
-        products = [self._card(entry, colors[0], storage[0]) for entry, (colors, storage) in matches]
+        products = [self._card(entry, colors, storage) for entry, (colors, storage) in matches]
         facets = self._compute_facets(matches)
         return RecommendResponse(products=products, facets=facets, trace=self.trace)
 
@@ -102,8 +102,15 @@ class Layer:
                 return None
         return (colors, storage)
 
-    def _card(self, entry: CatalogEntry, lead_color: Color, lead_storage: StorageOption) -> Product:
+    def _card(
+        self,
+        entry: CatalogEntry,
+        colors: list[Color],
+        storage_options: list[StorageOption],
+    ) -> Product:
         doc = entry.doc
+        lead_color = colors[0]
+        lead_storage = storage_options[0]
         return Product(
             id=doc.id,
             name=doc.name,
@@ -118,11 +125,11 @@ class Layer:
             ram_gb=lead_storage.ram_gb,
             colors=[
                 ProductColor(name=c.name, family=c.family, hex=c.hex, image=c.image)
-                for c in doc.colors
+                for c in colors
             ],
             storage_options=[
                 ProductStorageOption(gb=s.gb, label=s.label, ram_gb=s.ram_gb, price=s.price)
-                for s in doc.storage_options
+                for s in storage_options
             ],
         )
 

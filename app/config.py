@@ -14,10 +14,9 @@ CURRENT_LAYER = 1
 # any API key; flip to "semantic" for the vibe-query demo.
 SEARCH_MODE = "bm25"
 
-# How many phones semantic search returns. There is no similarity cutoff --
-# cosine scores aren't comparable across queries, so a fixed k is the honest
-# choice (a threshold is hybrid-search territory).
-SEMANTIC_TOP_K = 10
+# How many semantic scores to include in the trace. Search still ranks the full
+# catalogue so shared filtering can run after ranking.
+SEMANTIC_TRACE_TOP_N = 10
 
 # OpenAI powers the embeddings (and the LLM layers later -- one vendor, one
 # key). Read here so the rest of the app never touches the environment;

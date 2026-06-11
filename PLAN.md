@@ -188,9 +188,9 @@ loader, filter logic, and generation script to match.
 being generated with real image URLs per colour)
 
 **Acceptance criteria:**
-- Catalogue loads and validates with the new shape ✓
-- Colour filter and price filter work as before against the new arrays ✓
-- Generation script outputs the new shape; existing Apple records regenerated ✓
+-[x] Catalogue loads and validates with the new shape
+-[x] Colour filter and price filter work as before against the new arrays
+-[x] Generation script outputs the new shape; existing Apple records regenerated
 
 ## Task 11: Card — image, colour swatches, and storage options (DONE)
 

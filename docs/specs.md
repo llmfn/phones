@@ -144,6 +144,10 @@ per option dimension:
   option in document order. So with a `red` colour filter, a phone sold in black
   and red starts on its red photo. With a price filter, it starts on the first
   storage option inside the price range.
+- Product responses include only the card options that survived active filters,
+  still in catalogue order. With no filters, every colour and storage option is
+  returned; with a colour or price filter, non-matching swatches or storage
+  pills are omitted.
 - Facets are computed over the matching options: the colour facet counts
   products with a matching colour per family; the price facet bounds span all
   matching storage prices.
@@ -269,8 +273,8 @@ Expected response:
   option data needed to render one interactive card: `id`, `name`, and `brand`
   come from the parent; `price`, `image`, `color_name`, `color_family`,
   `storage_gb`, `storage_label`, and `ram_gb` describe the initial selected
-  colour/storage state; `colors` and `storage_options` contain every selectable
-  card option. No score field.
+  colour/storage state; `colors` and `storage_options` contain the selectable
+  card options that survived active filters, in catalogue order. No score field.
 - `facets` — a list of facet objects, discriminated by `type`, so new facets are
   added by appending data rather than changing the shape. A `categorical` facet
   (e.g. `brand`) carries a `field` and a list of `{value, count}` scoped to the
