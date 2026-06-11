@@ -6,12 +6,12 @@ every document once per process; layers share the result. Each entry keeps the
 raw JSON dict alongside the validated model so search can index the whole
 record while the API returns only the typed ``Product`` projection.
 
-Each document is a **parent phone plus its purchasable variants** (see
-docs/specs.md, "Catalogue & variants"). The parent owns what every
-configuration shares -- specs, signals, and the narrative written for semantic
-search; each variant owns its colour, RAM/storage, price, and image. Variant
-order is canonical: the first variant is the lead configuration, and the first
-one to survive the filters is what a result card shows.
+Each document is a **parent phone plus its purchasable configurations** (see
+docs/specs.md). The parent owns what every configuration shares -- specs,
+signals, and the narrative written for semantic search. ``colors`` lists the
+colour options (each with its own image); ``storage_options`` lists the storage
+tiers with prices. The two arrays are independent: every colour is available in
+every storage tier.
 """
 
 import json
@@ -23,22 +23,22 @@ from pydantic import BaseModel, Field
 from . import config
 
 
-class Variant(BaseModel):
-    """One purchasable configuration: a colour and storage combination.
+class Color(BaseModel):
+    """One colour option: marketing name, canonical family, optional hex, and image."""
 
-    Colour is two fields on purpose: ``color_name`` is the marketing name the
-    UI shows ("Natural Titanium"); ``color_family`` is the canonical family
-    ("silver") the colour filter and facet match on. ``ram_gb`` is optional
-    because some manufacturers (Apple) do not publish RAM.
-    """
-
-    id: str
-    color_name: str
-    color_family: str
-    ram_gb: Optional[int] = None
-    storage_gb: int
-    price: int
+    name: str
+    family: str
+    hex: Optional[str] = None
     image: str
+
+
+class StorageOption(BaseModel):
+    """One storage tier: capacity, display label, optional RAM, and price in INR."""
+
+    gb: int
+    label: str
+    ram_gb: Optional[int] = None
+    price: int
 
 
 class Signals(BaseModel):
@@ -54,7 +54,7 @@ class Signals(BaseModel):
 
 
 class PhoneDoc(BaseModel):
-    """A catalogue document: the parent product and its variants.
+    """A catalogue document: the parent product and its purchasable options.
 
     ``narrative``, ``specs``, and ``signals`` are search/teaching material,
     never returned to the browser. ``narrative`` is one paragraph written for
@@ -67,7 +67,8 @@ class PhoneDoc(BaseModel):
     narrative: str
     specs: dict[str, Any] = Field(default_factory=dict)
     signals: Signals = Field(default_factory=Signals)
-    variants: list[Variant] = Field(min_length=1)
+    colors: list[Color] = Field(min_length=1)
+    storage_options: list[StorageOption] = Field(min_length=1)
 
 
 class CatalogEntry:

@@ -53,6 +53,8 @@ injection) share.
 
 ## Task 6: Dataset — variants + generation script
 
+NOTE: This task is deprecated in favor of getting specs from brand websites and creating narrative from there.
+
 ~100 hand-curated real phone models, records drafted by an LLM via a one-off
 script (no scraping). Specs need only be plausible, not certified accurate —
 the dataset is the source of truth the course grounds against.
@@ -175,7 +177,7 @@ richer.
 - Stopping the LLM (bad key at request time / network off) degrades to a
   `fallback` trace step searching the raw query, not a 500
 
-## Task 10: Data model — colours and storage as separate arrays
+## Task 10: Data model — colours and storage as separate arrays (DONE)
 
 Split the flat `variants` cross-product into two dedicated arrays on the
 catalogue record: `colors` (each with `name`, `family`, `hex`, `image`) and
@@ -186,9 +188,9 @@ loader, filter logic, and generation script to match.
 being generated with real image URLs per colour)
 
 **Acceptance criteria:**
-- Catalogue loads and validates with the new shape
-- Colour filter and price filter work as before against the new arrays
-- Generation script outputs the new shape; existing Apple records regenerated
+- Catalogue loads and validates with the new shape ✓
+- Colour filter and price filter work as before against the new arrays ✓
+- Generation script outputs the new shape; existing Apple records regenerated ✓
 
 ## Task 11: Card — image, colour swatches, and storage options
 

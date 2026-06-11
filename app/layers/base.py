@@ -14,7 +14,7 @@ the representative the card shows. So a "red" colour filter both narrows the
 result set and makes each surviving card show its red variant.
 """
 
-from ..catalog import CatalogEntry, Variant
+from ..catalog import CatalogEntry, Color, StorageOption
 from .schema import (
     CategoricalFacet,
     Facet,
@@ -45,12 +45,12 @@ class Layer:
         # it works, and the steps ride back on the response.
         self.trace: list[TraceStep] = []
         candidates = self.search(query)
-        matches = []  # (entry, its variants that survive the filters)
+        matches = []  # (entry, (matching_colors, matching_storage_options))
         for entry in candidates:
-            variants = self._matching_variants(entry, filters)
-            if variants:
-                matches.append((entry, variants))
-        products = [self._card(entry, variants[0]) for entry, variants in matches]
+            result = self._match(entry, filters)
+            if result is not None:
+                matches.append((entry, result))
+        products = [self._card(entry, colors[0], storage[0]) for entry, (colors, storage) in matches]
         facets = self._compute_facets(matches)
         return RecommendResponse(products=products, facets=facets, trace=self.trace)
 
@@ -74,40 +74,46 @@ class Layer:
 
     # --- shared helpers ---------------------------------------------------
 
-    def _matching_variants(self, entry: CatalogEntry, filters: Filters) -> list[Variant]:
-        """The variants of one phone that survive the filters, in document order.
+    def _match(
+        self, entry: CatalogEntry, filters: Filters
+    ) -> tuple[list[Color], list[StorageOption]] | None:
+        """Return (matching colors, matching storage options) or None if the phone is excluded.
 
-        Brand is a parent property; colour and price are variant properties.
-        An empty result drops the phone; otherwise the first survivor is the
-        representative variant its card shows.
+        Brand is a parent property; colour matches against colors.family and
+        price matches against storage_options.price. Returns None if any active
+        filter eliminates all options in its dimension.
         """
         doc = entry.doc
         if filters.brands and doc.brand not in set(filters.brands):
-            return []
-        variants = doc.variants
+            return None
+        colors = doc.colors
+        storage = doc.storage_options
         if filters.colors:
             wanted = set(filters.colors)
-            variants = [v for v in variants if v.color_family in wanted]
+            colors = [c for c in colors if c.family in wanted]
+            if not colors:
+                return None
         if filters.price is not None:
             lo, hi = filters.price.min, filters.price.max
-            variants = [v for v in variants if lo <= v.price <= hi]
-        return variants
+            storage = [s for s in storage if lo <= s.price <= hi]
+            if not storage:
+                return None
+        return (colors, storage)
 
-    def _card(self, entry: CatalogEntry, variant: Variant) -> Product:
+    def _card(self, entry: CatalogEntry, lead_color: Color, lead_storage: StorageOption) -> Product:
         doc = entry.doc
-        families = {v.color_family for v in doc.variants}
         return Product(
             id=doc.id,
             name=doc.name,
             brand=doc.brand,
-            price=variant.price,
-            image=variant.image,
-            variant_id=variant.id,
-            color_name=variant.color_name,
-            colors=len(families),
+            price=lead_storage.price,
+            image=lead_color.image,
+            variant_id=f"{doc.id}-{lead_color.family}",
+            color_name=lead_color.name,
+            colors=len({c.family for c in doc.colors}),
         )
 
-    def _compute_facets(self, matches: list[tuple[CatalogEntry, list[Variant]]]) -> list[Facet]:
+    def _compute_facets(self, matches) -> list[Facet]:
         """Facets are scoped to the current result set (see docs/specs.md)."""
         return [
             self._brand_facet(matches),
@@ -123,16 +129,14 @@ class Layer:
         return self._categorical("brand", counts)
 
     def _color_facet(self, matches) -> CategoricalFacet:
-        # Counts products, not variants: a phone with two black variants
-        # contributes one to "black".
         counts: dict[str, int] = {}
-        for _, variants in matches:
-            for family in {v.color_family for v in variants}:
+        for _, (colors, _) in matches:
+            for family in {c.family for c in colors}:
                 counts[family] = counts.get(family, 0) + 1
         return self._categorical("color", counts)
 
     def _price_facet(self, matches) -> RangeFacet:
-        prices = [v.price for _, variants in matches for v in variants]
+        prices = [s.price for _, (_, storage) in matches for s in storage]
         return RangeFacet(field="price", min=min(prices, default=0), max=max(prices, default=0))
 
     def _categorical(self, field: str, counts: dict[str, int]) -> CategoricalFacet:

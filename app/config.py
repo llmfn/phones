@@ -34,3 +34,6 @@ PHONES_DIR = Path(__file__).resolve().parent.parent / "data" / "phones"
 # Cached narrative embeddings, committed so students only pay for query-time
 # embeddings (see app/search/embeddings.py for the staleness rules).
 EMBEDDINGS_PATH = PHONES_DIR.parent / "phones_embeddings.json"
+
+
+SEARCH_MODE = "semantic"
