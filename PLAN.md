@@ -141,7 +141,7 @@ mode and search)
   bm25 mode and sensible phones in semantic mode, visible in the trace
   (bm25 half verified; semantic half pending the API key)
 
-## Task 9: Layer 2 — Prompt (Pass 1: LLM query rewriting)
+## Task 9: Layer 2 — Prompt (Pass 1: LLM query rewriting) (DONE)
 
 Pattern: stateless LLM, `f(query) → y0`. The first LLM call: Pass 1 rewrites
 the raw query into a query that lands well in embedding space, then the
