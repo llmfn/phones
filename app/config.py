@@ -7,12 +7,13 @@ docs/specs.md). Bump this number as later layers are implemented.
 import os
 from pathlib import Path
 
-CURRENT_LAYER = 1
+CURRENT_LAYER = 2
 
 # Layer 1 has two levels: "bm25" (keyword matching) and "semantic" (embedding
 # similarity over the narratives). bm25 is the default so the app runs without
 # any API key; flip to "semantic" for the vibe-query demo.
-SEARCH_MODE = "bm25"
+#SEARCH_MODE = "bm25"
+SEARCH_MODE = "semantic"
 
 # How many semantic scores to include in the trace. Search still ranks the full
 # catalogue so shared filtering can run after ranking.
@@ -24,6 +25,7 @@ SEMANTIC_TRACE_TOP_N = 10
 # startup never require the key.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 EMBEDDING_MODEL = "text-embedding-3-small"
+CHAT_MODEL = "gpt-5.4-mini"
 
 # The phone catalogue: one JSON document per phone, loaded into memory at
 # startup (app/catalog.py). An absolute path anchored to the repo root -- the
@@ -34,5 +36,3 @@ PHONES_DIR = Path(__file__).resolve().parent.parent / "data" / "phones"
 # embeddings (see app/search/embeddings.py for the staleness rules).
 EMBEDDINGS_PATH = PHONES_DIR.parent / "phones_embeddings.json"
 
-
-SEARCH_MODE = "semantic"
