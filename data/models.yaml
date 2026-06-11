@@ -1,0 +1,747 @@
+# Curated model list: the input to the dataset generation script.
+# One model per entry, block style: one field per line.
+# models whose file already exists are skipped, so editing this list and
+# re-running the script only generates what is missing.
+#
+# price    — approximate India launch price in INR; plausible, not certified.
+# segment  — budget <10k | lower-mid 10-20k | mid 20-35k | upper-mid 35-60k
+#            | flagship 60k-1L | ultra >1L
+# personas — demo personas this model should match strongly:
+#            elderly | teen | camera-lover | gamer | value-seeker
+
+# --- Samsung ---
+- id: samsung-s24-ultra
+  brand: Samsung
+  name: "Galaxy S24 Ultra"
+  segment: ultra
+  price: 129999
+  personas: [camera-lover]
+  notes: "stylus flagship, 200MP camera, the no-compromise pick"
+
+- id: samsung-s24
+  brand: Samsung
+  name: "Galaxy S24"
+  segment: flagship
+  price: 74999
+  personas: [camera-lover]
+  notes: "compact flagship"
+
+- id: samsung-s23
+  brand: Samsung
+  name: "Galaxy S23"
+  segment: upper-mid
+  price: 54999
+  personas: []
+  notes: "last-gen compact flagship at a cut price"
+
+- id: samsung-s23-fe
+  brand: Samsung
+  name: "Galaxy S23 FE"
+  segment: upper-mid
+  price: 59999
+  personas: [value-seeker]
+  notes: "flagship features, fan-edition price"
+
+- id: samsung-z-flip-5
+  brand: Samsung
+  name: "Galaxy Z Flip5"
+  segment: flagship
+  price: 99999
+  personas: [teen]
+  notes: "flip foldable, style statement"
+
+- id: samsung-a55
+  brand: Samsung
+  name: "Galaxy A55"
+  segment: upper-mid
+  price: 39999
+  personas: [teen]
+
+- id: samsung-a54
+  brand: Samsung
+  name: "Galaxy A54"
+  segment: upper-mid
+  price: 38999
+  personas: []
+  notes: "dependable all-rounder (already in catalogue)"
+
+- id: samsung-a35
+  brand: Samsung
+  name: "Galaxy A35"
+  segment: mid
+  price: 30999
+  personas: [teen]
+
+- id: samsung-a25
+  brand: Samsung
+  name: "Galaxy A25"
+  segment: mid
+  price: 26999
+  personas: []
+
+- id: samsung-a15
+  brand: Samsung
+  name: "Galaxy A15"
+  segment: lower-mid
+  price: 19499
+  personas: [elderly]
+  notes: "simple, familiar One UI"
+
+- id: samsung-a05s
+  brand: Samsung
+  name: "Galaxy A05s"
+  segment: lower-mid
+  price: 11499
+  personas: [elderly]
+  notes: "big display, basic and easy"
+
+- id: samsung-m35
+  brand: Samsung
+  name: "Galaxy M35"
+  segment: lower-mid
+  price: 19999
+  personas: [value-seeker]
+  notes: "big battery, online-only value"
+
+- id: samsung-m14
+  brand: Samsung
+  name: "Galaxy M14"
+  segment: lower-mid
+  price: 13499
+  personas: [elderly, value-seeker]
+  notes: "6000mAh battery (already in catalogue)"
+
+- id: samsung-f15
+  brand: Samsung
+  name: "Galaxy F15"
+  segment: lower-mid
+  price: 12999
+  personas: []
+
+# --- Apple ---
+- id: apple-iphone-15-pro-max
+  brand: Apple
+  name: "iPhone 15 Pro Max"
+  segment: ultra
+  price: 159900
+  personas: [camera-lover]
+  notes: "5x telephoto, titanium"
+
+- id: apple-iphone-15-pro
+  brand: Apple
+  name: "iPhone 15 Pro"
+  segment: ultra
+  price: 134900
+  personas: [camera-lover]
+
+- id: apple-iphone-15
+  brand: Apple
+  name: "iPhone 15"
+  segment: flagship
+  price: 79900
+  personas: [teen]
+  notes: "mainstream flagship iPhone (already in catalogue)"
+
+- id: apple-iphone-15-plus
+  brand: Apple
+  name: "iPhone 15 Plus"
+  segment: flagship
+  price: 89900
+  personas: []
+  notes: "big screen, big battery iPhone"
+
+- id: apple-iphone-14
+  brand: Apple
+  name: "iPhone 14"
+  segment: flagship
+  price: 69900
+  personas: []
+
+- id: apple-iphone-13
+  brand: Apple
+  name: "iPhone 13"
+  segment: upper-mid
+  price: 59900
+  personas: [teen]
+  notes: "the entry point into iOS for many"
+
+- id: apple-iphone-se
+  brand: Apple
+  name: "iPhone SE"
+  segment: upper-mid
+  price: 49900
+  personas: [elderly]
+  notes: "small, Touch ID, familiar (already in catalogue)"
+
+# --- Google ---
+- id: google-pixel-8-pro
+  brand: Google
+  name: "Pixel 8 Pro"
+  segment: ultra
+  price: 106999
+  personas: [camera-lover]
+  notes: "telephoto, 7 years of updates (already in catalogue)"
+
+- id: google-pixel-8
+  brand: Google
+  name: "Pixel 8"
+  segment: flagship
+  price: 75999
+  personas: [camera-lover]
+  notes: "compact, clean Android"
+
+- id: google-pixel-8a
+  brand: Google
+  name: "Pixel 8a"
+  segment: upper-mid
+  price: 52999
+  personas: [elderly, camera-lover]
+  notes: "flagship camera brain, simple software (already in catalogue)"
+
+- id: google-pixel-7a
+  brand: Google
+  name: "Pixel 7a"
+  segment: upper-mid
+  price: 43999
+  personas: [value-seeker]
+
+# --- OnePlus ---
+- id: oneplus-12
+  brand: OnePlus
+  name: "OnePlus 12"
+  segment: flagship
+  price: 64999
+  personas: [gamer]
+  notes: "performance flagship (already in catalogue)"
+
+- id: oneplus-12r
+  brand: OnePlus
+  name: "OnePlus 12R"
+  segment: upper-mid
+  price: 39999
+  personas: [gamer, value-seeker]
+  notes: "flagship chip for less"
+
+- id: oneplus-nord-4
+  brand: OnePlus
+  name: "Nord 4"
+  segment: mid
+  price: 29999
+  personas: []
+  notes: "metal unibody"
+
+- id: oneplus-nord-ce4
+  brand: OnePlus
+  name: "Nord CE4"
+  segment: mid
+  price: 24999
+  personas: []
+  notes: "fast charging (already in catalogue)"
+
+- id: oneplus-nord-ce4-lite
+  brand: OnePlus
+  name: "Nord CE4 Lite"
+  segment: lower-mid
+  price: 19999
+  personas: []
+
+- id: oneplus-open
+  brand: OnePlus
+  name: "OnePlus Open"
+  segment: ultra
+  price: 139999
+  personas: []
+  notes: "book-style foldable"
+
+# --- Xiaomi ---
+- id: xiaomi-14
+  brand: Xiaomi
+  name: "Xiaomi 14"
+  segment: flagship
+  price: 69999
+  personas: [camera-lover]
+  notes: "compact, Leica cameras (already in catalogue)"
+
+- id: xiaomi-14-civi
+  brand: Xiaomi
+  name: "Xiaomi 14 Civi"
+  segment: upper-mid
+  price: 42999
+  personas: [teen]
+  notes: "design-led, selfie focus"
+
+- id: xiaomi-redmi-note-13-pro-plus
+  brand: Xiaomi
+  name: "Redmi Note 13 Pro+"
+  segment: mid
+  price: 31999
+  personas: []
+  notes: "200MP, curved display"
+
+- id: xiaomi-redmi-note-13-pro
+  brand: Xiaomi
+  name: "Redmi Note 13 Pro"
+  segment: mid
+  price: 25999
+  personas: [value-seeker]
+
+- id: xiaomi-redmi-note-13
+  brand: Xiaomi
+  name: "Redmi Note 13"
+  segment: lower-mid
+  price: 16999
+  personas: [value-seeker]
+  notes: "108MP for the price (already in catalogue)"
+
+- id: xiaomi-redmi-13c
+  brand: Xiaomi
+  name: "Redmi 13C"
+  segment: budget
+  price: 8999
+  personas: [elderly]
+
+- id: xiaomi-redmi-12-5g
+  brand: Xiaomi
+  name: "Redmi 12 5G"
+  segment: lower-mid
+  price: 11999
+  personas: []
+  notes: "cheapest 5G Redmi"
+
+- id: xiaomi-redmi-a3
+  brand: Xiaomi
+  name: "Redmi A3"
+  segment: budget
+  price: 7299
+  personas: [elderly]
+  notes: "entry-level, clean back design"
+
+# --- Poco ---
+- id: poco-f6
+  brand: Poco
+  name: "Poco F6"
+  segment: mid
+  price: 29999
+  personas: [gamer]
+  notes: "flagship-grade chip on a budget"
+
+- id: poco-x6-pro
+  brand: Poco
+  name: "Poco X6 Pro"
+  segment: mid
+  price: 26999
+  personas: [gamer]
+
+- id: poco-x6
+  brand: Poco
+  name: "Poco X6"
+  segment: mid
+  price: 21999
+  personas: [value-seeker, teen]
+
+- id: poco-m6-pro
+  brand: Poco
+  name: "Poco M6 Pro"
+  segment: lower-mid
+  price: 14999
+  personas: []
+
+- id: poco-c65
+  brand: Poco
+  name: "Poco C65"
+  segment: budget
+  price: 8499
+  personas: []
+
+# --- Realme ---
+- id: realme-gt-6
+  brand: Realme
+  name: "Realme GT 6"
+  segment: upper-mid
+  price: 40999
+  personas: [gamer]
+  notes: "performance-first relaunch of the GT line"
+
+- id: realme-12-pro-plus
+  brand: Realme
+  name: "Realme 12 Pro+"
+  segment: mid
+  price: 29999
+  personas: [camera-lover, value-seeker]
+  notes: "periscope telephoto at a mid price"
+
+- id: realme-12-pro
+  brand: Realme
+  name: "Realme 12 Pro"
+  segment: mid
+  price: 25999
+  personas: []
+  notes: "(already in catalogue)"
+
+- id: realme-12-plus
+  brand: Realme
+  name: "Realme 12+"
+  segment: mid
+  price: 20999
+  personas: []
+
+- id: realme-narzo-70-pro
+  brand: Realme
+  name: "Narzo 70 Pro"
+  segment: lower-mid
+  price: 19999
+  personas: [gamer]
+
+- id: realme-narzo-60
+  brand: Realme
+  name: "Narzo 60"
+  segment: lower-mid
+  price: 15999
+  personas: []
+  notes: "(already in catalogue)"
+
+- id: realme-c67
+  brand: Realme
+  name: "Realme C67"
+  segment: lower-mid
+  price: 13999
+  personas: []
+
+- id: realme-c65
+  brand: Realme
+  name: "Realme C65"
+  segment: budget
+  price: 9999
+  personas: []
+
+# --- Vivo ---
+- id: vivo-x100-pro
+  brand: Vivo
+  name: "Vivo X100 Pro"
+  segment: flagship
+  price: 89999
+  personas: [camera-lover]
+  notes: "Zeiss optics, portrait king"
+
+- id: vivo-x100
+  brand: Vivo
+  name: "Vivo X100"
+  segment: flagship
+  price: 63999
+  personas: [camera-lover]
+
+- id: vivo-v30-pro
+  brand: Vivo
+  name: "Vivo V30 Pro"
+  segment: upper-mid
+  price: 41999
+  personas: []
+
+- id: vivo-v30
+  brand: Vivo
+  name: "Vivo V30"
+  segment: mid
+  price: 33999
+  personas: []
+  notes: "slim, portrait-tuned (already in catalogue)"
+
+- id: vivo-t3
+  brand: Vivo
+  name: "Vivo T3"
+  segment: lower-mid
+  price: 19999
+  personas: []
+
+- id: vivo-y28
+  brand: Vivo
+  name: "Vivo Y28"
+  segment: lower-mid
+  price: 13999
+  personas: [elderly]
+  notes: "offline-store staple, simple"
+
+# --- iQOO ---
+- id: iqoo-12
+  brand: iQOO
+  name: "iQOO 12"
+  segment: upper-mid
+  price: 52999
+  personas: [gamer]
+  notes: "flagship chip, aggressive price"
+
+- id: iqoo-neo-9-pro
+  brand: iQOO
+  name: "iQOO Neo 9 Pro"
+  segment: mid
+  price: 35999
+  personas: [gamer]
+
+- id: iqoo-z9
+  brand: iQOO
+  name: "iQOO Z9"
+  segment: lower-mid
+  price: 19999
+  personas: [gamer, value-seeker]
+
+- id: iqoo-z9x
+  brand: iQOO
+  name: "iQOO Z9x"
+  segment: lower-mid
+  price: 12999
+  personas: []
+
+# --- Oppo ---
+- id: oppo-reno-11-pro
+  brand: Oppo
+  name: "Reno 11 Pro"
+  segment: upper-mid
+  price: 39999
+  personas: [camera-lover]
+  notes: "portrait-focused"
+
+- id: oppo-reno-11
+  brand: Oppo
+  name: "Reno 11"
+  segment: mid
+  price: 29999
+  personas: [teen]
+
+- id: oppo-f25-pro
+  brand: Oppo
+  name: "Oppo F25 Pro"
+  segment: mid
+  price: 23999
+  personas: []
+
+- id: oppo-a79
+  brand: Oppo
+  name: "Oppo A79"
+  segment: lower-mid
+  price: 19999
+  personas: []
+
+- id: oppo-a59
+  brand: Oppo
+  name: "Oppo A59"
+  segment: lower-mid
+  price: 14999
+  personas: [elderly]
+  notes: "offline-store staple"
+
+# --- Moto ---
+- id: moto-edge-50-pro
+  brand: Moto
+  name: "Moto Edge 50 Pro"
+  segment: mid
+  price: 31999
+  personas: [camera-lover]
+  notes: "Pantone colours, curved display"
+
+- id: moto-edge-50-fusion
+  brand: Moto
+  name: "Moto Edge 50 Fusion"
+  segment: mid
+  price: 22999
+  personas: [teen]
+  notes: "vegan-leather colours"
+
+- id: moto-g84
+  brand: Moto
+  name: "Moto G84"
+  segment: lower-mid
+  price: 17999
+  personas: []
+  notes: "near-stock Android (already in catalogue)"
+
+- id: moto-g64
+  brand: Moto
+  name: "Moto G64"
+  segment: lower-mid
+  price: 14999
+  personas: [value-seeker]
+
+- id: moto-g54
+  brand: Moto
+  name: "Moto G54"
+  segment: lower-mid
+  price: 13999
+  personas: []
+
+- id: moto-g34
+  brand: Moto
+  name: "Moto G34"
+  segment: lower-mid
+  price: 10999
+  personas: [elderly]
+  notes: "clean software, cheap 5G"
+
+- id: moto-razr-50
+  brand: Moto
+  name: "Moto Razr 50"
+  segment: flagship
+  price: 64999
+  personas: [teen]
+  notes: "affordable flip foldable"
+
+# --- Nothing ---
+- id: nothing-phone-2
+  brand: Nothing
+  name: "Phone (2)"
+  segment: upper-mid
+  price: 44999
+  personas: [teen]
+  notes: "Glyph lights, design-led"
+
+- id: nothing-phone-2a
+  brand: Nothing
+  name: "Phone (2a)"
+  segment: mid
+  price: 25999
+  personas: [teen]
+  notes: "(already in catalogue)"
+
+# --- CMF ---
+- id: cmf-phone-1
+  brand: CMF
+  name: "CMF Phone 1"
+  segment: lower-mid
+  price: 15999
+  personas: [value-seeker, teen]
+  notes: "swappable back covers, Nothing sub-brand"
+
+# --- Honor ---
+- id: honor-90
+  brand: Honor
+  name: "Honor 90"
+  segment: upper-mid
+  price: 37999
+  personas: []
+
+- id: honor-x9b
+  brand: Honor
+  name: "Honor X9b"
+  segment: mid
+  price: 25999
+  personas: []
+  notes: "tough display pitch"
+
+# --- Tecno ---
+- id: tecno-phantom-v-flip
+  brand: Tecno
+  name: "Phantom V Flip"
+  segment: upper-mid
+  price: 54999
+  personas: [teen]
+  notes: "cheapest flip foldable"
+
+- id: tecno-camon-30
+  brand: Tecno
+  name: "Camon 30"
+  segment: mid
+  price: 24999
+  personas: []
+
+- id: tecno-pova-6-pro
+  brand: Tecno
+  name: "Pova 6 Pro"
+  segment: lower-mid
+  price: 19999
+  personas: [gamer]
+  notes: "big battery, gamer styling"
+
+- id: tecno-spark-20-pro
+  brand: Tecno
+  name: "Spark 20 Pro"
+  segment: lower-mid
+  price: 13999
+  personas: []
+
+# --- Infinix ---
+- id: infinix-gt-20-pro
+  brand: Infinix
+  name: "GT 20 Pro"
+  segment: mid
+  price: 24999
+  personas: [gamer]
+  notes: "budget gaming, LED back"
+
+- id: infinix-note-40-pro
+  brand: Infinix
+  name: "Note 40 Pro"
+  segment: mid
+  price: 21999
+  personas: []
+
+- id: infinix-hot-40i
+  brand: Infinix
+  name: "Hot 40i"
+  segment: budget
+  price: 9999
+  personas: []
+
+# --- Lava ---
+- id: lava-agni-2
+  brand: Lava
+  name: "Agni 2"
+  segment: mid
+  price: 21999
+  personas: [value-seeker]
+  notes: "Indian brand, curved AMOLED, clean Android"
+
+- id: lava-blaze-curve
+  brand: Lava
+  name: "Blaze Curve"
+  segment: lower-mid
+  price: 17999
+  personas: []
+  notes: "Indian brand"
+
+- id: lava-yuva-3-pro
+  brand: Lava
+  name: "Yuva 3 Pro"
+  segment: budget
+  price: 8499
+  personas: [elderly]
+  notes: "Indian brand, basics done simply"
+
+- id: lava-o2
+  brand: Lava
+  name: "Lava O2"
+  segment: budget
+  price: 8999
+  personas: []
+  notes: "Indian brand"
+
+# --- Micromax ---
+- id: micromax-in-note-2
+  brand: Micromax
+  name: "In Note 2"
+  segment: lower-mid
+  price: 13499
+  personas: [value-seeker]
+  notes: "Indian brand, stock Android"
+
+- id: micromax-in-2b
+  brand: Micromax
+  name: "In 2b"
+  segment: budget
+  price: 7999
+  personas: [elderly]
+  notes: "Indian brand, entry level"
+
+# --- Asus ---
+- id: asus-rog-phone-8
+  brand: Asus
+  name: "ROG Phone 8"
+  segment: flagship
+  price: 79999
+  personas: [gamer]
+  notes: "the dedicated gaming phone"
+
+- id: asus-zenfone-10
+  brand: Asus
+  name: "Zenfone 10"
+  segment: upper-mid
+  price: 49999
+  personas: []
+  notes: "rare true compact flagship"

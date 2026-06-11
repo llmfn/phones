@@ -54,8 +54,11 @@ the dataset is the source of truth the course grounds against.
 **Status:** docs, record shape, variant selection, and the frontend (colour
 facet, "+N colours" hint) are done, exercised on the 16 existing phones
 hand-migrated to the new shape (3 fully enriched as few-shot examples for the
-generation script). Remaining: model-list curation, the generation script,
-BM25 token exclusions, and the narrative review pass.
+generation script). The curated list (`data/models.yaml`, 94 models) and the
+generation script (`scripts/generate_phones.py`, runs on a Claude
+subscription via `claude -p`) are in, smoke-tested on one record. Remaining:
+the ~10-model pilot + prompt tuning, the full batch, BM25 token exclusions,
+and the narrative review pass.
 
 * Extend the record shape: parent product (shared `specs`, `signals`, one
   `narrative` written for semantic search) + nested `variants` (colour and
