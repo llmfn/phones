@@ -214,7 +214,57 @@ colour (deferred — UI degrades gracefully to grey circles without them)
 - [x] Clicking a storage pill updates the price shown on the card
 - [x] Without hex codes: grey circles; with hex codes: filled circles in the right colour
 
-## BACKLOG
+## Task 12: Layer 3 — Schema
 
-* Hybrid search (BM25 + semantic, re-ranker) — Layer 1 "Level 3" rabbit hole
-* Grow the dataset toward 200 models if retrieval demos need it
+Pass 1 now returns a strict typed object every call instead of a free-form string.
+
+* `layer3_schema.py` — uses OpenAI structured output to enforce the Pass 1 response
+  shape: `{ query, filters, persona }`
+  * `filters`: `max_price`, `min_battery_mah`, `os` (each nullable)
+  * `persona`: one of `elderly`, `teen`, `camera-lover`, `gamer`, `value-seeker`, or null
+* The three prompt levels from Layer 2 carry over — students still edit `ACTIVE_PROMPT`
+* Trace shows the validated structured object
+* `CURRENT_LAYER` → 3
+
+**ACCEPTANCE CRITERIA**
+- Same query run twice produces the same shape (even if the rewritten query text varies)
+- An invalid API response is caught and falls back gracefully (trace shows `fallback`)
+
+## Task 13: Persona re-ranking
+
+Use the `persona` extracted by Layer 3 to re-rank semantic search results.
+
+* After semantic search returns top-N candidates, if persona is non-null, re-rank using
+  the `signals` field on each catalog record (e.g. "elderly" scores up phones with a
+  matching `personas` signal)
+* Persona and re-ranking are visible in the trace
+
+**ACCEPTANCE CRITERIA**
+- Persona "elderly" surfaces a different top-3 than running the same query without persona
+- No persona → order identical to Layer 3 semantic ranking
+
+## Task 14: Layer 4 — Context
+
+Adds Pass 2: a second LLM call that generates a grounded natural-language summary
+above the cards.
+
+* `layer4_context.py` — builds on Layer 3; after search retrieves top 3 phones, injects
+  them as context into Pass 2
+* Context is selective: only `name`, `price`, `narrative`, and specs fields relevant to
+  the query — not the full record
+* Pass 2 generates a short recommendation paragraph grounded strictly in the 3 injected
+  records
+* API response gains a `summary` field; add it to `docs/specs.md`
+* UI: render `summary` above the results grid when present (no structural change
+  otherwise); `summary` absent in Layers 1–3 responses — conditional render
+* Trace shows context injected (the 3 condensed records), Pass 2 input/output, latency
+* `CURRENT_LAYER` → 4
+
+**ACCEPTANCE CRITERIA**
+- Response cites only facts present in the injected context records
+- `summary` is absent in Layers 1–3 responses (field omitted, not null) — UI renders
+  correctly in both cases
+- Pass 2 latency visible in trace
+- If Pass 2 fails, cards still render normally and `summary` is omitted (trace marks
+  `error`)
+
