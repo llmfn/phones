@@ -71,6 +71,15 @@ function priceFromInputs() {
   else setPrice(lo, hi);
 }
 
+function selectOnly(button, selector) {
+  const group = button.parentElement;
+  for (const peer of group.querySelectorAll(selector)) {
+    const selected = peer === button;
+    peer.classList.toggle("is-selected", selected);
+    peer.setAttribute("aria-pressed", selected ? "true" : "false");
+  }
+}
+
 export function bindEvents() {
   document.getElementById("search-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -114,6 +123,28 @@ export function bindEvents() {
     } else if (t.classList.contains("chip-clear")) {
       clearFilters();
       runQuery();
+    }
+  });
+
+  document.getElementById("results").addEventListener("click", (e) => {
+    const swatch = e.target.closest(".swatch");
+    if (swatch) {
+      const card = swatch.closest(".product-card");
+      const img = card.querySelector(".product-image");
+      if (img && swatch.dataset.image) {
+        img.src = swatch.dataset.image;
+        img.alt = `${card.dataset.productName} in ${swatch.dataset.colorName}`;
+      }
+      selectOnly(swatch, ".swatch");
+      return;
+    }
+
+    const pill = e.target.closest(".storage-pill");
+    if (pill) {
+      const card = pill.closest(".product-card");
+      const price = card.querySelector('[data-role="price"]');
+      if (price) price.textContent = pill.dataset.priceLabel;
+      selectOnly(pill, ".storage-pill");
     }
   });
 

@@ -234,7 +234,7 @@ body {
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 16px;
 }
 
@@ -243,17 +243,20 @@ body {
   border-radius: 12px;
   padding: 12px;
   background: var(--canvas-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .product-card img {
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
+  background: var(--panel-bg);
 }
 
 .product-card .brand {
-  margin-top: 8px;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -262,17 +265,70 @@ body {
 
 .product-card .name {
   font-weight: 600;
-  margin: 2px 0;
 }
 
 .product-card .price {
   color: var(--muted);
 }
 
-.product-card .colors {
+.swatches,
+.storage-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.swatches {
+  gap: 8px;
   margin-top: 2px;
-  font-size: 12px;
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background: var(--swatch-color, #6f7785);
+  cursor: pointer;
+}
+
+.swatch-empty {
+  background: #6f7785;
+}
+
+.swatch.is-selected {
+  border-color: var(--text);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.storage-options {
+  gap: 6px;
+}
+
+.storage-pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: var(--assistant-bubble);
   color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.storage-pill.is-selected {
+  border-color: var(--accent);
+  background: rgba(79, 140, 255, 0.16);
+  color: var(--text);
+}
+
+.swatch:focus-visible,
+.storage-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .empty {
@@ -391,4 +447,19 @@ body {
   border-radius: 6px;
   font-size: 12px;
   overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .app {
+    padding: 16px 12px;
+  }
+
+  .shell {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
 }

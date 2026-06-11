@@ -67,7 +67,7 @@ and the two side panels fade in around the results.
 - **Left rail (fixed):** filters. Brand checkboxes with facet counts, and a
   price range slider.
 - **Center (flexes, capped):** the results grid of phone cards, each with image,
-  name, and price.
+  name, price, colour swatches, and storage pills.
 - **Right rail (fixed):** the trace. Its header is just a `TRACE` label and a
   "copy as JSON" button — no layer selector, since the backend owns the active
   layer. The student reads which layer ran from the rows themselves.
@@ -85,16 +85,17 @@ and the two side panels fade in around the results.
 │[ ] Apple   (1)│ │ Galaxy   │ │ Pixel    │ │ iPhone   │   │  in:  query      │
 │[ ] Google  (1)│ │ A54      │ │ 8a       │ │ SE       │   │  out: y0         │
 │[ ] OnePlus (1)│ │ ₹38,999  │ │ ₹52,999  │ │ ₹49,900  │   │────────────────  │
-│[ ] Moto    (1)│ │+2 colours│ │+3 colours│ │+1 colour │   │3 Schema    skip  │
-│               │ └──────────┘ └──────────┘ └──────────┘   │  (skipped)       │
-│Colour         │                                          │────────────────  │
+│[ ] Moto    (1)│ │ o o o    │ │ o o o o  │ │ o o      │   │3 Schema    skip  │
+│               │ │128 256   │ │128 256   │ │64 128    │   │  (skipped)       │
+│Colour         │ └──────────┘ └──────────┘ └──────────┘   │────────────────  │
 │[ ] black   (4)│ ┌──────────┐ ┌──────────┐ ┌──────────┐   │8 Evals     skip  │
 │[ ] blue    (2)│ │ [img]    │ │ [img]    │ │ [img]    │   │  (skipped)       │
 │[ ] green   (1)│ │ Nord     │ │ Galaxy   │ │ Moto     │   │                  │
 │               │ │ CE4      │ │ M14      │ │ G84      │   │[copy as JSON]    │
 │Price          │ │ ₹24,999  │ │ ₹13,499  │ │ ₹17,999  │   │                  │
-│o─────────o    │ │+1 colour │ │          │ │+1 colour │   │                  │
-│₹10k  ₹90k     │ └──────────┘ └──────────┘ └──────────┘   │                  │
+│o─────────o    │ │ o o      │ │ o        │ │ o o      │   │                  │
+│₹10k  ₹90k     │ │128 256   │ │64        │ │128 256   │   │                  │
+│               │ └──────────┘ └──────────┘ └──────────┘   │                  │
 │               │                                          │                  │
 │[Reset]        │                                          │                  │
 └───────────────┴──────────────────────────────────────────┴──────────────────┘
@@ -107,11 +108,10 @@ Notes:
   they update with every query and re-filter, standard faceted-search behavior.
   The colour facet lists canonical families (`black`, `blue`, ...), not
   marketing names.
-- **Cards** show the image, name, and price of the product's *best-matching
-  variant* (see `specs.md`), plus a **"+N colours" hint** when the product
-  comes in more colour families than the one shown. There is no match score,
-  and no variant switcher on the card — colours are explored through the
-  colour filter. (A switcher widget is in the backlog.)
+- **Cards** show the selected colour image, name, selected storage price,
+  swatches (`o o o` in the drawing), and storage pills (`128 256` in the
+  drawing). Clicking these card controls changes only that card; filters still
+  re-query through the left rail and chips. There is no match score on cards.
 - **Trace rows:** the active layer and every prior layer run as `success` rows
   (expandable to raw input → output JSON); later, skipped layers render as
   greyed `skip` rows rather than disappearing, so the student sees the full
@@ -142,9 +142,9 @@ directly under the search box** — each removable via its `x`, plus a `clear al
 │               │ │ iPhone   │                             │  in:  query      │
 │Price          │ │ SE       │                             │  out: y0         │
 │o─────────o    │ │ ₹49,900  │                             │────────────────  │
-│₹10k  ₹90k     │ └──────────┘                             │3 Schema    skip  │
-│               │                                          │  (skipped)       │
-│[Reset]        │                                          │                  │
+│₹10k  ₹90k     │ │ o o      │                             │3 Schema    skip  │
+│               │ │64 128    │                             │  (skipped)       │
+│[Reset]        │ └──────────┘                             │                  │
 │               │                                          │[copy as JSON]    │
 └───────────────┴──────────────────────────────────────────┴──────────────────┘
 ```

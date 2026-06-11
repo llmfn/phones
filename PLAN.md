@@ -192,7 +192,7 @@ being generated with real image URLs per colour)
 - Colour filter and price filter work as before against the new arrays ✓
 - Generation script outputs the new shape; existing Apple records regenerated ✓
 
-## Task 11: Card — image, colour swatches, and storage options
+## Task 11: Card — image, colour swatches, and storage options (DONE)
 
 Enrich each result card with the phone's photo, interactive colour swatches,
 and a storage picker.
@@ -210,9 +210,9 @@ and a storage picker.
 colour (deferred — UI degrades gracefully to grey circles without them)
 
 **Acceptance criteria:**
-- Clicking a colour swatch swaps the card photo and keeps the swatch highlighted
-- Clicking a storage pill updates the price shown on the card
-- Without hex codes: grey circles; with hex codes: filled circles in the right colour
+- [x] Clicking a colour swatch swaps the card photo and keeps the swatch highlighted
+- [x] Clicking a storage pill updates the price shown on the card
+- [x] Without hex codes: grey circles; with hex codes: filled circles in the right colour
 
 ## BACKLOG
 

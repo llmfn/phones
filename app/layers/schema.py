@@ -32,13 +32,31 @@ class TraceStep(BaseModel):
 # --- Products -------------------------------------------------------------
 
 
-class Product(BaseModel):
-    """One result card: a parent phone fronted by its representative variant.
+class ProductColor(BaseModel):
+    """One colour option exposed to the card switcher."""
 
-    ``id``, ``name``, and ``brand`` come from the parent; ``price`` and
-    ``image`` from the variant the card shows; ``variant_id``/``color_name``
-    say which variant that is. ``colors`` is the number of colour families the
-    product comes in — the card's "+N colours" hint shows ``colors - 1``.
+    name: str
+    family: str
+    hex: str | None = None
+    image: str
+
+
+class ProductStorageOption(BaseModel):
+    """One purchasable storage/RAM tier exposed to the card picker."""
+
+    gb: int
+    label: str
+    ram_gb: int | None = None
+    price: int
+
+
+class Product(BaseModel):
+    """One result card: a parent phone fronted by its lead configuration.
+
+    ``id``, ``name``, and ``brand`` come from the parent. ``price`` and
+    ``image`` are the initially selected storage and colour. ``colors`` and
+    ``storage_options`` let the browser switch the card locally without another
+    recommend call.
     """
 
     id: str
@@ -48,7 +66,12 @@ class Product(BaseModel):
     image: str
     variant_id: str
     color_name: str
-    colors: int
+    color_family: str
+    storage_gb: int
+    storage_label: str
+    ram_gb: int | None = None
+    colors: list[ProductColor]
+    storage_options: list[ProductStorageOption]
 
 
 # --- Facets ---------------------------------------------------------------

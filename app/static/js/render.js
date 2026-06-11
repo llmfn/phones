@@ -7,6 +7,18 @@ import { niceBounds } from "./state.js";
 const inr = new Intl.NumberFormat("en-IN");
 const rupees = (n) => "₹" + inr.format(n);
 
+function storageText(option) {
+  const storage = formatCapacity(option.gb);
+  if (option.ram_gb) return `${option.ram_gb} GB + ${storage}`;
+  return storage;
+}
+
+function formatCapacity(gb) {
+  if (gb >= 1024 && gb % 1024 === 0) return `${gb / 1024}TB`;
+  if (gb >= 1000 && gb % 1000 === 0) return `${gb / 1000}TB`;
+  return `${gb} GB`;
+}
+
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -36,24 +48,65 @@ export function renderResults(products) {
 
   for (const p of products) {
     const card = el("div", "product-card");
+    card.dataset.productName = p.name ?? "Phone";
     if (p.image) {
-      const img = el("img");
+      const img = el("img", "product-image");
       img.src = p.image;
-      img.alt = p.name ?? "";
+      img.alt = p.color_name ? `${p.name ?? "Phone"} in ${p.color_name}` : p.name ?? "";
       card.appendChild(img);
     }
     if (p.brand) card.appendChild(el("div", "brand", p.brand));
     card.appendChild(el("div", "name", p.name ?? ""));
-    card.appendChild(el("div", "price", rupees(p.price ?? 0)));
-    // The card shows one representative variant; hint at the other colour
-    // families. No variant switcher here — colours are explored via the
-    // colour filter (see docs/specs.md).
-    if (p.colors > 1) {
-      const n = p.colors - 1;
-      card.appendChild(el("div", "colors", `+${n} colour${n === 1 ? "" : "s"}`));
-    }
+    const price = el("div", "price", rupees(p.price ?? 0));
+    price.dataset.role = "price";
+    card.appendChild(price);
+    card.appendChild(colorSwatches(p));
+    card.appendChild(storageOptions(p));
     grid.appendChild(card);
   }
+}
+
+function colorSwatches(product) {
+  const row = el("div", "swatches");
+  row.setAttribute("aria-label", "Colours");
+
+  for (const color of product.colors ?? []) {
+    const button = el("button", "swatch");
+    button.type = "button";
+    button.title = color.name ?? color.family ?? "Colour";
+    button.setAttribute("aria-label", `Show ${button.title}`);
+    button.dataset.image = color.image ?? "";
+    button.dataset.colorName = color.name ?? color.family ?? "Colour";
+
+    if (color.hex) button.style.setProperty("--swatch-color", color.hex);
+    else button.classList.add("swatch-empty");
+
+    const selected = product.color_name
+      ? color.name === product.color_name
+      : color.family === product.color_family;
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", selected ? "true" : "false");
+    row.appendChild(button);
+  }
+
+  return row;
+}
+
+function storageOptions(product) {
+  const row = el("div", "storage-options");
+  row.setAttribute("aria-label", "Storage options");
+
+  for (const option of product.storage_options ?? []) {
+    const button = el("button", "storage-pill", storageText(option));
+    button.type = "button";
+    button.dataset.priceLabel = rupees(option.price ?? 0);
+    const selected = option.gb === product.storage_gb && (option.ram_gb ?? null) === (product.ram_gb ?? null);
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", selected ? "true" : "false");
+    row.appendChild(button);
+  }
+
+  return row;
 }
 
 // --- Filters (facets) ---

@@ -21,6 +21,8 @@ from .schema import (
     FacetValue,
     Filters,
     Product,
+    ProductColor,
+    ProductStorageOption,
     RangeFacet,
     RecommendResponse,
     TraceStep,
@@ -108,9 +110,20 @@ class Layer:
             brand=doc.brand,
             price=lead_storage.price,
             image=lead_color.image,
-            variant_id=f"{doc.id}-{lead_color.family}",
+            variant_id=f"{doc.id}-{lead_color.family}-{lead_storage.gb}",
             color_name=lead_color.name,
-            colors=len({c.family for c in doc.colors}),
+            color_family=lead_color.family,
+            storage_gb=lead_storage.gb,
+            storage_label=lead_storage.label,
+            ram_gb=lead_storage.ram_gb,
+            colors=[
+                ProductColor(name=c.name, family=c.family, hex=c.hex, image=c.image)
+                for c in doc.colors
+            ],
+            storage_options=[
+                ProductStorageOption(gb=s.gb, label=s.label, ram_gb=s.ram_gb, price=s.price)
+                for s in doc.storage_options
+            ],
         )
 
     def _compute_facets(self, matches) -> list[Facet]:
