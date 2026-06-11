@@ -23,6 +23,7 @@ from .schema import (
     Product,
     RangeFacet,
     RecommendResponse,
+    TraceStep,
 )
 
 
@@ -39,6 +40,10 @@ class Layer:
         raise NotImplementedError
 
     def run_query(self, query: str, filters: Filters) -> RecommendResponse:
+        # One layer instance handles one request (see create_layer), so the
+        # trace can accumulate on the instance: search() calls add_step() as
+        # it works, and the steps ride back on the response.
+        self.trace: list[TraceStep] = []
         candidates = self.search(query)
         matches = []  # (entry, its variants that survive the filters)
         for entry in candidates:
@@ -47,7 +52,25 @@ class Layer:
                 matches.append((entry, variants))
         products = [self._card(entry, variants[0]) for entry, variants in matches]
         facets = self._compute_facets(matches)
-        return RecommendResponse(products=products, facets=facets)
+        return RecommendResponse(products=products, facets=facets, trace=self.trace)
+
+    def add_step(
+        self,
+        input: dict,
+        output: dict,
+        status: str = "success",
+        latency_ms: int = 0,
+    ) -> None:
+        self.trace.append(
+            TraceStep(
+                layer=self.number,
+                name=self.name,
+                input=input,
+                output=output,
+                status=status,
+                latency_ms=latency_ms,
+            )
+        )
 
     # --- shared helpers ---------------------------------------------------
 

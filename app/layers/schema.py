@@ -10,6 +10,25 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, Field
 
+# --- Trace ------------------------------------------------------------------
+
+
+class TraceStep(BaseModel):
+    """One X-Ray trace row: what a layer did to answer this query.
+
+    ``input`` and ``output`` are deliberately free-form dicts -- each layer
+    decides what explains its work (BM25 shows per-token match counts, semantic
+    search shows cosine scores). The envelope is what the UI contract fixes.
+    """
+
+    layer: int
+    name: str
+    input: dict[str, Any] = Field(default_factory=dict)
+    output: dict[str, Any] = Field(default_factory=dict)
+    status: Literal["success", "fallback", "error", "skip"] = "success"
+    latency_ms: int = 0
+
+
 # --- Products -------------------------------------------------------------
 
 
@@ -84,7 +103,4 @@ class Filters(BaseModel):
 class RecommendResponse(BaseModel):
     products: list[Product]
     facets: list[Facet]
-    # TODO: type the trace once its shape settles (status enum, per-layer
-    # input/output, latency). Left as Any for now -- the trace is owned by a
-    # later task and the UI renders whatever array comes back.
-    trace: Any = Field(default_factory=list)
+    trace: list[TraceStep] = Field(default_factory=list)
