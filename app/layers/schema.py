@@ -14,11 +14,22 @@ from pydantic import BaseModel, Field
 
 
 class Product(BaseModel):
+    """One result card: a parent phone fronted by its representative variant.
+
+    ``id``, ``name``, and ``brand`` come from the parent; ``price`` and
+    ``image`` from the variant the card shows; ``variant_id``/``color_name``
+    say which variant that is. ``colors`` is the number of colour families the
+    product comes in — the card's "+N colours" hint shows ``colors - 1``.
+    """
+
     id: str
     name: str
     brand: str
     price: int
     image: str
+    variant_id: str
+    color_name: str
+    colors: int
 
 
 # --- Facets ---------------------------------------------------------------
@@ -63,6 +74,7 @@ class PriceRange(BaseModel):
 
 class Filters(BaseModel):
     brands: list[str] = Field(default_factory=list)
+    colors: list[str] = Field(default_factory=list)  # canonical colour families
     price: PriceRange | None = None
 
 

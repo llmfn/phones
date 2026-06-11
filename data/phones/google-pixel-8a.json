@@ -2,7 +2,57 @@
   "id": "google-pixel-8a",
   "brand": "Google",
   "name": "Pixel 8a",
-  "price": 52999,
-  "image": "https://placehold.co/200x200?text=Pixel+8a",
-  "description": "Compact 5G phone with the Tensor chip, clean Android, and a class-leading computational camera."
+  "narrative": "A compact phone for people who care about photos more than spec sheets. The Tensor G3 runs the same computational photography as the flagship Pixels, so low-light shots and portraits of kids and pets come out right with zero fiddling. Clean Android with no duplicate apps, seven years of software updates, and a hand-friendly 6.1-inch size make it a safe long-term choice for a first smartphone or a parent upgrading from an ageing device. Call screening and large clear text keep everyday use simple.",
+  "specs": {
+    "display": "6.1\" OLED 120Hz",
+    "chipset": "Google Tensor G3",
+    "battery_mah": 4492,
+    "main_camera_mp": 64,
+    "weight_g": 188,
+    "os": "Android 14"
+  },
+  "signals": [
+    "camera",
+    "compact",
+    "clean-software",
+    "long-updates"
+  ],
+  "variants": [
+    {
+      "id": "google-pixel-8a-obsidian-128",
+      "color_name": "Obsidian",
+      "color_family": "black",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 52999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Pixel+8a+Obsidian"
+    },
+    {
+      "id": "google-pixel-8a-porcelain-128",
+      "color_name": "Porcelain",
+      "color_family": "white",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 52999,
+      "image": "https://placehold.co/200x200/e8e8ea/333333?text=Pixel+8a+Porcelain"
+    },
+    {
+      "id": "google-pixel-8a-bay-128",
+      "color_name": "Bay",
+      "color_family": "blue",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 52999,
+      "image": "https://placehold.co/200x200/2f4f7a/ffffff?text=Pixel+8a+Bay"
+    },
+    {
+      "id": "google-pixel-8a-aloe-128",
+      "color_name": "Aloe",
+      "color_family": "green",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 52999,
+      "image": "https://placehold.co/200x200/2f6b4f/ffffff?text=Pixel+8a+Aloe"
+    }
+  ]
 }

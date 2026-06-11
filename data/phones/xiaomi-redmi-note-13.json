@@ -2,7 +2,36 @@
   "id": "xiaomi-redmi-note-13",
   "brand": "Xiaomi",
   "name": "Redmi Note 13",
-  "price": 16999,
-  "image": "https://placehold.co/200x200?text=Redmi+Note+13",
-  "description": "Affordable phone with a 108MP camera, big battery, and a 120Hz AMOLED display for the price."
+  "narrative": "Affordable phone with a 108MP camera, big battery, and a 120Hz AMOLED display for the price.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "xiaomi-redmi-note-13-black-128",
+      "color_name": "Midnight Black",
+      "color_family": "black",
+      "ram_gb": 6,
+      "storage_gb": 128,
+      "price": 16999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Redmi+Note+13+Midnight+Black"
+    },
+    {
+      "id": "xiaomi-redmi-note-13-blue-256",
+      "color_name": "Ice Blue",
+      "color_family": "blue",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 18999,
+      "image": "https://placehold.co/200x200/2f4f7a/ffffff?text=Redmi+Note+13+Ice+Blue"
+    },
+    {
+      "id": "xiaomi-redmi-note-13-gold-256",
+      "color_name": "Prism Gold",
+      "color_family": "gold",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 18999,
+      "image": "https://placehold.co/200x200/b8965a/333333?text=Redmi+Note+13+Prism+Gold"
+    }
+  ]
 }

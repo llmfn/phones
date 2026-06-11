@@ -45,6 +45,13 @@ export function renderResults(products) {
     if (p.brand) card.appendChild(el("div", "brand", p.brand));
     card.appendChild(el("div", "name", p.name ?? ""));
     card.appendChild(el("div", "price", rupees(p.price ?? 0)));
+    // The card shows one representative variant; hint at the other colour
+    // families. No variant switcher here — colours are explored via the
+    // colour filter (see docs/specs.md).
+    if (p.colors > 1) {
+      const n = p.colors - 1;
+      card.appendChild(el("div", "colors", `+${n} colour${n === 1 ? "" : "s"}`));
+    }
     grid.appendChild(card);
   }
 }
@@ -61,17 +68,27 @@ export function renderFilters(facets, filters, priceBounds) {
   updatePriceUI();
 }
 
+// API facet field → the key in the filters object, and the rail heading.
+const FACET_KEYS = { brand: "brands", color: "colors" };
+const FACET_TITLES = { brand: "Brand", color: "Colour" };
+
 function categoricalFacet(facet, filters) {
   const group = el("div", "facet-group");
-  const title = facet.field.charAt(0).toUpperCase() + facet.field.slice(1);
-  group.appendChild(el("h3", null, title));
+  const fallback = facet.field.charAt(0).toUpperCase() + facet.field.slice(1);
+  group.appendChild(el("h3", null, FACET_TITLES[facet.field] ?? fallback));
 
-  const selected = facet.field === "brand" ? filters.brands : [];
+  const key = FACET_KEYS[facet.field];
+  const selected = key ? filters[key] : [];
   for (const v of facet.values) {
     const label = el("label", "checkbox");
     const box = el("input");
     box.type = "checkbox";
-    box.dataset.brand = v.value;
+    if (key) {
+      box.dataset.field = key;
+      box.dataset.value = v.value;
+    } else {
+      box.disabled = true; // facet this frontend does not know how to filter on
+    }
     box.checked = selected.includes(v.value);
     label.appendChild(box);
     label.appendChild(el("span", "value", v.value));
@@ -161,7 +178,10 @@ export function renderChips(filters) {
 
   const chips = [];
   for (const brand of filters.brands) {
-    chips.push(chip(`brand: ${brand}`, { removeBrand: brand }));
+    chips.push(chip(`brand: ${brand}`, { removeField: "brands", removeValue: brand }));
+  }
+  for (const color of filters.colors) {
+    chips.push(chip(`colour: ${color}`, { removeField: "colors", removeValue: color }));
   }
   if (filters.price) {
     chips.push(chip(`price: ${rupees(filters.price.min)}–${rupees(filters.price.max)}`, { removePrice: "1" }));

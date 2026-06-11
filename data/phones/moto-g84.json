@@ -2,7 +2,27 @@
   "id": "moto-g84",
   "brand": "Moto",
   "name": "Moto G84",
-  "price": 17999,
-  "image": "https://placehold.co/200x200?text=Moto+G84",
-  "description": "Mid-range 5G phone with a vivid pOLED display, OIS camera, and near-stock Android."
+  "narrative": "Mid-range 5G phone with a vivid pOLED display, OIS camera, and near-stock Android.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "moto-g84-blue-256",
+      "color_name": "Midnight Blue",
+      "color_family": "blue",
+      "ram_gb": 12,
+      "storage_gb": 256,
+      "price": 17999,
+      "image": "https://placehold.co/200x200/2f4f7a/ffffff?text=Moto+G84+Midnight+Blue"
+    },
+    {
+      "id": "moto-g84-magenta-256",
+      "color_name": "Viva Magenta",
+      "color_family": "red",
+      "ram_gb": 12,
+      "storage_gb": 256,
+      "price": 17999,
+      "image": "https://placehold.co/200x200/8a3232/ffffff?text=Moto+G84+Viva+Magenta"
+    }
+  ]
 }

@@ -12,23 +12,23 @@ match nothing, so the whole query returns no results (the empty state in
 docs/specs.md). That brittleness is the limitation later layers exist to fix.
 """
 
+from ..catalog import CatalogEntry
 from ..search.bm25 import tokenize
 from ..search.index import catalog_index
 from .base import Layer
-from .schema import Product
 
 
 class Layer1(Layer):
     number = 1
     name = "Search"
 
-    def search(self, query: str) -> list[Product]:
+    def search(self, query: str) -> list[CatalogEntry]:
         index, entries = catalog_index()
         tokens = tokenize(query)
         if not tokens:
             # No usable query: return the whole catalogue so filter-only
             # flows (and clearing the query) still show results.
-            return [e.product for e in entries]
+            return list(entries)
         # Require every token to match (AND), then rank by total BM25 score.
         # AND is what makes naive keyword search whiff on vibe queries -- the
         # Layer 1 limitation docs/specs.md calls out.
@@ -38,4 +38,4 @@ class Layer1(Layer):
             if len(token_scores) == len(set(tokens))
         ]
         scored.sort(key=lambda pair: -pair[0])
-        return [entry.product for _, entry in scored]
+        return [entry for _, entry in scored]

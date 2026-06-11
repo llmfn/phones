@@ -2,7 +2,36 @@
   "id": "samsung-s24",
   "brand": "Samsung",
   "name": "Galaxy S24",
-  "price": 74999,
-  "image": "https://placehold.co/200x200?text=Galaxy+S24",
-  "description": "Compact flagship with a bright 120Hz AMOLED display, powerful chip, and a versatile triple camera."
+  "narrative": "Compact flagship with a bright 120Hz AMOLED display, powerful chip, and a versatile triple camera.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "samsung-s24-black-256",
+      "color_name": "Onyx Black",
+      "color_family": "black",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 74999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Galaxy+S24+Onyx+Black"
+    },
+    {
+      "id": "samsung-s24-gray-256",
+      "color_name": "Marble Gray",
+      "color_family": "gray",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 74999,
+      "image": "https://placehold.co/200x200/5a5e66/ffffff?text=Galaxy+S24+Marble+Gray"
+    },
+    {
+      "id": "samsung-s24-violet-256",
+      "color_name": "Cobalt Violet",
+      "color_family": "purple",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 74999,
+      "image": "https://placehold.co/200x200/5d4a7a/ffffff?text=Galaxy+S24+Cobalt+Violet"
+    }
+  ]
 }

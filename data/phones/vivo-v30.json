@@ -2,7 +2,27 @@
   "id": "vivo-v30",
   "brand": "Vivo",
   "name": "Vivo V30",
-  "price": 33999,
-  "image": "https://placehold.co/200x200?text=Vivo+V30",
-  "description": "Slim 5G phone tuned for portrait photography, with a curved AMOLED display and large battery."
+  "narrative": "Slim 5G phone tuned for portrait photography, with a curved AMOLED display and large battery.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "vivo-v30-blue-128",
+      "color_name": "Andaman Blue",
+      "color_family": "blue",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 33999,
+      "image": "https://placehold.co/200x200/2f4f7a/ffffff?text=Vivo+V30+Andaman+Blue"
+    },
+    {
+      "id": "vivo-v30-black-256",
+      "color_name": "Classic Black",
+      "color_family": "black",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 35999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Vivo+V30+Classic+Black"
+    }
+  ]
 }

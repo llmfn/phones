@@ -85,23 +85,33 @@ and the two side panels fade in around the results.
 │[ ] Apple   (1)│ │ Galaxy   │ │ Pixel    │ │ iPhone   │   │  in:  query      │
 │[ ] Google  (1)│ │ A54      │ │ 8a       │ │ SE       │   │  out: y0         │
 │[ ] OnePlus (1)│ │ ₹38,999  │ │ ₹52,999  │ │ ₹49,900  │   │────────────────  │
-│[ ] Moto    (1)│ └──────────┘ └──────────┘ └──────────┘   │3 Schema    skip  │
-│               │                                          │  (skipped)       │
-│Price          │ ┌──────────┐ ┌──────────┐ ┌──────────┐   │────────────────  │
-│o─────────o    │ │ [img]    │ │ [img]    │ │ [img]    │   │8 Evals     skip  │
-│₹10k  ₹90k     │ │ Nord     │ │ Galaxy   │ │ Moto     │   │  (skipped)       │
-│               │ │ CE4      │ │ M14      │ │ G84      │   │                  │
-│[Reset]        │ │ ₹24,999  │ │ ₹13,499  │ │ ₹17,999  │   │[copy as JSON]    │
-│               │ └──────────┘ └──────────┘ └──────────┘   │                  │
+│[ ] Moto    (1)│ │+2 colours│ │+3 colours│ │+1 colour │   │3 Schema    skip  │
+│               │ └──────────┘ └──────────┘ └──────────┘   │  (skipped)       │
+│Colour         │                                          │────────────────  │
+│[ ] black   (4)│ ┌──────────┐ ┌──────────┐ ┌──────────┐   │8 Evals     skip  │
+│[ ] blue    (2)│ │ [img]    │ │ [img]    │ │ [img]    │   │  (skipped)       │
+│[ ] green   (1)│ │ Nord     │ │ Galaxy   │ │ Moto     │   │                  │
+│               │ │ CE4      │ │ M14      │ │ G84      │   │[copy as JSON]    │
+│Price          │ │ ₹24,999  │ │ ₹13,499  │ │ ₹17,999  │   │                  │
+│o─────────o    │ │+1 colour │ │          │ │+1 colour │   │                  │
+│₹10k  ₹90k     │ └──────────┘ └──────────┘ └──────────┘   │                  │
+│               │                                          │                  │
+│[Reset]        │                                          │                  │
 └───────────────┴──────────────────────────────────────────┴──────────────────┘
 ```
 
 Notes:
 
-- **Brand facet counts** (the numbers in parentheses) reflect the *current
-  result set* — how many of these results belong to each brand — so they update
-  with every query and re-filter, standard faceted-search behavior.
-- **Cards** show image, name, and price only. There is no match score.
+- **Facet counts** (the numbers in parentheses) reflect the *current result
+  set* — how many of these results belong to each brand or colour family — so
+  they update with every query and re-filter, standard faceted-search behavior.
+  The colour facet lists canonical families (`black`, `blue`, ...), not
+  marketing names.
+- **Cards** show the image, name, and price of the product's *best-matching
+  variant* (see `specs.md`), plus a **"+N colours" hint** when the product
+  comes in more colour families than the one shown. There is no match score,
+  and no variant switcher on the card — colours are explored through the
+  colour filter. (A switcher widget is in the backlog.)
 - **Trace rows:** the active layer and every prior layer run as `success` rows
   (expandable to raw input → output JSON); later, skipped layers render as
   greyed `skip` rows rather than disappearing, so the student sees the full
@@ -144,6 +154,7 @@ Notes:
 - The chip row sits between the search box and the three-zone divider, aligned
   to the box's left edge. It is the canonical readout of "what is filtering the
   results right now"; the left-rail checkboxes and these chips stay in sync.
+  Colour filters chip the same way (`[colour: red x]`).
 - **Facet counts** reflect the now-filtered result set, so the brand list shows
   only the brands still present (here, just `Apple (1)`).
 - Removing a chip (or hitting `Reset` / `clear all`) re-queries and returns to

@@ -70,6 +70,10 @@ only the results column flexes.
 
 - **Brand:** checkboxes with facet counts in parentheses, e.g. `Apple (1)`.
   Counts come from the API response and reflect the **current result set**.
+- **Colour:** checkboxes like brand. Values are canonical colour families
+  (`black`, `blue`, ...), not marketing names; the count is how many products
+  in the current result set have a variant in that family (see *Catalogue &
+  variants*).
 - **Price:** a dual-thumb range slider selecting a `{min, max}` window. Its
   bounds come from the API's `price` facet, rounded outward to the nearest ₹500
   so every step lands on a clean value (step ₹500). The bounds are taken from
@@ -85,7 +89,12 @@ only the results column flexes.
 
 ## Zone — Results grid (center)
 
-- A grid of phone cards. Each card shows **image, brand, name, and price**.
+- A grid of phone cards. Each card shows **image, brand, name, and price** of
+  the product's **representative variant** (see *Catalogue & variants*).
+- When a product comes in more than one colour family, the card adds a
+  **"+N colours" hint** (`N = colors - 1`). There is no variant switcher on
+  the card — colours are explored through the colour filter. (A switcher
+  widget is in the backlog.)
 - A result count header (e.g. `6 results`).
 - No match score is shown on cards.
 - Empty results render an inline empty state (e.g. keyword search returning
@@ -107,6 +116,34 @@ only the results column flexes.
   - Grey: layer skipped
 - The UI renders whatever trace array comes back — the backend owns trace logic
   entirely.
+
+
+## Catalogue & variants
+
+The catalogue is one JSON document per parent phone in `data/phones/`. The
+parent owns everything its configurations share — `id`, `brand`, `name`, a
+`specs` object, `signals` (use-case tags), and one `narrative` written for
+semantic search. A `variants` list holds the purchasable configurations; each
+variant has its own:
+
+- `id` — variant slug, e.g. `google-pixel-8a-obsidian-128`
+- `color_name` — the marketing name shown to the user, e.g. `"Awesome Graphite"`
+- `color_family` — the canonical family the colour filter matches, e.g. `"black"`
+- `ram_gb`, `storage_gb` — the memory configuration
+- `price`, `image` — per-variant; colour and storage change both
+
+Filters resolve at the variant level:
+
+- Brand is a parent property. Colour and price are variant properties: a
+  product stays in the result set when **at least one variant** passes the
+  colour and price filters.
+- The **representative variant** — the one the card shows — is the *first
+  matching variant in document order*. Document order is canonical: the first
+  variant is the lead configuration. So with a `red` colour filter, a phone
+  sold in black and red shows its red variant and hides the others.
+- Facets are computed over the matching variants: the colour facet counts
+  products with a matching variant per colour family; the price facet bounds
+  span all matching variants' prices.
 
 
 ## API Contract
@@ -134,6 +171,7 @@ Request body:
   "query": "good phone for my mom",
   "filters": {
     "brands": ["Apple"],
+    "colors": ["black"],
     "price": { "min": 10000, "max": 90000 }
   }
 }
@@ -141,7 +179,8 @@ Request body:
 
 - `query` — the user's search text.
 - `filters` — optional; omitted or empty on the first search. `brands` is a list
-  of selected brand values; `price` is the selected `{min, max}` range.
+  of selected brand values; `colors` is a list of selected colour families;
+  `price` is the selected `{min, max}` range.
 
 The backend decides which layer is active (via its own config); the frontend
 does not send a layer.
@@ -156,7 +195,10 @@ Expected response:
       "name": "Galaxy A54",
       "brand": "Samsung",
       "price": 38999,
-      "image": "https://.../a54.jpg"
+      "image": "https://.../a54-graphite.jpg",
+      "variant_id": "samsung-a54-graphite-128",
+      "color_name": "Awesome Graphite",
+      "colors": 3
     }
   ],
   "facets": [
@@ -166,6 +208,14 @@ Expected response:
       "values": [
         { "value": "Samsung", "count": 2 },
         { "value": "Apple",   "count": 1 }
+      ]
+    },
+    {
+      "type": "categorical",
+      "field": "color",
+      "values": [
+        { "value": "black", "count": 2 },
+        { "value": "green", "count": 1 }
       ]
     },
     { "type": "range", "field": "price", "min": 13499, "max": 52999 }
@@ -191,8 +241,11 @@ Expected response:
 }
 ```
 
-- `products` — the ranked result set. Each product carries `id`, `name`, `brand`,
-  `price`, and `image`. No score field.
+- `products` — the ranked result set. Each product is a parent phone fronted by
+  its representative variant: `id`, `name`, and `brand` come from the parent;
+  `price` and `image` from the variant; `variant_id` and `color_name` say which
+  variant is shown; `colors` is the number of colour families the product comes
+  in (the card's "+N colours" hint shows `colors - 1`). No score field.
 - `facets` — a list of facet objects, discriminated by `type`, so new facets are
   added by appending data rather than changing the shape. A `categorical` facet
   (e.g. `brand`) carries a `field` and a list of `{value, count}` scoped to the

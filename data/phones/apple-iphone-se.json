@@ -2,7 +2,27 @@
   "id": "apple-iphone-se",
   "brand": "Apple",
   "name": "iPhone SE",
-  "price": 49900,
-  "image": "https://placehold.co/200x200?text=iPhone+SE",
-  "description": "Small, fast iPhone with the A15 Bionic chip, Touch ID, and reliable single-camera photography."
+  "narrative": "Small, fast iPhone with the A15 Bionic chip, Touch ID, and reliable single-camera photography.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "apple-iphone-se-midnight-64",
+      "color_name": "Midnight",
+      "color_family": "black",
+      "ram_gb": 4,
+      "storage_gb": 64,
+      "price": 49900,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=iPhone+SE+Midnight"
+    },
+    {
+      "id": "apple-iphone-se-starlight-64",
+      "color_name": "Starlight",
+      "color_family": "white",
+      "ram_gb": 4,
+      "storage_gb": 64,
+      "price": 49900,
+      "image": "https://placehold.co/200x200/e8e8ea/333333?text=iPhone+SE+Starlight"
+    }
+  ]
 }

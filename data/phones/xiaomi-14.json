@@ -2,7 +2,27 @@
   "id": "xiaomi-14",
   "brand": "Xiaomi",
   "name": "Xiaomi 14",
-  "price": 69999,
-  "image": "https://placehold.co/200x200?text=Xiaomi+14",
-  "description": "Compact flagship with Leica cameras, a bright AMOLED display, and fast wired and wireless charging."
+  "narrative": "Compact flagship with Leica cameras, a bright AMOLED display, and fast wired and wireless charging.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "xiaomi-14-black-512",
+      "color_name": "Black",
+      "color_family": "black",
+      "ram_gb": 12,
+      "storage_gb": 512,
+      "price": 69999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Xiaomi+14+Black"
+    },
+    {
+      "id": "xiaomi-14-white-512",
+      "color_name": "White",
+      "color_family": "white",
+      "ram_gb": 12,
+      "storage_gb": 512,
+      "price": 69999,
+      "image": "https://placehold.co/200x200/e8e8ea/333333?text=Xiaomi+14+White"
+    }
+  ]
 }

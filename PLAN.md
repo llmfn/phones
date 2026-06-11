@@ -51,6 +51,12 @@ injection) share.
 script (no scraping). Specs need only be plausible, not certified accurate —
 the dataset is the source of truth the course grounds against.
 
+**Status:** docs, record shape, variant selection, and the frontend (colour
+facet, "+N colours" hint) are done, exercised on the 16 existing phones
+hand-migrated to the new shape (3 fully enriched as few-shot examples for the
+generation script). Remaining: model-list curation, the generation script,
+BM25 token exclusions, and the narrative review pass.
+
 * Extend the record shape: parent product (shared `specs`, `signals`, one
   `narrative` written for semantic search) + nested `variants` (colour and
   RAM/storage, each with own `id`, `price`, `image`). Colour gets two fields:

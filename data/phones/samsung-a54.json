@@ -2,7 +2,58 @@
   "id": "samsung-a54",
   "brand": "Samsung",
   "name": "Galaxy A54",
-  "price": 38999,
-  "image": "https://placehold.co/200x200?text=Galaxy+A54",
-  "description": "5G mid-ranger with a 120Hz Super AMOLED display, OIS triple camera, and all-day battery."
+  "narrative": "The sensible middle of Samsung's range: a bright 6.4-inch 120Hz Super AMOLED display, a 50MP OIS main camera that handles daylight and indoor shots well, and a 5000mAh battery that comfortably lasts a full day of classes or commutes. IP67 water resistance and Gorilla Glass make it forgiving of drops and rain. One UI feels familiar from every other Samsung in the family, and four years of updates keep it going. A dependable all-rounder for students and anyone who wants one phone that does everything decently.",
+  "specs": {
+    "display": "6.4\" Super AMOLED 120Hz",
+    "chipset": "Exynos 1380",
+    "battery_mah": 5000,
+    "main_camera_mp": 50,
+    "weight_g": 202,
+    "os": "Android 14, One UI 6",
+    "ip_rating": "IP67"
+  },
+  "signals": [
+    "all-rounder",
+    "battery",
+    "durable",
+    "value"
+  ],
+  "variants": [
+    {
+      "id": "samsung-a54-graphite-128",
+      "color_name": "Awesome Graphite",
+      "color_family": "black",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 38999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Galaxy+A54+Awesome+Graphite"
+    },
+    {
+      "id": "samsung-a54-graphite-256",
+      "color_name": "Awesome Graphite",
+      "color_family": "black",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "price": 42999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Galaxy+A54+Awesome+Graphite"
+    },
+    {
+      "id": "samsung-a54-violet-128",
+      "color_name": "Awesome Violet",
+      "color_family": "purple",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 38999,
+      "image": "https://placehold.co/200x200/5d4a7a/ffffff?text=Galaxy+A54+Awesome+Violet"
+    },
+    {
+      "id": "samsung-a54-lime-128",
+      "color_name": "Awesome Lime",
+      "color_family": "green",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 38999,
+      "image": "https://placehold.co/200x200/2f6b4f/ffffff?text=Galaxy+A54+Awesome+Lime"
+    }
+  ]
 }

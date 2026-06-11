@@ -32,13 +32,15 @@ function makeUserId() {
 }
 
 function emptyFilters() {
-  return { brands: [], price: null };
+  return { brands: [], colors: [], price: null };
 }
 
 export const state = {
   userId: read(KEYS.userId, null),
   query: read(KEYS.lastQuery, ""),
-  filters: read(KEYS.lastFilters, emptyFilters()),
+  // Merge over the empty shape so filters persisted before a new facet
+  // existed (e.g. colors) still have every key.
+  filters: { ...emptyFilters(), ...read(KEYS.lastFilters, {}) },
   // Full price bounds from the unfiltered catalogue, so the slider track stays
   // stable even though facet bounds narrow with filtering. Captured on the
   // first unfiltered response.
@@ -62,7 +64,11 @@ export function niceBounds(bounds) {
 }
 
 export function hasFilters() {
-  return state.filters.brands.length > 0 || state.filters.price !== null;
+  return (
+    state.filters.brands.length > 0 ||
+    state.filters.colors.length > 0 ||
+    state.filters.price !== null
+  );
 }
 
 export function setQuery(q) {
@@ -70,16 +76,18 @@ export function setQuery(q) {
   write(KEYS.lastQuery, q);
 }
 
-export function toggleBrand(brand) {
-  const brands = state.filters.brands;
-  const i = brands.indexOf(brand);
-  if (i === -1) brands.push(brand);
-  else brands.splice(i, 1);
+// Categorical facet selections (field is the filters key: "brands", "colors").
+
+export function toggleFacetValue(field, value) {
+  const values = state.filters[field];
+  const i = values.indexOf(value);
+  if (i === -1) values.push(value);
+  else values.splice(i, 1);
   persistFilters();
 }
 
-export function removeBrand(brand) {
-  state.filters.brands = state.filters.brands.filter((b) => b !== brand);
+export function removeFacetValue(field, value) {
+  state.filters[field] = state.filters[field].filter((v) => v !== value);
   persistFilters();
 }
 

@@ -2,7 +2,27 @@
   "id": "google-pixel-8-pro",
   "brand": "Google",
   "name": "Pixel 8 Pro",
-  "price": 106999,
-  "image": "https://placehold.co/200x200?text=Pixel+8+Pro",
-  "description": "Large flagship with a telephoto camera, Tensor chip, clean Android, and seven years of updates."
+  "narrative": "Large flagship with a telephoto camera, Tensor chip, clean Android, and seven years of updates.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "google-pixel-8-pro-obsidian-128",
+      "color_name": "Obsidian",
+      "color_family": "black",
+      "ram_gb": 12,
+      "storage_gb": 128,
+      "price": 106999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Pixel+8+Pro+Obsidian"
+    },
+    {
+      "id": "google-pixel-8-pro-bay-128",
+      "color_name": "Bay",
+      "color_family": "blue",
+      "ram_gb": 12,
+      "storage_gb": 128,
+      "price": 106999,
+      "image": "https://placehold.co/200x200/2f4f7a/ffffff?text=Pixel+8+Pro+Bay"
+    }
+  ]
 }

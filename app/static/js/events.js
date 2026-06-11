@@ -8,8 +8,8 @@ import {
   hasFilters,
   niceBounds,
   setQuery,
-  toggleBrand,
-  removeBrand,
+  toggleFacetValue,
+  removeFacetValue,
   setPrice,
   clearPrice,
   clearFilters,
@@ -93,8 +93,8 @@ export function bindEvents() {
 
   document.getElementById("filters").addEventListener("change", (e) => {
     const t = e.target;
-    if (t.matches('input[type="checkbox"][data-brand]')) {
-      toggleBrand(t.dataset.brand);
+    if (t.matches('input[type="checkbox"][data-field]')) {
+      toggleFacetValue(t.dataset.field, t.dataset.value);
       runQuery();
     } else if (t.matches('input[type="range"]')) {
       clampThumbs(t);
@@ -105,8 +105,8 @@ export function bindEvents() {
 
   document.getElementById("chips").addEventListener("click", (e) => {
     const t = e.target;
-    if (t.dataset.removeBrand !== undefined) {
-      removeBrand(t.dataset.removeBrand);
+    if (t.dataset.removeField !== undefined) {
+      removeFacetValue(t.dataset.removeField, t.dataset.removeValue);
       runQuery();
     } else if (t.dataset.removePrice !== undefined) {
       clearPrice();

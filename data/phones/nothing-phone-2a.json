@@ -2,7 +2,27 @@
   "id": "nothing-phone-2a",
   "brand": "Nothing",
   "name": "Phone (2a)",
-  "price": 25999,
-  "image": "https://placehold.co/200x200?text=Phone+2a",
-  "description": "Mid-range 5G phone with a distinctive Glyph design, 120Hz AMOLED display, and clean software."
+  "narrative": "Mid-range 5G phone with a distinctive Glyph design, 120Hz AMOLED display, and clean software.",
+  "specs": {},
+  "signals": [],
+  "variants": [
+    {
+      "id": "nothing-phone-2a-black-128",
+      "color_name": "Black",
+      "color_family": "black",
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "price": 25999,
+      "image": "https://placehold.co/200x200/26282e/ffffff?text=Phone+(2a)+Black"
+    },
+    {
+      "id": "nothing-phone-2a-milk-256",
+      "color_name": "Milk",
+      "color_family": "white",
+      "ram_gb": 12,
+      "storage_gb": 256,
+      "price": 27999,
+      "image": "https://placehold.co/200x200/e8e8ea/333333?text=Phone+(2a)+Milk"
+    }
+  ]
 }

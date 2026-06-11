@@ -269,6 +269,12 @@ body {
   color: var(--muted);
 }
 
+.product-card .colors {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
 .empty {
   color: var(--muted);
   padding: 24px 0;
