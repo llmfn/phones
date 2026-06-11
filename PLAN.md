@@ -214,7 +214,7 @@ colour (deferred — UI degrades gracefully to grey circles without them)
 - [x] Clicking a storage pill updates the price shown on the card
 - [x] Without hex codes: grey circles; with hex codes: filled circles in the right colour
 
-## Task 12: Layer 3 — Schema
+## Task 12: Layer 3 — Schema (DONE)
 
 Pass 1 now returns a strict typed object every call instead of a free-form string.
 
@@ -230,7 +230,7 @@ Pass 1 now returns a strict typed object every call instead of a free-form strin
 - Same query run twice produces the same shape (even if the rewritten query text varies)
 - An invalid API response is caught and falls back gracefully (trace shows `fallback`)
 
-## Task 13: Persona re-ranking
+## Task 13: Persona re-ranking (DONE)
 
 Use the `persona` extracted by Layer 3 to re-rank semantic search results.
 

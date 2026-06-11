@@ -9,11 +9,13 @@ from .base import Layer
 from .layer0_dummy_data import Layer0
 from .layer1_search import Layer1
 from .layer2_prompt import Layer2
+from .layer3_schema import Layer3
 
 _LAYERS: dict[int, type[Layer]] = {
     0: Layer0,
     1: Layer1,
     2: Layer2,
+    3: Layer3,
 }
 
 
