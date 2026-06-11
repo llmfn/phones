@@ -16,7 +16,7 @@ one to survive the filters is what a result card shows.
 
 import json
 from functools import lru_cache
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
@@ -24,28 +24,41 @@ from . import config
 
 
 class Variant(BaseModel):
-    """One purchasable configuration: a colour and RAM/storage combination.
+    """One purchasable configuration: a colour and storage combination.
 
     Colour is two fields on purpose: ``color_name`` is the marketing name the
-    UI shows ("Awesome Graphite"); ``color_family`` is the canonical family
-    ("black") the colour filter and facet match on.
+    UI shows ("Natural Titanium"); ``color_family`` is the canonical family
+    ("silver") the colour filter and facet match on. ``ram_gb`` is optional
+    because some manufacturers (Apple) do not publish RAM.
     """
 
     id: str
     color_name: str
     color_family: str
-    ram_gb: int
+    ram_gb: Optional[int] = None
     storage_gb: int
     price: int
     image: str
+
+
+class Signals(BaseModel):
+    """Use-case and persona tags for re-ranking after retrieval.
+
+    ``use_cases`` describes what the phone is good at; ``personas`` describes
+    who it suits; ``price_segment`` places it in the market.
+    """
+
+    use_cases: list[str] = Field(default_factory=list)
+    personas: list[str] = Field(default_factory=list)
+    price_segment: str = ""
 
 
 class PhoneDoc(BaseModel):
     """A catalogue document: the parent product and its variants.
 
     ``narrative``, ``specs``, and ``signals`` are search/teaching material,
-    never returned to the browser (see docs/specs.md). ``narrative`` is one
-    paragraph written for semantic search; ``signals`` are use-case tags.
+    never returned to the browser. ``narrative`` is one paragraph written for
+    semantic search; ``signals`` are structured re-ranking tags.
     """
 
     id: str
@@ -53,7 +66,7 @@ class PhoneDoc(BaseModel):
     name: str
     narrative: str
     specs: dict[str, Any] = Field(default_factory=dict)
-    signals: list[str] = Field(default_factory=list)
+    signals: Signals = Field(default_factory=Signals)
     variants: list[Variant] = Field(min_length=1)
 
 
