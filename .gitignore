@@ -148,7 +148,3 @@ vite.config.ts.timestamp-*
 __pycache__/
 *.py[cod]
 .venv/
-
-# Built artifacts
-# The phone catalogue DB is generated from data/phones by scripts/import_phones.py
-*.db

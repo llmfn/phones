@@ -8,7 +8,7 @@ from pathlib import Path
 
 CURRENT_LAYER = 1
 
-# The phone catalogue database (built by scripts/import_phones.py). An absolute
-# path anchored to the repo root -- the parent of the `app/` package -- so the
-# app and the import script agree regardless of the working directory.
-DB_PATH = Path(__file__).resolve().parent.parent / "phones.db"
+# The phone catalogue: one JSON document per phone, loaded into memory at
+# startup (app/catalog.py). An absolute path anchored to the repo root -- the
+# parent of the `app/` package -- so it works regardless of working directory.
+PHONES_DIR = Path(__file__).resolve().parent.parent / "data" / "phones"
