@@ -25,6 +25,23 @@ after changing the catalogue data.
 The active layer is owned by the backend (`app/config.py`, `CURRENT_LAYER`), not
 the UI — the frontend never selects a layer.
 
+## Semantic search (Layer 1, Level 2)
+
+Layer 1 runs in one of two modes (`app/config.py`, `SEARCH_MODE`): `bm25`
+keyword matching (the default — no API key needed) or `semantic`, which ranks
+phones by OpenAI-embedding similarity against their narratives. Semantic mode
+expects the key in the environment:
+
+```sh
+export OPENAI_API_KEY=sk-...
+```
+
+Narrative embeddings are cached in `data/phones_embeddings.json` and committed,
+so queries are the only per-request embedding cost. The cache maintains itself:
+on startup the app re-embeds any phone whose narrative changed (and prunes
+deleted ones), then rewrites the file — commit the result when the catalogue
+changes.
+
 # Specs
 
 See docs/specs.md for the product specs. 
