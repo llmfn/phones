@@ -34,6 +34,17 @@ export function setAppState(name) {
 
 // --- Results ---
 
+export function renderSummary(summary) {
+  const div = document.getElementById("summary");
+  if (summary) {
+    div.textContent = summary;
+    div.style.display = "";
+  } else {
+    div.textContent = "";
+    div.style.display = "none";
+  }
+}
+
 export function renderResults(products) {
   const head = document.getElementById("results-head");
   const grid = document.getElementById("results");

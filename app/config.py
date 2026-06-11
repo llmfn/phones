@@ -7,7 +7,7 @@ docs/specs.md). Bump this number as later layers are implemented.
 import os
 from pathlib import Path
 
-CURRENT_LAYER = 3
+CURRENT_LAYER = 4
 
 # Layer 1 has two levels: "bm25" (keyword matching) and "semantic" (embedding
 # similarity over the narratives). bm25 is the default so the app runs without

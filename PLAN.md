@@ -243,7 +243,7 @@ Use the `persona` extracted by Layer 3 to re-rank semantic search results.
 - Persona "elderly" surfaces a different top-3 than running the same query without persona
 - No persona → order identical to Layer 3 semantic ranking
 
-## Task 14: Layer 4 — Context
+## Task 14: Layer 4 — Context (DONE)
 
 Adds Pass 2: a second LLM call that generates a grounded natural-language summary
 above the cards.

@@ -286,6 +286,10 @@ Expected response:
 There is no `answer` field. If a later layer needs a natural-language summary, it
 is added deliberately.
 
+`summary` — optional; present in Layer 4+ responses only. A 2-3 sentence natural-language
+recommendation paragraph grounded in the top-3 result records. Absent (not null) in Layers
+1–3 responses. The UI renders it above the results grid when present.
+
 
 ## State & Persistence (localStorage)
 

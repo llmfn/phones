@@ -32,4 +32,4 @@ def recommend():
     layer = create_layer()
     result = layer.run_query(query, filters)
 
-    return jsonify(result.model_dump())
+    return jsonify(result.model_dump(exclude_none=True))

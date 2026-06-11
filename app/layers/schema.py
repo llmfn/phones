@@ -127,3 +127,4 @@ class RecommendResponse(BaseModel):
     products: list[Product]
     facets: list[Facet]
     trace: list[TraceStep] = Field(default_factory=list)
+    summary: str | None = None

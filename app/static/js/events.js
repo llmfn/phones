@@ -18,6 +18,7 @@ import {
 import {
   setAppState,
   renderResults,
+  renderSummary,
   renderFilters,
   renderChips,
   renderTrace,
@@ -33,6 +34,7 @@ export async function runQuery() {
     data = await recommend(payload);
   } catch (err) {
     renderResults([]);
+    renderSummary(null);
     document.getElementById("results-head").textContent = err.message;
     renderTrace([]);
     return;
@@ -46,6 +48,7 @@ export async function runQuery() {
   }
 
   renderResults(data.products ?? []);
+  renderSummary(data.summary);
   renderFilters(data.facets ?? [], state.filters, state.priceBounds);
   renderChips(state.filters);
   state.lastTrace = data.trace ?? [];

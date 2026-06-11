@@ -227,6 +227,12 @@ body {
 }
 
 /* ---- Results grid ---- */
+.summary {
+  font-style: italic;
+  color: var(--muted);
+  padding: 8px 0 12px;
+}
+
 .results-head {
   margin-bottom: 16px;
   color: var(--muted);
