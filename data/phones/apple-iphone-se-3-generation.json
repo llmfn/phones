@@ -1,0 +1,75 @@
+{
+  "id": "apple-iphone-se-3-generation",
+  "brand": "Apple",
+  "name": "iPhone SE (3rd generation)",
+  "narrative": "The small, Touch ID iPhone with modern performance: A15 Bionic chip, single 12MP camera with Smart HDR 4 and 4K video up to 60 fps, 4.7-inch Retina HD LCD, 5G, Qi wireless charging, and up to 15 hours of battery life. It suits users who want a compact, familiar iPhone for calls, messaging, apps, and everyday photos without flagship size or price.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Midnight",
+      "Starlight",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 4.7,
+    "chipset": "A15 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 15,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "productivity"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Midnight",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneSE_3rd_gen_midnight__c57d9v9oipyu_large.jpg",
+      "hex": "#232a31"
+    },
+    {
+      "name": "Starlight",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneSE_3rd_gen_starlight__f3ys7aooaiqi_large.jpg",
+      "hex": "#faf6f2"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneSE_3rd_gen_red__do7m5pqh39ci_large.jpg",
+      "hex": "#bf0013"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 43900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 53900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 63900
+    }
+  ]
+}

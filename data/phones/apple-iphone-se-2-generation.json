@@ -1,0 +1,70 @@
+{
+  "id": "apple-iphone-se-2-generation",
+  "brand": "Apple",
+  "name": "iPhone SE (2nd generation)",
+  "narrative": "The compact budget iPhone with a classic 4.7-inch Retina HD LCD and Touch ID, powered by the A13 Bionic chip with an 8-core Neural Engine. It has a single 12MP camera with OIS, Portrait mode, Smart HDR 2, 4K video up to 60 fps, Qi wireless charging, IP67 resistance, and up to 13 hours of video playback. Best for value-focused daily users who want a small, familiar iPhone for messaging, calls, payments, and casual photography.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Black",
+      "White",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 4.7,
+    "chipset": "A13 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 13,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "business"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneSE_2nd_gen_black__d4pi98rfqt0m_large.jpg",
+      "hex": "#262529"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneSE_2nd_gen_white__ez0kw0j3osq6_large.jpg",
+      "hex": "#f3f3f3"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneSE_2nd_gen_red__csxc5y9k18sy_large.jpg",
+      "hex": "#b41325"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 29900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 39900
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "id": "apple-iphone-14-pro",
+  "brand": "Apple",
+  "name": "iPhone 14 Pro",
+  "narrative": "The compact pro iPhone: A16 Bionic chip, 48MP triple-camera system with ProRAW, ProRes and 3x optical zoom, plus a 6.1-inch 120Hz Always-On OLED display with Dynamic Island and high outdoor brightness. Battery life reaches up to 23 hours of video playback, with MagSafe and Qi wireless charging. Built for creative professionals and power users who want strong photo and video tools in a smaller flagship body.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "Lightning",
+    "colours": [
+      "Deep Purple",
+      "Gold",
+      "Silver",
+      "Space Black"
+    ],
+    "has_always_on": true,
+    "has_action_button": false,
+    "has_dynamic_island": true,
+    "display_inches": 6.1,
+    "chipset": "A16 Bionic chip",
+    "rear_camera_mp": 48,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 23,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "daily-driver"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Deep Purple",
+      "family": "purple",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_deep_purple__p5fjz0npooiq_large.jpg",
+      "hex": "#594f63"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_gold__cqyq3tm1zuxe_large.jpg",
+      "hex": "#f4e8ce"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_silver__knexgp9cr5m6_large.jpg",
+      "hex": "#f0f2f2"
+    },
+    {
+      "name": "Space Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_space_black__dym2kqku7n6u_large.jpg",
+      "hex": "#403e3d"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 129900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 139900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 149900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 159900
+    }
+  ]
+}

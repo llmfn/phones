@@ -2,58 +2,90 @@
   "id": "apple-iphone-15",
   "brand": "Apple",
   "name": "iPhone 15",
-  "narrative": "The mainstream flagship iPhone: A16 chip, a 48MP main camera with excellent video, Dynamic Island, and USB-C charging at last. It is the default choice for iMessage and FaceTime households, holds its resale value, and gets iOS updates for five-plus years. Effortless for someone moving from an older iPhone, and polished enough to feel like a real upgrade. Takes great photos and stabilised video of family events worth keeping.",
+  "narrative": "The iPhone 15 is the mainstream iPhone with Dynamic Island, an A16 Bionic chip, and a 6.1-inch Super Retina XDR OLED display that reaches 2,000 nits outdoors. Its 48MP main camera with 2x optical-quality zoom, 12MP ultra wide, 4K Dolby Vision video, and up to 20 hours of battery make it a strong everyday camera phone. Best for users who want a polished daily-driver iPhone for photos, travel, and general productivity without stepping up to Pro pricing.",
   "specs": {
-    "display": "6.1\" OLED",
-    "chipset": "A16 Bionic",
-    "battery_mah": 3349,
-    "main_camera_mp": 48,
-    "weight_g": 171,
-    "os": "iOS 17",
-    "charging": "USB-C"
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "USB-C",
+    "colours": [
+      "Pink",
+      "Yellow",
+      "Green",
+      "Blue",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": true,
+    "display_inches": 6.1,
+    "chipset": "A16 Bionic chip",
+    "rear_camera_mp": 48,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 20,
+    "ip_rating": "IP68"
   },
-  "signals": [
-    "camera",
-    "ease-of-use",
-    "long-updates",
-    "status"
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "travel",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "ease-of-use",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_pink__d2gop48s2aye_large.jpg",
+      "hex": "#e3c8ca"
+    },
+    {
+      "name": "Yellow",
+      "family": "yellow",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_yellow__bqka09cyvqia_large.jpg",
+      "hex": "#e6e0c1"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_green__f6r83449uoyi_large.jpg",
+      "hex": "#cad4c5"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_blue__cq4qefddyl8i_large.jpg",
+      "hex": "#ced5d9"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_black__eer8kwdkdjyq_large.jpg",
+      "hex": "#35393b"
+    }
   ],
-  "variants": [
+  "storage_options": [
     {
-      "id": "apple-iphone-15-black-128",
-      "color_name": "Black",
-      "color_family": "black",
-      "ram_gb": 6,
-      "storage_gb": 128,
-      "price": 79900,
-      "image": "https://placehold.co/200x200/26282e/ffffff?text=iPhone+15+Black"
+      "gb": 128,
+      "label": "128GB",
+      "price": 79900
     },
     {
-      "id": "apple-iphone-15-black-256",
-      "color_name": "Black",
-      "color_family": "black",
-      "ram_gb": 6,
-      "storage_gb": 256,
-      "price": 89900,
-      "image": "https://placehold.co/200x200/26282e/ffffff?text=iPhone+15+Black"
+      "gb": 256,
+      "label": "256GB",
+      "price": 89900
     },
     {
-      "id": "apple-iphone-15-blue-128",
-      "color_name": "Blue",
-      "color_family": "blue",
-      "ram_gb": 6,
-      "storage_gb": 128,
-      "price": 79900,
-      "image": "https://placehold.co/200x200/2f4f7a/ffffff?text=iPhone+15+Blue"
-    },
-    {
-      "id": "apple-iphone-15-pink-128",
-      "color_name": "Pink",
-      "color_family": "pink",
-      "ram_gb": 6,
-      "storage_gb": 128,
-      "price": 79900,
-      "image": "https://placehold.co/200x200/b06a8a/ffffff?text=iPhone+15+Pink"
+      "gb": 512,
+      "label": "512GB",
+      "price": 99900
     }
   ]
 }

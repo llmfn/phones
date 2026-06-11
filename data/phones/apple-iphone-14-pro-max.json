@@ -1,0 +1,89 @@
+{
+  "id": "apple-iphone-14-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 14 Pro Max",
+  "narrative": "The large pro iPhone: A16 Bionic chip, 48MP Pro triple-camera with ProRAW and ProRes video, 6.7-inch 120Hz Always-On OLED with Dynamic Island, and up to 29 hours of battery life. Built for photographers, videographers, and power users who want the biggest iPhone screen and longest endurance in the iPhone 14 line.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "Lightning",
+    "colours": [
+      "Deep Purple",
+      "Gold",
+      "Silver",
+      "Space Black"
+    ],
+    "has_always_on": true,
+    "has_action_button": false,
+    "has_dynamic_island": true,
+    "display_inches": 6.7,
+    "chipset": "A16 Bionic chip",
+    "rear_camera_mp": 48,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 29,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Deep Purple",
+      "family": "purple",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_max_deep_purple__r2k8f3zaymi6_large.jpg",
+      "hex": "#594f63"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_max_gold__ssb2j2q92mi6_large.jpg",
+      "hex": "#f4e8ce"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_max_silver__esuba240yvqu_large.jpg",
+      "hex": "#f0f2f2"
+    },
+    {
+      "name": "Space Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_pro_max_space_black__dve23pjslceq_large.jpg",
+      "hex": "#403e3d"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 149900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 159900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 169900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 179900
+    }
+  ]
+}

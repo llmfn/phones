@@ -1,0 +1,64 @@
+{
+  "id": "apple-iphone-x",
+  "brand": "Apple",
+  "name": "iPhone X",
+  "narrative": "The first all-screen iPhone with Face ID: A11 Bionic chip with a 2-core Neural Engine, a 5.8-inch Super Retina HD OLED HDR display, dual 12MP Main and Telephoto cameras with dual optical image stabilisation, and up to 13 hours of battery life with Qi wireless charging. It supports 4K video up to 60 fps, Portrait mode on both rear and TrueDepth front cameras, and IP67 water resistance. Best for users who want a compact daily-driver iPhone with solid photography features and familiar iOS usability at a lower price tier.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Space Grey"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 5.8,
+    "chipset": "A11 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 13,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "camera-lover"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneX_silver__c72upjrz5toy_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Space Grey",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneX_spacegray__65fr9mfeduaa_large.jpg",
+      "hex": "#262529"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 44900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 54900
+    }
+  ]
+}

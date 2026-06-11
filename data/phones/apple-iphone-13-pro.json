@@ -1,0 +1,96 @@
+{
+  "id": "apple-iphone-13-pro",
+  "brand": "Apple",
+  "name": "iPhone 13 Pro",
+  "narrative": "The compact pro iPhone: A15 Bionic with a 5-core GPU, a 12MP triple-camera system with macro, ProRAW, ProRes, and 3x telephoto, plus a 6.1-inch Super Retina XDR OLED display with 120Hz ProMotion. It supports 4K Dolby Vision video, 5G, MagSafe wireless charging, IP68 water resistance, and up to 22 hours of video playback. Best for photographers, creators, and professionals who want strong camera and video tools in a smaller flagship body.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "Lightning",
+    "colours": [
+      "Alpine Green",
+      "Silver",
+      "Gold",
+      "Graphite",
+      "Sierra Blue"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A15 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 22,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Alpine Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_alpine_green__d3ggyu8riw66_large.jpg",
+      "hex": "#576856"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_silver__dzq8ol0di7ee_large.jpg",
+      "hex": "#f1f2ed"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_gold__ea2j8y7hska6_large.jpg",
+      "hex": "#fae7cf"
+    },
+    {
+      "name": "Graphite",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_graphite__1v1ipyvu1eae_large.jpg",
+      "hex": "#54524f"
+    },
+    {
+      "name": "Sierra Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_sierra_blue__q5g805k09uym_large.jpg",
+      "hex": "#a7c1d9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 99900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 109900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 119900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 129900
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "apple-iphone-7",
+  "brand": "Apple",
+  "name": "iPhone 7",
+  "narrative": "The small classic iPhone: A10 Fusion chip, single 12MP camera with optical image stabilization and 4K video, 4.7-inch Retina HD LCD with P3 color and 3D Touch, and up to 13 hours of battery life. Its light 138 g body, IP67 resistance, Touch ID-era design, and basic LTE connectivity make it best for simple daily use, calls, messaging, and users who prefer a compact phone over modern large-screen features.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Black",
+      "Gold",
+      "Rose Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 4.7,
+    "chipset": "A10 Fusion chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 13,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7_silver__c3h3j4sxy5iu_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7_black__gdwleruk1yqa_large.jpg",
+      "hex": "#1f2020"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7_gold__gkqq1b090vqu_large.jpg",
+      "hex": "#f7e8dd"
+    },
+    {
+      "name": "Rose Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7_rosegold__fjkhj93z3r2i_large.jpg",
+      "hex": "#f7d1c9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 32,
+      "label": "32GB",
+      "price": 24900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 34900
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "apple-iphone-16",
+  "brand": "Apple",
+  "name": "iPhone 16",
+  "narrative": "The mainstream AI-ready iPhone: A18 chip with 16-core Neural Engine, 48MP Fusion dual-camera with macro and spatial photos, 6.1\" Super Retina XDR OLED with Dynamic Island, and up to 22 hours of battery life. It adds strong 4K Dolby Vision video, Wi-Fi 7, USB-C, IP68 durability, and fast MagSafe or USB-C charging. Best for users who want a compact daily-driver iPhone with modern camera tools, gaming headroom, and Apple Intelligence support.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "USB-C",
+    "colours": [
+      "Ultramarine",
+      "Teal",
+      "Pink",
+      "White",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.1,
+    "chipset": "A18 chip",
+    "front_camera_mp": 12,
+    "battery_life_hrs": 22,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "ai-features"
+    ],
+    "personas": [
+      "power-user",
+      "camera-lover",
+      "ease-of-use",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Ultramarine",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_ultramarine__sr260qois4am_large.jpg",
+      "hex": "#9aadf6"
+    },
+    {
+      "name": "Teal",
+      "family": "teal",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_teal__fkzqehm57iai_large.jpg",
+      "hex": "#b0d4d2"
+    },
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_pink__fzr1z22a7m2q_large.jpg",
+      "hex": "#f2adda"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_white__dcn5vobxo7ki_large.jpg",
+      "hex": "#fafafa"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_black__bedc0hlw316q_large.jpg",
+      "hex": "#3c4042"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 79900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 89900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 99900
+    }
+  ]
+}

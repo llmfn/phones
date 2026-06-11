@@ -1,0 +1,69 @@
+{
+  "id": "apple-iphone-16e",
+  "brand": "Apple",
+  "name": "iPhone 16e",
+  "narrative": "The accessible modern iPhone: A18 chip with a 16-core Neural Engine, 48MP Fusion main camera with 1x and 2x optical zoom, and a 6.1-inch Super Retina XDR OLED display. It supports 4K Dolby Vision video up to 60 fps, IP68 water resistance, 5G, USB-C, Qi wireless charging, and up to 26 hours of battery life. Best for everyday users who want current-generation performance, strong photos, and long battery life without paying Pro-level prices.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "USB-C",
+    "colours": [
+      "White",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": true,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A18 chip",
+    "front_camera_mp": 12,
+    "battery_life_hrs": 26,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16e_white__qfwztyphaj2u_large.jpg",
+      "hex": "#fafafa"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16e_black__folwa2rvc3ma_large.jpg",
+      "hex": "#3c4042"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 59900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 69900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 79900
+    }
+  ]
+}

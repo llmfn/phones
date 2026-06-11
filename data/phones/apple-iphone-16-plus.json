@@ -1,0 +1,90 @@
+{
+  "id": "apple-iphone-16-plus",
+  "brand": "Apple",
+  "name": "iPhone 16 Plus",
+  "narrative": "The large-screen standard iPhone: A18 chip with 16-core Neural Engine and hardware-accelerated ray tracing, 48MP Fusion dual-camera with macro and spatial photo support, 6.7-inch Super Retina XDR OLED with Dynamic Island, and up to 27 hours of battery life. It records 4K Dolby Vision video up to 60 fps and supports Wi-Fi 7, USB-C, MagSafe, Qi2, and IP68 water resistance. Best for users who want a big, long-lasting daily-driver iPhone for media, travel, photography, and gaming without moving to a Pro model.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "USB-C",
+    "colours": [
+      "Ultramarine",
+      "Teal",
+      "Pink",
+      "White",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.7,
+    "chipset": "A18 chip",
+    "front_camera_mp": 12,
+    "battery_life_hrs": 27,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "gaming",
+      "travel"
+    ],
+    "personas": [
+      "power-user",
+      "camera-lover",
+      "ease-of-use",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Ultramarine",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_plus_ultramarine__fedlzqf2pmqi_large.jpg",
+      "hex": "#9aadf6"
+    },
+    {
+      "name": "Teal",
+      "family": "teal",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_plus_teal__fd5m157o5h6y_large.jpg",
+      "hex": "#b0d4d2"
+    },
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_plus_pink__egpda1o8qu82_large.jpg",
+      "hex": "#f2adda"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_plus_white__rqden70u9uqi_large.jpg",
+      "hex": "#fafafa"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_plus_black__fzb15ieuikey_large.jpg",
+      "hex": "#3c4042"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 99900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 109900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 119900
+    }
+  ]
+}

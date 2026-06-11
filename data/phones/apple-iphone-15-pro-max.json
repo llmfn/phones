@@ -1,0 +1,84 @@
+{
+  "id": "apple-iphone-15-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 15 Pro Max",
+  "narrative": "The large pro iPhone built for creators: A17 Pro chip with hardware-accelerated ray tracing, a 48MP triple-camera system with 5x telephoto, ProRAW, ProRes, Apple Log, and spatial video, plus a 6.7-inch 120Hz Always-On Super Retina XDR OLED. It offers up to 29 hours of battery life, USB-C with USB 3 speeds, IP68 water resistance, Wi-Fi 6E, and precision dual-frequency GPS. Best for creative professionals, power users, and travelers who want Apple’s strongest camera and battery package in a big-screen phone.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "USB-C",
+    "colours": [
+      "Natural Titanium",
+      "Blue Titanium",
+      "White Titanium",
+      "Black Titanium"
+    ],
+    "has_always_on": true,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.7,
+    "chipset": "A17 Pro chip",
+    "rear_camera_mp": 48,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 29,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Natural Titanium",
+      "family": "silver",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_pro_max_natural_titanium__byvhspupwiuq_large.jpg",
+      "hex": "#837f7d"
+    },
+    {
+      "name": "Blue Titanium",
+      "family": "silver",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_pro_max_blue_titanium__c8xeminnbm82_large.jpg",
+      "hex": "#2f4452"
+    },
+    {
+      "name": "White Titanium",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_pro_max_white_titanium__citdiqo2e0gi_large.jpg",
+      "hex": "#dddddd"
+    },
+    {
+      "name": "Black Titanium",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_pro_max_black_titanium__djidfm1dcmie_large.jpg",
+      "hex": "#1b1b1b"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 159900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 169900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 179900
+    }
+  ]
+}

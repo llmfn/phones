@@ -1,0 +1,77 @@
+{
+  "id": "apple-iphone-xs-max",
+  "brand": "Apple",
+  "name": "iPhone XS Max",
+  "narrative": "The large-screen premium iPhone of its generation: A12 Bionic chip with 8-core Neural Engine, dual 12MP main and telephoto cameras with Smart HDR, and a 6.5-inch Super Retina HD OLED display with HDR and True Tone. It records 4K video up to 60 fps, supports Qi wireless charging, offers up to 15 hours of battery life, and has IP68 water resistance. Best for users who want a spacious iPhone for daily use, photos, video, and productivity without needing the newest flagship features.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Space Grey",
+      "Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.5,
+    "chipset": "A12 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 15,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "professional",
+      "status-buyer",
+      "ease-of-use"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXSmax_silver__fifsjcb7h2my_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Space Grey",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXSmax_spacegray__dm2cub991bau_large.jpg",
+      "hex": "#262529"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXSmax_gold__bz8xhej5gauu_large.jpg",
+      "hex": "#fadcc2"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 59900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 69900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 79900
+    }
+  ]
+}

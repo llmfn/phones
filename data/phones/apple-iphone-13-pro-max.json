@@ -1,0 +1,96 @@
+{
+  "id": "apple-iphone-13-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 13 Pro Max",
+  "narrative": "The big-screen pro iPhone: A15 Bionic with a 5-core GPU, a 6.7-inch 120Hz ProMotion OLED display, and the longest battery life of its generation at up to 28 hours of video playback. Its 12MP triple-camera system adds 3x telephoto zoom, macro photography, Night mode, ProRAW, 4K Dolby Vision, Cinematic mode, and ProRes video. Built for camera-focused power users, mobile creators, and professionals who want a large display and strong battery endurance.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "Lightning",
+    "colours": [
+      "Alpine Green",
+      "Silver",
+      "Gold",
+      "Graphite",
+      "Sierra Blue"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.7,
+    "chipset": "A15 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 28,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Alpine Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_max_alpine_green__erdqy93lc18i_large.jpg",
+      "hex": "#576856"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_max_silver__dbfz7im067e6_large.jpg",
+      "hex": "#f1f2ed"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_max_gold__dpkma79ndo8y_large.jpg",
+      "hex": "#fae7cf"
+    },
+    {
+      "name": "Graphite",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_max_graphite__e0rjnrin6ncm_large.jpg",
+      "hex": "#54524f"
+    },
+    {
+      "name": "Sierra Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pro_max_sierra_blue__ccdnnwrapdau_large.jpg",
+      "hex": "#a7c1d9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 109900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 119900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 129900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 139900
+    }
+  ]
+}

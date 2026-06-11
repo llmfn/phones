@@ -1,0 +1,84 @@
+{
+  "id": "apple-iphone-11-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 11 Pro Max",
+  "narrative": "The large-screen pro iPhone of its generation: A13 Bionic chip, triple 12MP Main, Ultra Wide and Telephoto cameras with Night mode and Deep Fusion, and a 6.5-inch Super Retina XDR OLED display with HDR brightness up to 1,200 nits. It records 4K video up to 60 fps, supports optical zoom at 0.5x, 1x and 2x, and offers up to 20 hours of battery life with Qi wireless charging and fast charging. Best for camera-focused users and professionals who want a premium iPhone with strong photography, video and battery endurance.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Midnight Green",
+      "Silver",
+      "Space Grey",
+      "Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.5,
+    "chipset": "A13 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 20,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "professional",
+      "creative",
+      "power-user"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Midnight Green",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_pro_max_midnightgreen__dhu7a2mzfpoy_large.jpg",
+      "hex": "#4e5851"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_pro_max_silver__gex9b2t8hx2e_large.jpg",
+      "hex": "#ebebe3"
+    },
+    {
+      "name": "Space Grey",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_pro_max_spacegrey__dut95hfk3j42_large.jpg",
+      "hex": "#535150"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_pro_max_gold__fw9uqr5wdqa2_large.jpg",
+      "hex": "#fad7bd"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 79900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 89900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 99900
+    }
+  ]
+}

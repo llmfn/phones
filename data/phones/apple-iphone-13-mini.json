@@ -1,0 +1,98 @@
+{
+  "id": "apple-iphone-13-mini",
+  "brand": "Apple",
+  "name": "iPhone 13 mini",
+  "narrative": "The compact flagship iPhone: A15 Bionic chip with 16-core Neural Engine, dual 12MP Main and Ultra Wide cameras with sensor-shift stabilization, and a 5.4-inch Super Retina XDR OLED display with HDR brightness up to 1,200 nits. It records 4K Dolby Vision video up to 60 fps, supports Cinematic mode, 5G, MagSafe wireless charging, and up to 17 hours of battery life in a 141 g body. Best for users who want a small daily-driver iPhone with strong photo and video features without moving to a large-screen model.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Green",
+      "Pink",
+      "Blue",
+      "Midnight",
+      "Starlight",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 5.4,
+    "chipset": "A15 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 17,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_mini_green__eaa4pvqtsbiq_large.jpg",
+      "hex": "#394c38"
+    },
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_mini_pink__blln0h9o7f0i_large.jpg",
+      "hex": "#faddd7"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_mini_blue__e1ohuf2klquu_large.jpg",
+      "hex": "#276787"
+    },
+    {
+      "name": "Midnight",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_mini_midnight__e8z05098gnma_large.jpg",
+      "hex": "#232a31"
+    },
+    {
+      "name": "Starlight",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_mini_starlight__mg21bdoe6f62_large.jpg",
+      "hex": "#faf6f2"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_mini_product_red__c0x8iraijcmu_large.jpg",
+      "hex": "#bf0013"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 59900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 69900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 79900
+    }
+  ]
+}

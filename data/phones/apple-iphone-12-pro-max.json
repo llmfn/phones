@@ -1,0 +1,84 @@
+{
+  "id": "apple-iphone-12-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 12 Pro Max",
+  "narrative": "The large-screen pro iPhone: A14 Bionic chip with 16-core Neural Engine, a 6.7-inch Super Retina XDR OLED display, and a Pro 12MP triple-camera system with sensor-shift stabilization, 2.5x telephoto, Night mode, and ProRAW. It records 4K Dolby Vision video up to 60 fps and offers up to 20 hours of battery life with MagSafe and Qi wireless charging. Best for camera-focused users and creators who want a big display, strong video tools, and premium iPhone performance.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Pacific Blue",
+      "Gold",
+      "Graphite",
+      "Silver"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.7,
+    "chipset": "A14 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 20,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "creative",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Pacific Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_max_pacific_blue__i251ea884ei6_large.jpg",
+      "hex": "#2d4e5c"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_max_gold__bknb963nzyqa_large.jpg",
+      "hex": "#fcebd3"
+    },
+    {
+      "name": "Graphite",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_max_graphite__b6j4sfia3yaa_large.jpg",
+      "hex": "#52514d"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_max_silver__1mkvn3uvleqi_large.jpg",
+      "hex": "#e3e4df"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 89900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 99900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 109900
+    }
+  ]
+}

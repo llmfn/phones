@@ -1,0 +1,98 @@
+{
+  "id": "apple-iphone-12",
+  "brand": "Apple",
+  "name": "iPhone 12",
+  "narrative": "The mainstream 5G iPhone with a sharp OLED upgrade: A14 Bionic chip, dual 12MP Main and Ultra Wide cameras with Night mode and Dolby Vision 4K video, a 6.1-inch Super Retina XDR display, and up to 17 hours of video playback. Its lightweight 164 g body, MagSafe wireless charging, IP68 water resistance, and strong front camera make it a practical daily iPhone for users who want dependable photos, video, and everyday performance without Pro-level size or cost.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Purple",
+      "Blue",
+      "Green",
+      "(PRODUCT)RED",
+      "White",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A14 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 17,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "camera-lover",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Purple",
+      "family": "purple",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_purple__dgt75n0isaeu_large.jpg",
+      "hex": "#b7afe6"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_blue__ffk87fz4nuqi_large.jpg",
+      "hex": "#023b63"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_green__cua80qomesgi_large.jpg",
+      "hex": "#d8efd5"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_red__3fpikxvolteu_large.jpg",
+      "hex": "#d82e2e"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_white__bkv9u0pios6a_large.jpg",
+      "hex": "#f6f2ef"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_black__gj93q2eeofma_large.jpg",
+      "hex": "#25212b"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 59900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 69900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 79900
+    }
+  ]
+}

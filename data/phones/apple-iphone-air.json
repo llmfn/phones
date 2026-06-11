@@ -1,0 +1,83 @@
+{
+  "id": "apple-iphone-air",
+  "brand": "Apple",
+  "name": "iPhone Air",
+  "narrative": "The ultra-thin performance iPhone: A19 Pro chip with hardware-accelerated ray tracing, a 6.5-inch 120Hz Always-On Super Retina XDR OLED display, and a 48MP Fusion camera with sensor-shift stabilisation, Night mode, Smart HDR 5, and 4K Dolby Vision video. Its 18MP Center Stage front camera, Wi-Fi 7, IP68 rating, and up to 27 hours of video playback make it a light but capable daily flagship. Best for professionals and power users who want a slim iPhone for productivity, travel, video calls, and high-end everyday use.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "USB-C",
+    "colours": [
+      "Sky Blue",
+      "Light Gold",
+      "Cloud White",
+      "Space Black"
+    ],
+    "has_always_on": true,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.5,
+    "chipset": "A19 Pro chip",
+    "front_camera_mp": 18,
+    "battery_life_hrs": 27,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity",
+      "travel",
+      "videography"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer",
+      "creative"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Sky Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone_air_sky_blue__kvm15b10x6qa_large.jpg",
+      "hex": "#f0f9ff"
+    },
+    {
+      "name": "Light Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone_air_light_gold__c1s3ly3yjuc2_large.jpg",
+      "hex": "#fffcf5"
+    },
+    {
+      "name": "Cloud White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone_air_cloud_white__fay39sc7sru6_large.jpg",
+      "hex": "#fcfcfc"
+    },
+    {
+      "name": "Space Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone_air_space_black__erjeo9fa6oa6_large.jpg",
+      "hex": "#000000"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 99900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 109900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 119900
+    }
+  ]
+}

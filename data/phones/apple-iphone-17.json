@@ -1,0 +1,85 @@
+{
+  "id": "apple-iphone-17",
+  "brand": "Apple",
+  "name": "iPhone 17",
+  "narrative": "The mainstream flagship iPhone with Pro-level display features: A19 chip with a 6-core CPU, 5-core GPU and 16-core Neural Engine, a 6.3-inch Super Retina XDR OLED with ProMotion up to 120Hz and Always-On, and a 48MP Dual Fusion camera system with macro, Night mode, spatial photos and 4K Dolby Vision video. It offers up to 30 hours of battery life, fast USB-C or MagSafe charging, Wi-Fi 7, IP68 water resistance and starts at 256GB storage. Built for daily-driver users, creators and power users who want high-end iPhone performance without stepping up to a Pro model.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "USB-C",
+    "colours": [
+      "Lavender",
+      "Sage",
+      "Mist Blue",
+      "White",
+      "Black"
+    ],
+    "has_always_on": true,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.3,
+    "chipset": "A19 chip",
+    "front_camera_mp": 18,
+    "battery_life_hrs": 30,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "gaming"
+    ],
+    "personas": [
+      "power-user",
+      "camera-lover",
+      "creative",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Lavender",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_lavender__etuerbkei0ya_large.jpg",
+      "hex": "#dfceea"
+    },
+    {
+      "name": "Sage",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_sage__edsxj53vsn0i_large.jpg",
+      "hex": "#a9b689"
+    },
+    {
+      "name": "Mist Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_mist_blue__fjf0c9euujee_large.jpg",
+      "hex": "#96aed1"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_white__cddjqf5mzlaq_large.jpg",
+      "hex": "#f5f5f5"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_black__epmfmcpap0sy_large.jpg",
+      "hex": "#353839"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 109900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 119900
+    }
+  ]
+}

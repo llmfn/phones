@@ -1,0 +1,70 @@
+{
+  "id": "apple-iphone-8-plus",
+  "brand": "Apple",
+  "name": "iPhone 8 Plus",
+  "narrative": "The large classic iPhone with Touch ID: A11 Bionic chip, dual 12MP Main and Telephoto cameras with Portrait mode, 5.5-inch Retina HD LCD with True Tone, and up to 14 hours of battery life with Qi wireless charging. It suits users who want a familiar home-button iPhone for daily use, basic photography, and reliable Apple ecosystem features at a lower price point.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Space Grey",
+      "Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 5.5,
+    "chipset": "A11 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 14,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone8plus_silver__fm5qjyu86zmi_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Space Grey",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone8plus_spacegray__ex27235welkm_large.jpg",
+      "hex": "#272729"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone8plus_gold__ggo0wbuwtomm_large.jpg",
+      "hex": "#f7e8dd"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 34900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 44900
+    }
+  ]
+}

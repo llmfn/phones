@@ -1,0 +1,98 @@
+{
+  "id": "apple-iphone-13",
+  "brand": "Apple",
+  "name": "iPhone 13",
+  "narrative": "The balanced mainstream iPhone: A15 Bionic chip, dual 12MP Main and Ultra Wide cameras with sensor-shift stabilization, a 6.1-inch Super Retina XDR OLED display, and up to 19 hours of video playback. It adds 4K Dolby Vision recording, Cinematic mode, Night mode, 5G, MagSafe wireless charging, and IP68 water resistance. Best for daily users, teens, and value-focused buyers who want reliable iPhone performance, strong photos and video, and a manageable size without paying for Pro features.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Green",
+      "Pink",
+      "Blue",
+      "Midnight",
+      "Starlight",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A15 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 19,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use",
+      "camera-lover"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_green__e9rhd84kj3yq_large.jpg",
+      "hex": "#394c38"
+    },
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_pink__e3vv1er86eqa_large.jpg",
+      "hex": "#faddd7"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_blue__dn52e83eu5yu_large.jpg",
+      "hex": "#276787"
+    },
+    {
+      "name": "Midnight",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_midnight__dc2w8cyhc9iu_large.jpg",
+      "hex": "#232a31"
+    },
+    {
+      "name": "Starlight",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_starlight__135hisvufoim_large.jpg",
+      "hex": "#faf6f2"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone13_product_red__gmrn6xy6l4ya_large.jpg",
+      "hex": "#bf0013"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 69900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 79900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 89900
+    }
+  ]
+}

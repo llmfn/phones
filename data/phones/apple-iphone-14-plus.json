@@ -1,0 +1,96 @@
+{
+  "id": "apple-iphone-14-plus",
+  "brand": "Apple",
+  "name": "iPhone 14 Plus",
+  "narrative": "The large-screen mainstream iPhone: A15 Bionic chip with 5-core GPU, dual 12MP Main and Ultra Wide cameras with Photonic Engine, and a 6.7-inch Super Retina XDR OLED display. It supports 4K Dolby Vision video, Cinematic and Action modes, 5G, MagSafe/Qi wireless charging, and up to 26 hours of battery life. Best for daily-driver users, travelers, and media-heavy buyers who want a big iPhone screen and long battery life without Pro camera hardware.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Blue",
+      "Purple",
+      "Yellow",
+      "Midnight",
+      "Starlight",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.7,
+    "chipset": "A15 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 26,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "videography"
+    ],
+    "personas": [
+      "ease-of-use",
+      "value-seeker",
+      "status-buyer"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_plus_blue__ct1alvw58q82_large.jpg",
+      "hex": "#a0b4c7"
+    },
+    {
+      "name": "Purple",
+      "family": "purple",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_plus_purple__ebfjg5vvyu0y_large.jpg",
+      "hex": "#e6ddeb"
+    },
+    {
+      "name": "Yellow",
+      "family": "yellow",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_plus_yellow__cijyg33497rm_large.jpg",
+      "hex": "#f9e479"
+    },
+    {
+      "name": "Midnight",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_plus_midnight__c9kmil1aq0ae_large.jpg",
+      "hex": "#222930"
+    },
+    {
+      "name": "Starlight",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_plus_starlight__f49kqx4mhlea_large.jpg",
+      "hex": "#faf6f2"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone14_plus_red__zu2trl902due_large.jpg",
+      "hex": "#fc0324"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 89900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 99900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 109900
+    }
+  ]
+}

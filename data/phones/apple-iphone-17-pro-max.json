@@ -1,0 +1,81 @@
+{
+  "id": "apple-iphone-17-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 17 Pro Max",
+  "narrative": "The large-format pro iPhone: A19 Pro chip with hardware-accelerated ray tracing, 48MP triple Fusion camera system, 6.9-inch 120Hz Always-On Super Retina XDR OLED, and up to 37 hours of battery life. It adds serious video tools including 4K Dolby Vision up to 120 fps, ProRes RAW, Apple Log 2, Genlock support, a studio-quality four-mic array, Wi‑Fi 7, USB-C USB 3, and storage up to 2TB. Built for creative professionals, power users, and camera-focused travelers who want the biggest iPhone display and longest endurance.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "USB-C",
+    "colours": [
+      "Cosmic Orange",
+      "Deep Blue",
+      "Silver"
+    ],
+    "has_always_on": true,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.9,
+    "chipset": "A19 Pro chip",
+    "front_camera_mp": 18,
+    "battery_life_hrs": 37,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "productivity",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Cosmic Orange",
+      "family": "orange",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_pro_max_cosmic_orange__d7yolstz8cmu_large.jpg",
+      "hex": "#f77e2d"
+    },
+    {
+      "name": "Deep Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_pro_max_deep_blue__frgcd836v866_large.jpg",
+      "hex": "#32374a"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17_pro_max_silver__dtw5i9e8osmu_large.jpg",
+      "hex": "#f5f5f5"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 189900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 199900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 209900
+    },
+    {
+      "gb": 2048,
+      "label": "2TB",
+      "price": 219900
+    }
+  ]
+}

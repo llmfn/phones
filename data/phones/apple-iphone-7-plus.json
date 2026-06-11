@@ -1,0 +1,77 @@
+{
+  "id": "apple-iphone-7-plus",
+  "brand": "Apple",
+  "name": "iPhone 7 Plus",
+  "narrative": "The classic large-screen iPhone with a physical Home button: A10 Fusion chip, dual 12MP Main and Telephoto cameras with 2x optical zoom and Portrait mode, and a 5.5-inch Retina HD LCD with P3 wide color and 3D Touch. It records 4K video up to 60 fps, has optical image stabilization, IP67 water resistance, and up to 14 hours of battery life. Best for value-focused users who want basic photography, familiar iPhone usability, and a dependable daily driver.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Black",
+      "Gold",
+      "Rose Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 5.5,
+    "chipset": "A10 Fusion chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 14,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "camera-lover"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7plus_silver__da6f8856pigm_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7plus_black__d3i1w0xfd926_large.jpg",
+      "hex": "#1f2020"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7plus_gold__sy2naisxwcya_large.jpg",
+      "hex": "#f7e8dd"
+    },
+    {
+      "name": "Rose Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone7plus_rosegold__d1626v7rskmu_large.jpg",
+      "hex": "#f7d1c9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 32,
+      "label": "32GB",
+      "price": 29900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 39900
+    }
+  ]
+}

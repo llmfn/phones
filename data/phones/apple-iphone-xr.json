@@ -1,0 +1,91 @@
+{
+  "id": "apple-iphone-xr",
+  "brand": "Apple",
+  "name": "iPhone XR",
+  "narrative": "The mainstream big-screen iPhone: A12 Bionic chip, single 12MP camera with Smart HDR and Portrait mode, 6.1-inch Liquid Retina LCD, and up to 16 hours of battery with Qi wireless charging. It suits everyday users who want an easy iPhone for daily use, casual photos, messaging, navigation, and media without Pro-level camera hardware.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Blue",
+      "White",
+      "Black",
+      "Yellow",
+      "Coral",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A12 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 16,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXR_blue__9z6k0yct3wye_large.jpg",
+      "hex": "#48aee6"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXR_white__gi0q02dhesey_large.jpg",
+      "hex": "#f3f3f3"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXR_black__5fvlyykx3bm6_large.jpg",
+      "hex": "#262529"
+    },
+    {
+      "name": "Yellow",
+      "family": "yellow",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXR_yellow__b4ux4f7n3xle_large.jpg",
+      "hex": "#f9d045"
+    },
+    {
+      "name": "Coral",
+      "family": "orange",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXR_coral__ckmesqgoxryq_large.jpg",
+      "hex": "#ff6e5a"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXR_red__bm4kf4exy4mu_large.jpg",
+      "hex": "#b41325"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 44900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 54900
+    }
+  ]
+}

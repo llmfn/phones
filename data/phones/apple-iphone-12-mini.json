@@ -1,0 +1,98 @@
+{
+  "id": "apple-iphone-12-mini",
+  "brand": "Apple",
+  "name": "iPhone 12 mini",
+  "narrative": "The compact 5G iPhone: A14 Bionic chip, dual 12MP Main and Ultra Wide cameras with Night mode, and a 5.4-inch Super Retina XDR OLED display in a 135 g body. It supports 4K Dolby Vision video, MagSafe and Qi wireless charging, IP68 water resistance, and up to 15 hours of battery life. Best for users who want a small daily-driver iPhone with strong photos and video rather than maximum screen size or battery.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Purple",
+      "Blue",
+      "Green",
+      "(PRODUCT)RED",
+      "White",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 5.4,
+    "chipset": "A14 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 15,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "ease-of-use",
+      "camera-lover",
+      "teen",
+      "value-seeker"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Purple",
+      "family": "purple",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_mini_purple__gm5blksev6ai_large.jpg",
+      "hex": "#b7afe6"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_mini_blue__iyr1fvvjraai_large.jpg",
+      "hex": "#023b63"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_mini_green__3ndpo9itp42u_large.jpg",
+      "hex": "#d8efd5"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_mini_red__er2imbeznvgy_large.jpg",
+      "hex": "#d82e2e"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_mini_white__fhgs1mo2zgmm_large.jpg",
+      "hex": "#f6f2ef"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_mini_black__f27jirmfeomu_large.jpg",
+      "hex": "#25212b"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 49900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 59900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 69900
+    }
+  ]
+}

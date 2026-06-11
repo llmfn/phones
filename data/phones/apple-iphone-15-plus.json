@@ -1,0 +1,91 @@
+{
+  "id": "apple-iphone-15-plus",
+  "brand": "Apple",
+  "name": "iPhone 15 Plus",
+  "narrative": "The large-screen mainstream iPhone: A16 Bionic, a 48MP dual-camera system with 2x optical-quality zoom, and a 6.7-inch Super Retina XDR OLED display with Dynamic Island and high outdoor brightness. It records 4K Dolby Vision video, supports MagSafe/Qi2 wireless charging, and offers up to 26 hours of battery life. Best for users who want a big display and long battery life for daily use, travel, photos, and video without moving to a Pro model.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "USB-C",
+    "colours": [
+      "Pink",
+      "Yellow",
+      "Green",
+      "Blue",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": true,
+    "display_inches": 6.7,
+    "chipset": "A16 Bionic chip",
+    "rear_camera_mp": 48,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 26,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "ease-of-use",
+      "camera-lover",
+      "value-seeker",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_plus_pink__fai0b9il6cq6_large.jpg",
+      "hex": "#e3c8ca"
+    },
+    {
+      "name": "Yellow",
+      "family": "yellow",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_plus_yellow__bqpclyoi3muu_large.jpg",
+      "hex": "#e6e0c1"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_plus_green__c2dkb4wvkgae_large.jpg",
+      "hex": "#cad4c5"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_plus_blue__9fcof0t4lk2i_large.jpg",
+      "hex": "#ced5d9"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone15_plus_black__chh9za6pd2vm_large.jpg",
+      "hex": "#35393b"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 89900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 99900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 109900
+    }
+  ]
+}

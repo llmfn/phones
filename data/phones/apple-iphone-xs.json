@@ -1,0 +1,76 @@
+{
+  "id": "apple-iphone-xs",
+  "brand": "Apple",
+  "name": "iPhone XS",
+  "narrative": "The compact premium iPhone of its generation: A12 Bionic chip with Neural Engine, dual 12MP main and telephoto cameras with Smart HDR, and a 5.8-inch Super Retina HD OLED HDR display. It supports 4K video up to 60 fps, Qi wireless charging, IP68 water resistance, and up to 14 hours of battery life. Best for users who want a small daily-driver iPhone with strong photography basics and a polished OLED design.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Space Grey",
+      "Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 5.8,
+    "chipset": "A12 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 14,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "professional",
+      "ease-of-use"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXS_silver__euy0jibjjkia_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Space Grey",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXS_spacegray__dyx8m6aa9pw2_large.jpg",
+      "hex": "#262529"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphoneXS_gold__89oujwqn6iq2_large.jpg",
+      "hex": "#fadcc2"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 49900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 59900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 69900
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "apple-iphone-17e",
+  "brand": "Apple",
+  "name": "iPhone 17e",
+  "narrative": "The iPhone 17e is a streamlined modern iPhone built around the A19 chip, with hardware-accelerated ray tracing and a 16-core Neural Engine for fast everyday performance and on-device AI features. It pairs a 6.1-inch Super Retina XDR OLED display with a 48MP Fusion main camera, 4K Dolby Vision video, IP68 durability, USB-C, wireless charging, and up to 26 hours of battery life. Best for users who want a compact daily-driver iPhone with strong camera and performance features without moving into Pro-tier pricing.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "USB-C",
+    "colours": [
+      "Soft Pink",
+      "White",
+      "Black"
+    ],
+    "has_always_on": false,
+    "has_action_button": true,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A19 chip",
+    "front_camera_mp": 12,
+    "battery_life_hrs": 26,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features",
+      "gaming"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Soft Pink",
+      "family": "pink",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17e_pink__bj426l1s94gi_large.jpg",
+      "hex": "#fce7e6"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17e_white__dznzme1jxvki_large.jpg",
+      "hex": "#fafafa"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone17e_black__f8ox5biet3au_large.jpg",
+      "hex": "#3c4042"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 69900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 79900
+    }
+  ]
+}

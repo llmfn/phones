@@ -1,0 +1,83 @@
+{
+  "id": "apple-iphone-16-pro-max",
+  "brand": "Apple",
+  "name": "iPhone 16 Pro Max",
+  "narrative": "The large-format pro iPhone: A18 Pro chip with hardware-accelerated ray tracing, a 6.9-inch 120Hz Always-On OLED display, and a 48MP Fusion main camera with 48MP Ultra Wide, 5x telephoto, ProRAW, spatial photos, and 4K Dolby Vision video up to 120 fps. It offers up to 33 hours of battery life, USB-C with USB 3 speeds, Wi-Fi 7, and a studio-quality four-mic array for serious mobile capture. Built for creative professionals, power users, and travelers who want the biggest iPhone display, longest battery life, and the most capable camera system.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "connector": "USB-C",
+    "colours": [
+      "Desert Titanium",
+      "Natural Titanium",
+      "White Titanium",
+      "Black Titanium"
+    ],
+    "has_always_on": true,
+    "has_action_button": true,
+    "has_dynamic_island": true,
+    "display_inches": 6.9,
+    "chipset": "A18 Pro chip",
+    "front_camera_mp": 12,
+    "battery_life_hrs": 33,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Desert Titanium",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_pro_max_desert_titanium__f8058hcu01ua_large.jpg",
+      "hex": "#bfa48f"
+    },
+    {
+      "name": "Natural Titanium",
+      "family": "silver",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_pro_max_natural_titanium__finz5cbww0mm_large.jpg",
+      "hex": "#c2bcb2"
+    },
+    {
+      "name": "White Titanium",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_pro_max_white_titanium__nrwzujp5v762_large.jpg",
+      "hex": "#f2f1ed"
+    },
+    {
+      "name": "Black Titanium",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone16_pro_max_black_titanium__evlilxt8g2mq_large.jpg",
+      "hex": "#3c3c3d"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 179900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 189900
+    },
+    {
+      "gb": 1024,
+      "label": "1TB",
+      "price": 199900
+    }
+  ]
+}

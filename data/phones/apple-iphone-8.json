@@ -1,0 +1,69 @@
+{
+  "id": "apple-iphone-8",
+  "brand": "Apple",
+  "name": "iPhone 8",
+  "narrative": "The compact classic iPhone: A11 Bionic chip, single 12MP stabilized rear camera with 4K video up to 60 fps, 4.7-inch Retina HD LCD with True Tone and P3 wide color, and up to 13 hours of battery with Qi wireless charging. It suits users who want a small, familiar daily-driver iPhone for calls, messaging, light photography, and basic apps.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Silver",
+      "Space Grey",
+      "Gold"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 4.7,
+    "chipset": "A11 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 7,
+    "battery_life_hrs": 13,
+    "ip_rating": "IP67"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "ease-of-use",
+      "value-seeker",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone8_silver__dgain2f41866_large.jpg",
+      "hex": "#e4e4e2"
+    },
+    {
+      "name": "Space Grey",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone8_spacegray__eer4a549ezwy_large.jpg",
+      "hex": "#272729"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone8_gold__kna4kqz7yyiy_large.jpg",
+      "hex": "#f7e8dd"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 29900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 39900
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "id": "apple-iphone-12-pro",
+  "brand": "Apple",
+  "name": "iPhone 12 Pro",
+  "narrative": "The compact pro iPhone with 5G: A14 Bionic chip, 12MP triple-camera system with Main, Ultra Wide and Telephoto lenses, ProRAW, Night mode, and 4K Dolby Vision video. It has a 6.1-inch Super Retina XDR OLED display with HDR brightness up to 1,200 nits, IP68 durability, MagSafe wireless charging, and up to 17 hours of battery life. Best for camera-focused professionals and creatives who want pro photo and video tools in a manageable daily-driver size.",
+  "specs": {
+    "display_type": "OLED",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Pacific Blue",
+      "Gold",
+      "Graphite",
+      "Silver"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A14 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 17,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "business"
+    ],
+    "personas": [
+      "camera-lover",
+      "professional",
+      "creative",
+      "power-user"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Pacific Blue",
+      "family": "blue",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_pacific_blue__gniw0xbrh7ue_large.jpg",
+      "hex": "#2d4e5c"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_gold__b8fkcnuqh8vm_large.jpg",
+      "hex": "#fcebd3"
+    },
+    {
+      "name": "Graphite",
+      "family": "other",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_graphite__exopjoz6u2ye_large.jpg",
+      "hex": "#52514d"
+    },
+    {
+      "name": "Silver",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone12_pro_silver__fdy4rgvkd26a_large.jpg",
+      "hex": "#e3e4df"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 79900
+    },
+    {
+      "gb": 256,
+      "label": "256GB",
+      "price": 89900
+    },
+    {
+      "gb": 512,
+      "label": "512GB",
+      "price": 99900
+    }
+  ]
+}

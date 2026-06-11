@@ -1,0 +1,91 @@
+{
+  "id": "apple-iphone-11",
+  "brand": "Apple",
+  "name": "iPhone 11",
+  "narrative": "The mainstream LCD iPhone with still-capable performance: A13 Bionic chip, dual 12MP Main and Ultra Wide cameras with Night mode, a 6.1-inch Liquid Retina HD display, and up to 17 hours of video playback. It records 4K video up to 60 fps, supports Qi wireless charging, and has IP68 water resistance, making it suited to everyday users who want reliable iOS basics and casual photography at a lower price point.",
+  "specs": {
+    "display_type": "LCD",
+    "refresh_rate_hz": 60,
+    "connector": "Lightning",
+    "colours": [
+      "Purple",
+      "Yellow",
+      "Green",
+      "Black",
+      "White",
+      "(PRODUCT)RED"
+    ],
+    "has_always_on": false,
+    "has_action_button": false,
+    "has_dynamic_island": false,
+    "display_inches": 6.1,
+    "chipset": "A13 Bionic chip",
+    "rear_camera_mp": 12,
+    "front_camera_mp": 12,
+    "battery_life_hrs": 17,
+    "ip_rating": "IP68"
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Purple",
+      "family": "purple",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_purple__dncianr6j2uu_large.jpg",
+      "hex": "#d1cdda"
+    },
+    {
+      "name": "Yellow",
+      "family": "yellow",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_yellow__dnty92kzldg2_large.jpg",
+      "hex": "#ffe681"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_green__c1vgig828paq_large.jpg",
+      "hex": "#aee1cd"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_black__luskajpcyaaa_large.jpg",
+      "hex": "#1f2020"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_white__c1bigtkwcsq6_large.jpg",
+      "hex": "#f9f6ef"
+    },
+    {
+      "name": "(PRODUCT)RED",
+      "family": "red",
+      "image": "https://www.apple.com/v/iphone/compare/al/images/overview/compare_iphone11_red__b22porlgz2qa_large.jpg",
+      "hex": "#ba0c2e"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "64GB",
+      "price": 49900
+    },
+    {
+      "gb": 128,
+      "label": "128GB",
+      "price": 59900
+    }
+  ]
+}
