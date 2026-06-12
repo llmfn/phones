@@ -54,6 +54,7 @@ export async function runQuery() {
   const payload = buildPayload();
 
   let data;
+  document.getElementById("spinner").hidden = false;
   try {
     data = await recommend(payload);
   } catch (err) {
@@ -62,6 +63,8 @@ export async function runQuery() {
     document.getElementById("results-head").textContent = err.message;
     renderTrace([]);
     return;
+  } finally {
+    document.getElementById("spinner").hidden = true;
   }
 
   // Capture the stable full price bounds the first time we see an unfiltered

@@ -208,6 +208,25 @@ button {
   color: var(--primary);
 }
 
+/* Loading spinner: sits between the wordmark and the search box while a
+   recommend request is in flight. */
+.spinner {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 12px;
+  border: 2px solid var(--faint);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .search-area {
   flex: 1;
   min-width: 0;
