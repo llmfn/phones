@@ -39,6 +39,7 @@ from .schema import (
     RangeFacet,
     RecommendResponse,
 )
+from .session import DEFAULT_SESSION_ROOT, Session
 
 _PACKAGE_DIR = Path(__file__).parent
 
@@ -47,6 +48,7 @@ class Application(Flask):
     """PhoneKit application, an extended Flask app."""
 
     def __init__(self, import_name: str = "__main__", **kwargs):
+        session_root = kwargs.pop("session_root", None)
         kwargs.setdefault("template_folder", _PACKAGE_DIR / "templates")
         kwargs.setdefault("static_folder", _PACKAGE_DIR / "static")
         super().__init__(import_name, **kwargs)
@@ -56,11 +58,14 @@ class Application(Flask):
         self.layer_name = Path(self.root_path).name
         self.search: Callable[[str, Filters], RecommendResponse] | None = None
         self.design_flags = default_design_flags()
+        self.session_root = Path(session_root) if session_root else DEFAULT_SESSION_ROOT
+        Session.configure_root(self.session_root)
         self.setup_routes()
 
     def setup_routes(self):
         self.add_url_rule("/", view_func=IndexView.as_view("index", self))
         self.add_url_rule("/api/recommend", view_func=RecommendView.as_view("recommend", self))
+        self.add_url_rule("/api/conversation", view_func=ConversationView.as_view("conversation", self))
 
     def read_file(self, path: str) -> str:
         """Read a file sitting beside the layer's app.py (prompts, schemas)."""
@@ -113,7 +118,37 @@ class RecommendView(BaseMethodView):
         filters = Filters.model_validate(body.get("filters") or {})
 
         result = self.app.run_query(query, filters)
+        Session.new(query, filters, result)
         return jsonify(result.model_dump(exclude_none=True))
+
+
+class ConversationView(BaseMethodView):
+    def post(self):
+        body = request.get_json(silent=True) or {}
+        try:
+            session = Session.load(body.get("session_id", ""))
+        except (TypeError, ValueError, FileNotFoundError):
+            return jsonify({"error": "unknown session_id"}), 404
+
+        messages = body.get("messages")
+        if messages is None and isinstance(body.get("message"), str):
+            messages = [body["message"]]
+        if not isinstance(messages, list) or not all(isinstance(message, str) for message in messages):
+            return jsonify({"error": "messages must be a list of strings"}), 400
+        messages = [message.strip() for message in messages if message.strip()]
+        if not messages:
+            return jsonify({"error": "message is required"}), 400
+
+        for message in messages:
+            session.add_message(message)
+
+        reply = self.get_response(session, messages)
+
+        session.add_message(reply, role="assistant")
+        return jsonify({"session_id": session.session_id, "reply": reply})
+
+    def get_response(self, session, messages):
+        return "message received"
 
 
 def apply_filters(products: list[Product], filters: Filters | None) -> RecommendResponse:

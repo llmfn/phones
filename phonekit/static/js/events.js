@@ -2,7 +2,7 @@
 // change re-queries the backend (see docs/specs.md); the response drives the
 // results grid, facets, chips, and trace.
 
-import { recommend } from "./api.js";
+import { recommend, sendConversationMessages } from "./api.js";
 import {
   state,
   hasFilters,
@@ -31,10 +31,44 @@ import {
   updatePriceUI,
 } from "./render.js";
 
-const DUMMY_REPLY = "Received your message";
+let conversationQueue = [];
+let conversationInFlight = false;
+let conversationToken = 0;
 
 function hasConversationUi() {
   return document.getElementById("app").dataset.conversationUi === "left_sidebar";
+}
+
+function resetConversationTransport() {
+  conversationQueue = [];
+  conversationInFlight = false;
+  conversationToken += 1;
+  state.sessionId = null;
+}
+
+async function flushConversationQueue(token = conversationToken) {
+  if (conversationInFlight || !state.sessionId || conversationQueue.length === 0) return;
+
+  conversationInFlight = true;
+  const messages = conversationQueue.splice(0, conversationQueue.length);
+  try {
+    const data = await sendConversationMessages(state.sessionId, messages);
+    if (token === conversationToken) {
+      addConversationMessage("assistant", data.reply);
+      renderConversation(state.conversation);
+    }
+  } catch (err) {
+    if (token === conversationToken) {
+      addConversationMessage("assistant", err.message);
+      renderConversation(state.conversation);
+    }
+  } finally {
+    if (token !== conversationToken) return;
+    conversationInFlight = false;
+    if (conversationQueue.length > 0) {
+      flushConversationQueue(token);
+    }
+  }
 }
 
 // Mirror the in-memory search state into the URL fragment. A new search pushes
@@ -62,6 +96,7 @@ export function applyUrl() {
 }
 
 export async function runQuery({ resetThread = false } = {}) {
+  if (resetThread) resetConversationTransport();
   setAppState("search");
   syncUrl();
   const payload = buildPayload();
@@ -92,6 +127,7 @@ export async function runQuery({ resetThread = false } = {}) {
   }
 
   renderResults(data.products ?? []);
+  state.sessionId = data.session_id ?? null;
   if (resetThread && hasConversationUi()) {
     resetConversation(data.summary);
     renderConversation(state.conversation);
@@ -170,8 +206,9 @@ export function bindEvents() {
     if (!text) return;
     input.value = "";
     addConversationMessage("user", text);
-    addConversationMessage("assistant", DUMMY_REPLY);
     renderConversation(state.conversation);
+    conversationQueue.push(text);
+    flushConversationQueue();
   });
 
   document.getElementById("conversation-input")?.addEventListener("keydown", (e) => {

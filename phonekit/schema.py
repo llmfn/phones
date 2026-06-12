@@ -179,3 +179,4 @@ class RecommendResponse(BaseModel):
     facets: list[Facet] = Field(default_factory=list)
     trace: list[TraceStep] = Field(default_factory=list)
     summary: str | None = None
+    session_id: str | None = None

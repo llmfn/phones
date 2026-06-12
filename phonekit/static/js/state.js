@@ -2,7 +2,8 @@
 // fragment — #q=…&brand=…&color=…&price=min-max — so a URL reproduces a
 // search and the bare URL is the zero state. localStorage holds only the
 // stable user id (sent as a bearer token). Conversation messages are held in
-// memory only and disappear on page refresh.
+// memory only and disappear on page refresh; the server owns persisted search
+// and conversation session files.
 
 const KEYS = {
   userId: "llmfn_user_id",
@@ -44,6 +45,7 @@ export const state = {
   priceBounds: null,
   // Latest trace returned by the backend (for "copy as JSON").
   lastTrace: [],
+  sessionId: null,
   conversation: [],
 };
 

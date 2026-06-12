@@ -26,3 +26,25 @@ export async function recommend(payload) {
 
   return res.json();
 }
+
+export async function sendConversationMessages(sessionId, messages) {
+  let res;
+  try {
+    res = await fetch("/api/conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${state.userId}`,
+      },
+      body: JSON.stringify({ session_id: sessionId, messages }),
+    });
+  } catch (err) {
+    throw new Error(`Network error: ${err.message}`);
+  }
+
+  if (!res.ok) {
+    throw new Error(`Server responded ${res.status} ${res.statusText}`);
+  }
+
+  return res.json();
+}
