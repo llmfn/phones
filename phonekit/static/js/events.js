@@ -111,7 +111,36 @@ function selectOnly(button, selector) {
   }
 }
 
+function bindFilterPopover() {
+  const button = document.getElementById("refine-button");
+  if (!button) return;
+
+  const panel = document.getElementById("filters-panel");
+  const close = document.getElementById("filters-close");
+  const anchor = button.closest(".refine-anchor");
+
+  function setOpen(open) {
+    panel.hidden = !open;
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+    anchor.classList.toggle("is-open", open);
+  }
+
+  button.addEventListener("click", () => setOpen(panel.hidden));
+  close?.addEventListener("click", () => setOpen(false));
+
+  document.addEventListener("pointerdown", (e) => {
+    if (panel.hidden || anchor.contains(e.target)) return;
+    setOpen(false);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
+}
+
 export function bindEvents() {
+  bindFilterPopover();
+
   document.getElementById("search-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const value = document.getElementById("query").value.trim();

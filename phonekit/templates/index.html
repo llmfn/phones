@@ -7,6 +7,29 @@
     <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
   <body>
+    {% macro filters_panel(is_popover=False) -%}
+      <aside
+        id="filters-panel"
+        class="rail filters{% if is_popover %} filters-popover{% endif %}"
+        aria-label="Filters"
+        {% if is_popover %}hidden{% endif %}
+      >
+        <div class="filters-head">
+          <h2 class="rail-title">Filters</h2>
+          {% if is_popover %}
+            <button
+              id="filters-close"
+              class="filters-close"
+              type="button"
+              aria-label="Close filters"
+            >×</button>
+          {% endif %}
+        </div>
+        <div id="filters"></div>
+        <button id="reset" class="btn btn-ghost btn-sm" type="button">Reset</button>
+      </aside>
+    {%- endmacro %}
+
     <!-- One shell, two states. data-state="zero" shows the wordmark and search
          box centered; data-state="search" moves them into the top nav and
          reveals the three zones. The search box is the same element in both
@@ -16,6 +39,7 @@
       class="app"
       data-state="zero"
       data-chips-position="{{ design_flags.CHIPS_POSITION }}"
+      data-filter-ui="{{ design_flags.FILTER_UI }}"
     >
       <header class="topbar">
         <a class="wordmark" href="#">Phones</a>
@@ -44,8 +68,26 @@
             />
             <span id="search-mode" class="search-badge" hidden></span>
           </form>
-          {% if design_flags.CHIPS_POSITION == "under_search" %}
-            <div id="chips" class="chips" aria-label="Active filters"></div>
+          {% if design_flags.CHIPS_POSITION == "under_search" or design_flags.FILTER_UI == "popover" %}
+            <div class="search-meta">
+              {% if design_flags.CHIPS_POSITION == "under_search" %}
+                <div id="chips" class="chips" aria-label="Active filters"></div>
+              {% endif %}
+              {% if design_flags.FILTER_UI == "popover" %}
+                <div class="refine-anchor">
+                  <button
+                    id="refine-button"
+                    class="btn btn-ghost btn-sm refine-button"
+                    type="button"
+                    aria-controls="filters-panel"
+                    aria-expanded="false"
+                  >
+                    Refine
+                  </button>
+                  {{ filters_panel(True) }}
+                </div>
+              {% endif %}
+            </div>
           {% endif %}
         </div>
       </header>
@@ -62,11 +104,9 @@
           <div id="results" class="results-grid"></div>
         </section>
 
-        <aside class="rail filters" aria-label="Filters">
-          <h2 class="rail-title">Filters</h2>
-          <div id="filters"></div>
-          <button id="reset" class="btn btn-ghost btn-sm" type="button">Reset</button>
-        </aside>
+        {% if design_flags.FILTER_UI == "sidebar" %}
+          {{ filters_panel(False) }}
+        {% endif %}
 
         <aside class="rail trace-rail" aria-label="Trace">
           <div class="trace-head">
