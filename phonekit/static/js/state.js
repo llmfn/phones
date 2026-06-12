@@ -1,12 +1,11 @@
-// In-memory app state plus localStorage persistence.
-// Keys are defined by docs/specs.md: a stable user id (sent as a bearer token),
-// the last query, and the last applied filters. There is no chat history — this
+// In-memory app state. Search state (query + filters) mirrors the URL
+// fragment — #q=…&brand=…&color=…&price=min-max — so a URL reproduces a
+// search and the bare URL is the zero state. localStorage holds only the
+// stable user id (sent as a bearer token). There is no chat history — this
 // is a product-search app, not a chatbot.
 
 const KEYS = {
   userId: "llmfn_user_id",
-  lastQuery: "llmfn_last_query",
-  lastFilters: "llmfn_last_filters",
 };
 
 function read(key, fallback) {
@@ -37,10 +36,8 @@ function emptyFilters() {
 
 export const state = {
   userId: read(KEYS.userId, null),
-  query: read(KEYS.lastQuery, ""),
-  // Merge over the empty shape so filters persisted before a new facet
-  // existed (e.g. colors) still have every key.
-  filters: { ...emptyFilters(), ...read(KEYS.lastFilters, {}) },
+  query: "",
+  filters: emptyFilters(),
   // Full price bounds from the unfiltered catalogue, so the slider track stays
   // stable even though facet bounds narrow with filtering. Captured on the
   // first unfiltered response.
@@ -73,7 +70,35 @@ export function hasFilters() {
 
 export function setQuery(q) {
   state.query = q;
-  write(KEYS.lastQuery, q);
+}
+
+// --- URL fragment (de)serialization ---
+
+// URLSearchParams carries the whole search state: q, one brand/color entry per
+// selected value, and price as "min-max". An empty fragment is the zero state.
+
+export function parseHash(hash) {
+  const params = new URLSearchParams(hash.replace(/^#/, ""));
+  const price = /^(\d+)-(\d+)$/.exec(params.get("price") ?? "");
+  return {
+    query: params.get("q") ?? "",
+    filters: {
+      brands: params.getAll("brand"),
+      colors: params.getAll("color"),
+      price: price ? { min: Number(price[1]), max: Number(price[2]) } : null,
+    },
+  };
+}
+
+export function toHash() {
+  const params = new URLSearchParams();
+  if (state.query) params.set("q", state.query);
+  for (const brand of state.filters.brands) params.append("brand", brand);
+  for (const color of state.filters.colors) params.append("color", color);
+  const price = state.filters.price;
+  if (price) params.set("price", `${price.min}-${price.max}`);
+  const encoded = params.toString();
+  return encoded ? "#" + encoded : "";
 }
 
 // Categorical facet selections (field is the filters key: "brands", "colors").
@@ -83,31 +108,22 @@ export function toggleFacetValue(field, value) {
   const i = values.indexOf(value);
   if (i === -1) values.push(value);
   else values.splice(i, 1);
-  persistFilters();
 }
 
 export function removeFacetValue(field, value) {
   state.filters[field] = state.filters[field].filter((v) => v !== value);
-  persistFilters();
 }
 
 export function setPrice(min, max) {
   state.filters.price = { min, max };
-  persistFilters();
 }
 
 export function clearPrice() {
   state.filters.price = null;
-  persistFilters();
 }
 
 export function clearFilters() {
   state.filters = emptyFilters();
-  persistFilters();
-}
-
-function persistFilters() {
-  write(KEYS.lastFilters, state.filters);
 }
 
 // The POST /api/recommend body: query + filters only. Identity travels in the

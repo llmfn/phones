@@ -14,6 +14,8 @@ import {
   clearPrice,
   clearFilters,
   buildPayload,
+  parseHash,
+  toHash,
 } from "./state.js";
 import {
   setAppState,
@@ -26,8 +28,29 @@ import {
   updatePriceUI,
 } from "./render.js";
 
+// Mirror the in-memory search state into the URL fragment. A new search pushes
+// a history entry (see the submit handler); everything else rewrites the
+// current one, so Back/Forward step through searches, not filter tweaks.
+function syncUrl(mode = "replace") {
+  const url = toHash() || location.pathname + location.search;
+  history[mode === "push" ? "pushState" : "replaceState"](null, "", url);
+}
+
+// Adopt whatever the URL fragment says: on boot, on Back/Forward, and when the
+// wordmark link clears the fragment. An empty fragment is the zero state.
+export function applyUrl() {
+  const { query, filters } = parseHash(location.hash);
+  state.query = query;
+  state.filters = filters;
+  state.priceBounds = null;
+  document.getElementById("query").value = query;
+  if (query) runQuery();
+  else setAppState("zero");
+}
+
 export async function runQuery() {
   setAppState("search");
+  syncUrl();
   const payload = buildPayload();
 
   let data;
@@ -91,11 +114,15 @@ export function bindEvents() {
     const value = document.getElementById("query").value.trim();
     if (!value) return;
     setQuery(value);
-    // A brand-new search starts from a clean filter set.
+    // A brand-new search starts from a clean filter set and its own
+    // history entry.
     clearFilters();
     state.priceBounds = null;
+    syncUrl("push");
     runQuery();
   });
+
+  window.addEventListener("popstate", applyUrl);
 
   // Live feedback while dragging either thumb (no network call).
   document.getElementById("filters").addEventListener("input", (e) => {

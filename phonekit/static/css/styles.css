@@ -199,6 +199,7 @@ button {
 }
 
 .wordmark {
+  text-decoration: none;
   font-family: var(--font-sc);
   font-weight: 700;
   font-size: var(--text-flow-3);

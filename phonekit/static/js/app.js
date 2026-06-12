@@ -1,18 +1,11 @@
-// App bootstrap. Boots into the zero state; if a previous query was persisted,
-// restores the search state by re-running it.
+// App bootstrap. The URL fragment is the source of truth: a #q=… fragment
+// restores that search, a bare URL boots into the zero state.
 
-import { state } from "./state.js";
-import { setAppState } from "./render.js";
-import { bindEvents, runQuery } from "./events.js";
+import { bindEvents, applyUrl } from "./events.js";
 
 function init() {
   bindEvents();
-  if (state.query) {
-    document.getElementById("query").value = state.query;
-    runQuery();
-  } else {
-    setAppState("zero");
-  }
+  applyUrl();
 }
 
 if (document.readyState === "loading") {
