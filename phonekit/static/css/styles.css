@@ -496,12 +496,20 @@ button {
   border-color: var(--primary);
 }
 
-.product-card img {
+.image-well {
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: contain;
   border-radius: var(--radius-sm);
   background: var(--surface-alt);
+}
+
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* White-background JPEGs (e.g. Apple's) would letterbox as white stripes on
+     the tinted well; multiply maps white onto the well colour exactly. */
+  mix-blend-mode: multiply;
 }
 
 .product-card .brand {

@@ -61,10 +61,14 @@ export function renderResults(products) {
     const card = el("div", "product-card");
     card.dataset.productName = p.name ?? "Phone";
     if (p.image) {
+      // The well div owns the tinted background; the image multiplies onto it
+      // (see styles.css) so baked-in white backgrounds match the well exactly.
+      const well = el("div", "image-well");
       const img = el("img", "product-image");
       img.src = p.image;
       img.alt = p.color_name ? `${p.name ?? "Phone"} in ${p.color_name}` : p.name ?? "";
-      card.appendChild(img);
+      well.appendChild(img);
+      card.appendChild(well);
     }
     if (p.brand) card.appendChild(el("div", "brand", p.brand));
     card.appendChild(el("div", "name", p.name ?? ""));
