@@ -11,13 +11,6 @@ app = Application(__name__)
 
 PROMPT = app.read_file("prompt.md")
 
-class QueryFilters(BaseModel):
-    """Hard filters extracted from the user's query."""
-    max_price: int | None = Field(description="upper price limit mentioned in the query, or null")
-    min_price: int | None = Field(description="lower price limit mentioned in the query, or null")
-    color: str | None = Field(description="phone color the user asked for, or null")
-    brand: str | None = Field(description="phone brand the user asked for, or null")
-
 class Schema(BaseModel):
     """Output Schema of the llm response.
     """
