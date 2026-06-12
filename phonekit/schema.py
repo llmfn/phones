@@ -130,6 +130,7 @@ class FacetValue(BaseModel):
 
     value: str
     count: int
+    hex: str | None = None
 
 
 class CategoricalFacet(BaseModel):

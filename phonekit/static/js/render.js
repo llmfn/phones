@@ -159,6 +159,11 @@ function categoricalFacet(facet, filters) {
     }
     box.checked = selected.includes(v.value);
     label.appendChild(box);
+    if (v.hex) {
+      const dot = el("span", "facet-swatch");
+      dot.style.setProperty("--swatch-color", v.hex);
+      label.appendChild(dot);
+    }
     label.appendChild(el("span", "value", v.value));
     label.appendChild(el("span", "count", `(${v.count})`));
     group.appendChild(label);

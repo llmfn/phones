@@ -403,6 +403,16 @@ button {
   color: var(--subtle);
 }
 
+.facet-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--swatch-color, var(--surface-tint));
+  border: 1px solid var(--faint-strong);
+  flex-shrink: 0;
+}
+
 /* Dual-thumb price slider: two range inputs overlaid on one track. The inputs
    ignore pointer events except on their thumbs, so both thumbs stay grabbable. */
 .range {

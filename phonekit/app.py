@@ -171,20 +171,23 @@ def _compute_facets(products: list[Product]) -> list[Facet]:
     """Facets are scoped to the current result set (see docs/specs.md)."""
     brand_counts: dict[str, int] = {}
     color_counts: dict[str, int] = {}
+    color_hex: dict[str, str] = {}
     for product in products:
         brand_counts[product.brand] = brand_counts.get(product.brand, 0) + 1
-        for family in {c.family for c in product.colors}:
-            color_counts[family] = color_counts.get(family, 0) + 1
+        for c in product.colors:
+            color_counts[c.family] = color_counts.get(c.family, 0) + 1
+            if c.hex and c.family not in color_hex:
+                color_hex[c.family] = c.hex
     prices = [s.price for p in products for s in p.storage_options]
     return [
         _categorical("brand", brand_counts),
-        _categorical("color", color_counts),
+        _categorical("color", color_counts, color_hex),
         RangeFacet(field="price", min=min(prices, default=0), max=max(prices, default=0)),
     ]
 
 
-def _categorical(field: str, counts: dict[str, int]) -> CategoricalFacet:
-    values = [FacetValue(value=value, count=count) for value, count in counts.items()]
+def _categorical(field: str, counts: dict[str, int], hex_map: dict[str, str] | None = None) -> CategoricalFacet:
+    values = [FacetValue(value=value, count=count, hex=(hex_map or {}).get(value)) for value, count in counts.items()]
     values.sort(key=lambda v: (-v.count, v.value))
     return CategoricalFacet(field=field, values=values)
 
