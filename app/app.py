@@ -12,10 +12,19 @@ trace defined by the contract in docs/specs.md.
 
 from flask import Flask, jsonify, render_template, request
 
+from . import config
 from .layers import create_layer
 from .layers.schema import Filters
 
 app = Flask(__name__)
+
+if config.SEARCH_MODE == "semantic":
+    # Build (or load) the narrative-embedding cache up front, so the one-time
+    # corpus embedding happens visibly at startup rather than inside the first
+    # query. bm25 mode skips this and never needs an API key.
+    from .search.embeddings import corpus_embeddings
+
+    corpus_embeddings()
 
 
 @app.get("/")

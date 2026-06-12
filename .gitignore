@@ -148,3 +148,6 @@ vite.config.ts.timestamp-*
 __pycache__/
 *.py[cod]
 .venv/
+
+# Locally computed caches (e.g. narrative embeddings) -- rebuilt on startup
+data/cache/
