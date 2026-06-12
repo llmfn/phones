@@ -17,9 +17,9 @@ exactly why a phone ranked where it did.
 
 import hashlib
 import json
-from functools import lru_cache
+import functools
 
-from .. import config
+from .. import llm, config
 from ..catalog import CatalogEntry, load_catalog
 
 # Where the narrative-embedding cache lives. data/cache/ is gitignored: the
@@ -28,23 +28,10 @@ from ..catalog import CatalogEntry, load_catalog
 EMBEDDINGS_PATH = config.PHONES_DIR.parent / "cache" / "phones_embeddings.json"
 
 
-@lru_cache(maxsize=1)
-def _client():
-    """One OpenAI client per process, so query embeddings reuse the HTTP
-    connection instead of paying DNS + TLS setup on every request."""
-    if not config.OPENAI_API_KEY:
-        raise RuntimeError(
-            "SEARCH_MODE is 'semantic' but OPENAI_API_KEY is not set in the "
-            "environment (see app/config.py)."
-        )
-    from openai import OpenAI  # deferred so bm25 mode never needs the package
-
-    return OpenAI(api_key=config.OPENAI_API_KEY)
-
-
 def embed(texts: list[str]) -> list[list[float]]:
     """Embed texts in one OpenAI API call, in order."""
-    response = _client().embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
+    client = llm.get_openai_client()
+    response = client.embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
     return [item.embedding for item in response.data]
 
 
@@ -71,7 +58,7 @@ def _is_fresh(entry: CatalogEntry, cached: dict | None) -> bool:
     )
 
 
-@lru_cache(maxsize=1)
+@functools.cache
 def corpus_embeddings() -> tuple[tuple[CatalogEntry, ...], list[list[float]]]:
     """The catalogue with one narrative embedding per phone, cache-backed.
 

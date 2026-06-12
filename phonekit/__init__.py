@@ -8,6 +8,14 @@ the layer picks by how it invokes ``run()``.
 
 from .app import Application, apply_filters
 from .schema import RecommendResponse
-from .search import search_bm25
+from .search import search_bm25, search_semantic
+from .llm import llmfn
 
-__all__ = ["Application", "RecommendResponse", "apply_filters", "search_bm25"]
+__all__ = [
+    "Application",
+    "RecommendResponse",
+    "apply_filters",
+    "search_bm25",
+    "search_semantic",
+    "llmfn",
+]
