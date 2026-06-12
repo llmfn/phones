@@ -29,6 +29,7 @@ from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
 
 from . import trace
+from .design_flags import default_design_flags, validate_design_flag
 from .schema import (
     CategoricalFacet,
     Facet,
@@ -54,6 +55,7 @@ class Application(Flask):
         # root_path. Trace steps are stamped with it.
         self.layer_name = Path(self.root_path).name
         self.search: Callable[[str, Filters], RecommendResponse] | None = None
+        self.design_flags = default_design_flags()
         self.setup_routes()
 
     def setup_routes(self):
@@ -63,6 +65,12 @@ class Application(Flask):
     def read_file(self, path: str) -> str:
         """Read a file sitting beside the layer's app.py (prompts, schemas)."""
         return (Path(self.root_path) / path).read_text()
+
+    def set_design_flag(self, name: str, value: str):
+        """Set one active UI design variant after validating it."""
+        validate_design_flag(name, value)
+        self.design_flags[name] = value
+        return self
 
     def run_query(self, query: str, filters: Filters | None = None) -> RecommendResponse:
         """Dispatch one query to the layer's search, with a fresh trace."""
@@ -94,7 +102,7 @@ class BaseMethodView(MethodView):
 
 class IndexView(BaseMethodView):
     def get(self):
-        return render_template("index.html")
+        return render_template("index.html", design_flags=self.app.design_flags)
 
 
 class RecommendView(BaseMethodView):

@@ -11,7 +11,12 @@
          box centered; data-state="search" moves them into the top nav and
          reveals the three zones. The search box is the same element in both
          states — CSS moves it, it does not resize. -->
-    <div id="app" class="app" data-state="zero">
+    <div
+      id="app"
+      class="app"
+      data-state="zero"
+      data-chips-position="{{ design_flags.CHIPS_POSITION }}"
+    >
       <header class="topbar">
         <a class="wordmark" href="#">Phones</a>
         <div id="spinner" class="spinner" role="status" aria-label="Loading" hidden></div>
@@ -39,12 +44,19 @@
             />
             <span id="search-mode" class="search-badge" hidden></span>
           </form>
-          <div id="chips" class="chips" aria-label="Active filters"></div>
+          {% if design_flags.CHIPS_POSITION == "under_search" %}
+            <div id="chips" class="chips" aria-label="Active filters"></div>
+          {% endif %}
         </div>
       </header>
 
       <div class="shell">
         <section class="results" aria-label="Results">
+          {% if design_flags.CHIPS_POSITION == "above_results" %}
+            <div class="results-toolbar">
+              <div id="chips" class="chips" aria-label="Active filters"></div>
+            </div>
+          {% endif %}
           <div id="summary" class="summary" style="display:none"></div>
           <div id="results-head" class="results-head"></div>
           <div id="results" class="results-grid"></div>
