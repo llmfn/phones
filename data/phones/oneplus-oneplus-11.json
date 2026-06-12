@@ -1,0 +1,70 @@
+{
+  "id": "oneplus-oneplus-11",
+  "brand": "OnePlus",
+  "name": "OnePlus 11 5G",
+  "narrative": "The OnePlus 11 5G is a performance-focused flagship-adjacent device built around the Snapdragon 8 Gen 2 chipset, paired with a Dolby Vision HDR display and Dolby Atmos audio for an immersive media experience. Its headline camera system, tuned in partnership with Hasselblad (3rd Gen), delivers refined colour science and computational photography, while 100W SUPERVOOC charging takes the battery from flat to full in roughly 25 minutes. At Rs 56,999, it targets users who want near-flagship camera and performance credentials without crossing into premium pricing territory.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Eternal Green"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1132559",
+    "product_url": "https://www.oneplus.in/oneplus-11",
+    "selling_points": [
+      "Snapdragon® 8 Gen 2",
+      "Dolby Vision® HDR, Dolby Atmos®",
+      "100W SUPERVOOC",
+      "3rd Gen Hasselblad Camera for Mobile"
+    ],
+    "chipset": "Snapdragon® 8 Gen 2",
+    "has_ois": false,
+    "has_hasselblad_camera": true,
+    "charging_w": 100,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 1,
+      "availability_by_status": {
+        "available": 1
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "gaming"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Eternal Green",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202301/12/EnxEv7wWAeKGtzBD.png",
+      "hex": "#00374C"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 56999,
+      "ram_gb": 8
+    }
+  ]
+}

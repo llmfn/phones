@@ -1,0 +1,84 @@
+{
+  "id": "oneplus-oneplus-11r",
+  "brand": "OnePlus",
+  "name": "OnePlus 11R 5G",
+  "narrative": "The OnePlus 11R 5G is a performance-focused upper-mid-range phone powered by the Snapdragon 8+ Gen 1, delivering flagship-grade processing at a more accessible price point. It pairs a 120Hz Super Fluid Display with 100W SUPERVOOC fast charging and a 50MP triple camera system, covering the core bases of speed, responsiveness, and capable photography. This phone is built for enthusiasts and daily power users who want near-flagship performance without crossing into premium territory.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Galactic Silver",
+      "Sonic Black"
+    ],
+    "storage_gb": [
+      256
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      16
+    ],
+    "ram_gb": 16,
+    "product_code": "P1138644",
+    "product_url": "https://www.oneplus.in/oneplus-11r",
+    "selling_points": [
+      "Snapdragon® 8+ Gen 1",
+      "120 Hz - Super Fluid Display",
+      "100W - SUPERVOOC",
+      "50 MP - Triple Camera System",
+      "120 Hz",
+      "100W",
+      "50 MP"
+    ],
+    "chipset": "Snapdragon® 8+ Gen 1",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "charging_w": 100,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 2,
+      "availability_by_status": {
+        "available": 2
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "photography",
+      "productivity"
+    ],
+    "personas": [
+      "power-user",
+      "value-seeker",
+      "teen",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Galactic Silver",
+      "family": "silver",
+      "image": "https://image01-in.oneplus.net/ebp/202404/26/1-M00-52-A6-CpgM7WYrXmGAUpwnAAfxJFAbJKM862.png",
+      "hex": "#A8B9C5"
+    },
+    {
+      "name": "Sonic Black",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/ebp/202404/26/1-M00-52-AA-CpgM7mYrXo2ANrw-AAeyWEiTTFA003.png",
+      "hex": "#25262A"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "16 GB RAM + 256 GB ROM",
+      "price": 44999,
+      "ram_gb": 16
+    }
+  ]
+}

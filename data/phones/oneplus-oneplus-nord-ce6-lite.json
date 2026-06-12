@@ -1,0 +1,81 @@
+{
+  "id": "oneplus-oneplus-nord-ce6-lite",
+  "brand": "OnePlus",
+  "name": "OnePlus Nord CE6 Lite",
+  "narrative": "The OnePlus Nord CE6 Lite is a mid-range everyday phone focused on practical value, with 6GB or 8GB RAM and up to 256GB storage at Rs 17,999 to Rs 21,999. Available in Vivid Mint and Hyper Black, it is positioned as an accessible Nord model for users who want a straightforward daily device with decent memory and storage choices rather than a premium flagship feature set. It fits value-conscious buyers, students, and general users looking for a reliable daily-driver.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Vivid Mint",
+      "Hyper Black"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      6,
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1120224",
+    "product_url": "https://www.oneplus.in/oneplus-nord-ce6-lite",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": false,
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "available": 6
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Vivid Mint",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/media/202604/29/6afc82e6f256aafd2943dd66bbc00e3e.png",
+      "hex": "#BAD5C5"
+    },
+    {
+      "name": "Hyper Black",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202604/29/81de9089666e4c293127634150bc1e73.png",
+      "hex": "#191A1B"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB RAM + 128 GB ROM",
+      "price": 17999,
+      "ram_gb": 6
+    },
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 19999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB RAM + 256 GB ROM",
+      "price": 21999,
+      "ram_gb": 8
+    }
+  ]
+}

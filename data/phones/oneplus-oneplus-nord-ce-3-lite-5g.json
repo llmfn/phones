@@ -1,0 +1,85 @@
+{
+  "id": "oneplus-oneplus-nord-ce-3-lite-5g",
+  "brand": "OnePlus",
+  "name": "OnePlus Nord CE 3 Lite 5G",
+  "narrative": "A mid-range OnePlus focused on big-screen everyday use, the Nord CE 3 Lite 5G pairs a Snapdragon 695 with a 120Hz 17.07cm display, 67W fast charging, and a 108MP main camera. It comes in 8GB RAM with 128GB or 256GB storage, emphasizes quick top-ups and long daily usability, and has a straightforward bar-phone design in green or dark grey. This phone fits value-seekers and daily users who want a large display, fast charging, and solid camera detail without paying flagship prices.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "绿色",
+      "黑灰"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1140470",
+    "product_url": "https://www.oneplus.in/oneplus-nord-ce-3-lite-5g",
+    "selling_points": [
+      "67W SUPERVOOC Endurance Edition",
+      "108MP Camera System",
+      "17.07cm 120 Hz Display",
+      "Qualcomm Snapdragon 695 Chipset"
+    ],
+    "chipset": "Snapdragon 695 Chipset",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 108,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "charging_w": 67,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 4,
+      "availability_by_status": {
+        "available": 4
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "productivity"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "power-user"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "绿色",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202304/03/NZuWi2WsYLtOAgER.png",
+      "hex": "#BAD874"
+    },
+    {
+      "name": "黑灰",
+      "family": "gray",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202304/03/nKHCarlZwEpuv3Ma.png",
+      "hex": "#CDE2E2"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 19999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB RAM + 256 GB ROM",
+      "price": 21999,
+      "ram_gb": 8
+    }
+  ]
+}

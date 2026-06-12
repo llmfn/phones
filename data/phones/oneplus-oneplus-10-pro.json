@@ -1,0 +1,78 @@
+{
+  "id": "oneplus-oneplus-10-pro",
+  "brand": "OnePlus",
+  "name": "OnePlus 10 Pro 5G",
+  "narrative": "The OnePlus 10 Pro 5G is a performance-focused flagship anchored by a Snapdragon 8 Gen 1 chipset and a 120Hz LTPO 2.0 display that dynamically scales refresh rate to balance smoothness and battery life. Its 48MP triple-camera array and 80W SUPERVOOC charging — which can push a full charge in around 32 minutes — are the headline differentiators at this price point. Priced at ₹66,999, it targets power users and photography enthusiasts who want near-top-tier Android performance without crossing into ultra-premium territory.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Emerald Forest"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1106095",
+    "product_url": "https://www.oneplus.in/oneplus-10-pro",
+    "selling_points": [
+      "48MP - Triple Camera",
+      "120Hz - LTPO 2.0",
+      "8Gen 1 - Snapdragon®",
+      "80W - SUPERVOOC",
+      "48MP",
+      "120Hz",
+      "8Gen 1",
+      "80W"
+    ],
+    "display_type": "LTPO",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 48,
+    "rear_camera_count": 3,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "charging_w": 80,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 1,
+      "availability_by_status": {
+        "available": 1
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "gaming"
+    ],
+    "personas": [
+      "power-user",
+      "camera-lover",
+      "status-buyer",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Emerald Forest",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202211/30/aBn1jO99ciUhzDao.png",
+      "hex": "#96B5BA"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 66999,
+      "ram_gb": 8
+    }
+  ]
+}

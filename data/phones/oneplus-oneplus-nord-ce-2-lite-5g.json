@@ -1,0 +1,89 @@
+{
+  "id": "oneplus-oneplus-nord-ce-2-lite-5g",
+  "brand": "OnePlus",
+  "name": "OnePlus Nord CE 2 Lite 5G",
+  "narrative": "The OnePlus Nord CE 2 Lite 5G is a value-focused 5G phone built around the Snapdragon 695, a 120Hz display, and 33W SUPERVOOC charging. It pairs a 64MP AI triple camera with 6GB or 8GB RAM and 128GB storage, and comes in black and blue finishes. This phone is best for buyers who want a smooth daily driver with solid casual gaming and camera performance at a mid-range price.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "黑色",
+      "蓝色"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      6,
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1111677",
+    "product_url": "https://www.oneplus.in/oneplus-nord-ce-2-lite-5g",
+    "selling_points": [
+      "695 5G - Snapdragon®",
+      "33W - SUPERVOOC",
+      "120 Hz - Energy-saving Display",
+      "64MP - AI Triple Camera",
+      "695 5G",
+      "33W",
+      "120 Hz",
+      "64MP"
+    ],
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 64,
+    "rear_camera_count": 3,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "charging_w": 33,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 4,
+      "availability_by_status": {
+        "coming_soon": 4
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "power-user"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "黑色",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202211/30/wYnmNucdiv6dwrJm.png",
+      "hex": "#26272B"
+    },
+    {
+      "name": "蓝色",
+      "family": "blue",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202211/30/ldRk7HNrf34Xran8.png",
+      "hex": "#00F9FB"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB RAM + 128 GB ROM",
+      "price": 18999,
+      "ram_gb": 6
+    },
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 20999,
+      "ram_gb": 8
+    }
+  ]
+}

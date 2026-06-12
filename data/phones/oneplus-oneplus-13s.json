@@ -1,0 +1,82 @@
+{
+  "id": "oneplus-oneplus-13s",
+  "brand": "OnePlus",
+  "name": "OnePlus 13s",
+  "narrative": "The OnePlus 13s is a premium-leaning mainstream phone focused on fast connectivity and ample memory, with 12GB RAM paired with either 256GB or 512GB storage. In India it sits around Rs 54,999 to Rs 60,499 and comes in Green Silk, Black Velvet, and Pink Satin finishes, making it a straightforward choice for buyers who want a current OnePlus device with 5.5G support and plenty of space for apps and media. It fits power users and professionals looking for a polished daily-driver for work, travel, and heavy everyday use.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Green Silk",
+      "Black Velvet",
+      "Pink Satin"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      12
+    ],
+    "ram_gb": 12,
+    "product_code": "P1120119",
+    "product_url": "https://www.oneplus.in/oneplus-13s",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 5,
+      "availability_by_status": {
+        "available": 5
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity",
+      "travel",
+      "business"
+    ],
+    "personas": [
+      "power-user",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Green Silk",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/media/202505/22/92023197f208cd7b3171b97377a4b90a.png",
+      "hex": "#495743"
+    },
+    {
+      "name": "Black Velvet",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202505/22/0212b6f68b78ced178e74745f3820628.png",
+      "hex": "#363636"
+    },
+    {
+      "name": "Pink Satin",
+      "family": "pink",
+      "image": "https://image01-in.oneplus.net/media/202505/22/fe39bc573b7c7c964f6b85088dfcaf8d.png",
+      "hex": "#E6D6DA"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB RAM + 256 GB ROM",
+      "price": 54999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "12 GB RAM + 512 GB ROM",
+      "price": 60499,
+      "ram_gb": 12
+    }
+  ]
+}

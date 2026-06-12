@@ -1,0 +1,81 @@
+{
+  "id": "oneplus-oneplus-15r",
+  "brand": "OnePlus",
+  "name": "OnePlus 15R",
+  "narrative": "The OnePlus 15R is an upper-mid OnePlus focused on memory and storage, with 12GB RAM paired with either 256GB or 512GB storage and a price range of Rs 44,999 to Rs 49,499. It comes in Mint Breeze, Charcoal Black, and Electric Violet, giving it a more style-conscious design choice within the lineup. This phone is best suited to power users and daily-driver buyers who want ample storage, strong multitasking headroom, and a newer OnePlus model without stepping into flagship pricing.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Mint Breeze",
+      "Charcoal Black",
+      "Electric Violet"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      12
+    ],
+    "ram_gb": 12,
+    "product_code": "P1120188",
+    "product_url": "https://www.oneplus.in/oneplus-15r",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": false,
+    "availability": {
+      "variant_count": 5,
+      "availability_by_status": {
+        "available": 5
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Mint Breeze",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/media/202512/12/864571bb797cacb4186dc3f01affc566.png",
+      "hex": "#D8E5CB"
+    },
+    {
+      "name": "Charcoal Black",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202512/12/6a170dab86cd3648d17115d7b32a8470.png",
+      "hex": "#393A3C"
+    },
+    {
+      "name": "Electric Violet",
+      "family": "purple",
+      "image": "https://image01-in.oneplus.net/media/202512/12/515f7b2e234f759c3f0117a06601222c.png",
+      "hex": "#BBB5D4"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB RAM + 256 GB ROM",
+      "price": 44999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "12 GB RAM + 512 GB ROM",
+      "price": 49499,
+      "ram_gb": 12
+    }
+  ]
+}

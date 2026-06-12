@@ -1,0 +1,81 @@
+{
+  "id": "oneplus-oneplus-nord-ce6",
+  "brand": "OnePlus",
+  "name": "OnePlus Nord CE6",
+  "narrative": "The OnePlus Nord CE6 is a mid-range Nord model defined by practical memory and storage options rather than premium hardware extras in the provided data. It comes with 8 GB RAM and either 128 GB or 256 GB storage, is offered in Fresh Blue, Pitch Black, and Lunar Pearl, and sits in the Rs 24,999 to Rs 27,499 range. This phone is best suited to buyers who want a straightforward daily-driver with decent storage choice and a modern design at a mid-range price.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Fresh Blue",
+      "Pitch Black",
+      "Lunar Pearl"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1120223",
+    "product_url": "https://www.oneplus.in/oneplus-nord-ce6",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": false,
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "available": 6
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Fresh Blue",
+      "family": "blue",
+      "image": "https://image01-in.oneplus.net/media/202604/29/e91e06a8fb301c6558fcec2cf13a864a.png",
+      "hex": "#B7C8D7"
+    },
+    {
+      "name": "Pitch Black",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202604/29/b950943e0680f47fe6ea2a1061134caa.png",
+      "hex": "#35363A"
+    },
+    {
+      "name": "Lunar Pearl",
+      "family": "white",
+      "image": "https://image01-in.oneplus.net/media/202604/29/5fc7d4537c4e04612c6c0655fe801586.png",
+      "hex": "#E8E8E9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 24999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB RAM + 256 GB ROM",
+      "price": 27499,
+      "ram_gb": 8
+    }
+  ]
+}

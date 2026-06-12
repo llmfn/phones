@@ -1,0 +1,78 @@
+{
+  "id": "oneplus-oneplus-13r",
+  "brand": "OnePlus",
+  "name": "OnePlus 13R",
+  "narrative": "The OnePlus 13R is a performance-focused upper-mid phone built around the Snapdragon 8 Gen 3 chip, with AI features and lithium-silicon battery technology as its standout hardware points. It comes in 12GB/256GB and 16GB/512GB variants, with Astral Trail and Nebula Noir finishes, making it a strong fit for users who want flagship-grade speed, large storage, and long-term daily-driver performance without stepping into top-tier pricing. ",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Astral Trail",
+      "Nebula Noir"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      12,
+      16
+    ],
+    "ram_gb": 16,
+    "product_code": "P1120073",
+    "product_url": "https://www.oneplus.in/oneplus-13r",
+    "chipset": "Snapdragon 8 Gen 3 chip",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": false,
+    "availability": {
+      "variant_count": 4,
+      "availability_by_status": {
+        "available": 4
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "ai-features",
+      "productivity"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Astral Trail",
+      "family": "silver",
+      "image": "https://image01-in.oneplus.net/media/202412/19/d4bf9ab6f3183d716f74b56f48e480ee.png",
+      "hex": "#F8E6DA"
+    },
+    {
+      "name": "Nebula Noir",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202412/19/7fb081891135d725db46ad9f2fd7d208.png",
+      "hex": "#030303"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB RAM + 256 GB ROM",
+      "price": 42999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "16 GB RAM + 512 GB ROM",
+      "price": 47499,
+      "ram_gb": 16
+    }
+  ]
+}

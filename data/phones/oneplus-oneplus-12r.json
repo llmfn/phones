@@ -1,0 +1,93 @@
+{
+  "id": "oneplus-oneplus-12r",
+  "brand": "OnePlus",
+  "name": "OnePlus 12R",
+  "narrative": "The OnePlus 12R is a performance-focused upper-mid phone built around the Snapdragon 8 Gen 2, up to 16GB RAM, and a large cooling system for sustained heavy use. It pairs a bright 120Hz ProXDR display with a 5500mAh battery, 100W charging, 256GB storage, and a camera system backed by RAW HDR processing, while the design comes in Cool Blue, Iron Gray, and Sunset Dune. This phone fits power users and gamers who want flagship-grade speed, long battery life, and a reliable daily driver without crossing into flagship pricing.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Cool Blue",
+      "Iron Gray",
+      "Sunset Dune"
+    ],
+    "storage_gb": [
+      256
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8,
+      16
+    ],
+    "ram_gb": 16,
+    "product_code": "P1179186",
+    "product_url": "https://www.oneplus.in/oneplus-12r",
+    "selling_points": [
+      "Super-bright 120Hz ProXDR Display",
+      "5500mAh battery, 100W SUPERVOOC",
+      "Snapdragon® 8 Gen 2, 16GB RAM",
+      "All-new Dual Cryo-velocity VC Cooling System",
+      "Latest RAW HDR photography algorithm"
+    ],
+    "chipset": "Snapdragon® 8 Gen 2",
+    "refresh_rate_hz": 120,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "battery_mah": 5500,
+    "charging_w": 100,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 5,
+      "availability_by_status": {
+        "coming_soon": 5
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "gaming",
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "power-user",
+      "value-seeker",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Cool Blue",
+      "family": "blue",
+      "image": "https://image01-in.oneplus.net/media/202407/02/7d3f70706599c4f719ea58daffbf2d30.png",
+      "hex": "#57AED2"
+    },
+    {
+      "name": "Iron Gray",
+      "family": "gray",
+      "image": "https://image01-in.oneplus.net/media/202407/02/46f7a671b96efc920304eaadabf30ad6.png",
+      "hex": "#23262C"
+    },
+    {
+      "name": "Sunset Dune",
+      "family": "gold",
+      "image": "https://image01-in.oneplus.net/media/202407/09/1a9ade03f4179103d62d796d2ec42b45.png",
+      "hex": "#C6A39B"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "8 GB RAM + 256 GB ROM",
+      "price": 42999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "16 GB RAM + 256 GB ROM",
+      "price": 47499,
+      "ram_gb": 16
+    }
+  ]
+}

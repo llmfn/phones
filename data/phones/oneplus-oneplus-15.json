@@ -1,0 +1,85 @@
+{
+  "id": "oneplus-oneplus-15",
+  "brand": "OnePlus",
+  "name": "OnePlus 15",
+  "narrative": "The OnePlus 15 is a flagship-focused phone built around the Snapdragon 8 Elite chip, with a long-life battery and AI features as its clearest strengths. It comes in 12GB/256GB and 16GB/512GB variants, with Sand Storm, Infinite Black, and Ultra Violet finishes, positioning it as a premium option for buyers who want fast performance, large storage, and a straightforward high-end daily driver for power use and work.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Sand Storm",
+      "Infinite Black",
+      "Ultra Violet"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      12,
+      16
+    ],
+    "ram_gb": 16,
+    "product_code": "P1120174",
+    "product_url": "https://www.oneplus.in/oneplus-15",
+    "chipset": "Snapdragon 8 Elite chip",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 5,
+      "availability_by_status": {
+        "available": 5
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "productivity",
+      "ai-features"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Sand Storm",
+      "family": "gold",
+      "image": "https://image01-in.oneplus.net/media/202511/06/f96761005541e8715f92bda23561aa89.png",
+      "hex": "#D4CDC8"
+    },
+    {
+      "name": "Infinite Black",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202511/06/338f5a8201e50d91d5d544ec1116ee18.png",
+      "hex": "#15181C"
+    },
+    {
+      "name": "Ultra Violet",
+      "family": "purple",
+      "image": "https://image01-in.oneplus.net/media/202511/06/84bee93e851c33f9ea027b2ddd51c2b9.png",
+      "hex": "#E3DBEB"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB RAM + 256 GB ROM",
+      "price": 72999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "16 GB RAM + 512 GB ROM",
+      "price": 80499,
+      "ram_gb": 16
+    }
+  ]
+}

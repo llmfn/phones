@@ -1,0 +1,93 @@
+{
+  "id": "oneplus-oneplus-13",
+  "brand": "OnePlus",
+  "name": "OnePlus 13",
+  "narrative": "Flagship OnePlus phone with the Snapdragon 8 Elite chip, 5.5G connectivity, IP68/IP69 protection, and a long-lasting battery, the OnePlus 13 is defined by top-tier performance and durability. In India it comes in 12GB/256GB, 16GB/512GB, and 24GB/1TB variants, with advanced AI features and colour options including Midnight Ocean, Arctic Dawn, and Black Eclipse. This phone is best for power users and professionals who want a premium daily driver with high storage and strong all-round capability.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Midnight Ocean",
+      "Arctic Dawn",
+      "Black Eclipse"
+    ],
+    "storage_gb": [
+      256,
+      512,
+      1024
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      12,
+      16,
+      24
+    ],
+    "ram_gb": 24,
+    "product_code": "P1120074",
+    "product_url": "https://www.oneplus.in/oneplus-13",
+    "chipset": "Snapdragon 8 Elite chip",
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 7,
+      "availability_by_status": {
+        "available": 7
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "productivity",
+      "ai-features"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Midnight Ocean",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202412/17/052a246708df8233d079b3502aeeb327.png",
+      "hex": "#162848"
+    },
+    {
+      "name": "Arctic Dawn",
+      "family": "white",
+      "image": "https://image01-in.oneplus.net/media/202412/17/828ac8c16ce196b73cf17aac825faae1.png",
+      "hex": "#E7E7E7"
+    },
+    {
+      "name": "Black Eclipse",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202412/17/0c0b713df5d1f8f99b52956a17182bfc.png",
+      "hex": "#181818"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB RAM + 256 GB ROM",
+      "price": 69999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "16 GB RAM + 512 GB ROM",
+      "price": 76999,
+      "ram_gb": 16
+    },
+    {
+      "gb": 1024,
+      "label": "24 GB RAM + 1 TB ROM",
+      "price": 83999,
+      "ram_gb": 24
+    }
+  ]
+}

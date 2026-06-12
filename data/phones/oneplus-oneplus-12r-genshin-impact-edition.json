@@ -1,0 +1,72 @@
+{
+  "id": "oneplus-oneplus-12r-genshin-impact-edition",
+  "brand": "OnePlus",
+  "name": "OnePlus 12R Genshin Impact Edition",
+  "narrative": "A gaming-first special edition phone, the OnePlus 12R Genshin Impact Edition pairs a Snapdragon 8 Gen 2 chip with 16GB RAM, a dual cryo-velocity VC cooling system, and 256GB storage for sustained performance. It also stands out with a super-bright 120Hz ProXDR display, a 5500mAh battery with 100W charging, RAW HDR camera processing, and an Electro Violet design tied to its themed identity. This fits power users and fans who want a fast daily driver with strong gaming performance and distinctive styling.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Electro Violet"
+    ],
+    "storage_gb": [
+      256
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      16
+    ],
+    "ram_gb": 16,
+    "product_code": "P1189457",
+    "product_url": "https://www.oneplus.in/oneplus-12r-genshin-impact-edition",
+    "selling_points": [
+      "Super-bright 120Hz ProXDR Display",
+      "5500mAh battery, 100W SUPERVOOC",
+      "Snapdragon® 8 Gen 2, 16GB RAM",
+      "All-new Dual Cryo-velocity VC Cooling System",
+      "Latest RAW HDR photography algorithm"
+    ],
+    "chipset": "Snapdragon® 8 Gen 2",
+    "refresh_rate_hz": 120,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "battery_mah": 5500,
+    "charging_w": 100,
+    "has_5g": false,
+    "availability": {
+      "variant_count": 1,
+      "availability_by_status": {
+        "available": 1
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "gaming",
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "power-user",
+      "status-buyer",
+      "teen"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Electro Violet",
+      "family": "purple",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202402/26/0GyTanTuErFDQNs2.png",
+      "hex": "#9B87D6"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "16 GB RAM + 256 GB ROM",
+      "price": 49999,
+      "ram_gb": 16
+    }
+  ]
+}

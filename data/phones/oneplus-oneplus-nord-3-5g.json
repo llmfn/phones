@@ -1,0 +1,83 @@
+{
+  "id": "oneplus-oneplus-nord-3-5g",
+  "brand": "OnePlus",
+  "name": "OnePlus Nord 3 5G",
+  "narrative": "The OnePlus Nord 3 5G is a performance-focused upper-mid phone built around the MediaTek Dimensity 9000, a 6.74-inch 120Hz 1.5K AMOLED display, and 80W fast charging. Its standout hardware includes a 50MP Sony IMX890 main camera with OIS, up to 16GB RAM support in the product line, and a clean slab design offered in green and dark gray finishes. It suits power users and daily-driver buyers who want strong speed, smooth display quality, and reliable main-camera performance without moving into flagship pricing.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "青绿",
+      "深灰"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1156282",
+    "product_url": "https://www.oneplus.in/oneplus-nord-3-5g",
+    "selling_points": [
+      "80W SUPERVOOC Endurance Edition",
+      "50MP Sony IMX890 Triple Camera System with OIS",
+      "17.12cm (6.74\") 120Hz 1.5K AMOLED Display",
+      "MediaTek Dimensity 9000 Chipset"
+    ],
+    "chipset": "MediaTek Dimensity 9000",
+    "display_inches": 6.74,
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "display_resolution_class": "1.5K",
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "has_ois": true,
+    "has_hasselblad_camera": false,
+    "charging_w": 80,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 2,
+      "availability_by_status": {
+        "coming_soon": 2
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "photography",
+      "productivity"
+    ],
+    "personas": [
+      "power-user",
+      "value-seeker",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "青绿",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202306/26/B4daH1IvptTKFpAx.png",
+      "hex": "#A9C6B8"
+    },
+    {
+      "name": "深灰",
+      "family": "gray",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202306/26/r10EpXxDADWh9e2W.png",
+      "hex": "#27292A"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 33999,
+      "ram_gb": 8
+    }
+  ]
+}

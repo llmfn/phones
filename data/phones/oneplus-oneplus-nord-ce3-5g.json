@@ -1,0 +1,79 @@
+{
+  "id": "oneplus-oneplus-nord-ce3-5g",
+  "brand": "OnePlus",
+  "name": "OnePlus Nord CE3 5G",
+  "narrative": "The OnePlus Nord CE3 5G is a mid-range daily-use phone built around balanced performance, fast charging, and a capable main camera. It pairs a Snapdragon 782G chip with a 120 Hz Fluid AMOLED display, a 5,000 mAh battery with 80W SUPERVOOC charging, and a 50 MP Sony IMX890 main camera, with 8 GB RAM and 128 GB storage in a slim non-folding design. It suits users who want a reliable daily driver with good photography and smooth general performance without moving into premium pricing.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Aqua Surge",
+      "Gray Shimmer"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_code": "P1162814",
+    "product_url": "https://www.oneplus.in/oneplus-nord-ce3-5g",
+    "selling_points": [
+      "80W SUPERVOOC + 5,000 mAh Battery",
+      "50 MP Sony IMX890 Camera System",
+      "17.02cm 120 Hz Fluid AMOLED Display",
+      "Snapdragon 782G Chipset"
+    ],
+    "chipset": "Snapdragon 782G Chipset",
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "has_ois": false,
+    "has_hasselblad_camera": false,
+    "charging_w": 80,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 2,
+      "availability_by_status": {
+        "available": 2
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "gaming"
+    ],
+    "personas": [
+      "value-seeker",
+      "power-user",
+      "camera-lover"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Aqua Surge",
+      "family": "blue",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202306/26/CkE70AKt4OfexWaJ.png",
+      "hex": "#00362C"
+    },
+    {
+      "name": "Gray Shimmer",
+      "family": "gray",
+      "image": "https://image01-in.oneplus.net/india-oneplus-statics-file/epb/202306/26/a2GkwRnQqPeuBTBM.png",
+      "hex": "#393B3A"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB RAM + 128 GB ROM",
+      "price": 26999,
+      "ram_gb": 8
+    }
+  ]
+}

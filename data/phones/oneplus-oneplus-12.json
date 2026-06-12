@@ -1,0 +1,97 @@
+{
+  "id": "oneplus-oneplus-12",
+  "brand": "OnePlus",
+  "name": "OnePlus 12",
+  "narrative": "The OnePlus 12 is a Snapdragon 8 Gen 3 flagship with up to 16GB RAM and 512GB storage, kept cool by a Dual Cryo-velocity VC system for sustained peak performance. It pairs a super-bright 120Hz ProXDR display with a 4th-generation Hasselblad camera system, and a 5400mAh battery charged at 100W wired or 50W wirelessly keeps downtime minimal. Best suited for power users and photography enthusiasts who want top-tier hardware and fast charging at a competitive flagship price.",
+  "specs": {
+    "os": "Android (OxygenOS)",
+    "colours": [
+      "Flowy Emerald",
+      "Silky Black",
+      "Glacial White"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "fallback_estimate",
+    "ram_options_gb": [
+      12,
+      16
+    ],
+    "ram_gb": 16,
+    "product_code": "P1179440",
+    "product_url": "https://www.oneplus.in/oneplus-12",
+    "selling_points": [
+      "Snapdragon® 8 Gen 3, 16GB RAM",
+      "Super-bright 120 Hz ProXDR Display",
+      "4th Generation Hasselblad Camera System for Mobile",
+      "All-new Dual Cryo-velocity VC",
+      "5400mAh battery + 100W SUPERVOOC + 50W AIRVOOC"
+    ],
+    "chipset": "Snapdragon® 8 Gen 3",
+    "refresh_rate_hz": 120,
+    "has_ois": false,
+    "has_hasselblad_camera": true,
+    "battery_mah": 5400,
+    "charging_w": 100,
+    "wireless_charging_w": 50,
+    "has_5g": true,
+    "availability": {
+      "variant_count": 5,
+      "availability_by_status": {
+        "available": 5
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "daily-driver"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "status-buyer",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Flowy Emerald",
+      "family": "green",
+      "image": "https://image01-in.oneplus.net/media/202407/04/41900be750fcc2707894c7eb516d1ce8.png",
+      "hex": "#284945"
+    },
+    {
+      "name": "Silky Black",
+      "family": "black",
+      "image": "https://image01-in.oneplus.net/media/202407/04/ab90ed53736b391f7ce5b78c9b0ac456.png",
+      "hex": "#24252A"
+    },
+    {
+      "name": "Glacial White",
+      "family": "white",
+      "image": "https://image01-in.oneplus.net/media/202407/04/9052428d8c69bd8bb884c7913af5fa73.png",
+      "hex": "#D5D6D9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB RAM + 256 GB ROM",
+      "price": 64999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "16 GB RAM + 512 GB ROM",
+      "price": 71499,
+      "ram_gb": 16
+    }
+  ]
+}
