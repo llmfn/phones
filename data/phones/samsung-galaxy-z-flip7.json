@@ -1,0 +1,83 @@
+{
+  "id": "samsung-galaxy-z-flip7",
+  "brand": "Samsung",
+  "name": "Galaxy Z Flip7",
+  "narrative": "The compact foldable: a clamshell Galaxy with a 6.9-inch 120Hz Dynamic AMOLED 2X main display, a 4.1-inch Super AMOLED cover screen, and a deca-core chip clocked up to 3.3GHz. It pairs a 50MP + 12MP rear camera with OIS and 4K 60fps video, plus 12GB RAM, 256GB storage, and a 4300mAh battery; charging speed is not specified in the provided data. Best suited to style-conscious power users and professionals who want a premium daily-driver that is pocketable, capable, and travel-friendly.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.85,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "form_factor": "foldable",
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4300,
+    "weight_g": 188,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Blue Shadow",
+      "Coralred",
+      "Jetblack",
+      "Mint"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel",
+      "business"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Blue Shadow",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-zflip7-f766-sm-f766bdbains-547545268",
+      "hex": "#3c5b8a"
+    },
+    {
+      "name": "Coralred",
+      "family": "red",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-zflip7-f766-sm-f766bzrains-547545506",
+      "hex": "#ee6779"
+    },
+    {
+      "name": "Jetblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-zflip7-f766-sm-f766bzkains-547545388",
+      "hex": "#494a4d"
+    },
+    {
+      "name": "Mint",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-zflip7-f766-554230-sm-f766blgains-547545762",
+      "hex": "#c8dddd"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 109999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 121999
+    }
+  ]
+}

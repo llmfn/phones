@@ -1,0 +1,68 @@
+{
+  "id": "samsung-galaxy-f70e-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F70e 5G",
+  "narrative": "The battery-first everyday 5G phone: MediaTek Dimensity 6300, 50MP main camera, 6.7-inch 120Hz HD+ PLS LCD, and a large 6000mAh battery, with charging speed not specified in the provided data. Camera hardware is basic beyond the main sensor, with 1080p video, no OIS, and 4GB or 6GB RAM paired with 128GB storage plus microSD expansion. Best suited to value-focused users who want a reliable daily driver with long battery life and smooth scrolling on a modest budget.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 6000,
+    "weight_g": 199,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Limelight Green",
+      "Spotlight Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Limelight Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e076blgains/gallery/in-galaxy-f70e-5g-sm-e076-sm-e076blgains-551046077",
+      "hex": "#749d8c"
+    },
+    {
+      "name": "Spotlight Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e076bdbains/gallery/in-galaxy-f70e-5g-sm-e076-sm-e076bdbains-551046040",
+      "hex": "#0a3369"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 15499
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 17499
+    }
+  ]
+}

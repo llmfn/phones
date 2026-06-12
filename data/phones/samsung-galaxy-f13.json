@@ -1,0 +1,73 @@
+{
+  "id": "samsung-galaxy-f13",
+  "brand": "Samsung",
+  "name": "Galaxy F13",
+  "narrative": "The Galaxy F13 is a battery-first budget phone with a large 6.6-inch FHD+ display and Samsung’s Auto Data Switching feature for basic reliability. It runs on a 2GHz octa-core chip, pairs a 50MP triple rear camera with FHD 30fps video, and packs a 6000mAh battery; charging speed is not specified in the provided data. It suits value-seekers and everyday users who want long battery life, a sharp big screen, and dependable daily-use performance at a low price.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.58,
+    "display_type": "PLS LCD",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 60,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 6000,
+    "weight_g": 207,
+    "has_5g": false,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Nightsky Green",
+      "Sunrise Copper",
+      "Waterfall Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Nightsky Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e135fzgdins/gallery/in-galaxy f13-sm-e135fzgdins-532861036",
+      "hex": "#658e81"
+    },
+    {
+      "name": "Sunrise Copper",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e135fiddins/gallery/in-galaxy f13-4gb-sm-e135fiddins-532880446",
+      "hex": "#ba8e72"
+    },
+    {
+      "name": "Waterfall Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e135flbdins/gallery/in-galaxy f13-sm-e135flbdins-532860868",
+      "hex": "#7ab7dc"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 8999
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 10999
+    }
+  ]
+}

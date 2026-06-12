@@ -1,0 +1,74 @@
+{
+  "id": "samsung-galaxy-a57-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A57 5G",
+  "narrative": "The slim upper-mid Samsung all-rounder: an octa-core 5G chip clocked up to 2.9GHz, 50MP triple rear camera with OIS and 4K video, 6.7-inch FHD+ 120Hz Super AMOLED Plus display, and 5000mAh battery. With 8GB RAM, 256GB storage, and a light 179g body, it balances camera quality, smooth everyday performance, and battery life for users who want a polished daily driver with strong photography and productivity value.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "Super AMOLED Plus",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 179,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Awesome Icyblue",
+      "Awesome Lilac",
+      "Awesome Navy"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "professional",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Awesome Icyblue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a576blbfins/gallery/in-galaxy-a57-5g-sm-a576-sm-a576blbfins-551691118",
+      "hex": "#c8d8eb"
+    },
+    {
+      "name": "Awesome Lilac",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a576bzvfins/gallery/in-galaxy-a57-5g-sm-a576-sm-a576bzvfins-551697510",
+      "hex": "#a7b2e7"
+    },
+    {
+      "name": "Awesome Navy",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a576bdbfins/gallery/in-galaxy-a57-5g-sm-a576-sm-a576bdbfins-551691003",
+      "hex": "#383e4e"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 53999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 57999
+    }
+  ]
+}

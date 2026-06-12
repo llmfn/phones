@@ -1,0 +1,69 @@
+{
+  "id": "samsung-galaxy-z-flip7-fe",
+  "brand": "Samsung",
+  "name": "Galaxy Z Flip7 FE",
+  "narrative": "The compact foldable: a 187g clamshell design with a 6.7-inch 120Hz Dynamic AMOLED 2X main display, a 3.4-inch cover screen, and a deca-core chipset clocked up to 3.2GHz. It pairs a 50MP + 12MP rear camera with OIS, 4K 60fps video, 4000mAh battery, and 128GB or 256GB storage, but there is no fast-charging figure listed here. Best for buyers who want a premium foldable daily driver with strong camera basics, pocketable portability, and style-forward appeal.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.7,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "form_factor": "foldable",
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4000,
+    "weight_g": 187,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Black",
+      "White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography",
+      "travel"
+    ],
+    "personas": [
+      "status-buyer",
+      "creative",
+      "camera-lover"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-z-flip7-fe-f761-sm-f761bzkains-547561291",
+      "hex": "#212721"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-z-flip7-fe-f761-sm-f761bzwains-547561337",
+      "hex": "#f5f7f6"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 89999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 95999
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-a16-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A16 5G",
+  "narrative": "The long-support budget-leaning 5G all-rounder: an octa-core 5G chip, 50MP triple rear camera with a 5MP ultra-wide, 6.7-inch FHD+ 90Hz Super AMOLED display, and a 5000mAh battery. It also stands out for IP54 durability, microSD expansion, and 6 OS upgrades with 6 years of security updates, while camera hardware and video stay basic with no OIS and 1080p 30fps recording. Best for value-focused buyers who want a reliable daily driver for media, calls, and everyday travel use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 192,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "ip_rating": "IP54",
+    "colours": [
+      "Blue Black",
+      "Gold",
+      "Light Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Blue Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a166pzkbins/gallery/in-galaxy-a-sm-a166pzkbins-front-blue-black-544389483",
+      "hex": "#444e5a"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a166pzdbins/gallery/in-galaxy-a-sm-a166pzdbins-front-gold-544389462",
+      "hex": "#e9e4c5"
+    },
+    {
+      "name": "Light Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a166plgbins/gallery/in-galaxy-a-sm-a166plgbins-front-light-green-544389504",
+      "hex": "#ace0e3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 15999
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 17999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 19999
+    }
+  ]
+}

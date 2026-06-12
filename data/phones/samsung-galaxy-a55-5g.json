@@ -1,0 +1,88 @@
+{
+  "id": "samsung-galaxy-a55-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A55 5G",
+  "narrative": "The balanced premium mid-ranger: an octa-core 2.75GHz-class chipset, 50MP OIS main camera with 12MP ultrawide and 32MP selfie camera, and a 6.6-inch FHD+ 120Hz Super AMOLED display in a metal-and-glass body with IP67 protection. It pairs a 5000mAh battery with 4K video recording and long software support, while the charging speed is not specified in the provided data; best for daily users, students, and professionals who want a polished all-rounder with good cameras and durability.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.63,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 32,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 213,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "colours": [
+      "Awesome Iceblue",
+      "Awesome Lemon",
+      "Awesome Lilac",
+      "Awesome Navy"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "business"
+    ],
+    "personas": [
+      "professional",
+      "value-seeker",
+      "camera-lover"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Awesome Iceblue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a556elbzins/gallery/in-galaxy-a55-5g-sm-a556-498926-sm-a556elbzins-540255081",
+      "hex": "#cbd9e7"
+    },
+    {
+      "name": "Awesome Lemon",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a556ezyzins/gallery/in-galaxy-a55-5g-sm-a556-498926-sm-a556ezyzins-540255226",
+      "hex": "#e7e9a5"
+    },
+    {
+      "name": "Awesome Lilac",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a556elvhins/gallery/in-galaxy-a55-5g-sm-a556-sm-a556elvhins-540254064",
+      "hex": "#d4c7d9"
+    },
+    {
+      "name": "Awesome Navy",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a556ezkzins/gallery/in-galaxy-a55-5g-sm-a556-498926-sm-a556ezkzins-540255183",
+      "hex": "#3e424b"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 29999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 32999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 35999
+    }
+  ]
+}

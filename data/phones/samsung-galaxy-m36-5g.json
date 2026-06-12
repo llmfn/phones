@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-m36-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M36 5G",
+  "narrative": "A camera-first mid-ranger with a slim build: octa-core 5G chip up to 2.4GHz, 50MP main camera with OIS, 8MP ultra-wide, 4K video, and a 6.7-inch FHD+ 120Hz Super AMOLED display. It pairs 5000mAh battery life with 6GB or 8GB RAM, 128GB or 256GB storage, microSD expansion, and is positioned in the Rs 21,999-27,999 band. Best suited to daily users who want dependable display quality, battery life, and versatile photography without moving into flagship pricing.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 197,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Haze Orange",
+      "Serene Green",
+      "Velvet Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "videography"
+    ],
+    "personas": [
+      "camera-lover",
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Haze Orange",
+      "family": "orange",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m366bzobins/gallery/in-galaxy-m36-5g-6gb-memory-sm-m366bzobins-547803849",
+      "hex": "#f6990d"
+    },
+    {
+      "name": "Serene Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m366blgbins/gallery/in-galaxy-m36-5g-6gb-memory-sm-m366blgbins-547799571",
+      "hex": "#749d8c"
+    },
+    {
+      "name": "Velvet Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m366bzkbins/gallery/in-galaxy-m36-5g-6gb-memory-sm-m366bzkbins-547799904",
+      "hex": "#191919"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 21999
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 23999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 27999
+    }
+  ]
+}

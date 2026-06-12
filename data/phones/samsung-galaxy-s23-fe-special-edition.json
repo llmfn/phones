@@ -1,0 +1,67 @@
+{
+  "id": "samsung-galaxy-s23-fe-special-edition",
+  "brand": "Samsung",
+  "name": "Galaxy S23 FE Special Edition",
+  "narrative": "The balanced S-series upper-midranger: Exynos 2200, a 50MP + 12MP + 8MP triple camera with OIS and 3x optical zoom, 8K video recording, and a 6.4-inch 120Hz Dynamic AMOLED 2X display in a durable 209g body. It pairs 8GB RAM and 128GB or 256GB storage with a 4500mAh battery; charging speed is not specified in the provided data. Best for buyers who want a daily-driver Samsung with strong photography, smooth display performance, and flagship-style S-series features without flagship pricing.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.42,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4500,
+    "weight_g": 209,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Blue",
+      "Orange"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "videography"
+    ],
+    "personas": [
+      "camera-lover",
+      "professional",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s711bzbbins/gallery/in-galaxy-s23-fe-s711-sm-s711bzbbins-538353642",
+      "hex": "#6b7d98"
+    },
+    {
+      "name": "Orange",
+      "family": "orange",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s711bzobins/gallery/in-galaxy-s23-fe-s711-sm-s711bzobins-538353680",
+      "hex": "#ce8c4e"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 32999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 36499
+    }
+  ]
+}

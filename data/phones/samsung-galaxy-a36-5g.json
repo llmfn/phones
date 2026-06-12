@@ -1,0 +1,103 @@
+{
+  "id": "samsung-galaxy-a36-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A36 5G",
+  "narrative": "The Galaxy A36 5G is a slim upper-mid Samsung focused on balanced everyday performance, long software support, and practical camera features. It pairs a 4nm Snapdragon octa-core chip with a 6.7-inch 120Hz FHD+ Super AMOLED display, a 50MP OIS triple rear camera, 12MP selfie camera with HDR video support, 5000mAh battery, and 4K 30fps recording. It suits users who want a dependable daily driver with good display quality, useful AI editing tools, and solid cameras for work, travel, and regular content capture.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.7,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 195,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "colours": [
+      "Awesome Black",
+      "Awesome Emerald Green",
+      "Awesome Lavender",
+      "Awesome Lime",
+      "Awesome Sapphire Blue",
+      "Awesome White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features",
+      "travel"
+    ],
+    "personas": [
+      "professional",
+      "camera-lover",
+      "power-user",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Awesome Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a366ezkjins/gallery/in-galaxy-a36-5g-sm-a366-539188-sm-a366ezkjins-545215283",
+      "hex": "#404145"
+    },
+    {
+      "name": "Awesome Emerald Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a366edgjins/gallery/in-galaxy-a36-5g-sm-a366-539188-sm-a366edgjins-553248610",
+      "hex": "#243930"
+    },
+    {
+      "name": "Awesome Lavender",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a366elvjins/gallery/in-galaxy-a36-5g-sm-a366-539188-sm-a366elvjins-545214983",
+      "hex": "#c6cce7"
+    },
+    {
+      "name": "Awesome Lime",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a366elgjins/gallery/in-galaxy-a36-5g-sm-a366-539188-539188-sm-a366elgjins-549116168",
+      "hex": "#dfefdb"
+    },
+    {
+      "name": "Awesome Sapphire Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a366edbjins/gallery/in-galaxy-a36-5g-sm-a366-539188-sm-a366edbjins-553249334",
+      "hex": "#0a3369"
+    },
+    {
+      "name": "Awesome White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a366ezajins/gallery/in-galaxy-a36-5g-sm-a366-539188-sm-a366ezajins-545215083",
+      "hex": "#dad9db"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 33999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 37999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 43499
+    }
+  ]
+}

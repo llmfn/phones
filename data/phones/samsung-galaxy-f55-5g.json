@@ -1,0 +1,74 @@
+{
+  "id": "samsung-galaxy-f55-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F55 5G",
+  "narrative": "The style-focused mid-ranger: Samsung Galaxy F55 5G pairs a slim vegan leather build with Snapdragon 7 Gen 1, a 6.7-inch 120Hz FHD+ Super AMOLED+ display, and long software support with 4 Android updates and 5 years of security patches. It adds a 50MP OIS main camera, 50MP selfie camera, 4K video recording, 5000mAh battery, and no charging speed specified in the provided data. Best suited to value-conscious users who want a polished daily driver with strong selfies, dependable performance, and long update support.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.67,
+    "display_type": "Super AMOLED Plus",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 50,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 180,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "colours": [
+      "Apricot Crush",
+      "Raisin Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography"
+    ],
+    "personas": [
+      "value-seeker",
+      "camera-lover",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Apricot Crush",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e556bzoains/gallery/in-galaxy-f-sm-e556bzoains-sm-e---bzodins-541633762",
+      "hex": "#e17e00"
+    },
+    {
+      "name": "Raisin Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e556bzkains/gallery/in-galaxy-f-sm-e556bzkains-sm-e---bzkdins-541633731",
+      "hex": "#000000"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 22999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 25499
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 27999
+    }
+  ]
+}

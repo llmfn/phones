@@ -1,0 +1,67 @@
+{
+  "id": "samsung-galaxy-m17e-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M17e 5G",
+  "narrative": "The battery-first budget 5G phone: Galaxy M17e 5G pairs the MediaTek Dimensity 6300 with a 6000mAh battery, a 6.7-inch 120Hz HD+ PLS LCD, and 6 generations of OS upgrades. Its camera setup is basic but practical, with a 50MP main rear camera, 2MP depth sensor, 8MP selfie camera, and FHD 30fps video, while charging details are not specified in the provided data. Best suited to value-seekers and daily users who want long battery life, smooth scrolling, and expandable storage at a low price.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 6000,
+    "weight_g": 199,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Blitz Blue",
+      "Vibe Violet"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Blitz Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m076blbains/gallery/in-galaxy-m17e-5g-sm-m076-sm-m076blbains-551456726",
+      "hex": "#72b0bd"
+    },
+    {
+      "name": "Vibe Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m076blvains/gallery/in-galaxy-m17e-5g-sm-m076-sm-m076blvains-551460969",
+      "hex": "#b2a1ce"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 15499
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 17499
+    }
+  ]
+}

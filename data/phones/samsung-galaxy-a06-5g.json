@@ -1,0 +1,82 @@
+{
+  "id": "samsung-galaxy-a06-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A06 5G",
+  "narrative": "An entry-level 5G phone built around everyday essentials: octa-core chip, 6.7\" 90Hz HD+ PLS LCD, 50MP main camera, and a 5000mAh battery with IP54 dust and splash resistance. Storage is expandable up to 1.5TB via MicroSD, compensating for the modest 64/128GB base options, and 5G future-proofs connectivity at a low price point. Suited to first-time smartphone buyers or budget-conscious users upgrading to 5G who prioritise screen size, battery life, and durability over raw performance.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 191,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "ip_rating": "IP54",
+    "colours": [
+      "Black",
+      "Light Gray",
+      "Light Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly",
+      "teen"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a066bzkdins/gallery/in-galaxy-a06-5g-sm-a066-sm-a066bzkdins-545081088",
+      "hex": "#484754"
+    },
+    {
+      "name": "Light Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a066bzadins/gallery/in-galaxy-a06-5g-sm-a066-sm-a066bzadins-545081044",
+      "hex": "#ced5df"
+    },
+    {
+      "name": "Light Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a066blgdins/gallery/in-galaxy-a06-5g-sm-a066-sm-a066blgdins-545081000",
+      "hex": "#cad9d3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 13999
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 15999
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 17999
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-s25-fe",
+  "brand": "Samsung",
+  "name": "Galaxy S25 FE",
+  "narrative": "The slim, lighter Galaxy S FE with flagship-level performance: Exynos 2400 deca-core chip, 50MP+12MP+8MP rear cameras with OIS, 3x optical zoom and up to 8K video, plus a 6.7-inch Dynamic AMOLED 2X display with FHD+ resolution and 120Hz refresh. It uses a 4900mAh battery rated for up to 28 hours of video playback; charging specs are not listed in the provided data. Built for power users and professionals who want a capable daily driver for photography, productivity and travel.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 4900,
+    "weight_g": 190,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Jetblack",
+      "Navy",
+      "White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "productivity",
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "camera-lover"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Jetblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s731bzkbins/gallery/in-galaxy-s25-fe-sm-s731-563716-sm-s731bzkbins-549518723",
+      "hex": "#494a4d"
+    },
+    {
+      "name": "Navy",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s731bdbcins/gallery/in-galaxy-s25-fe-sm-s731-sm-s731bdbcins-548902984",
+      "hex": "#3c5b8a"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s731bzwbins/gallery/in-galaxy-s25-fe-sm-s731-563716-sm-s731bzwbins-550742667",
+      "hex": "#f5f7f6"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 59999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 69999
+    },
+    {
+      "gb": 512,
+      "label": "8 GB + 512 GB",
+      "ram_gb": 8,
+      "price": 89999
+    }
+  ]
+}

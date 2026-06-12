@@ -1,0 +1,110 @@
+{
+  "id": "samsung-galaxy-s24-ultra",
+  "brand": "Samsung",
+  "name": "Galaxy S24 Ultra",
+  "narrative": "The productivity-first camera flagship: a Snapdragon 8 Gen 3-class Galaxy S phone with S Pen support, a 200MP quad rear camera with 3x/5x optical zoom and up to 100x digital zoom, and 8K video recording. It pairs a 6.8-inch 120Hz QHD+ Dynamic AMOLED 2X display with 12GB RAM, up to 1TB storage, and a 5000mAh battery; charging details are not listed in the provided specs. Best for power users, professionals, and camera-focused buyers who want one phone for photography, work, and premium daily use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.79,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "Quad HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 4,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 232,
+    "has_5g": true,
+    "has_s_pen": true,
+    "has_nfc": true,
+    "colours": [
+      "Titanium Black",
+      "Titanium Blue",
+      "Titanium Gray",
+      "Titanium Green",
+      "Titanium Orange",
+      "Titanium Violet",
+      "Titanium Yellow"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "productivity",
+      "daily-driver",
+      "business"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Titanium Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bzkcins-539573220",
+      "hex": "#62605f"
+    },
+    {
+      "name": "Titanium Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-492660-sm-s928blbwins-539573666",
+      "hex": "#a7b5c8"
+    },
+    {
+      "name": "Titanium Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bztcins-539573310",
+      "hex": "#aca49b"
+    },
+    {
+      "name": "Titanium Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-492660-sm-s928blgwins-539573777",
+      "hex": "#c1d0be"
+    },
+    {
+      "name": "Titanium Orange",
+      "family": "orange",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-492660-sm-s928bzowins-539573892",
+      "hex": "#c48b6c"
+    },
+    {
+      "name": "Titanium Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bzvcins-539573426",
+      "hex": "#4d4e5f"
+    },
+    {
+      "name": "Titanium Yellow",
+      "family": "yellow",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-s928-sm-s928bzycins-539573502",
+      "hex": "#f0e1b9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 99999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 109999
+    },
+    {
+      "gb": 1024,
+      "label": "12 GB + 1 TB",
+      "ram_gb": 12,
+      "price": 119999
+    }
+  ]
+}

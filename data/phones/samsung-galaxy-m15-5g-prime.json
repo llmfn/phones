@@ -1,0 +1,67 @@
+{
+  "id": "samsung-galaxy-m15-5g-prime",
+  "brand": "Samsung",
+  "name": "Galaxy M15 5G Prime",
+  "narrative": "The battery-first budget 5G phone: Galaxy M15 5G Prime pairs a MediaTek Dimensity 6100+ chip with a 50MP triple rear camera, 6.5-inch FHD+ Super AMOLED 90Hz display, and a large 6000mAh battery. With 8GB RAM, 128GB storage, microSD expansion, and long software support, it fits daily users and value-focused buyers who want long battery life, smooth display quality, and dependable 5G at a low price.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.45,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": false,
+    "battery_mah": 6000,
+    "weight_g": 217,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Dark Blue",
+      "Gray",
+      "Light Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Dark Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m156bdbhinu/gallery/in-galaxy-m-sm-m156bdbhinu-front-dark-blue-543541748",
+      "hex": "#3a414a"
+    },
+    {
+      "name": "Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m156bzahinu/gallery/in-galaxy-m15-5g-sm-m156-522244-sm-m156bzahinu-543431003",
+      "hex": "#8b8e8d"
+    },
+    {
+      "name": "Light Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m156blbhinu/gallery/in-galaxy-m-sm-m156blbhinu-front-gray-543541815",
+      "hex": "#9db9c3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 10499
+    }
+  ]
+}

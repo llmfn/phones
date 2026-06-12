@@ -1,0 +1,74 @@
+{
+  "id": "samsung-galaxy-f06-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F06 5G",
+  "narrative": "A budget 5G starter focused on basics: the Galaxy F06 5G pairs a MediaTek 6300 chip with a 50MP main camera, a 6.7-inch 90Hz HD+ PLS LCD display, and a 5000mAh battery with 25W charging. It keeps things practical with all-network 5G band support, microSD expansion, and straightforward FHD video capture rather than advanced camera features like OIS. Best for value-seekers who want an affordable daily driver for calls, streaming, messaging, and light photography on 5G.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 191,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "charging_w": 25,
+    "colours": [
+      "Bahama Blue",
+      "Lit Violet"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Bahama Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e066bzbgins/gallery/in-galaxy-f06-5g-4-gb-memory-sm-e066bzbgins-545126939",
+      "hex": "#7ab7dc"
+    },
+    {
+      "name": "Lit Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e066bzvdins/gallery/in-galaxy-f06-5g-4-gb-memory-sm-e066bzvdins-547125419",
+      "hex": "#514b79"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 11999
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 13999
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 15999
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "id": "samsung-galaxy-s23-ultra",
+  "brand": "Samsung",
+  "name": "Galaxy S23 Ultra",
+  "narrative": "The note-taking camera flagship: Galaxy S23 Ultra pairs the Snapdragon 8 Gen 2 for Galaxy with a 200MP quad rear camera, dual telephoto zoom at 3x and 10x, and up to 100x digital zoom, plus 8K video and built-in S Pen support. It also has a 6.8-inch 120Hz QHD+ Dynamic AMOLED 2X display, 5000mAh battery, and 45W charging, making it a strong fit for power users, mobile photographers, and professionals who want one phone for work, media, and travel.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.81,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "Quad HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 4,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 233,
+    "has_5g": true,
+    "has_s_pen": true,
+    "has_nfc": true,
+    "colours": [
+      "Cream",
+      "Graphite",
+      "Green",
+      "Lavender",
+      "Lime",
+      "Phantom Black",
+      "Phantomblack",
+      "Red",
+      "Skyblue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "productivity",
+      "gaming",
+      "videography"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "status-buyer"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Cream",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s918bzecins/gallery/in-galaxy-s23-s918-446780-sm-s918bzecins-539520717",
+      "hex": "#f0eae0"
+    },
+    {
+      "name": "Graphite",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-446812-sm-s918bzacins-534868411",
+      "hex": "#6e7074"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-sm-s918bzgcins-534863400",
+      "hex": "#5f645a"
+    },
+    {
+      "name": "Lavender",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-sm-s918bliwins-534863215",
+      "hex": "#d4c7d9"
+    },
+    {
+      "name": "Lime",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-446812-sm-s918blgcins-534868372",
+      "hex": "#dce9be"
+    },
+    {
+      "name": "Phantom Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-sm-s918bzkcins-534863517"
+    },
+    {
+      "name": "Phantomblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-sm-s918bzkcins-534863517",
+      "hex": "#211e16"
+    },
+    {
+      "name": "Red",
+      "family": "red",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-446812-sm-s918bzrcins-534868449",
+      "hex": "#cc5953"
+    },
+    {
+      "name": "Skyblue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-446812-sm-s918blbcins-534868335",
+      "hex": "#b8c9e1"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 89999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 98999
+    },
+    {
+      "gb": 1024,
+      "label": "12 GB + 1 TB",
+      "ram_gb": 12,
+      "price": 107999
+    }
+  ]
+}

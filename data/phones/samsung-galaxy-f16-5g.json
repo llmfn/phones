@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-f16-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F16 5G",
+  "narrative": "The budget AMOLED all-rounder: Galaxy F16 5G pairs a Dimensity 6300 chip with a 50MP triple camera, a 6.7-inch FHD+ 90Hz Super AMOLED display, and a 5000mAh battery; charging speed is not specified in the provided data. It suits value-focused buyers who want a capable daily phone with 5G, good screen quality, expandable storage, and dependable battery life.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 191,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "colours": [
+      "Bling Black",
+      "Glam Green",
+      "Vibing Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Bling Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e166pzkdins/gallery/in-galaxy-f16-5g-4-gb-memory-sm-e166pzkdins-545246955",
+      "hex": "#191a1a"
+    },
+    {
+      "name": "Glam Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e166pzgdins/gallery/in-galaxy-f16-5g-4-gb-memory-sm-e166pzgdins-545371413",
+      "hex": "#356f7d"
+    },
+    {
+      "name": "Vibing Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e166pzbdins/gallery/in-galaxy-f16-5g-4-gb-memory-sm-e166pzbdins-545369001",
+      "hex": "#006ebc"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 12499
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 14499
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 16499
+    }
+  ]
+}

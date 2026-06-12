@@ -1,0 +1,89 @@
+{
+  "id": "samsung-galaxy-a26-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A26 5G",
+  "narrative": "The balanced mid-range Samsung: Galaxy A26 5G pairs the Exynos 1380 with a 50MP triple rear camera with OIS, 4K video, and useful AI tools in a slim 7.7mm body with IP67 protection and Gorilla Glass Victus+. It also brings a 6.7-inch FHD+ 120Hz Super AMOLED display, 5000mAh battery, and charging details not specified in the provided data. Best suited to daily users who want a dependable everyday phone with good camera stability, modern display quality, and practical durability at a mid-range price.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 200,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "ip_rating": "IP67",
+    "colours": [
+      "Awesome Black",
+      "Awesome Mint",
+      "Awesome Peach",
+      "Awesome White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "professional"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Awesome Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a266bzkkins/gallery/in-galaxy-a26-5g-sm-a266-sm-a266bzkkins-545323929",
+      "hex": "#2d2926"
+    },
+    {
+      "name": "Awesome Mint",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a266blgkins/gallery/in-galaxy-a26-5g-sm-a266-sm-a266blgkins-545323748",
+      "hex": "#bce5df"
+    },
+    {
+      "name": "Awesome Peach",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a266bzikins/gallery/in-galaxy-a26-5g-sm-a266-sm-a266bzikins-545323826",
+      "hex": "#fbb2a9"
+    },
+    {
+      "name": "Awesome White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a266bzwkins/gallery/in-galaxy-a26-5g-sm-a266-sm-a266bzwkins-545324057",
+      "hex": "#f3f4f4"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 23499
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 24999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 27999
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "samsung-galaxy-a06",
+  "brand": "Samsung",
+  "name": "Galaxy A06",
+  "narrative": "The budget big-screen Galaxy: a 6.7-inch HD+ LCD, 50MP main camera, 5000mAh battery with 25W charging, and a basic octa-core processor tuned for everyday use rather than heavy performance. It also adds Samsung Knox Vault for stronger device-level security, plus microSD expansion up to 1TB and 1080p 60fps video recording. Best suited to value-seekers and casual users who want a dependable daily driver with a large display, long battery life, and a usable main camera at a low price.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 60,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 189,
+    "has_5g": false,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "charging_w": 25,
+    "colours": [
+      "Black",
+      "Gold",
+      "Light Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a065fzkdins/gallery/in-galaxy-a06-sm-a065-sm-a065fzkdins-543189207",
+      "hex": "#353e52"
+    },
+    {
+      "name": "Gold",
+      "family": "gold",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a065fzddins/gallery/in-galaxy-a06-sm-a065-sm-a065fzddins-543189169",
+      "hex": "#e1dec4"
+    },
+    {
+      "name": "Light Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a065flbdins/gallery/in-galaxy-a06-sm-a065-sm-a065flbdins-543189129",
+      "hex": "#d5e0ea"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 6,
+      "label": "6 GB + 6 GB",
+      "ram_gb": 6,
+      "price": 8999
+    },
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 10999
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 12999
+    }
+  ]
+}

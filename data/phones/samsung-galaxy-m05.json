@@ -1,0 +1,54 @@
+{
+  "id": "samsung-galaxy-m05",
+  "brand": "Samsung",
+  "name": "Galaxy M05",
+  "narrative": "The budget basic: Galaxy M05 pairs an octa-core processor with a 6.74-inch HD+ PLS LCD, a 50MP dual rear camera, 5000mAh battery, and 25W charging. It supports FHD 60fps video, has 4GB RAM with 64GB storage plus microSD expansion, and keeps things simple with 4G connectivity and long security support. Best for budget-focused users who want an affordable daily driver for calls, streaming, light photography, and routine use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 60,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 195,
+    "has_5g": false,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "charging_w": 25,
+    "colours": [
+      "Mint Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Mint Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m055flgdins/gallery/in-galaxy-m05-4-gb-memory-sm-m055flgdins-543451592",
+      "hex": "#a5dfd3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 6499
+    }
+  ]
+}

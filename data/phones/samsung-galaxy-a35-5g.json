@@ -1,0 +1,75 @@
+{
+  "id": "samsung-galaxy-a35-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A35 5G",
+  "narrative": "The balanced mid-ranger: an octa-core 2.4GHz chipset, 50MP OIS triple camera with 4K video, 6.6-inch 120Hz FHD+ Super AMOLED display, and 5000mAh battery in a glass-back body with IP67 protection. It also stands out for Gorilla Glass Victus+ and long software support with 4 OS updates and 5 years of security updates. Best suited to daily users who want a reliable Samsung 5G phone for photos, media, and long-term everyday use without stepping into flagship pricing.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.63,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 209,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "colours": [
+      "Awesome Iceblue",
+      "Awesome Lilac",
+      "Awesome Navy"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "camera-lover",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Awesome Iceblue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a356elbjins/gallery/in-galaxy-a35-5g-sm-a356-sm-a356elbjins-540296438",
+      "hex": "#cbd9e7"
+    },
+    {
+      "name": "Awesome Lilac",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a356elvjins/gallery/in-galaxy-a35-5g-sm-a356-sm-a356elvjins-540296476",
+      "hex": "#d4c7d9"
+    },
+    {
+      "name": "Awesome Navy",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a356ezkjins/gallery/in-galaxy-a35-5g-sm-a356-sm-a356ezkjins-540296514",
+      "hex": "#3e424b"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 21999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 23999
+    }
+  ]
+}

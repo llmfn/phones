@@ -1,0 +1,109 @@
+{
+  "id": "samsung-galaxy-s25",
+  "brand": "Samsung",
+  "name": "Galaxy S25",
+  "narrative": "The compact AI flagship: Snapdragon 8 Elite performance, a 50MP+10MP+12MP triple rear camera with OIS and up to 30x zoom, and a 6.2-inch FHD+ 120Hz Dynamic AMOLED 2X display. It adds a 4000mAh battery, 12GB RAM, and 8K video recording, and is designed for power users and professionals who want a premium daily-driver with strong photography and AI features.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.16,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 4000,
+    "weight_g": 162,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Blueblack",
+      "Coralred",
+      "Icyblue",
+      "Mint",
+      "Navy",
+      "Pinkgold",
+      "Silver Shadow"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features",
+      "business"
+    ],
+    "personas": [
+      "power-user",
+      "camera-lover",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Blueblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-534143-sm-s931bzkcins-544675162",
+      "hex": "#4c525c"
+    },
+    {
+      "name": "Coralred",
+      "family": "red",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-534143-sm-s931bzrcins-544789148",
+      "hex": "#ee6779"
+    },
+    {
+      "name": "Icyblue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-sm-s931blbcins-544656214",
+      "hex": "#c8d3df"
+    },
+    {
+      "name": "Mint",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-sm-s931blgcins-544656252",
+      "hex": "#d3e8dd"
+    },
+    {
+      "name": "Navy",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-sm-s931bdbcins-544656138",
+      "hex": "#3c5b8a"
+    },
+    {
+      "name": "Pinkgold",
+      "family": "gold",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-534143-sm-s931bzdcins-544675124",
+      "hex": "#ead2c6"
+    },
+    {
+      "name": "Silver Shadow",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s931-sm-s931bzsbins-544656290",
+      "hex": "#7f7f7e"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "12 GB + 128 GB",
+      "ram_gb": 12,
+      "price": 56999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 62999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 77999
+    }
+  ]
+}

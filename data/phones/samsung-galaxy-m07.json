@@ -1,0 +1,54 @@
+{
+  "id": "samsung-galaxy-m07",
+  "brand": "Samsung",
+  "name": "Galaxy M07",
+  "narrative": "The budget daily-driver: MediaTek Helio G99, a 50MP main camera with autofocus, and a 6.74-inch HD+ PLS LCD paired with a 5000mAh battery in a slim 184g body. It also adds practical touches like IP54 splash resistance, microSD expansion up to 2TB, and 1080p video recording, while charging details are not specified in the provided data. Best suited to value-focused users who want a basic Samsung phone for everyday use, light photography, and long battery life.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 60,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 184,
+    "has_5g": false,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "ip_rating": "IP54",
+    "colours": [
+      "Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m075fzkdins/gallery/in-galaxy-m07-sm-m075-sm-m075fzkdins-549303466",
+      "hex": "#211e16"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 10399
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "samsung-galaxy-f05",
+  "brand": "Samsung",
+  "name": "Galaxy F05",
+  "narrative": "The Galaxy F05 is a budget big-screen basic: an octa-core 2.0/1.8GHz processor, 50MP + 2MP rear camera, 6.74-inch HD+ PLS LCD display, and a 5000mAh battery with 25W charging. It also offers 4GB RAM, 64GB storage with microSD expansion, FHD 60fps video, and long software support for this price. Best suited to value-seekers and everyday users who want a low-cost daily driver with a large display and dependable battery life.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 60,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 195,
+    "has_5g": false,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "charging_w": 25,
+    "colours": [
+      "Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e055fdbdins/gallery/in-galaxy-f05-4-gb-memory-sm-e055fdbdins-543451825",
+      "hex": "#3a5081"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 6499
+    }
+  ]
+}

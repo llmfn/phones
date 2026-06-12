@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-s23-fe",
+  "brand": "Samsung",
+  "name": "Galaxy S23 FE",
+  "narrative": "The camera-first Fan Edition: Galaxy S23 FE pairs the Exynos 2200 with a versatile 50MP + 12MP + 8MP rear system, OIS, 3x optical zoom, 30x digital zoom, and 8K video, plus a 10MP selfie camera. It also gives you a 6.4-inch 120Hz Dynamic AMOLED 2X display, 4500mAh battery, 5G, and 8GB RAM; charging details are not listed in the provided specs. Best suited to users who want an all-round daily driver with strong photography features at a more accessible price than Samsung's mainline flagships.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.42,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4500,
+    "weight_g": 209,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Cream",
+      "Graphite",
+      "Mint",
+      "Purple"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver"
+    ],
+    "personas": [
+      "camera-lover",
+      "value-seeker",
+      "professional"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Cream",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s711bzwbins/gallery/in-galaxy-s23-fe-s711-479553-sm-s711bzwbins-538356088",
+      "hex": "#f0eae0"
+    },
+    {
+      "name": "Graphite",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s711bzabins/gallery/in-galaxy-s23-fe-s711-479553-sm-s711bzabins-538355987",
+      "hex": "#53565a"
+    },
+    {
+      "name": "Mint",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s711blgbins/gallery/in-galaxy-s23-fe-s711-479553-sm-s711blgbins-538355944",
+      "hex": "#cad9d3"
+    },
+    {
+      "name": "Purple",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s711bzpbins/gallery/in-galaxy-s23-fe-s711-479553-sm-s711bzpbins-538356047",
+      "hex": "#514b79"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 29999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 32999
+    }
+  ]
+}

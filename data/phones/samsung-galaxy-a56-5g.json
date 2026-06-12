@@ -1,0 +1,102 @@
+{
+  "id": "samsung-galaxy-a56-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A56 5G",
+  "narrative": "The balanced upper-mid Samsung: an octa-core 5G chipset clocked up to 2.9GHz, a 50MP OIS triple camera with 4K video, and a 6.7-inch 120Hz FHD+ Super AMOLED display in a slim, IP67-rated body. It pairs a 5000mAh battery with 8GB RAM and up to 256GB storage, though charging speed is not specified in the provided data. Best for daily users who want a durable all-rounder with solid cameras, AI editing features, and a polished Samsung experience.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.7,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 198,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "ip_rating": "IP67",
+    "colours": [
+      "Awesome Graphite",
+      "Awesome Lightgray",
+      "Awesome Midnight Blue",
+      "Awesome Olive",
+      "Awesome Pink",
+      "Awesome Violet Glow"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features"
+    ],
+    "personas": [
+      "value-seeker",
+      "professional",
+      "ease-of-use"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Awesome Graphite",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a566ezkzins/gallery/in-galaxy-a56-5g-sm-a566-539175-sm-a566ezkzins-545213717",
+      "hex": "#53565a"
+    },
+    {
+      "name": "Awesome Lightgray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a566ezazins/gallery/in-galaxy-a56-5g-sm-a566-539175-sm-a566ezazins-545213624",
+      "hex": "#c8caca"
+    },
+    {
+      "name": "Awesome Midnight Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a566edbzins/gallery/in-galaxy-a56-5g-sm-a566-539175-sm-a566edbzins-553248703",
+      "hex": "#353e52"
+    },
+    {
+      "name": "Awesome Olive",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a566ezggins/gallery/in-galaxy-a56-5g-sm-a566-539175-sm-a566ezggins-545213648",
+      "hex": "#a9bab7"
+    },
+    {
+      "name": "Awesome Pink",
+      "family": "pink",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a566elihins/gallery/in-galaxy-a56-5g-sm-a566-539154-sm-a566elihins-549116389",
+      "hex": "#f2dee9"
+    },
+    {
+      "name": "Awesome Violet Glow",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a566elvzins/gallery/in-galaxy-a56-5g-sm-a566-539175-sm-a566elvzins-553248726",
+      "hex": "#996e9f"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 40999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 44999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 50499
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "samsung-galaxy-m55-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M55 5G",
+  "narrative": "The balanced mid-ranger: Snapdragon 7 Gen 1, a 50MP OIS main camera with 4K video, a 50MP selfie camera, 6.7-inch FHD+ 120Hz Super AMOLED+ display, and a 5000mAh battery with 45W charging. It also stands out for long software support with 4 Android version upgrades and 5 years of security updates. Best suited to daily users, students, and professionals who want a slim 5G phone with strong display quality, dependable cameras, and long-term usability.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.67,
+    "display_type": "Super AMOLED Plus",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 50,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 180,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "charging_w": 45,
+    "colours": [
+      "Black",
+      "Denim Black",
+      "Light Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography"
+    ],
+    "personas": [
+      "value-seeker",
+      "professional",
+      "camera-lover"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m556bzkdins/gallery/in-galaxy-m-sm-m556bzkdins-front-black-541615139",
+      "hex": "#232522"
+    },
+    {
+      "name": "Denim Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m556bzkains/gallery/in-galaxy-m55-5g-sm-m556-sm-m556bzkains-541574609",
+      "hex": "#14192f"
+    },
+    {
+      "name": "Light Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m556blgains/gallery/in-galaxy-m55-5g-sm-m556-sm-m556blgains-541574403",
+      "hex": "#94b7bb"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 21999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 23999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 25999
+    }
+  ]
+}

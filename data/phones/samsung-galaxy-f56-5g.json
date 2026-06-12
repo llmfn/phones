@@ -1,0 +1,67 @@
+{
+  "id": "samsung-galaxy-f56-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F56 5G",
+  "narrative": "The slim, battery-focused mid-ranger: an octa-core 5G processor clocked up to 2.75GHz, 50MP main camera with OIS, 4K video, 6.7-inch FHD+ 120Hz Super AMOLED Plus display, and a 5000mAh battery in a light 180g body. The camera setup is practical rather than advanced, with 8GB RAM and up to 256GB storage covering everyday performance well, though charging speed is not specified in the provided data. Best suited to daily users who want a large smooth display, reliable main camera, and long battery life at a mid-range price.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "Super AMOLED Plus",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 180,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "colours": [
+      "Green",
+      "Violet"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "professional"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e566bzgains/gallery/in-galaxy-f56-5g-8-gb-memory--sm-e566bzgains-546883968",
+      "hex": "#1c6c78"
+    },
+    {
+      "name": "Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e566bzvains/gallery/in-galaxy-f56-5g-8-gb-memory--sm-e566bzvains-546897224",
+      "hex": "#514b79"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 27999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 30999
+    }
+  ]
+}

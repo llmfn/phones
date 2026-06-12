@@ -1,0 +1,75 @@
+{
+  "id": "samsung-galaxy-m17-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M17 5G",
+  "narrative": "A practical mid-range Galaxy focused on everyday reliability: a 2.4GHz octa-core 5G chip, 50MP OIS triple camera, 6.7-inch FHD+ 90Hz Super AMOLED display, and 5000mAh battery in a slim 7.5mm body. It also adds useful extras like Circle to Search, Gemini Live, IP54 protection, and Gorilla Glass 7, while charging details are not specified in the source data. Best suited to value-seeking users who want a dependable daily driver with a stabilized main camera and Samsung’s newer AI features.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 192,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "ip_rating": "IP54",
+    "colours": [
+      "Moonlight Silver",
+      "Sapphire Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Moonlight Silver",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m176bzsains/gallery/in-galaxy-m17-5g-sm-m176-sm-m176bzsains-549649648",
+      "hex": "#c9c9c8"
+    },
+    {
+      "name": "Sapphire Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m176bzkains/gallery/in-galaxy-m17-5g-sm-m176-sm-m176bzkains-549649556",
+      "hex": "#404145"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 16999
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 18999
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 20999
+    }
+  ]
+}

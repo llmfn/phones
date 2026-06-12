@@ -1,0 +1,95 @@
+{
+  "id": "samsung-galaxy-s26",
+  "brand": "Samsung",
+  "name": "Galaxy S26+",
+  "narrative": "The balanced premium Galaxy: a slim 167g Samsung Galaxy S26+ with a high-clocked deca-core chip, 12GB RAM, and 256GB storage, paired with a 6.3-inch Dynamic AMOLED 2X FHD+ display at 120Hz. Its 50MP + 10MP + 12MP triple rear camera adds OIS, 3x optical zoom, 30x digital zoom, and 8K video, while the 4300mAh battery supports all-day use; charging details are not listed in this spec sheet. Best suited to users who want a lighter flagship daily driver with solid cameras, smooth performance, and premium Samsung essentials for work and travel.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.27,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 4300,
+    "weight_g": 167,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Black",
+      "Cobalt Violet",
+      "Pink Gold",
+      "Silver Shadow",
+      "Sky Blue",
+      "White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "business",
+      "travel"
+    ],
+    "personas": [
+      "professional",
+      "camera-lover",
+      "ease-of-use"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-s942-sm-s942bzkcins-550883815",
+      "hex": "#494d53"
+    },
+    {
+      "name": "Cobalt Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-s942-sm-s942bzvqins-550883872",
+      "hex": "#686884"
+    },
+    {
+      "name": "Pink Gold",
+      "family": "gold",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-s942-578627-sm-s942bzdcins-550888037"
+    },
+    {
+      "name": "Silver Shadow",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-s942-578627-sm-s942bzscins-550888079",
+      "hex": "#c7c8ca"
+    },
+    {
+      "name": "Sky Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-s942-sm-s942blbcins-550883777",
+      "hex": "#b3cbd9"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-s942-sm-s942bzwcins-550883891",
+      "hex": "#f3f4f5"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 79999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 99999
+    }
+  ]
+}

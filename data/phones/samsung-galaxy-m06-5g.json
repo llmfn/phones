@@ -1,0 +1,74 @@
+{
+  "id": "samsung-galaxy-m06-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M06 5G",
+  "narrative": "The affordable 5G basic: Samsung Galaxy M06 5G pairs a MediaTek 6300 octa-core chip with 12 5G bands, a 50MP main camera, and a 6.74-inch 90Hz HD+ PLS LCD. It adds a 5000mAh battery with 25W fast charging, plus microSD expansion up to 1.5TB, while camera and video are kept simple with 1080p@30fps and no OIS. Best for budget buyers who want a dependable daily-use Samsung phone for calls, streaming, light photography, and long battery life.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 191,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "charging_w": 25,
+    "colours": [
+      "Blazing Black",
+      "Sage Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Blazing Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m066bzkgins/gallery/in-galaxy-m06-5g-4-gb-memory-sm-m066bzkgins-545216697",
+      "hex": "#3d3f49"
+    },
+    {
+      "name": "Sage Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m066blgdins/gallery/in-galaxy-m-sm-m066blgdins-sm-m---blggins-546963817",
+      "hex": "#dfefdb"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 11999
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 13999
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 15999
+    }
+  ]
+}

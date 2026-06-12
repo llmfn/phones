@@ -1,0 +1,88 @@
+{
+  "id": "samsung-galaxy-s24",
+  "brand": "Samsung",
+  "name": "Galaxy S24",
+  "narrative": "The compact AI-focused flagship: a 3.2GHz deca-core chipset, 50MP triple rear camera with OIS and 3x optical zoom, 6.2-inch 120Hz FHD+ Dynamic AMOLED 2X display, and 4000mAh battery. It also supports 8K video and up to 30x digital zoom, with the trade-off of relatively modest battery size and no charging wattage listed here; best suited to users who want a premium daily-driver with strong cameras, Galaxy AI features, and one-hand-friendly size.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.16,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 4000,
+    "weight_g": 167,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Amber Yellow",
+      "Cobalt Violet",
+      "Marble Gray",
+      "Onyx Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "ai-features",
+      "gaming"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Amber Yellow",
+      "family": "yellow",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2401/gallery/in-galaxy-s24-492654-sm-s921bzycins-539572839",
+      "hex": "#f1ead4"
+    },
+    {
+      "name": "Cobalt Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s921bzvbins/gallery/in-galaxy-s24-492654-492654-sm-s921bzvbins-541169493",
+      "hex": "#52566d"
+    },
+    {
+      "name": "Marble Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s921bzabins/gallery/in-galaxy-s24-492654-492654-sm-s921bzabins-541169451",
+      "hex": "#c5c3c3"
+    },
+    {
+      "name": "Onyx Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s921bzkbins/gallery/in-galaxy-s24-492654-492654-sm-s921bzkbins-541169470",
+      "hex": "#4a4a4d"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 52999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 58499
+    },
+    {
+      "gb": 512,
+      "label": "8 GB + 512 GB",
+      "ram_gb": 8,
+      "price": 63999
+    }
+  ]
+}

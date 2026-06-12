@@ -1,0 +1,69 @@
+{
+  "id": "samsung-galaxy-s25-edge",
+  "brand": "Samsung",
+  "name": "Galaxy S25 Edge",
+  "narrative": "The thin premium camera flagship: the Galaxy S25 Edge pairs an octa-core chip up to 4.47GHz with a 200MP + 12MP rear camera, a 12MP front camera, and a 6.55-inch Quad HD+ 120Hz Dynamic AMOLED 2X display. It has 12GB RAM, 256GB or 512GB storage, a 3900mAh battery rated for up to 24 hours of video playback, 8K@30fps recording, OIS, autofocus, and up to 10x digital zoom; charging specs are not listed in the provided data. Built for power users, camera lovers, and professionals who want a slim Android daily driver for photography, videography, and business.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "Quad HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 2,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 3900,
+    "weight_g": 163,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Titanium Jetblack",
+      "Titanium Silver"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "daily-driver",
+      "business"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Titanium Jetblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/ps_2504/gallery/in-galaxy-s25-s937-sm-s937bzkbins-546082633",
+      "hex": "#4a4a4d"
+    },
+    {
+      "name": "Titanium Silver",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/ps_2504/gallery/in-galaxy-s25-s937-sm-s937bzsbins-546082682",
+      "hex": "#b0b7b9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 84999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 93499
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "samsung-galaxy-a17-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A17 5G",
+  "narrative": "The AI-focused mid-ranger: a 6.67-inch 90Hz FHD+ Super AMOLED display, 50MP triple camera with OIS, 5000mAh battery, 5G, and Samsung’s Gemini/Circle to Search features in a slim 7.5mm body. It uses an octa-core 2.4GHz-class chip with 6GB or 8GB RAM, records up to FHD 30fps video, and pairs dependable battery life with practical extras like microSD support, Gorilla Glass Victus protection, and IP54 splash resistance. Best for everyday users who want a balanced daily-driver with useful AI tools, solid main-camera stability, and long software support.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 192,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "ip_rating": "IP54",
+    "colours": [
+      "Black",
+      "Blue",
+      "Gray"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "ai-features",
+      "photography"
+    ],
+    "personas": [
+      "ease-of-use",
+      "value-seeker",
+      "professional"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a176bzklins/gallery/in-galaxy-a17-5g-sm-a176-573624-sm-a176bzklins-550420559",
+      "hex": "#404145"
+    },
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a176bzblins/gallery/in-galaxy-a17-5g-sm-a176-573624-sm-a176bzblins-550420540",
+      "hex": "#004680"
+    },
+    {
+      "name": "Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a176bzalins/gallery/in-galaxy-a17-5g-sm-a176-573624-sm-a176bzalins-550420521",
+      "hex": "#9b9ca1"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 20499
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 22499
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 26999
+    }
+  ]
+}

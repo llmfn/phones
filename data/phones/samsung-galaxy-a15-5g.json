@@ -1,0 +1,79 @@
+{
+  "id": "samsung-galaxy-a15-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A15 5G",
+  "narrative": "The balanced budget 5G phone: an octa-core 2.2GHz processor, 50MP triple camera with VDIS, 6.5-inch FHD+ 90Hz Super AMOLED display, and a 5000mAh battery. It records up to 1080p video, offers microSD expansion, and stands out with long software support plus Knox security, though charging speed is not specified in the provided data. Best suited to daily users and value-focused buyers who want a dependable Samsung phone for streaming, photos, and everyday 5G use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.45,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 200,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Blue",
+      "Blue Black",
+      "Light Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a156ezbnins/gallery/in-galaxy-a15-5g-sm-a156-sm-a156ezbnins-539414312",
+      "hex": "#6f8aad"
+    },
+    {
+      "name": "Blue Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a156ezknins/gallery/in-galaxy-a15-5g-sm-a156-sm-a156ezknins-539414331",
+      "hex": "#3f4251"
+    },
+    {
+      "name": "Light Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a156elbnins/gallery/in-galaxy-a15-5g-sm-a156-sm-a156elbnins-539414293",
+      "hex": "#dde5ed"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 14499
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 16499
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 18499
+    }
+  ]
+}

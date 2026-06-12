@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-f36-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F36 5G",
+  "narrative": "The balanced mid-range Galaxy F phone: an octa-core 5G chipset, 50MP triple rear camera with OIS, 4K video recording, and a 6.7-inch FHD+ 120Hz Super AMOLED display in a slim 7.7mm body. It pairs a 5000mAh battery with 128GB storage, microSD expansion up to 2TB, and a practical camera setup led by the stabilized main sensor rather than flagship extras. Best suited to buyers who want a dependable daily driver with a strong display and capable camera system for everyday photos, video, and streaming.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 197,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Coral Red",
+      "Luxe Violet",
+      "Onyx Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography"
+    ],
+    "personas": [
+      "value-seeker",
+      "camera-lover",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Coral Red",
+      "family": "red",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e366bzrbins/gallery/in-galaxy-f36-5g-6gb-memory-sm-e366bzrbins-548275045",
+      "hex": "#d85f67"
+    },
+    {
+      "name": "Luxe Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e366bzvbins/gallery/in-galaxy-f36-5g-6gb-memory-sm-e366bzvbins-548275500",
+      "hex": "#b9b7d4"
+    },
+    {
+      "name": "Onyx Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e366bzkbins/gallery/in-galaxy-f36-5g-6gb-memory-sm-e366bzkbins-548274248",
+      "hex": "#0a0b0e"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 21999
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 23999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 27999
+    }
+  ]
+}

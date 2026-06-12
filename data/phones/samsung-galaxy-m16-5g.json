@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-m16-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M16 5G",
+  "narrative": "The budget 5G all-rounder: Galaxy M16 5G pairs a MediaTek Dimensity 6300 chip with a 50MP triple rear camera, a 6.7-inch FHD+ 90Hz Super AMOLED display, and a 5000mAh battery. It records up to 1080p video, offers microSD expansion, and while charging speed is not specified here, the hardware is clearly aimed at dependable everyday use over premium extras like OIS or fast charging. Best for value-focused users who want an affordable daily driver with AMOLED screen quality, 5G, and solid basics.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.66,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 191,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "colours": [
+      "Blush Pink",
+      "Mint Green",
+      "Thunder Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Blush Pink",
+      "family": "pink",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m166plidins/gallery/in-galaxy-m16-5g-sm-m166-sm-m166plidins-545290094",
+      "hex": "#f0cfc3"
+    },
+    {
+      "name": "Mint Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m166plgdins/gallery/in-galaxy-m16-5g-sm-m166-sm-m166plgdins-545228833",
+      "hex": "#cad9d3"
+    },
+    {
+      "name": "Thunder Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m166pzkdins/gallery/in-galaxy-m16-5g-sm-m166-sm-m166pzkdins-545229076",
+      "hex": "#484754"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 11999
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 13999
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 15999
+    }
+  ]
+}

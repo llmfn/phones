@@ -1,0 +1,82 @@
+{
+  "id": "samsung-galaxy-m35-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M35 5G",
+  "narrative": "The battery-first mid-ranger: a 120Hz FHD+ Super AMOLED display, 6000mAh battery, Gorilla Glass Victus+, and a vapor cooling chamber make the Galaxy M35 5G stand out more for endurance and sustained use than raw flagship specs. Its camera setup pairs a 50MP main sensor with OIS, 8MP ultrawide, 2MP macro, and 4K 30fps video, while the octa-core 2.4GHz/2GHz chip and 6GB/8GB RAM target steady everyday performance; charging speed is not specified in the provided data. Best for value-focused users who want a reliable daily driver with long battery life, solid media display quality, and competent casual photography.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.63,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": true,
+    "battery_mah": 6000,
+    "weight_g": 222,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "colours": [
+      "Dark Blue",
+      "Gray",
+      "Light Blue"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "power-user"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Dark Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m356bdbbins/gallery/in-galaxy-m35-5g-sm-m356-sm-m356bdbbins-542678438",
+      "hex": "#3a414a"
+    },
+    {
+      "name": "Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m356bzabins/gallery/in-galaxy-m35-5g-sm-m356-sm-m356bzabins-542682616",
+      "hex": "#8b8e8d"
+    },
+    {
+      "name": "Light Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m356blbbins/gallery/in-galaxy-m35-5g-sm-m356-sm-m356blbbins-542679069",
+      "hex": "#9db9c3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 16499
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 18499
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 20499
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "samsung-galaxy-z-fold6",
+  "brand": "Samsung",
+  "name": "Galaxy Z Fold6",
+  "narrative": "The book-style foldable for multitasking: the Galaxy Z Fold6 pairs the Snapdragon 8 Gen 3 for Galaxy with a 7.6-inch 120Hz QXGA+ Dynamic AMOLED 2X main display, S Pen support, and Galaxy AI features in a slim 239g body. It uses a 50MP + 12MP + 10MP rear camera system with 3x optical zoom and 8K video, backed by 12GB RAM, 256GB storage, and a 4400mAh battery; charging details are not listed in the provided specs. Best suited to power users, professionals, and frequent multitaskers who want a phone-tablet hybrid for productivity, travel, and premium daily use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 7.61,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "QXGA+",
+    "refresh_rate_hz": 120,
+    "form_factor": "foldable",
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "has_ois": true,
+    "battery_mah": 4400,
+    "weight_g": 239,
+    "has_5g": true,
+    "has_s_pen": true,
+    "has_nfc": true,
+    "colours": [
+      "Crafted Black",
+      "Navy",
+      "Pink",
+      "Silver Shadow",
+      "White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "productivity",
+      "business",
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Crafted Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-f956bakdins/gallery/in-galaxy-z-fold6-f956-sm-f956bakdins-542846898",
+      "hex": "#454646"
+    },
+    {
+      "name": "Navy",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-f956bdbdins/gallery/in-galaxy-z-fold6-f956-514252-sm-f956bdbdins-542846050",
+      "hex": "#485167"
+    },
+    {
+      "name": "Pink",
+      "family": "pink",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-f956blidins/gallery/in-galaxy-z-fold6-f956-514252-sm-f956blidins-542846278",
+      "hex": "#f0dbe1"
+    },
+    {
+      "name": "Silver Shadow",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-f956bzsdins/gallery/in-galaxy-z-fold6-f956-514252-sm-f956bzsdins-542845593",
+      "hex": "#7f7f7e"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-f956bzwdins/gallery/in-galaxy-z-fold6-f956-sm-f956bzwdins-542630514",
+      "hex": "#e9e9e7"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 134999
+    },
+    {
+      "gb": 1024,
+      "label": "12 GB + 1 TB",
+      "ram_gb": 12,
+      "price": 148499
+    }
+  ]
+}

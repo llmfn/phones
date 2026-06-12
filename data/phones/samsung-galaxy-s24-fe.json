@@ -1,0 +1,76 @@
+{
+  "id": "samsung-galaxy-s24-fe",
+  "brand": "Samsung",
+  "name": "Galaxy S24 FE",
+  "narrative": "The balanced fan-edition flagship: Exynos 2400e, a versatile 50MP + 12MP + 8MP camera system with OIS and 3x optical zoom, 8K video recording, and a 6.7-inch 120Hz Dynamic AMOLED 2X display. It pairs a 4700mAh battery with flagship-tier features like Galaxy AI, 5G, and IP68 protection, making it a strong fit for users who want premium Samsung features without ultra-flagship pricing. Best for power users, professionals, and daily drivers who want solid camera performance, AI tools, and long-term all-round usability.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.7,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4700,
+    "weight_g": 213,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "ip_rating": "IP68",
+    "colours": [
+      "Blue",
+      "Graphite",
+      "Mint"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features",
+      "productivity"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "camera-lover"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s721blbbins/gallery/in-galaxy-s24-fe-s721-sm-s721blbbins-543757305",
+      "hex": "#bcd5ea"
+    },
+    {
+      "name": "Graphite",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s721bzkbins/gallery/in-galaxy-s24-fe-s721-sm-s721bzkbins-543757381",
+      "hex": "#4d4c4a"
+    },
+    {
+      "name": "Mint",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s721blgbins/gallery/in-galaxy-s24-fe-s721-sm-s721blgbins-543757343",
+      "hex": "#c7e9e2"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 39999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 43999
+    }
+  ]
+}

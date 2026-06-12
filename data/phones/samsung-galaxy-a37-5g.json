@@ -1,0 +1,80 @@
+{
+  "id": "samsung-galaxy-a37-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A37 5G",
+  "narrative": "The balanced upper-mid Galaxy A phone: an octa-core 5G chip clocked at up to 2.75GHz, 50MP main camera with OIS, 8MP ultrawide, 5MP macro, and 4K video recording. It pairs a 6.7-inch FHD+ 120Hz Super AMOLED display with 8GB RAM, 128GB storage, and a 5000mAh battery, while charging speed is not specified in the provided data. Best for daily users and professionals who want a dependable big-screen Samsung with a stabilized main camera and long battery life.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.7,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 196,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Awesome Charcoal",
+      "Awesome Graygreen",
+      "Awesome Lavender"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "business"
+    ],
+    "personas": [
+      "professional",
+      "ease-of-use",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Awesome Charcoal",
+      "family": "other",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a376ezadins/gallery/in-galaxy-a37-5g-sm-a376-sm-a376ezadins-551651503",
+      "hex": "#525257"
+    },
+    {
+      "name": "Awesome Graygreen",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a376edgdins/gallery/in-galaxy-a37-5g-sm-a376-sm-a376edgdins-551650318",
+      "hex": "#5c707e"
+    },
+    {
+      "name": "Awesome Lavender",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a376elvdins/gallery/in-galaxy-a37-5g-sm-a376-sm-a376elvdins-551651363",
+      "hex": "#bcbde2"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 41999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 45999
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 52999
+    }
+  ]
+}

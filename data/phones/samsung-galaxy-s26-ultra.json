@@ -1,0 +1,101 @@
+{
+  "id": "samsung-galaxy-s26-ultra",
+  "brand": "Samsung",
+  "name": "Galaxy S26 Ultra",
+  "narrative": "The all-in-one ultra flagship: octa-core platform with up to 4.74GHz CPU speeds, 200MP + 50MP + 50MP + 10MP rear cameras with 3x/5x optical zoom and up to 100x digital zoom, 8K video, and built-in S Pen support. It pairs that camera system with a 6.9-inch Dynamic AMOLED 2X 120Hz QHD+ display and a 5000mAh battery, making it a strong fit for users who want top-tier photography, productivity, and premium daily use in one device. Best suited to power users, professionals, and camera-focused buyers who want a do-everything Samsung flagship.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.89,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "Quad HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 4,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 214,
+    "has_5g": true,
+    "has_s_pen": true,
+    "has_nfc": true,
+    "colours": [
+      "Black",
+      "Cobalt Violet",
+      "Pink Gold",
+      "Silver Shadow",
+      "Sky Blue",
+      "White"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "productivity",
+      "daily-driver",
+      "business"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "camera-lover",
+      "status-buyer"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-ultra-s948-sm-s948bzkbins-550793492",
+      "hex": "#494d53"
+    },
+    {
+      "name": "Cobalt Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-ultra-s948-sm-s948bzvbins-550793678",
+      "hex": "#686884"
+    },
+    {
+      "name": "Pink Gold",
+      "family": "gold",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-ultra-s948-sm-s948bzdbins-550793529"
+    },
+    {
+      "name": "Silver Shadow",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-ultra-s948-sm-s948bzsbins-550794207",
+      "hex": "#c7c8ca"
+    },
+    {
+      "name": "Sky Blue",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-ultra-s948-sm-s948blbbins-550793417"
+    },
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/s2602/gallery/in-galaxy-s26-ultra-s948-sm-s948bzwbins-550793901",
+      "hex": "#f3f4f5"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 130999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 150999
+    },
+    {
+      "gb": 1024,
+      "label": "16 GB + 1 TB",
+      "ram_gb": 16,
+      "price": 180999
+    }
+  ]
+}

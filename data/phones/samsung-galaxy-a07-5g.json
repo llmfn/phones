@@ -1,0 +1,75 @@
+{
+  "id": "samsung-galaxy-a07-5g",
+  "brand": "Samsung",
+  "name": "Galaxy A07 5G",
+  "narrative": "The long-battery budget 5G pick: a 6000mAh battery, 6.74-inch 120Hz HD+ PLS LCD, and 50MP main camera make the Galaxy A07 5G focused on endurance and everyday use more than raw performance. It runs on an octa-core processor up to 2.4GHz with 4GB or 6GB RAM, records up to 1080p video, and offers 128GB storage plus microSD expansion, while charging details are not specified here. Best suited to value-seekers who want a reliable daily driver for streaming, calls, messaging, and light photography on a mid-range budget.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 6000,
+    "weight_g": 199,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Black",
+      "Light Green",
+      "Light Violet"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a076bzkbins/gallery/in-galaxy-a07-5g-sm-a076-sm-a076bzkbins-550684748",
+      "hex": "#4a4f59"
+    },
+    {
+      "name": "Light Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a076blgbins/gallery/in-galaxy-a07-5g-sm-a076-sm-a076blgbins-550684710",
+      "hex": "#72b0bd"
+    },
+    {
+      "name": "Light Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-a076blvbins/gallery/in-galaxy-a07-5g-sm-a076-sm-a076blvbins-550684729",
+      "hex": "#a5b0e3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 15999
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 17999
+    }
+  ]
+}

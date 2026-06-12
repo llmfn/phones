@@ -1,0 +1,62 @@
+{
+  "id": "samsung-galaxy-z-flip6",
+  "brand": "Samsung",
+  "name": "Galaxy Z Flip6",
+  "narrative": "The compact foldable flagship: Snapdragon 8 Gen 3 for Galaxy, a 50MP + 12MP rear camera with OIS and 4K 60fps video, a 6.7-inch 120Hz Dynamic AMOLED 2X main display, and a 3.4-inch Super AMOLED cover screen shaped around quick interactions and Galaxy AI features. Its 4000mAh battery is modest for the segment, but the light 187g foldable design and flagship chip make it stand out more for portability, style and flexible shooting than battery endurance. Best for users who want a premium daily driver with foldable convenience, strong cameras and AI features in a pocket-friendly form factor.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.7,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "form_factor": "foldable",
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4000,
+    "weight_g": 187,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Crafted Black"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "ai-features",
+      "travel"
+    ],
+    "personas": [
+      "status-buyer",
+      "camera-lover",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Crafted Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-f741bakains/gallery/in-galaxy-zflip6-f741-sm-f741bakains-542628549",
+      "hex": "#454646"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 79999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 87999
+    }
+  ]
+}

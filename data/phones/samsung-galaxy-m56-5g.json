@@ -1,0 +1,67 @@
+{
+  "id": "samsung-galaxy-m56-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M56 5G",
+  "narrative": "The slim, durability-focused mid-ranger: a 7.2mm body with Gorilla Glass Victus+ on both front and back, an octa-core processor up to 2.75GHz, and a 6.7-inch FHD+ 120Hz Super AMOLED Plus display. It pairs a 50MP OIS main camera with 8MP ultra-wide and 2MP macro, adds 12MP selfie video with 10-bit HDR, records up to 4K 30fps, and runs on a 5000mAh battery; charging speed is not specified in the provided data. Best for everyday users who want a slim Samsung 5G phone with strong display quality and reliable camera performance for daily shooting and media use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "Super AMOLED Plus",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 180,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "colours": [
+      "Black",
+      "Light Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "camera-lover"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m566bzkains/gallery/in-galaxy-m56-5g-8-gb-memory-sm-m566bzkains-546205650",
+      "hex": "#484754"
+    },
+    {
+      "name": "Light Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m566blgains/gallery/in-galaxy-m56-5g-8-gb-memory-sm-m566blgains-546206092",
+      "hex": "#cad9d3"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 27999
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 30999
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "samsung-galaxy-m55s-5g",
+  "brand": "Samsung",
+  "name": "Galaxy M55s 5G",
+  "narrative": "The selfie-first mid-ranger: an octa-core 5G chip, 50MP OIS main camera, 50MP front camera, 6.7-inch FHD+ 120Hz Super AMOLED Plus display, and a 5000mAh battery with 45W charging. It also records 4K video and offers 8GB RAM with microSD expansion, while Android 14 with long update support adds everyday longevity. Best for users who want a balanced daily driver with strong front-camera performance, smooth viewing, and dependable battery life.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.67,
+    "display_type": "Super AMOLED Plus",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 50,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 180,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "has_sd_slot": true,
+    "charging_w": 45,
+    "colours": [
+      "Black",
+      "Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "videography"
+    ],
+    "personas": [
+      "value-seeker",
+      "camera-lover",
+      "ease-of-use"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m558bzkains/gallery/in-galaxy-m55s-5g-8-gb-memory-sm-m558bzkains-543736439",
+      "hex": "#303233"
+    },
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-m558blgcins/gallery/in-galaxy-m55s-5g-8-gb-memory-sm-m558blgcins-543722650",
+      "hex": "#46c8b9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 18499
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "ram_gb": 8,
+      "price": 20499
+    }
+  ]
+}

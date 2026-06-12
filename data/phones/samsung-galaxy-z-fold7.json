@@ -1,0 +1,90 @@
+{
+  "id": "samsung-galaxy-z-fold7",
+  "brand": "Samsung",
+  "name": "Galaxy Z Fold7",
+  "narrative": "The definitive foldable Android: a book-style device that opens to an 8-inch 120Hz QXGA+ Dynamic AMOLED 2X inner display and closes to a 6.5-inch FHD+ cover screen, all driven by an octa-core chip clocking up to 4.47GHz. The 200MP triple-camera system shoots 8K video and offers 3x optical zoom, while the 4.2mm-thin open profile and 215g weight make it the most refined Z Fold yet despite a 4400mAh battery. Built for professionals and power users who want a pocketable tablet that doubles as a flagship camera and a true multitasking workstation.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 8.0,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "QXGA+",
+    "refresh_rate_hz": 120,
+    "form_factor": "foldable",
+    "rear_camera_mp": 200,
+    "rear_camera_count": 3,
+    "front_camera_mp": 10,
+    "has_ois": true,
+    "battery_mah": 4400,
+    "weight_g": 215,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": true,
+    "colours": [
+      "Blue Shadow",
+      "Jetblack",
+      "Mint",
+      "Silver Shadow"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "productivity",
+      "photography",
+      "videography",
+      "ai-features"
+    ],
+    "personas": [
+      "power-user",
+      "professional",
+      "status-buyer",
+      "creative"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "Blue Shadow",
+      "family": "blue",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-z-fold7-f966-sm-f966bdbdins-547542962",
+      "hex": "#3c5b8a"
+    },
+    {
+      "name": "Jetblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-z-fold7-f966-sm-f966bzkdins-547543273",
+      "hex": "#494a4d"
+    },
+    {
+      "name": "Mint",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-z-fold7-f966-sm-f966blgdins-547543100",
+      "hex": "#c8dddd"
+    },
+    {
+      "name": "Silver Shadow",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/f2507/gallery/in-galaxy-z-fold7-f966-sm-f966bzsdins-547543514",
+      "hex": "#b0b7b9"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 174999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 186999
+    },
+    {
+      "gb": 1024,
+      "label": "16 GB + 1 TB",
+      "ram_gb": 16,
+      "price": 205499
+    }
+  ]
+}

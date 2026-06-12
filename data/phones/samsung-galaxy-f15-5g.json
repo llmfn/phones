@@ -1,0 +1,81 @@
+{
+  "id": "samsung-galaxy-f15-5g",
+  "brand": "Samsung",
+  "name": "Galaxy F15 5G",
+  "narrative": "The battery-first budget 5G phone: Galaxy F15 5G pairs the MediaTek Dimensity 6100+ with a 6.45-inch FHD+ 90Hz Super AMOLED display and a large 6000mAh battery. It uses a 50MP main camera with 5MP ultrawide and 2MP depth support, records up to 1080p at 30fps, and offers 4 years of Android upgrades; charging speed is not specified in the provided data. Best suited to value-focused buyers who want long battery life, a good screen, and dependable everyday 5G use.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.45,
+    "display_type": "Super AMOLED",
+    "display_resolution": "FHD+",
+    "refresh_rate_hz": 90,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 3,
+    "front_camera_mp": 13,
+    "has_ois": false,
+    "battery_mah": 6000,
+    "weight_g": 217,
+    "has_5g": true,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Black",
+      "Light Green",
+      "Light Violet"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "productivity"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e156bzkdins/gallery/in-galaxy-f15-5g-4gb-memory-sm-e156bzkdins-543053027",
+      "hex": "#211e16"
+    },
+    {
+      "name": "Light Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e156blgdins/gallery/in-galaxy-f15-5g-4gb-memory-sm-e156blgdins-543082833",
+      "hex": "#46c8b9"
+    },
+    {
+      "name": "Light Violet",
+      "family": "purple",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e156blvdins/gallery/in-galaxy-f15-5g-4gb-memory-sm-e156blvdins-543082864",
+      "hex": "#bfb1d2"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "ram_gb": 4,
+      "price": 11499
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "ram_gb": 6,
+      "price": 13499
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "ram_gb": 8,
+      "price": 15499
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "samsung-galaxy-s25-ultra",
+  "brand": "Samsung",
+  "name": "Galaxy S25 Ultra",
+  "narrative": "The AI-first flagship: Snapdragon 8 Elite, Galaxy AI with multimodality, and a 200MP + 50MP + 50MP + 10MP rear camera system with 3x and 5x optical zoom plus up to 100x digital zoom. Its 6.8-inch Quad HD+ 120Hz Dynamic AMOLED 2X display, 12GB RAM, S Pen support, and 5000mAh battery with up to 31 hours of video playback make it a large-screen Android daily driver for power users, professionals, and camera-focused creators.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.86,
+    "display_type": "Dynamic AMOLED 2X",
+    "display_resolution": "Quad HD+",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 4,
+    "front_camera_mp": 12,
+    "has_ois": true,
+    "battery_mah": 5000,
+    "weight_g": 218,
+    "has_5g": true,
+    "has_s_pen": true,
+    "has_nfc": true,
+    "colours": [
+      "Titanium Black",
+      "Titanium Gray",
+      "Titanium Jadegreen",
+      "Titanium Jetblack",
+      "Titanium Pinkgold",
+      "Titanium Silverblue",
+      "Titanium Whitesilver"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "productivity",
+      "ai-features"
+    ],
+    "personas": [
+      "power-user",
+      "camera-lover",
+      "professional",
+      "creative"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Titanium Black",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bzkbins-544702762",
+      "hex": "#4a4a4d"
+    },
+    {
+      "name": "Titanium Gray",
+      "family": "gray",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bztbins-544702947",
+      "hex": "#b3ab9e"
+    },
+    {
+      "name": "Titanium Jadegreen",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bzgbins-544703247",
+      "hex": "#a3ac9b"
+    },
+    {
+      "name": "Titanium Jetblack",
+      "family": "black",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bakbins-544702688",
+      "hex": "#4a4a4d"
+    },
+    {
+      "name": "Titanium Pinkgold",
+      "family": "gold",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bzdbins-544703136",
+      "hex": "#ead2c6"
+    },
+    {
+      "name": "Titanium Silverblue",
+      "family": "silver",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bzbbins-544702614",
+      "hex": "#8e9fbc"
+    },
+    {
+      "name": "Titanium Whitesilver",
+      "family": "white",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/2501/gallery/in-galaxy-s25-s938-sm-s938bzsbins-544702836",
+      "hex": "#d9d9d6"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "ram_gb": 12,
+      "price": 119999
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "ram_gb": 12,
+      "price": 139999
+    },
+    {
+      "gb": 1024,
+      "label": "12 GB + 1 TB",
+      "ram_gb": 12,
+      "price": 153999
+    }
+  ]
+}

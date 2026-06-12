@@ -1,0 +1,54 @@
+{
+  "id": "samsung-galaxy-f07",
+  "brand": "Samsung",
+  "name": "Galaxy F07",
+  "narrative": "The Galaxy F07 is a budget big-battery basic: an octa-core processor, 50MP main camera, 6.7-inch HD+ PLS LCD display, and a 5000mAh battery in a light 184g body. Camera hardware is simple with a 50MP + 2MP rear setup, 8MP front camera, and video up to 1080p at 30fps, while charging speed is not specified in the provided specs. It suits value-focused users who want an affordable daily driver for calling, messaging, streaming, and routine photography.",
+  "specs": {
+    "os": "Android",
+    "display_inches": 6.74,
+    "display_type": "PLS LCD",
+    "display_resolution": "HD+",
+    "refresh_rate_hz": 60,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "front_camera_mp": 8,
+    "has_ois": false,
+    "battery_mah": 5000,
+    "weight_g": 184,
+    "has_5g": false,
+    "has_s_pen": false,
+    "has_nfc": false,
+    "has_sd_slot": true,
+    "colours": [
+      "Green"
+    ]
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "teen"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Green",
+      "family": "green",
+      "image": "https://images.samsung.com/is/image/samsung/p6pim/in/sm-e075fzgdins/gallery/in-galaxy-f07-sm-f075-sm-e075fzgdins-549296801",
+      "hex": "#304e53"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "ram_gb": 4,
+      "price": 10399
+    }
+  ]
+}
