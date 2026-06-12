@@ -18,7 +18,7 @@ from .. import config
 from ..catalog import CatalogEntry
 from ..search.embeddings import corpus_embeddings, cosine, embed
 from .base import Layer
-from .schema import Filters, PriceRange, RecommendResponse
+from ..schema import Filters, PriceRange, RecommendResponse
 
 # ---------------------------------------------------------------------------
 # Prompt levels -- edit ACTIVE_PROMPT to switch between them

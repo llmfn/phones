@@ -15,14 +15,12 @@ result set and makes each surviving card show its red variant.
 """
 
 from ..catalog import CatalogEntry, Color, StorageOption
-from .schema import (
+from ..schema import (
     CategoricalFacet,
     Facet,
     FacetValue,
     Filters,
     Product,
-    ProductColor,
-    ProductStorageOption,
     RangeFacet,
     RecommendResponse,
     TraceStep,
@@ -108,30 +106,7 @@ class Layer:
         colors: list[Color],
         storage_options: list[StorageOption],
     ) -> Product:
-        doc = entry.doc
-        lead_color = colors[0]
-        lead_storage = storage_options[0]
-        return Product(
-            id=doc.id,
-            name=doc.name,
-            brand=doc.brand,
-            price=lead_storage.price,
-            image=lead_color.image,
-            variant_id=f"{doc.id}-{lead_color.family}-{lead_storage.gb}",
-            color_name=lead_color.name,
-            color_family=lead_color.family,
-            storage_gb=lead_storage.gb,
-            storage_label=lead_storage.label,
-            ram_gb=lead_storage.ram_gb,
-            colors=[
-                ProductColor(name=c.name, family=c.family, hex=c.hex, image=c.image)
-                for c in colors
-            ],
-            storage_options=[
-                ProductStorageOption(gb=s.gb, label=s.label, ram_gb=s.ram_gb, price=s.price)
-                for s in storage_options
-            ],
-        )
+        return Product.from_entry(entry, colors, storage_options)
 
     def _compute_facets(self, matches) -> list[Facet]:
         """Facets are scoped to the current result set (see docs/specs.md)."""

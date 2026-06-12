@@ -1,0 +1,13 @@
+"""phonekit: the building blocks each layer's app.py composes.
+
+A library, not a framework: layer directories (``layer1/``, ``layer2/``, ...)
+import everything they need from this module and own their control flow
+top-to-bottom. ``Application`` is both the Flask server and the CLI runner;
+the layer picks by how it invokes ``run()``.
+"""
+
+from .app import Application, apply_filters
+from .schema import RecommendResponse
+from .search import search_bm25
+
+__all__ = ["Application", "RecommendResponse", "apply_filters", "search_bm25"]

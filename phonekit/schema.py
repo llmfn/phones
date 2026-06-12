@@ -10,6 +10,8 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, Field
 
+from .catalog import CatalogEntry, Color, StorageOption
+
 # --- Trace ------------------------------------------------------------------
 
 
@@ -73,6 +75,46 @@ class Product(BaseModel):
     colors: list[ProductColor]
     storage_options: list[ProductStorageOption]
 
+    @classmethod
+    def from_entry(
+        cls,
+        entry: CatalogEntry,
+        colors: list[Color] | None = None,
+        storage_options: list[StorageOption] | None = None,
+    ) -> "Product":
+        """Build the card for a catalogue entry.
+
+        The first colour/storage option is the lead configuration (document
+        order is canonical). Defaults to all of the entry's options; callers
+        that have applied filters pass the surviving sublists instead.
+        """
+        doc = entry.doc
+        colors = doc.colors if colors is None else colors
+        storage_options = doc.storage_options if storage_options is None else storage_options
+        lead_color = colors[0]
+        lead_storage = storage_options[0]
+        return cls(
+            id=doc.id,
+            name=doc.name,
+            brand=doc.brand,
+            price=lead_storage.price,
+            image=lead_color.image,
+            variant_id=f"{doc.id}-{lead_color.family}-{lead_storage.gb}",
+            color_name=lead_color.name,
+            color_family=lead_color.family,
+            storage_gb=lead_storage.gb,
+            storage_label=lead_storage.label,
+            ram_gb=lead_storage.ram_gb,
+            colors=[
+                ProductColor(name=c.name, family=c.family, hex=c.hex, image=c.image)
+                for c in colors
+            ],
+            storage_options=[
+                ProductStorageOption(gb=s.gb, label=s.label, ram_gb=s.ram_gb, price=s.price)
+                for s in storage_options
+            ],
+        )
+
 
 # --- Facets ---------------------------------------------------------------
 #
@@ -124,7 +166,13 @@ class Filters(BaseModel):
 
 
 class RecommendResponse(BaseModel):
+    """The recommend payload, also passed between pipeline stages.
+
+    A search stage returns one with products and trace only; facets are
+    filled downstream, computed over what survives the filters.
+    """
+
     products: list[Product]
-    facets: list[Facet]
+    facets: list[Facet] = Field(default_factory=list)
     trace: list[TraceStep] = Field(default_factory=list)
     summary: str | None = None

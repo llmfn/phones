@@ -12,7 +12,7 @@ import time
 from .. import config
 from ..catalog import CatalogEntry
 from .layer3_schema import Layer3, _VALID_PERSONAS
-from .schema import Filters, PriceRange, RecommendResponse
+from ..schema import Filters, PriceRange, RecommendResponse
 
 _PASS2_SYSTEM = """\
 You are a phone recommendation assistant. You will be given a user query and details about 3 phones.
