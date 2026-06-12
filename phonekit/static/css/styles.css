@@ -522,9 +522,9 @@ button {
 .product-card .name {
   font-family: var(--font-serif);
   font-weight: 700;
-  font-size: var(--text-flow-3);
+  font-size: var(--text-flow-1);
   letter-spacing: -0.01em;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .product-card .price {
