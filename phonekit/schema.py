@@ -152,14 +152,16 @@ Facet = Annotated[CategoricalFacet | RangeFacet, Field(discriminator="type")]
 
 
 class PriceRange(BaseModel):
-    min: int
-    max: int
+    min: int = Field(description="lower price bound, inclusive")
+    max: int = Field(description="upper price bound, inclusive")
 
 
 class Filters(BaseModel):
-    brands: list[str] = Field(default_factory=list)
-    colors: list[str] = Field(default_factory=list)  # canonical colour families
-    price: PriceRange | None = None
+    brands: list[str] = Field(default_factory=list, description="brands to keep; empty means all brands")
+    colors: list[str] = Field(
+        default_factory=list, description="canonical colour families to keep; empty means all colours"
+    )
+    price: PriceRange | None = Field(default=None, description="price range to keep; null means any price")
 
 
 # --- Response -------------------------------------------------------------
