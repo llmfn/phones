@@ -13,6 +13,10 @@ from phonekit.schema import Filters
 
 app = Application(__name__)
 
+## You could tweak some design flags to change how the app elements are arranged
+# app.set_design_flag("CHIPS_POSITION", "above_results")
+# app.set_design_flag("FILTER_UI", "popover")
+
 PROMPT = app.read_file("prompt.md")
 PROMPT_SUMMARY = app.read_file("prompt_summary.md")
 
