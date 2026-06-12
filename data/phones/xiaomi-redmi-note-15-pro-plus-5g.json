@@ -1,0 +1,113 @@
+{
+  "id": "xiaomi-redmi-note-15-pro-plus-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 15 Pro+ 5G",
+  "narrative": "The Redmi Note 15 Pro+ 5G is a durability-focused upper-mid phone built around a 200MP OIS main camera, Snapdragon 7s Gen 4 chip, and a large 6.83-inch 1.5K 120Hz quad-curved AMOLED display with up to 3200 nits brightness. It adds a 6500mAh Si/C battery with 100W charging, Gorilla Glass Victus 2, IP66/IP68/IP69/IP69K protection, up to 12GB RAM and 512GB storage, plus Xiaomi AI tools like AI Writing, Interpreter, Search, Circle to Search, and Gemini support. This phone suits users who want a feature-heavy daily driver with strong camera, battery, display, and durability for photography, multitasking, and long travel days.",
+  "specs": {
+    "os": "Xiaomi HyperOS 2",
+    "series": "redmi",
+    "colours": [
+      "Carbon Black",
+      "Coffee Mocha",
+      "Mirage Blue"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      8,
+      12
+    ],
+    "ram_gb": 12,
+    "product_url": "https://www.mi.com/in/product/redmi-note-15-pro-plus-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-15-pro-plus-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-15-pro-plus-5g&from=pc",
+    "chipset": "Snapdragon® 7s Gen 4",
+    "display_inches": 6.83,
+    "display_resolution": "2772x1280",
+    "display_resolution_class": "1.5K",
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 3,
+    "has_ois": true,
+    "has_leica_camera": false,
+    "front_camera_mp": 32,
+    "battery_mah": 6500,
+    "charging_w": 100,
+    "ip_rating": "IP66+IP68+IP69+IP69K",
+    "weight_g": 207,
+    "has_5g": true,
+    "has_nfc": true,
+    "wifi": "Wi-Fi 6",
+    "ai_features": [
+      "Al Writing, Al Speech Recognition, Al Interpreter,Al Search, Al Dynamic Wallpapers, Al Creativity Assistant,and more. Circle to Search with Google, Google Gemini information.",
+      "*Google and Gemini are trademarks of Google LLC. Check responses. Setup required. Compatibility and availability varies.",
+      "In-display fingerprint sensor AI Face Unlock"
+    ],
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "in_stock": 9
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "ai-features",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "value-seeker",
+      "creative"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Carbon Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/665_item_in/27/01/2026/2e82f70b1cd0d35cdfd2332ef540ecee.png",
+      "hex": "#282a2e"
+    },
+    {
+      "name": "Coffee Mocha",
+      "family": "brown",
+      "image": "https://i03.appmifile.com/486_item_in/27/01/2026/a1cb500491af52f525b97f539b3cb4db.png",
+      "hex": "#5b4639"
+    },
+    {
+      "name": "Mirage Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/780_item_in/27/01/2026/75b8968c52926f197e24da79adb7845a.png",
+      "hex": "#95abb7"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 39999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "price": 41999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "price": 44999,
+      "ram_gb": 12
+    }
+  ]
+}

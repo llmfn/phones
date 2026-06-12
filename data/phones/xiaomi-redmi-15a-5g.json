@@ -1,0 +1,101 @@
+{
+  "id": "xiaomi-redmi-15a-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi 15A 5G",
+  "narrative": "Redmi 15A 5G is a large-screen, battery-first entry 5G phone built around a 6.9-inch HD+ 120Hz display, a 6300mAh battery, and an octa-core T8300 5G chip on 6nm. It adds practical everyday hardware like a 32MP rear camera, stereo speakers with 200% volume boost, microSD expansion up to 2TB, IP52 splash resistance, and long software support with HyperOS 3 on Android 16 plus Gemini and Circle to Search. It fits users who want an affordable daily driver with long endurance, basic AI tools, and a big display for media, calls, and routine use.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Ace Black",
+      "Awesome Blue",
+      "Amaze Purple"
+    ],
+    "storage_gb": [
+      64,
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      4,
+      6
+    ],
+    "ram_gb": 6,
+    "product_url": "https://www.mi.com/in/product/redmi-15a-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-15a-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-15a-5g&from=pc",
+    "display_inches": 6.9,
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 32,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 8,
+    "battery_mah": 6300,
+    "charging_w": 15,
+    "ip_rating": "IP52",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "in_stock": 9
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "ai-features"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Ace Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/100_item_in/26/03/2026/038dbbc21f8091316b166aec27ade604.png",
+      "hex": "#1a1b20"
+    },
+    {
+      "name": "Awesome Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/562_item_in/26/03/2026/2ffc2f516503640c13c1d1eaaf21972a.png",
+      "hex": "#9fb6ce"
+    },
+    {
+      "name": "Amaze Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/587_item_in/26/03/2026/88ebae3ceed8f081c8442c46197e466b.png",
+      "hex": "#dfd5e4"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "price": 14999,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "price": 15999,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 17999,
+      "ram_gb": 6
+    }
+  ]
+}

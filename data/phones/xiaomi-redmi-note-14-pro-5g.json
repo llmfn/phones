@@ -1,0 +1,103 @@
+{
+  "id": "xiaomi-redmi-note-14-pro-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 14 Pro 5G",
+  "narrative": "The Redmi Note 14 Pro 5G is a camera-focused mid-range phone built around a 200MP AI camera, a 6.67-inch 1.5K curved AMOLED display, and strong durability features like IP68 protection and Gorilla Glass Victus 2. It runs on the MediaTek Dimensity 7300-Ultra with up to 8GB RAM and 256GB UFS 2.2 storage, and pairs a 5500mAh battery with 45W charging, Dolby Vision, stereo speakers, and Wi-Fi 6 for a well-rounded everyday experience. This phone suits value-seekers who want standout photography, a premium-looking display, and dependable daily-driver performance.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Phantom Purple",
+      "Ivy Green",
+      "Champagne Gold",
+      "Titan Black"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-note-14-pro-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-14-pro-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-14-pro-5g&from=pc",
+    "chipset": "MediaTek Dimensity 7300-Ultra",
+    "display_resolution": "2712x1220",
+    "display_resolution_class": "1.5K",
+    "display_type": "AMOLED",
+    "rear_camera_mp": 50,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 20,
+    "battery_mah": 5500,
+    "charging_w": 45,
+    "ip_rating": "IP68",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "wifi": "Wi-Fi 6",
+    "availability": {
+      "variant_count": 8,
+      "availability_by_status": {
+        "out_of_stock": 8
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "camera-lover",
+      "value-seeker",
+      "power-user"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Phantom Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/662_item_in/21/01/2025/3a7a2a674c3627f5fc8ccc83bead1f31.png",
+      "hex": "#a7a6ca"
+    },
+    {
+      "name": "Ivy Green",
+      "family": "green",
+      "image": "https://i03.appmifile.com/484_item_in/21/01/2025/82cc33408076d6bf1b670adae7ac958b.png",
+      "hex": "#abccc5"
+    },
+    {
+      "name": "Champagne Gold",
+      "family": "gold",
+      "image": "https://i03.appmifile.com/866_item_in/01/07/2025/efe737a5d3ab09f262856cb164bf7ec3.png",
+      "hex": "#cbb0ac"
+    },
+    {
+      "name": "Titan Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/563_item_in/21/01/2025/7cdc8fb1f218454c14392e1f767e4b16.png",
+      "hex": "#1b1b1f"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 23999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 25999,
+      "ram_gb": 8
+    }
+  ]
+}

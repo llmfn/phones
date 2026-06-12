@@ -1,0 +1,87 @@
+{
+  "id": "xiaomi-redmi-note-14-se-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 14 SE 5G",
+  "narrative": "Camera-first and balanced for the price, the Redmi Note 14 SE 5G pairs a MediaTek Dimensity 7025-Ultra chip with a 6.67-inch FHD+ 120Hz display that reaches 2100 nits peak brightness and supports wet touch input. Its standout hardware is the 50MP Sony IMX882 main camera with OIS and EIS, backed by an 8MP ultrawide, 20MP front camera, and 6GB RAM with 128GB storage. This phone suits value-focused users who want a dependable daily driver with a stronger-than-usual camera setup for social, travel, and everyday shooting.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Crimson Art",
+      "Mystique White",
+      "Titan Black"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      6
+    ],
+    "ram_gb": 6,
+    "product_url": "https://www.mi.com/in/product/redmi-note-14-se-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-14-se-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-14-se-5g&from=pc",
+    "chipset": "MediaTek Dimensity 7025-Ultra",
+    "rear_camera_mp": 50,
+    "has_ois": true,
+    "has_leica_camera": false,
+    "front_camera_mp": 20,
+    "battery_mah": 5110,
+    "charging_w": 45,
+    "ip_rating": "IP64",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "wifi": "Wi-Fi 5",
+    "availability": {
+      "variant_count": 3,
+      "availability_by_status": {
+        "out_of_stock": 3
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "travel",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "value-seeker",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Crimson Art",
+      "family": "other",
+      "image": "https://i03.appmifile.com/342_item_in/29/07/2025/35e25eb7aebf19901f9e83496f9379aa.png",
+      "hex": "#672e39"
+    },
+    {
+      "name": "Mystique White",
+      "family": "white",
+      "image": "https://i03.appmifile.com/757_item_in/29/07/2025/27c44a3dbbc0695f0e0fb67bba40d546.png",
+      "hex": "#eef3f6"
+    },
+    {
+      "name": "Titan Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/388_item_in/29/07/2025/07ccee637ab1fd32992b983b9a879998.png",
+      "hex": "#1b1b1f"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 19999,
+      "ram_gb": 6
+    }
+  ]
+}

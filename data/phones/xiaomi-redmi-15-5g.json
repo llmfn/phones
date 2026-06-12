@@ -1,0 +1,102 @@
+{
+  "id": "xiaomi-redmi-15-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi 15 5G",
+  "narrative": "Redmi 15 5G is a battery-first mid-range phone built around a massive 7000mAh cell, 33W charging, and Snapdragon 6s Gen 3 performance for long sessions of everyday use. It pairs a large 6.9-inch FHD+ 144Hz display with a 50MP AI dual camera, IP64 splash resistance, Dolby-certified audio, and up to 8GB RAM with 256GB storage, plus features like AI Erase and AI Sky. This phone suits value-focused users who want long battery life, a big smooth screen, and dependable 5G performance for daily driving, media, and light gaming.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Sandy Purple",
+      "Midnight Black",
+      "Frosted White"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      6,
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-15-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-15-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-15-5g&from=pc",
+    "chipset": "Snapdragon 6s Gen 3",
+    "display_inches": 6.9,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 8,
+    "battery_mah": 7000,
+    "charging_w": 33,
+    "ip_rating": "IP64",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "in_stock": 9
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "productivity",
+      "ai-features"
+    ],
+    "personas": [
+      "value-seeker",
+      "power-user",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Sandy Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/419_item_in/14/08/2025/e54e35085f789ca659864d00494eec21.png",
+      "hex": "#a4a0c0"
+    },
+    {
+      "name": "Midnight Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/174_item_in/14/08/2025/e6b33658ded3b340b3f52f30096c849c.png",
+      "hex": "#0e0f10"
+    },
+    {
+      "name": "Frosted White",
+      "family": "white",
+      "image": "https://i03.appmifile.com/790_item_in/14/08/2025/aa02cd2515ed88d2589d303e83521063.png",
+      "hex": "#dee0df"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 20499,
+      "ram_gb": 6
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 22499,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 24499,
+      "ram_gb": 8
+    }
+  ]
+}

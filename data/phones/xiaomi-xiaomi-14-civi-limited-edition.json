@@ -1,0 +1,91 @@
+{
+  "id": "xiaomi-xiaomi-14-civi-limited-edition",
+  "brand": "Xiaomi",
+  "name": "Xiaomi 14 Civi Limited Edition (Co-engineered with Leica)",
+  "narrative": "A style-forward upper-mid Xiaomi phone with Leica-tuned cameras, the Xiaomi 14 Civi Limited Edition pairs a Snapdragon 8s Gen 3 chip with 12GB RAM, 512GB UFS 4.0 storage, and a slim 180.9g body in standout finishes like Hot Pink, Panda White, and Aqua Blue. Its 6.55-inch 1.5K quad-curved AMOLED display runs at 120Hz with up to 3000 nits peak brightness, while the rear camera system combines a 50MP OIS main camera, 50MP 2x telephoto, 12MP ultra-wide, and Xiaomi AISP/Leica imaging modes for portraits and low-light shooting. This phone is best for camera-focused users and power users who want premium design, strong everyday performance, and creator-friendly imaging without moving into full flagship pricing.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "xiaomi",
+    "colours": [
+      "Hot Pink",
+      "Panda White",
+      "Aqua Blue"
+    ],
+    "storage_gb": [
+      512
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      12
+    ],
+    "ram_gb": 12,
+    "product_url": "https://www.mi.com/in/product/xiaomi-14-civi-limited-edition/",
+    "specs_url": "https://www.mi.com/in/product/xiaomi-14-civi-limited-edition/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=xiaomi-14-civi-limited-edition&from=pc",
+    "chipset": "Snapdragon® 8s Gen 3 Mobile Platform",
+    "display_resolution_class": "1.5K",
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "has_ois": true,
+    "has_leica_camera": true,
+    "front_camera_mp": 32,
+    "battery_mah": 4700,
+    "charging_w": 67,
+    "weight_g": 180,
+    "has_5g": false,
+    "has_nfc": true,
+    "wifi": "Wi-Fi 6",
+    "availability": {
+      "variant_count": 3,
+      "availability_by_status": {
+        "out_of_stock": 3
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "productivity",
+      "ai-features"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "creative",
+      "status-buyer"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Hot Pink",
+      "family": "pink",
+      "image": "https://i03.appmifile.com/184_item_in/05/08/2024/d4da7c9584512c56d4b852176f1f3bc5.png",
+      "hex": "#e95d8b"
+    },
+    {
+      "name": "Panda White",
+      "family": "white",
+      "image": "https://i03.appmifile.com/724_item_in/05/08/2024/ac9ffcab43039f2ec9c6bba9f25162e6.png",
+      "hex": "#e3e3e3"
+    },
+    {
+      "name": "Aqua Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/340_item_in/05/08/2024/469dc3d02fddc74f11e54f63e83ec91f.png",
+      "hex": "#34c2ca"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "price": 59999,
+      "ram_gb": 12
+    }
+  ]
+}

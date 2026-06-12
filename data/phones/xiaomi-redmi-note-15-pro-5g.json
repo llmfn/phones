@@ -1,0 +1,105 @@
+{
+  "id": "xiaomi-redmi-note-15-pro-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 15 Pro 5G",
+  "narrative": "The Redmi Note 15 Pro 5G is a camera-and-endurance focused upper-mid phone built around a 200MP OIS main camera, a very large 6580mAh battery, and a 6.83-inch 1.5K 120Hz AMOLED display that peaks at 3200 nits. It runs on the MediaTek Dimensity 7400-Ultra with 8GB RAM and up to 256GB storage, adds 45W charging, Gorilla Glass Victus 2, and unusually strong IP66/IP68/IP69/IP69K protection, while AI tools like Gemini, Circle to Search, and photo editing features expand everyday utility. This phone fits users who want long battery life, high-resolution photography, and a durable daily driver for travel, media, and general power use.",
+  "specs": {
+    "os": "Xiaomi HyperOS 2",
+    "series": "redmi",
+    "colours": [
+      "Carbon Black",
+      "Silver Ash",
+      "Mirage Blue"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-note-15-pro-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-15-pro-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-15-pro-5g&from=pc",
+    "chipset": "MediaTek Dimensity 7400-Ultra",
+    "display_inches": 6.83,
+    "display_resolution": "2772x1280",
+    "display_resolution_class": "1.5K",
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 200,
+    "rear_camera_count": 3,
+    "has_ois": true,
+    "has_leica_camera": false,
+    "front_camera_mp": 20,
+    "battery_mah": 6580,
+    "charging_w": 45,
+    "ip_rating": "IP66+IP68+IP69+IP69K",
+    "weight_g": 210,
+    "has_5g": true,
+    "has_nfc": false,
+    "wifi": "Wi-Fi 6",
+    "ai_features": [
+      "Al Beautify, Al Film, Circle to Search with Google, \u0003",
+      "Google Gemini\u0003",
+      "*Google and Gemini are trademarks of Google LLC. Check responses. \u0003Setup required. Compatibility and availability varies."
+    ],
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "in_stock": 6
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "travel",
+      "ai-features"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Carbon Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/112_item_in/27/01/2026/4bf726fcdff0279a45b20c0f25ba558b.png",
+      "hex": "#282a2e"
+    },
+    {
+      "name": "Silver Ash",
+      "family": "silver",
+      "image": "https://i03.appmifile.com/691_item_in/27/01/2026/5f314c2a5d4c7d276c1c5525932eba95.png",
+      "hex": "#b7ada7"
+    },
+    {
+      "name": "Mirage Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/908_item_in/27/01/2026/1ca37693311698137c41ca834fa5b8d2.png",
+      "hex": "#95abb7"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 31999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 34999,
+      "ram_gb": 8
+    }
+  ]
+}

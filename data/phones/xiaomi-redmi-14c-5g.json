@@ -1,0 +1,100 @@
+{
+  "id": "xiaomi-redmi-14c-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi 14C 5G",
+  "narrative": "A budget 5G phone built around practicality, the Redmi 14C 5G pairs a Snapdragon 4 Gen 2 chip with a large 6.88-inch 120Hz HD+ display, 5160mAh battery, dual 5G SIM support, and expandable storage up to 1TB. It offers a 50MP main camera, 18W charging with a 33W charger in the box, a side fingerprint sensor, headphone jack, and Xiaomi HyperOS on Android 14 with promised software support. This phone fits value-seekers and everyday users who want affordable 5G, a big screen, and dependable daily-driver basics.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Stargaze Black",
+      "Starlight Blue",
+      "Stardust Purple"
+    ],
+    "storage_gb": [
+      64,
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      4,
+      6
+    ],
+    "ram_gb": 6,
+    "product_url": "https://www.mi.com/in/product/redmi-14c-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-14c-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-14c-5g&from=pc",
+    "chipset": "Snapdragon 4 Gen 2 5G Process4nm Process",
+    "display_inches": 6.88,
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "battery_mah": 5160,
+    "charging_w": 18,
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "out_of_stock": 9
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "productivity"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Stargaze Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/666_item_in/31/10/2025/677c725797c3eeb19fa89964911fd66d.png",
+      "hex": "#000002"
+    },
+    {
+      "name": "Starlight Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/887_item_in/31/10/2025/b5a55b0d60523e0eb716be13e63ef1ba.png",
+      "hex": "#072056"
+    },
+    {
+      "name": "Stardust Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/6_item_in/31/10/2025/e53700e392e65a363756399e4e6efbd5.png",
+      "hex": "#a196bb"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "price": 9499,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "price": 10499,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 11999,
+      "ram_gb": 6
+    }
+  ]
+}

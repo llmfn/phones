@@ -1,0 +1,113 @@
+{
+  "id": "xiaomi-redmi-note-14-pro-plus-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 14 Pro+ 5G",
+  "narrative": "The Redmi Note 14 Pro+ 5G is a feature-heavy upper-mid phone built around a Snapdragon 7s Gen 3 chip, a 6.67-inch 1.5K 120Hz curved AMOLED display, and a large 6200mAh battery with 90W charging. Xiaomi positions camera and AI as its defining strengths, highlighting a 200MP AI camera system, telephoto support, IP68 water resistance, HyperOS on Android 14, and storage options up to 12GB RAM with 512GB. It suits users who want long battery life, a sharper display, strong day-to-day performance, and camera-led versatility without stepping into flagship pricing.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Phantom Purple",
+      "Champagne Gold",
+      "Spectre Blue",
+      "Titan Black"
+    ],
+    "storage_gb": [
+      128,
+      256,
+      512
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      8,
+      12
+    ],
+    "ram_gb": 12,
+    "product_url": "https://www.mi.com/in/product/redmi-note-14-pro-plus-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-14-pro-plus-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-14-pro-plus-5g&from=pc",
+    "chipset": "Snapdragon 7s Gen 3 Mobile Platform",
+    "display_resolution": "2712x1220",
+    "display_resolution_class": "1.5K",
+    "display_type": "AMOLED",
+    "rear_camera_mp": 50,
+    "rear_camera_count": 1,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 20,
+    "battery_mah": 6200,
+    "charging_w": 90,
+    "ip_rating": "IP68",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": true,
+    "wifi": "Wi-Fi 6",
+    "availability": {
+      "variant_count": 12,
+      "availability_by_status": {
+        "out_of_stock": 12
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "gaming",
+      "ai-features"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "value-seeker"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Phantom Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/13_item_in/21/01/2025/ca98fd233fcedcb01939596246274b3c.png",
+      "hex": "#a7a6ca"
+    },
+    {
+      "name": "Champagne Gold",
+      "family": "gold",
+      "image": "https://i03.appmifile.com/532_item_in/01/07/2025/41c072d12911e9c54514a879bfdb2d95.png",
+      "hex": "#cbb0ac"
+    },
+    {
+      "name": "Spectre Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/615_item_in/21/01/2025/4c2a24eca2f26f9f81cc4a8d95bc9c89.png",
+      "hex": "#8eb8c5"
+    },
+    {
+      "name": "Titan Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/691_item_in/21/01/2025/df5eec4a70b3743151bda47924a1f21b.png",
+      "hex": "#1b1b1f"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 28999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 30999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "price": 33999,
+      "ram_gb": 12
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "xiaomi-redmi-a7-pro",
+  "brand": "Xiaomi",
+  "name": "Redmi A7 Pro",
+  "narrative": "Redmi A7 Pro is a budget big-screen battery phone built around a 6.9-inch HD+ display with up to 120Hz refresh rate, a 6300mAh battery, and a UNISOC T7250 chip running HyperOS 3.0 on Android 16. It adds practical extras like IP52 splash resistance, a side fingerprint scanner, 4GB RAM with 64GB storage plus microSD expansion up to 2TB, 15W charging, and entry-level 13MP rear and 8MP front cameras, with Google Gemini and Circle to Search included. This phone fits value-focused users who want long battery life, a large display, and basic smart features for everyday use.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Sunset Orange",
+      "Black"
+    ],
+    "storage_gb": [
+      64
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      4
+    ],
+    "ram_gb": 4,
+    "product_url": "https://www.mi.com/in/product/redmi-a7-pro/",
+    "specs_url": "https://www.mi.com/in/product/redmi-a7-pro/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-a7-pro&from=pc",
+    "display_inches": 6.9,
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 13,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 8,
+    "battery_mah": 6300,
+    "charging_w": 15,
+    "ip_rating": "IP52",
+    "weight_g": 4,
+    "has_5g": true,
+    "has_nfc": false,
+    "wifi": "Wi-Fi 5",
+    "availability": {
+      "variant_count": 2,
+      "availability_by_status": {
+        "in_stock": 2
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "ai-features",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Sunset Orange",
+      "family": "orange",
+      "image": "https://i03.appmifile.com/104_item_in/17/04/2026/311f3079d87674c385c7e4225ad5c27c.png",
+      "hex": "#f0b07a"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/453_item_in/17/04/2026/eb01d2e28b9929108564c6b1778ba61d.png",
+      "hex": "#212025"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "price": 12499,
+      "ram_gb": 4
+    }
+  ]
+}

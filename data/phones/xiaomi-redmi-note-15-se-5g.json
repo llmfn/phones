@@ -1,0 +1,103 @@
+{
+  "id": "xiaomi-redmi-note-15-se-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 15 SE 5G",
+  "narrative": "A slim, curved-display mid-range 5G phone, the Redmi Note 15 SE 5G stands out with its 7.35mm design, 6.77-inch 120Hz AMOLED panel, and Snapdragon 6 Gen 3 chip. It combines a 5800mAh battery with 45W charging, a 50MP AI dual camera with 4K video, up to 8GB RAM and 256GB storage, IP65/IP66 dust and water resistance, dual speakers, and HyperOS features. This phone fits users who want an everyday daily driver with strong battery life, modern display quality, and balanced performance at a value-focused price.",
+  "specs": {
+    "os": "Xiaomi HyperOS 3",
+    "series": "redmi",
+    "colours": [
+      "Carbon Black",
+      "Frosted White",
+      "Crimson Reserve"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      6,
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-note-15-se-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-15-se-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-15-se-5g&from=pc",
+    "chipset": "Snapdragon® 6 Gen 3 Mobile Platform 4nm manufacturing process technology CPU Octa-core processor",
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 20,
+    "battery_mah": 5800,
+    "charging_w": 45,
+    "ip_rating": "IP65+IP66",
+    "weight_g": 178,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "in_stock": 8,
+        "out_of_stock": 1
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "power-user",
+      "professional"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Carbon Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/42_item_in/31/03/2026/6f22da4da3abfd5612a138a753f87068.png",
+      "hex": "#3c3b40"
+    },
+    {
+      "name": "Frosted White",
+      "family": "white",
+      "image": "https://i03.appmifile.com/36_item_in/31/03/2026/db6ce1d2efbae5fa48c90c3e3237e2c4.png",
+      "hex": "#e3e4e6"
+    },
+    {
+      "name": "Crimson Reserve",
+      "family": "other",
+      "image": "https://i03.appmifile.com/924_item_in/31/03/2026/bda94b4f27266cf3e87b7d3e8d31ba87.png",
+      "hex": "#883b4a"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 22999,
+      "ram_gb": 6
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 24999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 26999,
+      "ram_gb": 8
+    }
+  ]
+}

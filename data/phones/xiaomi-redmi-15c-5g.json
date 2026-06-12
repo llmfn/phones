@@ -1,0 +1,102 @@
+{
+  "id": "xiaomi-redmi-15c-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi 15C 5G",
+  "narrative": "Battery-first and built for affordable 5G, the Redmi 15C 5G pairs a 6000mAh battery with a MediaTek Dimensity 6300 chip, 33W charging, and 10W reverse charging for long daily uptime. It also brings a large 6.9-inch 120Hz display, a 50MP main camera, LPDDR4X with UFS 2.2 storage, up to 8GB RAM plus memory extension, microSD expansion up to 1TB, and practical features like a side fingerprint sensor and AI face unlock in a slim 7.99mm body. This phone suits value-focused users who want a big-screen daily driver with strong battery life, light gaming capability, and dependable basics.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Midnight Black",
+      "Moonlight Blue",
+      "Dusk Purple"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      4,
+      6,
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-15c-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-15c-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-15c-5g&from=pc",
+    "chipset": "MediaTek Dimensity 6300 5G processor",
+    "display_inches": 6.9,
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 8,
+    "battery_mah": 6000,
+    "charging_w": 33,
+    "ip_rating": "IP64",
+    "weight_g": 211,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "in_stock": 9
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "gaming",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "power-user",
+      "teen"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Midnight Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/139_item_in/28/11/2025/3687297c8c6c37d89b244e8277e525b9.png",
+      "hex": "#0e0f10"
+    },
+    {
+      "name": "Moonlight Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/766_item_in/28/11/2025/bcf482a32540fcecf71f86fa45bc018d.png",
+      "hex": "#22397e"
+    },
+    {
+      "name": "Dusk Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/486_item_in/28/11/2025/ee52987ad039ee1fa9348707ac901441.png",
+      "hex": "#cdc5df"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "price": 16999,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 18999,
+      "ram_gb": 6
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 20999,
+      "ram_gb": 8
+    }
+  ]
+}

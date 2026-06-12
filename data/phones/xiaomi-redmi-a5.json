@@ -1,0 +1,102 @@
+{
+  "id": "xiaomi-redmi-a5",
+  "brand": "Xiaomi",
+  "name": "Redmi A5",
+  "narrative": "Redmi A5 is a budget 4G phone built around a large 6.88-inch HD+ display with up to 120Hz adaptive refresh rate, a 5200mAh battery, and a basic octa-core processor clocked up to 1.8GHz. It also stands out for practical everyday features like a 32MP AI dual rear camera, side fingerprint sensor, IP52 splash resistance, up to 128GB storage with microSD expansion up to 2TB, and TÜV-certified eye comfort. This phone suits value-focused users who want a big-screen daily driver for calling, streaming, light photography, and all-day use on a tight budget.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Jaisalmer Gold",
+      "Pondicherry Blue",
+      "Just Black"
+    ],
+    "storage_gb": [
+      64,
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      3,
+      4
+    ],
+    "ram_gb": 4,
+    "product_url": "https://www.mi.com/in/product/redmi-a5/",
+    "specs_url": "https://www.mi.com/in/product/redmi-a5/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-a5&from=pc",
+    "display_inches": 6.88,
+    "display_resolution": "1650x720",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 32,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 8,
+    "battery_mah": 5200,
+    "charging_w": 15,
+    "ip_rating": "IP52",
+    "weight_g": 193,
+    "has_5g": false,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 9,
+      "availability_by_status": {
+        "out_of_stock": 9
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Jaisalmer Gold",
+      "family": "gold",
+      "image": "https://i03.appmifile.com/329_item_in/11/04/2025/2a9e8ffe9a3772b764bc3b9cb4e83576.png",
+      "hex": "#E4D2AC"
+    },
+    {
+      "name": "Pondicherry Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/468_item_in/15/04/2025/8283866e709e6d7e71a41c491837caa5.png",
+      "hex": "#8ED6F2"
+    },
+    {
+      "name": "Just Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/154_item_in/11/04/2025/50f7e9d6090496422a43f1c5647f2e9c.png",
+      "hex": "#201F20"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "3 GB + 64 GB",
+      "price": 8999,
+      "ram_gb": 3
+    },
+    {
+      "gb": 64,
+      "label": "3GB+64GB Airtel",
+      "price": 8499,
+      "ram_gb": 3
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "price": 9999,
+      "ram_gb": 4
+    }
+  ]
+}

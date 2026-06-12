@@ -1,0 +1,95 @@
+{
+  "id": "xiaomi-redmi-a7-pro-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi A7 Pro 5G",
+  "narrative": "A large-screen budget 5G phone focused on battery life and practicality, the Redmi A7 Pro 5G pairs a 6.9-inch 120Hz HD+ display with a 6nm octa-core T8300 5G chip, stereo speakers with 200% volume boost, and a 6300mAh battery. It adds a 32MP AI dual rear camera, IP52 splash resistance, microSD expansion up to 2TB, UFS 2.2 storage, Android 16-based HyperOS 3, and long software support with AI features like Google Gemini and Circle to Search. This phone fits value-seekers who want an affordable daily driver for media, basic multitasking, and long-use travel or backup-device scenarios.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Sunset Orange",
+      "Black",
+      "Mist Blue"
+    ],
+    "storage_gb": [
+      64,
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      4
+    ],
+    "ram_gb": 4,
+    "product_url": "https://www.mi.com/in/product/redmi-a7-pro-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-a7-pro-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-a7-pro-5g&from=pc",
+    "display_inches": 6.9,
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 32,
+    "rear_camera_count": 2,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 8,
+    "battery_mah": 6300,
+    "charging_w": 15,
+    "ip_rating": "IP52",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "out_of_stock": 2,
+        "in_stock": 4
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel",
+      "ai-features"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "power-user"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Sunset Orange",
+      "family": "orange",
+      "image": "https://i03.appmifile.com/973_item_in/08/06/2026/cc1453fc8fd3d45d9f9cf7a1ecf79864.png",
+      "hex": "#d68163"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/893_item_in/08/06/2026/b15a1aaf707741b16c110d63af9f73ff.png",
+      "hex": "#212025"
+    },
+    {
+      "name": "Mist Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/100_item_in/08/06/2026/cc36eae96ea2f4c9da1694fae0c2c936.png",
+      "hex": "#9ca9be"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "price": 12999,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "price": 13999,
+      "ram_gb": 4
+    }
+  ]
+}

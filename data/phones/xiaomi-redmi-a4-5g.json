@@ -1,0 +1,92 @@
+{
+  "id": "xiaomi-redmi-a4-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi A4 5G",
+  "narrative": "A budget 5G phone focused on essentials, the Redmi A4 5G pairs a Snapdragon 4s Gen 2 chip with a large 6.88-inch HD+ 120Hz display and a 5160mAh battery with 18W fast charging. It also offers a 50MP main camera, expandable storage up to 1TB, a headphone jack, and up to 6GB RAM with 128GB storage in a simple, practical design. This phone is best for value-focused buyers who want affordable 5G, smooth daily use, and long battery life.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Starry Black",
+      "Sparkle Purple"
+    ],
+    "storage_gb": [
+      64,
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      4,
+      6
+    ],
+    "ram_gb": 6,
+    "product_url": "https://www.mi.com/in/product/redmi-a4-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-a4-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-a4-5g&from=pc",
+    "chipset": "Snapdragon® 4s Gen 2 Mobile Platform",
+    "display_inches": 6.88,
+    "rear_camera_mp": 50,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 5,
+    "battery_mah": 5160,
+    "charging_w": 18,
+    "ip_rating": "IP52",
+    "weight_g": 5,
+    "has_5g": true,
+    "has_nfc": false,
+    "wifi": "Wi-Fi 5",
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "out_of_stock": 6
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Starry Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/738_item_in/21/01/2025/d8f5a301a8af8c815d4889b5cd9171f8.png",
+      "hex": "#1a060d"
+    },
+    {
+      "name": "Sparkle Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/432_item_in/21/01/2025/09e1b40721c3144b3e2ff9de4df38d04.png",
+      "hex": "#c79dd8"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "4 GB + 64 GB",
+      "price": 10999,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "4 GB + 128 GB",
+      "price": 11999,
+      "ram_gb": 4
+    },
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 12999,
+      "ram_gb": 6
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "xiaomi-redmi-a7",
+  "brand": "Xiaomi",
+  "name": "Redmi A7",
+  "narrative": "Redmi A7 is a basic large-screen budget phone built around battery life and everyday practicality, with a 6.88-inch HD+ display, UNISOC T7250 chip, 5200mAh battery, and 15W charging. It adds useful low-cost features like a 90Hz-capable panel, IP52 splash resistance, fingerprint scanner, 13MP rear camera, 3.5mm headphone jack, dedicated microSD slot up to 2TB, and Android 15 with 2 years of OS updates and 4 years of security updates. This phone is for value-focused users who want a simple daily driver for calls, media, and light app use.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Black",
+      "Sky Blue"
+    ],
+    "storage_gb": [
+      64
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      3
+    ],
+    "ram_gb": 3,
+    "product_url": "https://www.mi.com/in/product/redmi-a7/",
+    "specs_url": "https://www.mi.com/in/product/redmi-a7/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-a7&from=pc",
+    "rear_camera_mp": 8,
+    "rear_camera_count": 1,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "charging_w": 15,
+    "ip_rating": "IP52",
+    "weight_g": 4,
+    "has_5g": true,
+    "has_nfc": false,
+    "wifi": "Wi-Fi 5",
+    "availability": {
+      "variant_count": 2,
+      "availability_by_status": {
+        "in_stock": 2
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "ease-of-use",
+      "elderly"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/228_item_in/17/04/2026/0c9a1d032cd77f9d96101c37ad621457.png",
+      "hex": "#212025"
+    },
+    {
+      "name": "Sky Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/268_item_in/17/04/2026/ab616e07f776b62777925ef61d3c0ce2.png",
+      "hex": "#ccdeee"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 64,
+      "label": "3 GB + 64 GB",
+      "price": 11499,
+      "ram_gb": 3
+    }
+  ]
+}

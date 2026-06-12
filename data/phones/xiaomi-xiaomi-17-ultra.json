@@ -1,0 +1,95 @@
+{
+  "id": "xiaomi-xiaomi-17-ultra",
+  "brand": "Xiaomi",
+  "name": "Xiaomi 17 Ultra",
+  "narrative": "A camera-first ultra-premium flagship, the Xiaomi 17 Ultra stands out with a Leica-tuned imaging system built around a 1-inch 50MP main sensor and a 200MP 75-100mm mechanical optical zoom telephoto. It pairs Snapdragon 8 Elite Gen 5, 16GB RAM, 512GB UFS 4.1 storage, and a 6.9-inch class 120Hz HyperRGB OLED display with 3500 nits brightness, while also offering advanced video tools like 8K recording, 4K Dolby Vision up to 120fps, Log video, and a 50MP autofocus selfie camera. This phone is best for camera-focused power users, creators, and buyers who want top-tier photography and video hardware in a flagship device.",
+  "specs": {
+    "os": "Xiaomi HyperOS 3",
+    "series": "xiaomi",
+    "colours": [
+      "White",
+      "Black"
+    ],
+    "storage_gb": [
+      512
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      16
+    ],
+    "ram_gb": 16,
+    "product_url": "https://www.mi.com/in/product/xiaomi-17-ultra/",
+    "specs_url": "https://www.mi.com/in/product/xiaomi-17-ultra/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=xiaomi-17-ultra&from=pc",
+    "chipset": "Snapdragon® 8 Elite Gen 5 Mobile Platform 3nm manufacturing process CPU",
+    "display_resolution": "2608x1200",
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 5,
+    "has_ois": true,
+    "has_leica_camera": true,
+    "front_camera_mp": 50,
+    "battery_mah": 6000,
+    "charging_w": 90,
+    "wireless_charging_w": 50,
+    "weight_g": 218,
+    "has_5g": false,
+    "has_nfc": true,
+    "wifi": "Wi-Fi 7",
+    "ai_features": [
+      "AI Writing",
+      "AI Speech Recognition",
+      "AI Interpreter",
+      "AI Search",
+      "AI Dynamic Wallpapers",
+      "AI Creativity Assistant",
+      "Circle to Search with Google",
+      "Google Gemini *Visuals and results for illustrative purposes and may vary."
+    ],
+    "availability": {
+      "variant_count": 2,
+      "availability_by_status": {
+        "in_stock": 2
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "videography",
+      "gaming",
+      "ai-features"
+    ],
+    "personas": [
+      "camera-lover",
+      "creative",
+      "power-user",
+      "status-buyer"
+    ],
+    "price_segment": "ultra-premium"
+  },
+  "colors": [
+    {
+      "name": "White",
+      "family": "white",
+      "image": "https://i03.appmifile.com/174_item_in/18/03/2026/9cd3d90465192956e713ff15e1a5eb0c.png",
+      "hex": "#FFFFFF"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/309_item_in/18/03/2026/f82148476558de66665a829c9b1e4a9e.png",
+      "hex": "#2f2f33"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 512,
+      "label": "16 GB + 512 GB",
+      "price": 139999,
+      "ram_gb": 16
+    }
+  ]
+}

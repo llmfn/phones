@@ -1,0 +1,99 @@
+{
+  "id": "xiaomi-xiaomi-17",
+  "brand": "Xiaomi",
+  "name": "Xiaomi 17",
+  "narrative": "A compact flagship with a strong photography focus, the Xiaomi 17 pairs the Snapdragon 8 Elite Gen 5 chip with a Leica-tuned triple 50MP camera system, including a Light Fusion 950 main sensor, floating telephoto, OIS, and advanced focus tools. It also stands out with a 1-120Hz CrystalRes OLED display that peaks at 3500 nits, LPDDR5X and UFS 4.1 storage, Xiaomi Shield Glass, a silicon-carbon battery, and HyperOS 3 with Qualcomm AI capabilities. This phone is best suited to users who want flagship performance and versatile camera hardware in a relatively compact, premium daily-driver.",
+  "specs": {
+    "os": "Xiaomi HyperOS 3",
+    "series": "xiaomi",
+    "colours": [
+      "Black",
+      "Venture Green",
+      "Ice Blue"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      12
+    ],
+    "ram_gb": 12,
+    "product_url": "https://www.mi.com/in/product/xiaomi-17/",
+    "specs_url": "https://www.mi.com/in/product/xiaomi-17/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=xiaomi-17&from=pc",
+    "chipset": "Snapdragon® 8 Elite Gen 5 Mobile Platform",
+    "display_resolution": "2656x1220",
+    "display_type": "OLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "has_ois": true,
+    "has_leica_camera": true,
+    "front_camera_mp": 50,
+    "battery_mah": 6330,
+    "charging_w": 100,
+    "wireless_charging_w": 50,
+    "ip_rating": "IP68",
+    "weight_g": 191,
+    "has_5g": false,
+    "has_nfc": true,
+    "wifi": "Wi-Fi 7",
+    "availability": {
+      "variant_count": 5,
+      "availability_by_status": {
+        "in_stock": 3,
+        "out_of_stock": 2
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "productivity",
+      "ai-features"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "professional"
+    ],
+    "price_segment": "flagship"
+  },
+  "colors": [
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/370_item_in/04/05/2026/0ea65bedd0531c5c64adc5490d2c0107.png",
+      "hex": "#27292c"
+    },
+    {
+      "name": "Venture Green",
+      "family": "green",
+      "image": "https://i03.appmifile.com/782_item_in/04/05/2026/ba3bc30c2e917f625305276b0e12cd70.png",
+      "hex": "#698c84"
+    },
+    {
+      "name": "Ice Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/18_item_in/04/05/2026/c8cce05d1fff93fc8444bcb0983ffd65.png",
+      "hex": "#d7e4f0"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "12 GB + 256 GB",
+      "price": 89999,
+      "ram_gb": 12
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "price": 89999,
+      "ram_gb": 12
+    }
+  ]
+}

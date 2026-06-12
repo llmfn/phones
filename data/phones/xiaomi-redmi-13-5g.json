@@ -1,0 +1,94 @@
+{
+  "id": "xiaomi-redmi-13-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi 13 5G",
+  "narrative": "A budget 5G phone built around a large 6.79-inch FHD+ 120Hz display and a 108MP main camera, the Redmi 13 5G focuses on big-screen everyday usability with unusually high-resolution photography for its class. It runs on the Snapdragon 4 Gen 2 AE with 6GB or 8GB RAM, 128GB UFS 2.2 storage, a 5030mAh battery with 33W charging, and practical extras like Gorilla Glass 3, IP53 splash resistance, a headphone jack, microSD expansion, and 2 Android updates plus 4 years of security support. This phone is best for value-focused users, students, and daily drivers who want affordable 5G, long battery life, and a versatile main camera.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "redmi",
+    "colours": [
+      "Black Diamond",
+      "Hawaiian Blue",
+      "Orchid Pink"
+    ],
+    "storage_gb": [
+      128
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      6,
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-13-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-13-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-13-5g&from=pc",
+    "chipset": "Snapdragon® 4 Gen 2 AE Mobile Platform",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 108,
+    "rear_camera_count": 3,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 13,
+    "battery_mah": 5030,
+    "charging_w": 33,
+    "ip_rating": "IP53",
+    "weight_g": 205,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "out_of_stock": 6
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "photography",
+      "travel"
+    ],
+    "personas": [
+      "value-seeker",
+      "teen",
+      "ease-of-use"
+    ],
+    "price_segment": "budget"
+  },
+  "colors": [
+    {
+      "name": "Black Diamond",
+      "family": "black",
+      "image": "https://i03.appmifile.com/60_item_in/11/07/2024/ce940cd17384789d29ef4259f88b69ae.jpg",
+      "hex": "#2b2b31"
+    },
+    {
+      "name": "Hawaiian Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/628_item_in/11/07/2024/1cac26c1e9ef8f1a3a594bef22fdb305.jpg",
+      "hex": "#ccdee6"
+    },
+    {
+      "name": "Orchid Pink",
+      "family": "pink",
+      "image": "https://i03.appmifile.com/84_item_in/11/07/2024/a81eb2562467b397b488f18bd4cc2506.jpg",
+      "hex": "#e6d1db"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "6 GB + 128 GB",
+      "price": 12499,
+      "ram_gb": 6
+    },
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 13999,
+      "ram_gb": 8
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "id": "xiaomi-redmi-note-15-5g",
+  "brand": "Xiaomi",
+  "name": "Redmi Note 15 5G",
+  "narrative": "The Redmi Note 15 5G is a slim, durability-focused mid-range phone built around a curved 6.77-inch AMOLED display, IP66 protection, and high-durability display glass. It pairs a Snapdragon 6 Gen 3 chip with 8GB RAM, up to 256GB UFS 2.2 storage, a 5520mAh battery with 45W charging, dual speakers, and a 108MP main camera with 8MP ultra-wide plus 4K video recording. This phone fits users who want a daily driver with long battery life, solid media experience, and dependable features under Rs 30,000.",
+  "specs": {
+    "os": "Xiaomi HyperOS 2",
+    "series": "redmi",
+    "colours": [
+      "Mist Purple",
+      "Black",
+      "Glacier Blue"
+    ],
+    "storage_gb": [
+      128,
+      256
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      8
+    ],
+    "ram_gb": 8,
+    "product_url": "https://www.mi.com/in/product/redmi-note-15-5g/",
+    "specs_url": "https://www.mi.com/in/product/redmi-note-15-5g/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=redmi-note-15-5g&from=pc",
+    "chipset": "Snapdragon® 6 Gen 3 Mobile Platform 4nm manufacturing process technology",
+    "display_inches": 6.77,
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 108,
+    "rear_camera_count": 3,
+    "has_ois": false,
+    "has_leica_camera": false,
+    "front_camera_mp": 20,
+    "battery_mah": 5520,
+    "charging_w": 45,
+    "ip_rating": "IP65+IP66",
+    "weight_g": 178,
+    "has_5g": true,
+    "has_nfc": false,
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "in_stock": 6
+      },
+      "has_available_variant": true
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "daily-driver",
+      "productivity",
+      "travel",
+      "photography"
+    ],
+    "personas": [
+      "value-seeker",
+      "professional",
+      "power-user"
+    ],
+    "price_segment": "mid-range"
+  },
+  "colors": [
+    {
+      "name": "Mist Purple",
+      "family": "purple",
+      "image": "https://i03.appmifile.com/245_item_in/31/12/2025/db2fa4bf5bc0aea5149e207a841e8360.png",
+      "hex": "#cfcce7"
+    },
+    {
+      "name": "Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/287_item_in/31/12/2025/e926857768d71eba61dbaf0337a5992a.png",
+      "hex": "#4b5257"
+    },
+    {
+      "name": "Glacier Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/110_item_in/31/12/2025/23ff7bf309c6542e5f1d515fd1a578b9.png",
+      "hex": "#bdd6e0"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 128,
+      "label": "8 GB + 128 GB",
+      "price": 26999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 29999,
+      "ram_gb": 8
+    }
+  ]
+}

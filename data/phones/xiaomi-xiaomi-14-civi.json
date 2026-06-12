@@ -1,0 +1,97 @@
+{
+  "id": "xiaomi-xiaomi-14-civi",
+  "brand": "Xiaomi",
+  "name": "Xiaomi 14 CIVI (Co-engineered with Leica)",
+  "narrative": "A slim, camera-centric upper-mid phone, the Xiaomi 14 CIVI stands out with Leica-tuned imaging in a light 177.6-179.3g body and a powerful Snapdragon 8s Gen 3 chip. It pairs a 6.55-inch 1.5K quad-curved 120Hz AMOLED display with 3000-nit peak brightness, LPDDR5X RAM, UFS 4.0 storage up to 12GB + 512GB, and a versatile rear setup with 50MP main OIS, 50MP 2x telephoto, and 12MP ultra-wide cameras plus advanced focus and RAW features. Priced in the upper-mid segment, it fits users who want strong photography and flagship-like everyday performance without moving into full flagship pricing.",
+  "specs": {
+    "os": "Android (Xiaomi HyperOS)",
+    "series": "xiaomi",
+    "colours": [
+      "Matcha Green",
+      "Shadow Black",
+      "Cruise Blue"
+    ],
+    "storage_gb": [
+      256,
+      512
+    ],
+    "price_source": "scraped",
+    "ram_options_gb": [
+      8,
+      12
+    ],
+    "ram_gb": 12,
+    "product_url": "https://www.mi.com/in/product/xiaomi-14-civi/",
+    "specs_url": "https://www.mi.com/in/product/xiaomi-14-civi/specs/",
+    "api_url": "https://in-go.buy.mi.com/in/v2/item/productdetail?tag=xiaomi-14-civi&from=pc",
+    "chipset": "Snapdragon® 8s Gen 3 Mobile Platform",
+    "display_resolution_class": "1.5K",
+    "display_type": "AMOLED",
+    "refresh_rate_hz": 120,
+    "rear_camera_mp": 50,
+    "rear_camera_count": 2,
+    "has_ois": true,
+    "has_leica_camera": true,
+    "front_camera_mp": 32,
+    "battery_mah": 4700,
+    "charging_w": 67,
+    "weight_g": 179,
+    "has_5g": false,
+    "has_nfc": true,
+    "wifi": "Wi-Fi 6",
+    "availability": {
+      "variant_count": 6,
+      "availability_by_status": {
+        "out_of_stock": 6
+      },
+      "has_available_variant": false
+    }
+  },
+  "signals": {
+    "use_cases": [
+      "photography",
+      "daily-driver",
+      "productivity"
+    ],
+    "personas": [
+      "camera-lover",
+      "power-user",
+      "creative"
+    ],
+    "price_segment": "upper-mid"
+  },
+  "colors": [
+    {
+      "name": "Matcha Green",
+      "family": "green",
+      "image": "https://i03.appmifile.com/357_item_in/06/08/2024/a10cd02ff445a719887e5f70e82c691c.jpg",
+      "hex": "#b3cab2"
+    },
+    {
+      "name": "Shadow Black",
+      "family": "black",
+      "image": "https://i03.appmifile.com/327_item_in/06/08/2024/784824caf4ebe3e6cef22a2c34de5e66.jpg",
+      "hex": "#444549"
+    },
+    {
+      "name": "Cruise Blue",
+      "family": "blue",
+      "image": "https://i03.appmifile.com/827_item_in/06/08/2024/7eaaf672e54e53ecb7efac46efedb860.jpg",
+      "hex": "#9cc7ea"
+    }
+  ],
+  "storage_options": [
+    {
+      "gb": 256,
+      "label": "8 GB + 256 GB",
+      "price": 33999,
+      "ram_gb": 8
+    },
+    {
+      "gb": 512,
+      "label": "12 GB + 512 GB",
+      "price": 35999,
+      "ram_gb": 12
+    }
+  ]
+}
