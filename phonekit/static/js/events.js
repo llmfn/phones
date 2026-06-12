@@ -22,6 +22,7 @@ import {
   renderFilters,
   renderChips,
   renderTrace,
+  renderSearchMode,
   updatePriceUI,
 } from "./render.js";
 
@@ -53,6 +54,7 @@ export async function runQuery() {
   renderChips(state.filters);
   state.lastTrace = data.trace ?? [];
   renderTrace(state.lastTrace);
+  renderSearchMode(state.lastTrace);
 }
 
 // Stop the dragged thumb from crossing the other one.

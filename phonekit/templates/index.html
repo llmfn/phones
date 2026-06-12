@@ -3,45 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>phones</title>
+    <title>Phones</title>
     <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
   <body>
-    <!-- One shell, two states. data-state="zero" shows just the centered search
-         box; data-state="search" reveals the three zones. The search box is the
-         same element in both states — CSS moves it, it does not resize. -->
+    <!-- One shell, two states. data-state="zero" shows the wordmark and search
+         box centered; data-state="search" moves them into the top nav and
+         reveals the three zones. The search box is the same element in both
+         states — CSS moves it, it does not resize. -->
     <div id="app" class="app" data-state="zero">
       <header class="topbar">
-        <form id="search-form" class="search" role="search">
-          <input
-            id="query"
-            class="search-input"
-            type="text"
-            placeholder="Find a phone — describe what you need"
-            autocomplete="off"
-            aria-label="Search phones"
-          />
-        </form>
-        <div id="chips" class="chips" aria-label="Active filters"></div>
+        <div class="wordmark">Phones</div>
+        <div class="search-area">
+          <form id="search-form" class="search" role="search">
+            <svg
+              class="search-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.8-3.8" />
+            </svg>
+            <input
+              id="query"
+              class="search-input"
+              type="text"
+              placeholder="Find a phone — describe what you need"
+              autocomplete="off"
+              aria-label="Search phones"
+            />
+            <span id="search-mode" class="search-badge" hidden></span>
+          </form>
+          <div id="chips" class="chips" aria-label="Active filters"></div>
+        </div>
       </header>
 
       <div class="shell">
-        <aside class="rail filters" aria-label="Filters">
-          <h2 class="rail-title">Filters</h2>
-          <div id="filters"></div>
-          <button id="reset" class="btn btn-ghost btn-sm" type="button">Reset</button>
-        </aside>
-
         <section class="results" aria-label="Results">
           <div id="summary" class="summary" style="display:none"></div>
           <div id="results-head" class="results-head"></div>
           <div id="results" class="results-grid"></div>
         </section>
 
+        <aside class="rail filters" aria-label="Filters">
+          <h2 class="rail-title">Filters</h2>
+          <div id="filters"></div>
+          <button id="reset" class="btn btn-ghost btn-sm" type="button">Reset</button>
+        </aside>
+
         <aside class="rail trace-rail" aria-label="Trace">
           <div class="trace-head">
             <h2 class="trace-title">Trace</h2>
-            <button id="copy-trace" class="btn btn-ghost btn-sm" type="button">
+            <button id="copy-trace" class="btn btn-trace btn-sm" type="button">
               copy as JSON
             </button>
           </div>

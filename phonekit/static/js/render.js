@@ -269,6 +269,20 @@ function chip(text, data) {
   return span;
 }
 
+// --- Search-mode badge ---
+
+// The badge on the search bar reflects which engine the layer actually ran,
+// read off the trace step names rather than any config the frontend holds.
+export function renderSearchMode(trace) {
+  const badge = document.getElementById("search-mode");
+  const names = (trace ?? []).map((step) => step.name ?? "");
+  const semantic = names.some((n) => n.includes("search_semantic"));
+  const keyword = names.some((n) => n.includes("search_bm25"));
+  const mode = semantic && keyword ? "hybrid" : semantic ? "semantic" : keyword ? "keyword" : null;
+  badge.hidden = !mode;
+  badge.textContent = mode ?? "";
+}
+
 // --- Trace ---
 
 const KNOWN_STATUSES = ["success", "fallback", "error", "skip"];
@@ -294,10 +308,37 @@ export function renderTrace(trace) {
 
     const detail = el("div", "trace-detail");
     detail.appendChild(el("div", "io-label", "input"));
-    detail.appendChild(el("pre", null, JSON.stringify(step.input ?? {}, null, 2)));
+    detail.appendChild(jsonPre(step.input ?? {}));
     detail.appendChild(el("div", "io-label", "output"));
-    detail.appendChild(el("pre", null, JSON.stringify(step.output ?? {}, null, 2)));
+    detail.appendChild(jsonPre(step.output ?? {}));
     row.appendChild(detail);
     list.appendChild(row);
   }
+}
+
+// A <pre> of pretty-printed JSON with syntax-coloured spans (.tok-*). Built
+// from text nodes, never innerHTML, so values cannot inject markup.
+const JSON_TOKEN = /("(?:\\.|[^"\\])*")(\s*:)?|\b(?:true|false|null)\b|-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/g;
+
+function jsonPre(value) {
+  const json = JSON.stringify(value, null, 2);
+  const pre = el("pre");
+  let last = 0;
+  for (const m of json.matchAll(JSON_TOKEN)) {
+    if (m.index > last) pre.append(json.slice(last, m.index));
+    if (m[1] !== undefined) {
+      // A string is a key when followed by a colon; the colon stays plain.
+      pre.append(el("span", m[2] ? "tok-key" : "tok-str", m[1]));
+      if (m[2]) pre.append(m[2]);
+    } else if (m[0] === "true" || m[0] === "false") {
+      pre.append(el("span", "tok-bool", m[0]));
+    } else if (m[0] === "null") {
+      pre.append(el("span", "tok-null", m[0]));
+    } else {
+      pre.append(el("span", "tok-num", m[0]));
+    }
+    last = m.index + m[0].length;
+  }
+  pre.append(json.slice(last));
+  return pre;
 }
