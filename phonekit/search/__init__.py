@@ -17,11 +17,15 @@
   without limiting what the caller's filters receive.
 """
 
-from .. import config, trace
+from .. import trace
 from ..schema import Product
 from .bm25 import tokenize
-from .embeddings import corpus_embeddings, cosine, embed
+from .embeddings import EMBEDDING_MODEL, corpus_embeddings, cosine, embed
 from .index import catalog_index
+
+# How many semantic scores to include in the trace. Search still ranks the full
+# catalogue so shared filtering can run after ranking.
+SEMANTIC_TRACE_TOP_N = 10
 
 
 def search_bm25(query: str) -> list[Product]:
@@ -59,8 +63,8 @@ def search_semantic(query: str) -> list[Product]:
         return [Product.from_entry(e) for e in entries]
     step_input = {
         "query": query,
-        "model": config.EMBEDDING_MODEL,
-        "trace_top_n": config.SEMANTIC_TRACE_TOP_N,
+        "model": EMBEDDING_MODEL,
+        "trace_top_n": SEMANTIC_TRACE_TOP_N,
     }
     with trace.new_step(name="search_semantic", input=step_input) as step:
         query_vector = embed([query])[0]
@@ -70,7 +74,7 @@ def search_semantic(query: str) -> list[Product]:
         )
         # Every phone gets ranked -- cosine never whiffs -- so only the top
         # scores are worth showing in the trace.
-        shown_scores = scored[: config.SEMANTIC_TRACE_TOP_N]
+        shown_scores = scored[: SEMANTIC_TRACE_TOP_N]
         step.set_output(
             {
                 "ranked_candidates": len(scored),

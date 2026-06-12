@@ -16,11 +16,14 @@ every storage tier.
 
 import json
 from functools import lru_cache
+from pathlib import Path
 from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
-from . import config
+# The phone catalogue: one JSON document per phone. An absolute path anchored
+# to the repo root so it works regardless of working directory.
+PHONES_DIR = Path(__file__).resolve().parent.parent / "data" / "phones"
 
 
 class Color(BaseModel):
@@ -82,9 +85,9 @@ class CatalogEntry:
 @lru_cache(maxsize=1)
 def load_catalog() -> tuple[CatalogEntry, ...]:
     """Read and validate every phone document, sorted by id for stable output."""
-    paths = sorted(config.PHONES_DIR.glob("*.json"))
+    paths = sorted(PHONES_DIR.glob("*.json"))
     if not paths:
-        raise RuntimeError(f"No phone documents found in {config.PHONES_DIR}")
+        raise RuntimeError(f"No phone documents found in {PHONES_DIR}")
     entries = []
     for path in paths:
         raw = json.loads(path.read_text())

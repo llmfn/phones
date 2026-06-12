@@ -19,19 +19,21 @@ import hashlib
 import json
 import functools
 
-from .. import llm, config
-from ..catalog import CatalogEntry, load_catalog
+from .. import llm
+from ..catalog import PHONES_DIR, CatalogEntry, load_catalog
+
+EMBEDDING_MODEL = "text-embedding-3-small"
 
 # Where the narrative-embedding cache lives. data/cache/ is gitignored: the
 # phone catalogue is baked data, but embeddings are computed live on first
 # semantic startup so the class sees it happen.
-EMBEDDINGS_PATH = config.PHONES_DIR.parent / "cache" / "phones_embeddings.json"
+EMBEDDINGS_PATH = PHONES_DIR.parent / "cache" / "phones_embeddings.json"
 
 
 def embed(texts: list[str]) -> list[list[float]]:
     """Embed texts in one OpenAI API call, in order."""
     client = llm.get_openai_client()
-    response = client.embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
+    response = client.embeddings.create(model=EMBEDDING_MODEL, input=texts)
     return [item.embedding for item in response.data]
 
 
@@ -53,7 +55,7 @@ def _narrative_hash(narrative: str) -> str:
 def _is_fresh(entry: CatalogEntry, cached: dict | None) -> bool:
     return (
         cached is not None
-        and cached.get("model") == config.EMBEDDING_MODEL
+        and cached.get("model") == EMBEDDING_MODEL
         and cached.get("narrative_sha256") == _narrative_hash(entry.doc.narrative)
     )
 
@@ -76,13 +78,13 @@ def corpus_embeddings() -> tuple[tuple[CatalogEntry, ...], list[list[float]]]:
     if stale:
         print(
             f"[embeddings] embedding {len(stale)} narrative(s) "
-            f"with {config.EMBEDDING_MODEL} ...",
+            f"with {EMBEDDING_MODEL} ...",
             flush=True,
         )
         for entry, vector in zip(stale, embed([e.doc.narrative for e in stale])):
             print(f"[embeddings]   {entry.doc.name}", flush=True)
             cache[entry.doc.id] = {
-                "model": config.EMBEDDING_MODEL,
+                "model": EMBEDDING_MODEL,
                 "narrative_sha256": _narrative_hash(entry.doc.narrative),
                 "embedding": vector,
             }
