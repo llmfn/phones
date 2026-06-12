@@ -10,6 +10,7 @@ the ``Application`` instance and are validated against this registry.
 DESIGN_FLAGS = {
     "CHIPS_POSITION": ["under_search", "above_results"],
     "FILTER_UI": ["sidebar", "popover"],
+    "CONVERSATION_UI": ["off", "left_sidebar"],
 }
 
 

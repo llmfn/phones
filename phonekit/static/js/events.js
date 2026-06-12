@@ -13,6 +13,8 @@ import {
   setPrice,
   clearPrice,
   clearFilters,
+  resetConversation,
+  addConversationMessage,
   buildPayload,
   parseHash,
   toHash,
@@ -23,10 +25,17 @@ import {
   renderSummary,
   renderFilters,
   renderChips,
+  renderConversation,
   renderTrace,
   renderSearchMode,
   updatePriceUI,
 } from "./render.js";
+
+const DUMMY_REPLY = "Received your message";
+
+function hasConversationUi() {
+  return document.getElementById("app").dataset.conversationUi === "left_sidebar";
+}
 
 // Mirror the in-memory search state into the URL fragment. A new search pushes
 // a history entry (see the submit handler); everything else rewrites the
@@ -44,11 +53,15 @@ export function applyUrl() {
   state.filters = filters;
   state.priceBounds = null;
   document.getElementById("query").value = query;
-  if (query) runQuery();
-  else setAppState("zero");
+  if (query) runQuery({ resetThread: true });
+  else {
+    resetConversation(null);
+    renderConversation(state.conversation);
+    setAppState("zero");
+  }
 }
 
-export async function runQuery() {
+export async function runQuery({ resetThread = false } = {}) {
   setAppState("search");
   syncUrl();
   const payload = buildPayload();
@@ -60,6 +73,10 @@ export async function runQuery() {
   } catch (err) {
     renderResults([]);
     renderSummary(null);
+    if (resetThread) {
+      resetConversation(null);
+      renderConversation(state.conversation);
+    }
     document.getElementById("results-head").textContent = err.message;
     renderTrace([]);
     return;
@@ -75,6 +92,10 @@ export async function runQuery() {
   }
 
   renderResults(data.products ?? []);
+  if (resetThread && hasConversationUi()) {
+    resetConversation(data.summary);
+    renderConversation(state.conversation);
+  }
   renderSummary(data.summary);
   renderFilters(data.facets ?? [], state.filters, state.priceBounds);
   renderChips(state.filters);
@@ -141,6 +162,25 @@ function bindFilterPopover() {
 export function bindEvents() {
   bindFilterPopover();
 
+  const conversationForm = document.getElementById("conversation-form");
+  conversationForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = document.getElementById("conversation-input");
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = "";
+    addConversationMessage("user", text);
+    addConversationMessage("assistant", DUMMY_REPLY);
+    renderConversation(state.conversation);
+  });
+
+  document.getElementById("conversation-input")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      conversationForm?.requestSubmit();
+    }
+  });
+
   document.getElementById("search-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const value = document.getElementById("query").value.trim();
@@ -151,7 +191,7 @@ export function bindEvents() {
     clearFilters();
     state.priceBounds = null;
     syncUrl("push");
-    runQuery();
+    runQuery({ resetThread: true });
   });
 
   window.addEventListener("popstate", applyUrl);

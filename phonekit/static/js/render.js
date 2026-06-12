@@ -36,6 +36,7 @@ export function setAppState(name) {
 
 export function renderSummary(summary) {
   const div = document.getElementById("summary");
+  if (conversationEnabled()) summary = null;
   if (summary) {
     div.textContent = summary;
     div.style.display = "";
@@ -43,6 +44,30 @@ export function renderSummary(summary) {
     div.textContent = "";
     div.style.display = "none";
   }
+}
+
+function conversationEnabled() {
+  return document.getElementById("app").dataset.conversationUi === "left_sidebar";
+}
+
+export function renderConversation(messages) {
+  const thread = document.getElementById("conversation-thread");
+  if (!thread) return;
+
+  thread.innerHTML = "";
+  if (!messages.length) {
+    thread.appendChild(el("div", "conversation-empty", "Search to start a conversation."));
+    return;
+  }
+
+  for (const message of messages) {
+    const row = el("div", `message-row ${message.role}`);
+    const bubble = el("div", "message-bubble", message.content);
+    row.appendChild(bubble);
+    thread.appendChild(row);
+  }
+
+  thread.scrollTop = thread.scrollHeight;
 }
 
 export function renderResults(products) {

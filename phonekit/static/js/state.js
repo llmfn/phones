@@ -1,8 +1,8 @@
 // In-memory app state. Search state (query + filters) mirrors the URL
 // fragment — #q=…&brand=…&color=…&price=min-max — so a URL reproduces a
 // search and the bare URL is the zero state. localStorage holds only the
-// stable user id (sent as a bearer token). There is no chat history — this
-// is a product-search app, not a chatbot.
+// stable user id (sent as a bearer token). Conversation messages are held in
+// memory only and disappear on page refresh.
 
 const KEYS = {
   userId: "llmfn_user_id",
@@ -44,6 +44,7 @@ export const state = {
   priceBounds: null,
   // Latest trace returned by the backend (for "copy as JSON").
   lastTrace: [],
+  conversation: [],
 };
 
 if (!state.userId) {
@@ -70,6 +71,14 @@ export function hasFilters() {
 
 export function setQuery(q) {
   state.query = q;
+}
+
+export function resetConversation(summary) {
+  state.conversation = summary ? [{ role: "assistant", content: summary }] : [];
+}
+
+export function addConversationMessage(role, content) {
+  state.conversation.push({ role, content });
 }
 
 // --- URL fragment (de)serialization ---

@@ -30,6 +30,24 @@
       </aside>
     {%- endmacro %}
 
+    {% macro conversation_panel() -%}
+      <aside id="conversation" class="rail conversation-rail" aria-label="Conversation">
+        <div class="conversation-head">
+          <h2 class="rail-title">Conversation</h2>
+        </div>
+        <div id="conversation-thread" class="conversation-thread" aria-live="polite"></div>
+        <form id="conversation-form" class="conversation-form">
+          <textarea
+            id="conversation-input"
+            class="conversation-input"
+            rows="3"
+            placeholder="Reply with what matters next"
+            aria-label="Conversation reply"
+          ></textarea>
+        </form>
+      </aside>
+    {%- endmacro %}
+
     <!-- One shell, two states. data-state="zero" shows the wordmark and search
          box centered; data-state="search" moves them into the top nav and
          reveals the three zones. The search box is the same element in both
@@ -40,6 +58,7 @@
       data-state="zero"
       data-chips-position="{{ design_flags.CHIPS_POSITION }}"
       data-filter-ui="{{ design_flags.FILTER_UI }}"
+      data-conversation-ui="{{ design_flags.CONVERSATION_UI }}"
     >
       <header class="topbar">
         <a class="wordmark" href="#">Phones</a>
@@ -93,6 +112,10 @@
       </header>
 
       <div class="shell">
+        {% if design_flags.CONVERSATION_UI == "left_sidebar" %}
+          {{ conversation_panel() }}
+        {% endif %}
+
         <section class="results" aria-label="Results">
           {% if design_flags.CHIPS_POSITION == "above_results" %}
             <div class="results-toolbar">
