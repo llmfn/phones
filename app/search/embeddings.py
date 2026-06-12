@@ -21,8 +21,10 @@ from .. import config
 from ..catalog import CatalogEntry, load_catalog
 
 
-def embed(texts: list[str]) -> list[list[float]]:
-    """Embed texts in one OpenAI API call, in order."""
+@lru_cache(maxsize=1)
+def _client():
+    """One OpenAI client per process, so query embeddings reuse the HTTP
+    connection instead of paying DNS + TLS setup on every request."""
     if not config.OPENAI_API_KEY:
         raise RuntimeError(
             "SEARCH_MODE is 'semantic' but OPENAI_API_KEY is not set in the "
@@ -30,8 +32,12 @@ def embed(texts: list[str]) -> list[list[float]]:
         )
     from openai import OpenAI  # deferred so bm25 mode never needs the package
 
-    client = OpenAI(api_key=config.OPENAI_API_KEY)
-    response = client.embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
+    return OpenAI(api_key=config.OPENAI_API_KEY)
+
+
+def embed(texts: list[str]) -> list[list[float]]:
+    """Embed texts in one OpenAI API call, in order."""
+    response = _client().embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
     return [item.embedding for item in response.data]
 
 
