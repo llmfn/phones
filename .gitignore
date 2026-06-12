@@ -151,3 +151,5 @@ __pycache__/
 
 # Locally computed caches (e.g. narrative embeddings) -- rebuilt on startup
 data/cache/
+
+settings.py

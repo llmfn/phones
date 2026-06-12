@@ -1,0 +1,4 @@
+"""Settings for the Phone Recommender application.
+"""
+# Add your OpenAI API Key here
+OPENAI_API_KEY = "sk-proj-..." 
