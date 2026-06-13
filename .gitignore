@@ -153,4 +153,7 @@ __pycache__/
 data/cache/
 data/state/
 
+# Persistent user profile -- local to each developer's session
+data/memory/
+
 settings.py

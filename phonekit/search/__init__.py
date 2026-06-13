@@ -23,9 +23,13 @@ from .bm25 import tokenize
 from .embeddings import EMBEDDING_MODEL, corpus_embeddings, cosine, embed
 from .index import catalog_index
 
-# How many semantic scores to include in the trace. Search still ranks the full
-# catalogue so shared filtering can run after ranking.
+# How many semantic scores to include in the trace.
 SEMANTIC_TRACE_TOP_N = 10
+
+# Phones whose cosine similarity to the query falls below this threshold are
+# excluded from results. Cosine never returns zero so without a cutoff every
+# phone always appears; this filters out the genuinely irrelevant tail.
+SEMANTIC_MIN_SCORE = 0.3
 
 
 def search_bm25(query: str) -> list[Product]:
@@ -55,7 +59,7 @@ def search_bm25(query: str) -> list[Product]:
     return [Product.from_entry(entry) for _, entry in scored]
 
 
-def search_semantic(query: str) -> list[Product]:
+def search_semantic(query: str, min_score: float = SEMANTIC_MIN_SCORE) -> list[Product]:
     entries, vectors = corpus_embeddings()
     if not query.strip():
         # No usable query: return the whole catalogue so filter-only flows
@@ -64,6 +68,7 @@ def search_semantic(query: str) -> list[Product]:
     step_input = {
         "query": query,
         "model": EMBEDDING_MODEL,
+        "min_score": min_score,
         "trace_top_n": SEMANTIC_TRACE_TOP_N,
     }
     with trace.new_step(name="search_semantic", input=step_input) as step:
@@ -72,19 +77,19 @@ def search_semantic(query: str) -> list[Product]:
             zip(entries, (cosine(query_vector, v) for v in vectors)),
             key=lambda pair: -pair[1],
         )
-        # Every phone gets ranked -- cosine never whiffs -- so only the top
-        # scores are worth showing in the trace.
+        qualifying = [(entry, score) for entry, score in scored if score >= min_score]
         shown_scores = scored[: SEMANTIC_TRACE_TOP_N]
         step.set_output(
             {
                 "ranked_candidates": len(scored),
+                "qualifying": len(qualifying),
                 "shown_scores": [
                     {"id": entry.doc.id, "name": entry.doc.name, "cosine": round(score, 4)}
                     for entry, score in shown_scores
                 ],
             }
         )
-    return [Product.from_entry(entry) for entry, _ in scored]
+    return [Product.from_entry(entry) for entry, _ in qualifying]
 
 
 __all__ = ["search_bm25", "search_semantic"]
