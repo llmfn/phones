@@ -17,6 +17,8 @@ app = Application(__name__)
 # app.set_design_flag("CHIPS_POSITION", "above_results")
 # app.set_design_flag("FILTER_UI", "popover")
 
+# Task: The summarize function uses prompt_summary.md as prompt to summarize and write
+# a recommendation. Fix the prompt to make it write a good recommendation.
 
 class Schema(BaseModel):
     """Output Schema of the llm response.
@@ -38,6 +40,7 @@ def summarize(query, products):
         }
         for p in products[:3]
     ]
+    # construct the input from query and matched phones
     input = f"Query: {query}\n\nPhones:\n{json.dumps(context, indent=2)}"
     return llmfn(instructions=PROMPT_SUMMARY, input=input)
 
