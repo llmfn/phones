@@ -6,12 +6,11 @@ from phonekit import Application, apply_filters, search_semantic, llmfn
 from pathlib import Path
 
 app = Application(__name__)
-
-PROMPT = app.read_file("prompt.md")
-
 def search(query, filters):
+    prompt = app.read_file("prompt.md")
+
     # refine the query using llm
-    query_refined = llmfn(instructions=PROMPT, input=query)
+    query_refined = llmfn(instructions=prompt, input=query)
 
     # search with the refined query
     products = search_semantic(query_refined)

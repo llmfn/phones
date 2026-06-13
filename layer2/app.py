@@ -9,11 +9,11 @@ app = Application(__name__)
 
 # TASK: Fix the prompt
 
-PROMPT = app.read_file("prompt.md")
-
 def search(query, filters):
+    prompt = app.read_file("prompt.md")
+
     # refine the query using llm
-    query_refined = llmfn(instructions=PROMPT, input=query)
+    query_refined = llmfn(instructions=prompt, input=query)
 
     # search with the refined query
     products = search_semantic(query_refined)
