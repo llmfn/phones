@@ -100,12 +100,8 @@ class Application(Flask):
         ``uv run app.py "a phone for my mom"`` prints cards and the trace
         without touching Flask; bare ``uv run app.py`` serves this layer.
         """
-        argv = sys.argv[1:]
-        if argv:
-            _print_response(self.run_query(" ".join(argv)))
-        else:
-            kwargs.setdefault("debug", True)
-            super().run(*args, **kwargs)
+        kwargs.setdefault("debug", True)
+        super().run(*args, **kwargs)
 
 
 class BaseMethodView(MethodView):
