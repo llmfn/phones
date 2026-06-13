@@ -53,21 +53,36 @@ def search(query, filters):
         result.summary = summarize(query, result.products)
     return result
 
+# TASK: Add a new field suggestions, a list of words that the LLM can fill in when it is 
+# asking the user to pick one of these options. 
+# For example, which of the following is more important for you?
+#   [price] [camera] [battery life]
+#
+# If suggestions are given in the chat response, the frontend will show rich chat replies
+# by prompting the user with buttons.
+#
+# You task is to add messages to the ChatResponseSchema and pass that as output_schema 
+# to the llmfn.
+
 class ChatResponseSchema(BaseModel):
     """Rich assistant reply for the conversation sidebar."""
 
     text: str = Field("The response from the llm")
-    suggestions: list[str]|None = Field("The possible suggestions for the user if the response is a questions with multiple options. This could be empty or null")
 
 def chat(session, message):
     """Answer a follow-up using the session transcript as conversation state."""
+
+    ## Option 1: Just return hello world!
+    #return "Hello, world!"
+
+    ## Option 2: Call llm to respond
     PROMPT_CHAT = app.read_file("prompt_chat.md")
     # The current message has already been appended to the transcript by
     # PhoneKit before this hook runs.
     past_messages = session.get_messages()
     # TODO: inject the search results as the first message so that the agent
     # has context of the current results the user is looking at
-    response = llmfn(instructions=PROMPT_CHAT, input=past_messages, output_schema=ChatResponseSchema)
+    response = llmfn(instructions=PROMPT_CHAT, input=past_messages)
     return response.model_dump()
 
 if __name__ == "__main__":
