@@ -64,6 +64,21 @@ def test_load_returns_existing_session_and_add_message_appends(tmp_path):
     ]
 
 
+def test_get_messages_returns_openai_style_conversation(tmp_path):
+    Session.configure_root(tmp_path)
+    session = Session.new("small phone", Filters(), RecommendResponse(products=[], summary="Start here."))
+
+    session.add_message("I prefer compact phones")
+    session.add_message("Try the Pixel 8a.", role="assistant")
+
+    assert session.get_messages() == [
+        {"role": "assistant", "content": "Start here."},
+        {"role": "user", "content": "I prefer compact phones"},
+        {"role": "assistant", "content": "Try the Pixel 8a."},
+    ]
+    assert "session_id" not in session.get_messages()[0]
+
+
 def test_load_rejects_missing_or_invalid_session(tmp_path):
     Session.configure_root(tmp_path)
 

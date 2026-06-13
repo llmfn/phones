@@ -542,6 +542,69 @@ button {
   white-space: pre-wrap;
 }
 
+.message-bubble.markdown {
+  white-space: normal;
+}
+
+.message-bubble.markdown p,
+.message-bubble.markdown ul,
+.message-bubble.markdown ol,
+.message-bubble.markdown pre,
+.message-bubble.markdown blockquote {
+  margin: 0 0 0.65em;
+}
+
+.message-bubble.markdown p:last-child,
+.message-bubble.markdown ul:last-child,
+.message-bubble.markdown ol:last-child,
+.message-bubble.markdown pre:last-child,
+.message-bubble.markdown blockquote:last-child {
+  margin-bottom: 0;
+}
+
+.message-bubble.markdown ul,
+.message-bubble.markdown ol {
+  padding-left: 1.25em;
+}
+
+.message-bubble.markdown li + li {
+  margin-top: 0.2em;
+}
+
+.message-bubble.markdown a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.message-bubble.markdown code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.message-bubble.markdown :not(pre) > code {
+  padding: 0.05em 0.28em;
+  border-radius: 0.35em;
+  background: rgb(0 0 0 / 8%);
+}
+
+.message-bubble.markdown pre {
+  overflow-x: auto;
+  padding: 0.75em;
+  border-radius: var(--radius-sm);
+  background: rgb(0 0 0 / 8%);
+}
+
+.message-bubble.markdown pre code {
+  font-size: 0.86em;
+}
+
+.message-bubble.markdown blockquote {
+  padding-left: 0.75em;
+  border-left: 2px solid var(--faint-strong);
+  color: var(--subtle);
+}
+
 .message-row.assistant .message-bubble {
   border-bottom-left-radius: var(--radius-sm);
   background: var(--surface-alt);

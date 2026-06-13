@@ -2,6 +2,8 @@
 // The shell (search box, empty zone containers) is server-rendered in
 // index.html; everything data-driven lives here.
 
+import DOMPurify from "../vendor/purify.es.mjs";
+import { marked } from "../vendor/marked.esm.js";
 import { niceBounds } from "./state.js";
 
 const inr = new Intl.NumberFormat("en-IN");
@@ -24,6 +26,10 @@ function el(tag, className, text) {
   if (className) node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
+}
+
+function renderMarkdown(content) {
+  return DOMPurify.sanitize(marked.parse(content));
 }
 
 // --- App state (zero vs search) ---
@@ -62,7 +68,13 @@ export function renderConversation(messages) {
 
   for (const message of messages) {
     const row = el("div", `message-row ${message.role}`);
-    const bubble = el("div", "message-bubble", message.content);
+    const bubble = el("div", "message-bubble");
+    if (message.role === "assistant") {
+      bubble.classList.add("markdown");
+      bubble.innerHTML = renderMarkdown(message.content);
+    } else {
+      bubble.textContent = message.content;
+    }
     row.appendChild(bubble);
     thread.appendChild(row);
   }

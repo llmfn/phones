@@ -196,6 +196,7 @@ Expected response:
 
 ```json
 {
+  "session_id": "2c64c35a-d415-4c55-a940-877f62f19e91",
   "products": [
     {
       "id": "apple-iphone-16",
@@ -282,6 +283,9 @@ Expected response:
   `{min, max}` bounds. Facets are authoritative from the backend.
 - `trace` — array of step objects; backend-owned. `status` is one of `success`,
   `fallback`, `error`, `skip`.
+- `session_id` — UUID for this search response. The backend creates
+  `data/state/<session_id>/`, stores `search_results.json`, and uses the same
+  folder for any follow-up conversation turns.
 
 There is no `answer` field. If a later layer needs a natural-language summary, it
 is added deliberately.
@@ -289,6 +293,31 @@ is added deliberately.
 `summary` — optional; present in Layer 4+ responses only. A 2-3 sentence natural-language
 recommendation paragraph grounded in the top-3 result records. Absent (not null) in Layers
 1–3 responses. The UI renders it above the results grid when present.
+
+Conversation turns are sent to `/api/conversation` after a search response has
+created a session.
+
+Request body:
+
+```json
+{
+  "session_id": "2c64c35a-d415-4c55-a940-877f62f19e91",
+  "message": "I prefer a smaller phone"
+}
+```
+
+Expected response:
+
+```json
+{
+  "session_id": "2c64c35a-d415-4c55-a940-877f62f19e91",
+  "reply": "message received"
+}
+```
+
+The backend appends user messages and assistant replies to
+`data/state/<session_id>/conversation.json`. The default backend does not call
+an LLM; it replies with `message received` unless a layer assigns `app.chat`.
 
 
 ## State & Persistence (localStorage)
@@ -299,7 +328,8 @@ recommendation paragraph grounded in the top-3 result records. Absent (not null)
 | `llmfn_last_query` | the last submitted query (to restore the search state) |
 | `llmfn_last_filters` | the last applied `filters` object |
 
-There is no chat history — the app is not a chatbot.
+Browser conversation history is in memory only and clears on refresh. Server-side
+debug/session files are written under `data/state/` and are not committed.
 
 
 ## Routing
@@ -307,6 +337,8 @@ There is no chat history — the app is not a chatbot.
 - `GET /` — the single page (zero state on load; resolves to search state after
   the first query).
 - `POST /api/recommend` — the contract above.
+- `POST /api/conversation` — append one user message to a search session and
+  return the next assistant reply.
 
 No other pages. No auth. No navigation.
 
