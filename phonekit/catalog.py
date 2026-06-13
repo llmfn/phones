@@ -116,7 +116,7 @@ def load_catalog() -> tuple[CatalogEntry, ...]:
         raise RuntimeError(f"No phone documents found in {PHONES_DIR}")
     entries = []
     for path in paths:
-        raw = json.loads(path.read_text())
+        raw = json.loads(path.read_text(encoding="utf-8", errors="ignore"))
         try:
             doc = PhoneDoc.model_validate(raw)
         except Exception as exc:  # surface which file is malformed
