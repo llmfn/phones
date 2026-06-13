@@ -104,6 +104,7 @@ class Application(Flask):
         if argv:
             _print_response(self.run_query(" ".join(argv)))
         else:
+            kwargs.setdefault("debug", True)
             super().run(*args, **kwargs)
 
 
