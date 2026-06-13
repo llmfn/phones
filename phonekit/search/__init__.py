@@ -33,6 +33,12 @@ SEMANTIC_MIN_SCORE = 0.3
 
 
 def search_bm25(query: str) -> list[Product]:
+    """Rank phones with lexical BM25 matching over the catalogue index.
+
+    Every usable query token must appear in a phone document. Empty or
+    tokenless queries return the full catalogue so filters can still operate
+    without a search term.
+    """
     index, entries = catalog_index()
     tokens = tokenize(query)
     if not tokens:
@@ -60,6 +66,12 @@ def search_bm25(query: str) -> list[Product]:
 
 
 def search_semantic(query: str, min_score: float = SEMANTIC_MIN_SCORE) -> list[Product]:
+    """Rank phones by embedding similarity to the query.
+
+    The query is embedded once, compared with each cached phone narrative
+    embedding, and filtered by ``min_score`` to remove the irrelevant tail.
+    Empty queries return the full catalogue for filter-only flows.
+    """
     entries, vectors = corpus_embeddings()
     if not query.strip():
         # No usable query: return the whole catalogue so filter-only flows
