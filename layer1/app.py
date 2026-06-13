@@ -3,7 +3,6 @@
 Layer 1 of Phone recommender with search functionalitiy. 
 
 Pick from three search implmentations.
-    - keyword: exact match | lexical
     - BM25: weighted match | probabilistic  
     - semantic: nearest match | vector
 """
