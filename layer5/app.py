@@ -52,12 +52,17 @@ def search(query, filters):
         result.summary = summarize(query, result.products)
     return result
 
+class ChatResponseSchema(BaseModel):
+    text: str = Field("The response from the llm")
+    suggestions: list[str]|None = Field("The possible suggestions for the user if the response is a questions with multiple options. This could be empty or null")
+
 def chat(session, message):
     # The current message is also part of the past messages.
     past_messages = session.get_messages()
     # TODO: inject the search results as the first message so that the agent
     # has context of the current results the user is looking at
-    return llmfn(instructions=PROMPT_CHAT, input=past_messages)
+    response = llmfn(instructions=PROMPT_CHAT, input=past_messages, output_schema=ChatResponseSchema)
+    return response.model_dump()
 
 if __name__ == "__main__":
     app.search = search
