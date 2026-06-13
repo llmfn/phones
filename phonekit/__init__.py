@@ -7,6 +7,7 @@ the layer picks by how it invokes ``run()``.
 """
 
 from .app import Application, apply_filters
+from .catalog import get_brands
 from .design_flags import DESIGN_FLAGS, default_design_flags
 from .schema import RecommendResponse
 from .search import search_bm25, search_semantic
@@ -20,6 +21,7 @@ __all__ = [
     "Session",
     "apply_filters",
     "default_design_flags",
+    "get_brands",
     "search_bm25",
     "search_semantic",
     "llmfn",

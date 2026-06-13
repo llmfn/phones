@@ -15,6 +15,8 @@ every storage tier.
 """
 
 import json
+import re
+from collections import Counter, defaultdict
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
@@ -24,6 +26,30 @@ from pydantic import BaseModel, Field
 # The phone catalogue: one JSON document per phone. An absolute path anchored
 # to the repo root so it works regardless of working directory.
 PHONES_DIR = Path(__file__).resolve().parent.parent / "data" / "phones"
+
+MODEL_ALIAS_STOPWORDS = {
+    "phone",
+    "smartphone",
+    "mobile",
+    "pro",
+    "plus",
+    "ultra",
+    "max",
+    "mini",
+    "lite",
+    "fe",
+    "se",
+    "ce",
+    "edition",
+    "limited",
+    "special",
+    "generation",
+    "engineered",
+    "with",
+    "and",
+    "by",
+    "co",
+}
 
 
 class Color(BaseModel):
@@ -97,3 +123,48 @@ def load_catalog() -> tuple[CatalogEntry, ...]:
             raise RuntimeError(f"Invalid phone document {path.name}: {exc}") from exc
         entries.append(CatalogEntry(doc, raw))
     return tuple(entries)
+
+
+def get_brands() -> list[dict]:
+    """Return canonical catalogue brands and derived model-family aliases.
+
+    ``name`` is the brand value stored on phone documents. ``aliases`` is built
+    from repeated leading words in that brand's model names, after removing the
+    canonical brand name, generic variant words such as "Pro", and any token
+    containing numbers. This keeps the data source as the phone catalogue while
+    still surfacing names users may treat like brands, such as Redmi.
+    """
+    aliases_by_brand: dict[str, Counter[str]] = defaultdict(Counter)
+    for entry in load_catalog():
+        alias = _model_alias(entry.doc.name, entry.doc.brand)
+        if alias:
+            aliases_by_brand[entry.doc.brand][alias] += 1
+
+    brands = sorted({entry.doc.brand for entry in load_catalog()})
+    return [
+        {
+            "name": brand,
+            "aliases": sorted(
+                alias
+                for alias, count in aliases_by_brand[brand].items()
+                if count > 1
+            ),
+        }
+        for brand in brands
+    ]
+
+
+def _model_alias(model_name: str, brand: str) -> str | None:
+    brand_words = {word.lower() for word in _words(brand)}
+    for word in _words(model_name):
+        lowered = word.lower()
+        if lowered in brand_words or lowered in MODEL_ALIAS_STOPWORDS:
+            continue
+        if any(char.isdigit() for char in word):
+            continue
+        return word
+    return None
+
+
+def _words(value: str) -> list[str]:
+    return [word for word in re.findall(r"[A-Za-z0-9]+", value) if word[0].isalpha()]
