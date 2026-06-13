@@ -10,7 +10,7 @@ the field before returning to the frontend.
 """
 import json
 
-from phonekit import Application, apply_filters, search_semantic, llmfn
+from phonekit import Application, apply_filters, rerank_by_persona, search_semantic, llmfn
 from phonekit.catalog import load_catalog
 from phonekit import memory as mem
 from pydantic import BaseModel, Field
@@ -20,11 +20,6 @@ app = Application(__name__)
 
 app.set_design_flag("FILTER_UI", "popover")
 app.set_design_flag("CONVERSATION_UI", "left_sidebar")
-
-PROMPT = app.read_file("prompt.md")
-PROMPT_SUMMARY = app.read_file("prompt_summary.md")
-PROMPT_CHAT = app.read_file("prompt_chat.md")
-
 
 class Schema(BaseModel):
     """Structured query plan, optionally influenced by remembered preferences."""
@@ -70,6 +65,7 @@ def _profile_hint(profile: dict) -> str:
 
 def summarize(query, products, hint=""):
     """Generate a grounded assistant summary for the retrieved products."""
+    PROMPT_SUMMARY = app.read_file("prompt_summary.md")
     docs = {entry.doc.id: entry.doc for entry in load_catalog()}
     context = [
         {
@@ -87,12 +83,14 @@ def summarize(query, products, hint=""):
 
 def search(query, filters):
     """Run the contextual search pipeline, personalised with the stored profile."""
+    PROMPT = app.read_file("prompt.md")
     profile = mem.load()
     hint = _profile_hint(profile)
     instructions = f"{PROMPT}\n\n{hint}" if hint else PROMPT
 
     response = llmfn(instructions=instructions, input=query, output_schema=Schema)
     products = search_semantic(response.query)
+    products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)
     result = apply_filters(result.products, response.filters)
     if result.products:
@@ -102,6 +100,7 @@ def search(query, filters):
 
 def chat(session, message):
     """Answer a follow-up, ask a narrowing question, and update the stored profile."""
+    PROMPT_CHAT = app.read_file("prompt_chat.md")
     profile = mem.load()
     hint = _profile_hint(profile)
     instructions = f"{PROMPT_CHAT}\n\n{hint}" if hint else PROMPT_CHAT

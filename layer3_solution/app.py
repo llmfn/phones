@@ -9,8 +9,6 @@ from phonekit.schema import Filters
 
 app = Application(__name__)
 
-PROMPT = app.read_file("prompt.md")
-
 class Schema(BaseModel):
     """Output Schema of the llm response.
     """
@@ -19,6 +17,7 @@ class Schema(BaseModel):
     persona: str | None = Field(description='one of "elderly", "teen", "camera-lover", "gamer", "value-seeker", or null')
 
 def search(query, filters):
+    PROMPT = app.read_file("prompt.md")
     response = llmfn(instructions=PROMPT, input=query, output_schema=Schema)
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)

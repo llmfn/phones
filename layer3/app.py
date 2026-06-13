@@ -9,8 +9,6 @@ from phonekit.schema import Filters
 
 app = Application(__name__)
 
-PROMPT = app.read_file("prompt.md")
-
 # TASK: 
 # Add a new field `persona` that could be one of "elderly", "teen", "camera-lover", "gamer", "value-seeker", or null'
 # The use that field to rerank the results. see (phonekit/search/__init__.py)
@@ -22,6 +20,7 @@ class Schema(BaseModel):
     filters: Filters = Field(description="hard filters to apply to the search results")
 
 def search(query, filters):
+    PROMPT = app.read_file("prompt.md")
     response = llmfn(instructions=PROMPT, input=query, output_schema=Schema)
     products = search_semantic(response.query)
     # TODO: Rerank the products using persona

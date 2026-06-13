@@ -17,7 +17,6 @@ app = Application(__name__)
 # app.set_design_flag("CHIPS_POSITION", "above_results")
 # app.set_design_flag("FILTER_UI", "popover")
 
-
 class Schema(BaseModel):
     """Output Schema of the llm response.
     """
