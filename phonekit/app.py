@@ -57,6 +57,7 @@ class Application(Flask):
         # root_path. Trace steps are stamped with it.
         self.layer_name = Path(self.root_path).name
         self.search: Callable[[str, Filters], RecommendResponse] | None = None
+        self.chat: Callable[[Session, str], str] | None = None
         self.design_flags = default_design_flags()
         self.session_root = Path(session_root) if session_root else DEFAULT_SESSION_ROOT
         Session.configure_root(self.session_root)
@@ -86,6 +87,12 @@ class Application(Flask):
         response = self.search(query, filters or Filters())
         response.trace = trace.collect()
         return response
+
+    def run_chat(self, session: Session, message: str) -> str:
+        """Dispatch one chat message to the layer's optional chat hook."""
+        if self.chat is None:
+            return "message received"
+        return self.chat(session, message)
 
     def run(self, *args, **kwargs):
         """CLI when invoked with a query, the dev server otherwise.
@@ -130,25 +137,18 @@ class ConversationView(BaseMethodView):
         except (TypeError, ValueError, FileNotFoundError):
             return jsonify({"error": "unknown session_id"}), 404
 
-        messages = body.get("messages")
-        if messages is None and isinstance(body.get("message"), str):
-            messages = [body["message"]]
-        if not isinstance(messages, list) or not all(isinstance(message, str) for message in messages):
-            return jsonify({"error": "messages must be a list of strings"}), 400
-        messages = [message.strip() for message in messages if message.strip()]
-        if not messages:
+        if not isinstance(body.get("message"), str):
+            return jsonify({"error": "message is required"}), 400
+        message = body["message"].strip()
+        if not message:
             return jsonify({"error": "message is required"}), 400
 
-        for message in messages:
-            session.add_message(message)
+        session.add_message(message)
 
-        reply = self.get_response(session, messages)
+        reply = self.app.run_chat(session, message)
 
         session.add_message(reply, role="assistant")
         return jsonify({"session_id": session.session_id, "reply": reply})
-
-    def get_response(self, session, messages):
-        return "message received"
 
 
 def apply_filters(products: list[Product], filters: Filters | None) -> RecommendResponse:

@@ -2,7 +2,7 @@
 // change re-queries the backend (see docs/specs.md); the response drives the
 // results grid, facets, chips, and trace.
 
-import { recommend, sendConversationMessages } from "./api.js";
+import { recommend, sendConversationMessage } from "./api.js";
 import {
   state,
   hasFilters,
@@ -50,9 +50,9 @@ async function flushConversationQueue(token = conversationToken) {
   if (conversationInFlight || !state.sessionId || conversationQueue.length === 0) return;
 
   conversationInFlight = true;
-  const messages = conversationQueue.splice(0, conversationQueue.length);
+  const message = conversationQueue.shift();
   try {
-    const data = await sendConversationMessages(state.sessionId, messages);
+    const data = await sendConversationMessage(state.sessionId, message);
     if (token === conversationToken) {
       addConversationMessage("assistant", data.reply);
       renderConversation(state.conversation);

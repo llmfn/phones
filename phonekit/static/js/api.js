@@ -27,7 +27,7 @@ export async function recommend(payload) {
   return res.json();
 }
 
-export async function sendConversationMessages(sessionId, messages) {
+export async function sendConversationMessage(sessionId, message) {
   let res;
   try {
     res = await fetch("/api/conversation", {
@@ -36,7 +36,7 @@ export async function sendConversationMessages(sessionId, messages) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${state.userId}`,
       },
-      body: JSON.stringify({ session_id: sessionId, messages }),
+      body: JSON.stringify({ session_id: sessionId, message }),
     });
   } catch (err) {
     throw new Error(`Network error: ${err.message}`);
