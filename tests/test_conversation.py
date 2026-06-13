@@ -67,3 +67,36 @@ def test_conversation_dispatches_to_layer_chat_hook(tmp_path):
         {"role": "user", "content": "Need a good camera"},
         {"role": "assistant", "content": "Try the Pixel 8a."},
     ]
+
+
+def test_conversation_accepts_rich_chat_reply(tmp_path):
+    app = make_app(tmp_path)
+    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+
+    def chat(active_session, message):
+        return {
+            "text": "A compact phone would fit best.",
+            "suggestions": ["Show compact iPhones", "Compare Pixel options", 12],
+        }
+
+    app.chat = chat
+
+    response = app.test_client().post(
+        "/api/conversation",
+        json={"session_id": session.session_id, "message": "I prefer small phones"},
+    )
+
+    assert response.status_code == 200
+    assert response.get_json() == {
+        "session_id": session.session_id,
+        "reply": {
+            "text": "A compact phone would fit best.",
+            "suggestions": ["Show compact iPhones", "Compare Pixel options"],
+        },
+    }
+
+    conversation = read_json(session.path / "conversation.json")
+    assert conversation["messages"] == [
+        {"role": "user", "content": "I prefer small phones"},
+        {"role": "assistant", "content": "A compact phone would fit best."},
+    ]

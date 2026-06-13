@@ -23,7 +23,7 @@ layer's app.py. Templates and static assets always come from this package.
 import json
 import sys
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
@@ -57,7 +57,7 @@ class Application(Flask):
         # root_path. Trace steps are stamped with it.
         self.layer_name = Path(self.root_path).name
         self.search: Callable[[str, Filters], RecommendResponse] | None = None
-        self.chat: Callable[[Session, str], str] | None = None
+        self.chat: Callable[[Session, str], str | dict[str, Any]] | None = None
         self.design_flags = default_design_flags()
         self.session_root = Path(session_root) if session_root else DEFAULT_SESSION_ROOT
         Session.configure_root(self.session_root)
@@ -88,7 +88,7 @@ class Application(Flask):
         response.trace = trace.collect()
         return response
 
-    def run_chat(self, session: Session, message: str) -> str:
+    def run_chat(self, session: Session, message: str) -> str | dict[str, Any]:
         """Dispatch one chat message to the layer's optional chat hook."""
         if self.chat is None:
             return "message received"
@@ -145,10 +145,31 @@ class ConversationView(BaseMethodView):
 
         session.add_message(message)
 
-        reply = self.app.run_chat(session, message)
+        reply = _normalize_chat_reply(self.app.run_chat(session, message))
 
-        session.add_message(reply, role="assistant")
+        session.add_message(_reply_text(reply), role="assistant")
         return jsonify({"session_id": session.session_id, "reply": reply})
+
+
+def _normalize_chat_reply(reply: str | dict[str, Any]) -> str | dict[str, Any]:
+    """Keep plain text replies plain, and sanitize rich replies to the public shape."""
+    if isinstance(reply, str):
+        return reply
+    if not isinstance(reply, dict):
+        return str(reply)
+
+    text = str(reply.get("text", ""))
+    normalized: dict[str, Any] = {"text": text}
+    suggestions = reply.get("suggestions")
+    if isinstance(suggestions, list):
+        normalized["suggestions"] = [item for item in suggestions if isinstance(item, str)]
+    return normalized
+
+
+def _reply_text(reply: str | dict[str, Any]) -> str:
+    if isinstance(reply, str):
+        return reply
+    return reply["text"]
 
 
 def apply_filters(products: list[Product], filters: Filters | None) -> RecommendResponse:

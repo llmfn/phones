@@ -533,8 +533,23 @@ button {
   justify-content: flex-start;
 }
 
-.message-bubble {
+.message-stack {
   max-width: 92%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.message-row.user .message-stack {
+  align-items: flex-end;
+}
+
+.message-row.assistant .message-stack {
+  align-items: flex-start;
+}
+
+.message-bubble {
+  max-width: 100%;
   padding: 9px 12px;
   border-radius: 16px;
   font-size: var(--text-flow--1);
@@ -615,6 +630,30 @@ button {
   border-bottom-right-radius: var(--radius-sm);
   background: var(--primary);
   color: var(--surface);
+}
+
+.message-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.message-suggestion {
+  padding: 6px 10px;
+  border: 1px solid var(--faint-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-flow--2);
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.message-suggestion:hover,
+.message-suggestion:focus-visible {
+  border-color: var(--primary);
+  outline: none;
 }
 
 .conversation-form {

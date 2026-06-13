@@ -46,6 +46,24 @@ function resetConversationTransport() {
   state.sessionId = null;
 }
 
+function normalizeConversationReply(reply) {
+  if (typeof reply === "string") return { text: reply, suggestions: [] };
+  if (!reply || typeof reply !== "object") return { text: String(reply ?? ""), suggestions: [] };
+  const suggestions = Array.isArray(reply.suggestions)
+    ? reply.suggestions.filter((suggestion) => typeof suggestion === "string")
+    : [];
+  return { text: String(reply.text ?? ""), suggestions };
+}
+
+function submitConversationText(text) {
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  addConversationMessage("user", trimmed);
+  renderConversation(state.conversation);
+  conversationQueue.push(trimmed);
+  flushConversationQueue();
+}
+
 async function flushConversationQueue(token = conversationToken) {
   if (conversationInFlight || !state.sessionId || conversationQueue.length === 0) return;
 
@@ -54,7 +72,8 @@ async function flushConversationQueue(token = conversationToken) {
   try {
     const data = await sendConversationMessage(state.sessionId, message);
     if (token === conversationToken) {
-      addConversationMessage("assistant", data.reply);
+      const reply = normalizeConversationReply(data.reply);
+      addConversationMessage("assistant", reply.text, reply.suggestions);
       renderConversation(state.conversation);
     }
   } catch (err) {
@@ -202,13 +221,16 @@ export function bindEvents() {
   conversationForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     const input = document.getElementById("conversation-input");
-    const text = input.value.trim();
-    if (!text) return;
+    const text = input.value;
+    if (!text.trim()) return;
     input.value = "";
-    addConversationMessage("user", text);
-    renderConversation(state.conversation);
-    conversationQueue.push(text);
-    flushConversationQueue();
+    submitConversationText(text);
+  });
+
+  document.getElementById("conversation-thread")?.addEventListener("click", (e) => {
+    const button = e.target.closest("[data-conversation-suggestion]");
+    if (!button) return;
+    submitConversationText(button.dataset.conversationSuggestion ?? button.textContent ?? "");
   });
 
   document.getElementById("conversation-input")?.addEventListener("keydown", (e) => {

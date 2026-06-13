@@ -311,9 +311,16 @@ Expected response:
 ```json
 {
   "session_id": "2c64c35a-d415-4c55-a940-877f62f19e91",
-  "reply": "message received"
+  "reply": {
+    "text": "message received",
+    "suggestions": ["Show smaller phones", "Prioritise battery life"]
+  }
 }
 ```
+
+`reply` may also be a plain string, e.g. `"message received"`. Rich replies use
+`text` for the assistant message and optional `suggestions` for quick-reply
+buttons. `suggestions` may be omitted or an empty list.
 
 The backend appends user messages and assistant replies to
 `data/state/<session_id>/conversation.json`. The default backend does not call

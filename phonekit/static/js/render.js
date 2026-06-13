@@ -68,6 +68,7 @@ export function renderConversation(messages) {
 
   for (const message of messages) {
     const row = el("div", `message-row ${message.role}`);
+    const stack = el("div", "message-stack");
     const bubble = el("div", "message-bubble");
     if (message.role === "assistant") {
       bubble.classList.add("markdown");
@@ -75,7 +76,20 @@ export function renderConversation(messages) {
     } else {
       bubble.textContent = message.content;
     }
-    row.appendChild(bubble);
+    stack.appendChild(bubble);
+
+    if (message.role === "assistant" && message.suggestions?.length) {
+      const suggestions = el("div", "message-suggestions");
+      for (const suggestion of message.suggestions) {
+        const button = el("button", "message-suggestion", suggestion);
+        button.type = "button";
+        button.dataset.conversationSuggestion = suggestion;
+        suggestions.appendChild(button);
+      }
+      stack.appendChild(suggestions);
+    }
+
+    row.appendChild(stack);
     thread.appendChild(row);
   }
 

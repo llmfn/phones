@@ -79,8 +79,12 @@ export function resetConversation(summary) {
   state.conversation = summary ? [{ role: "assistant", content: summary }] : [];
 }
 
-export function addConversationMessage(role, content) {
-  state.conversation.push({ role, content });
+export function addConversationMessage(role, content, suggestions = []) {
+  const message = { role, content: String(content ?? "") };
+  if (role === "assistant" && suggestions.length) {
+    message.suggestions = suggestions.filter((suggestion) => typeof suggestion === "string");
+  }
+  state.conversation.push(message);
 }
 
 // --- URL fragment (de)serialization ---
