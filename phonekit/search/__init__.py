@@ -18,6 +18,7 @@
 """
 
 from .. import trace
+from ..catalog import load_catalog
 from ..schema import Product
 from .bm25 import tokenize
 from .embeddings import EMBEDDING_MODEL, corpus_embeddings, cosine, embed
@@ -104,4 +105,34 @@ def search_semantic(query: str, min_score: float = SEMANTIC_MIN_SCORE) -> list[P
     return [Product.from_entry(entry) for entry, _ in qualifying]
 
 
-__all__ = ["search_bm25", "search_semantic"]
+def rerank_by_persona(products: list[Product], persona: str | None) -> list[Product]:
+    """Boost products whose catalogue persona signals match the requested persona.
+
+    This is a soft re-rank, not a filter. Matching products move ahead of
+    non-matching products, while the existing search order is preserved within
+    each group.
+    """
+    if persona is None:
+        return products
+
+    docs = {entry.doc.id: entry.doc for entry in load_catalog()}
+    with trace.new_step(name="rerank_by_persona", input={"persona": persona}) as step:
+        reranked = sorted(
+            products,
+            key=lambda product: persona in docs[product.id].signals.personas,
+            reverse=True,
+        )
+        step.set_output(
+            {
+                "matching": [
+                    product.id
+                    for product in reranked
+                    if persona in docs[product.id].signals.personas
+                ],
+                "results": len(reranked),
+            }
+        )
+    return reranked
+
+
+__all__ = ["rerank_by_persona", "search_bm25", "search_semantic"]
