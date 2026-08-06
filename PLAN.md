@@ -268,3 +268,112 @@ above the cards.
 - If Pass 2 fails, cards still render normally and `summary` is omitted (trace marks
   `error`)
 
+## Task 15: Refactor — phonekit library + self-contained layer directories (DONE)
+
+Restructure so each layer is a self-contained directory at the repo root that
+constructs its app from `phonekit`, a shared library of building blocks.
+Library, not framework: each layer's `app.py` owns its control flow,
+top-to-bottom; phonekit never calls into layer code beyond the single
+dispatch. Replaces the Layer class hierarchy.
+
+Rough shape — illustrative only, file layout is the implementer's call:
+
+```
+phonekit/            # library + server: catalogue, search engines, LLM
+                     # helper, response/trace building, CLI runner,
+                     # Flask app, templates/static
+layer0/app.py
+layer1/app.py        # BM25 ↔ semantic per SEARCH_MODE
+layer2/app.py  system_prompt.txt  prompts/  play.py
+layer3/app.py  system_prompt.txt  prompts/  schema.json  play.py
+layer4/app.py  system_prompt.txt
+```
+
+Each `app.py` exposes `search(query, filters)` and doubles as the CLI via a
+trivial `__main__` guard (`cd layerN && uv run app.py "phone for my mom"`);
+the server serves whichever layer `CURRENT_LAYER` names. phonekit is an
+editable install (pyproject), so imports resolve from any directory; layer
+dirs are plain script folders — no `__init__.py`.
+
+Principles:
+
+* Lesson-bearing code (prompts, schemas, pipeline composition, fallback
+  policy) lives in layer dirs, deliberately duplicated so each layer reads
+  complete — `diff layer2/app.py layer3/app.py` is the lesson. Plumbing
+  lives in phonekit, never duplicated. No layer imports another layer;
+  phonekit contains no prompts and no layer-specific logic.
+* Each layer is self-contained and decides how it is implemented using the
+  building blocks.
+* Prompt files contain only the prompt — everything in the file goes to the
+  model; switching instructions live in `app.py` docstrings.
+* Layer docstrings tell teaching.md's story, not an invented one.
+
+Docs in the same task: `docs/teaching.md` (repo anatomy + how to work a
+layer, real record shape, embeddings as local cache, Layer 3 = schema.json),
+`CLAUDE.md` layout, Makefile/README entry point. `docs/specs.md` contract
+unchanged — verify, don't rewrite.
+
+**ACCEPTANCE CRITERIA**
+- Pure refactor: UI behavior unchanged at every layer 0–4
+- `cd layerN && uv run app.py "query"` prints cards + trace for every layer,
+  no Flask
+- Overwriting `system_prompt.txt` changes behavior with no Python edit
+- No prompts or layer-specific logic in phonekit; no cross-layer imports
+
+## Task 16: Layer 5 — Conversation
+
+Layer 4 ends with a recommendation paragraph. Layer 5 turns that into a
+conversation: Pass 2 generates a response that closes with a question, and the
+UI replaces the filters sidebar with a chat panel where the conversation
+accumulates turn by turn. The cards update on each reply.
+
+**Backend changes from Layer 4:**
+- Pass 2 prompt instructs the model to always end with a clarifying question
+- Both Pass 1 and Pass 2 receive the full conversation history (alternating
+  user/assistant turns) on every call
+- The API accepts a `history` field in the request body alongside `query` and
+  `filters`
+
+**Frontend changes:**
+- The filters sidebar becomes a conversation panel at Layer 5
+- The first assistant message (summary + question) appears in that panel;
+  subsequent replies and responses are appended below
+- A reply input sits at the bottom of the panel; submitting fires the next
+  call with history appended
+- The main search bar resets the conversation (clears the panel, returns to
+  fresh state)
+- Conversation history lives in JS session state only — gone on page refresh
+
+**The teaching moment:** The X-Ray trace shows the message array growing with
+each turn. By turn 5–6 the payload is noticeably larger — the natural setup
+for the sliding-window / summarisation discussion.
+
+**ACCEPTANCE CRITERIA**
+- Pass 2 always ends with a question on every turn
+- Filters sidebar is replaced by the conversation panel; first assistant
+  message appears after the initial query
+- Replying appends to the thread and updates the cards
+- The main search bar resets the conversation
+- X-Ray trace shows the full message array and growing token count per turn
+- Page refresh clears the conversation; no regression at Layer 4
+
+**Current scaffold:**
+- [x] Each search response includes a UUID `session_id`
+- [x] Search responses are persisted under `data/state/<session_id>/`
+- [x] Conversation turns post to a backend endpoint and append to server-side history
+- [x] Placeholder backend reply is `message received` without an LLM call
+- [x] Frontend queues messages submitted while a conversation call is in flight
+
+## Task 17: Layer 7 — Tool Use
+
+Layer 7 extends the memory-enabled chat assistant with a local store-finder
+tool. When the user asks where to buy a recommended phone, the assistant asks
+for the city if needed, calls the tool when the city is known, and replies with
+the three stores returned by the tool.
+
+**ACCEPTANCE CRITERIA**
+- [x] The store-finder tool is defined inside the Layer 7 app code
+- [x] The LLM helper accepts a `tools=[...]` argument
+- [x] A known city leads to a tool call and a reply grounded in the tool result
+- [x] A missing city leads to a clarifying question before any tool call
+- [x] Existing conversation and memory behavior remains unchanged

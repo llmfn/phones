@@ -83,8 +83,8 @@ def chat(session, message):
     # TODO: inject the search results as the first message so that the agent
     # has context of the current results the user is looking at
     response = llmfn(instructions=PROMPT_CHAT, input=past_messages)
-    return response.model_dump()
-
+    return response
+    
 if __name__ == "__main__":
     app.search = search
     app.chat = chat

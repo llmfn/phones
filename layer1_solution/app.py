@@ -13,7 +13,8 @@ def search(q, filters) -> RecommendResponse:
     products = search_semantic(q)
     return apply_filters(products, filters)
 
+app = Application()
+app.search = search
+
 if __name__ == "__main__":
-    app = Application()
-    app.search = search
     app.run()

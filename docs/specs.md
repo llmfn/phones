@@ -1,5 +1,7 @@
 # Design Spec: `phones.llmfn.com`
 
+WARNING: This file may be out of date. Don't use anything in this file as authoritative without checking with the right person.
+
 ## Overview
 
 A single Python web app that serves the UI and owns the backend API. The app is
