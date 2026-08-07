@@ -1,23 +1,35 @@
 # phones
 
 Phone recommender app for the [llmfn](https://llmfn.com/) course — its own repo.
-One product recommender that students improve layer by layer (search → prompts →
-schema → context → state → memory → tool use → evals), with config flags to
-enable/disable each layer.
+One product recommender, built layer by layer (search → prompts → schema →
+context → state → memory → tool use → evals). In edition 2 students build the
+app from the ground up: each layer is written from scratch in `app.py`, against
+the building blocks in `phonekit`.
 
 ## Layout
 
-- `app/` — a single Python (Flask) app that serves both the UI and the backend
-  API. It owns the 8 layers and builds the trace.
-  - `app/app.py` — Flask routes: `/` (the page) and `POST /api/recommend`.
-  - `app/templates/index.html` — the single page.
-  - `app/static/css/styles.css` — styling.
-  - `app/static/js/` — browser-native JS modules (`app.js` bootstrap, `api.js`
-    fetch wrappers, `state.js`, `render.js`, `events.js`).
+- `app.py` — the app being built. Starts as a skeleton: a `search(q, filters)`
+  that returns no products, handed to `Application`. This is the file students
+  grow layer by layer.
+- `phonekit/` — the building blocks `app.py` composes: catalogue loading,
+  search engines (`search_bm25`, `search_semantic`), the LLM helper (`llmfn`),
+  filters and facets, sessions, memory, the trace, and `Application` — Flask
+  server and CLI runner in one, serving `/` and `POST /api/recommend`.
+  Templates, CSS, and the browser-native JS modules (`app.js`, `api.js`,
+  `state.js`, `render.js`, `events.js`) live under `phonekit/templates/` and
+  `phonekit/static/`.
+- `solutions/layer1/` … `solutions/layer7/` — one reference `app.py` per layer
+  plus its prompt files, from edition 1. Read-only reference for what each
+  layer arrives at; nothing imports them.
+- `data/phones/` — the catalogue, one JSON document per phone, loaded into
+  memory at startup.
 - `docs/specs.md` — the product design spec, and the **source of truth for the
   `POST /api/recommend` contract**.
 - `docs/mockups.md` — low-fidelity ASCII layouts (the visual surface only).
+- `docs/teaching.md` — the eight layers and the story each one tells.
 
+phonekit is a library, not a framework: `app.py` owns its pipeline
+top-to-bottom, and phonekit holds no prompts and no layer-specific logic.
 There is no separate `web/` or `api/` deployment — one Python app serves the UI
 and the API same-origin.
 
@@ -26,70 +38,13 @@ and the API same-origin.
 - `docs/specs.md` = *what* the system should do (design spec + API contract).
 - `docs/mockups.md` = the *visual* surface only (ASCII layouts of each UI state);
   it references the contract in `docs/specs.md` rather than redefining it.
-<!-- 
-## Task tracking (`.tasks/`)
 
-Work is tracked as plain markdown files in `.tasks/`. Read them, follow these
-conventions, and keep them up to date as you work.
+## Features
 
-### Model
+Development is tracked in `.features/` — one markdown file per feature, holding its
+plan, its tasks, and its status together. Read `.features/README.md` for the
+conventions and keep the files current as you work.
 
-- Everything is a **task**. There is no separate "story" type.
-- A task may have **subtasks**. A task that has subtasks acts as a story: the
-  parent captures the user-facing intent, the subtasks are the concrete work.
-- Two levels only — parent tasks and their subtasks.
+`.features/archive/` is frozen history, not live work — never pick anything up from it.
 
-### Files & numbering
-
-- **One file per task**, named by its id: `.tasks/T01.md`, `.tasks/T01.1.md`.
-- Parent tasks: `T01`, `T02`, … (two-digit, zero-padded).
-- Subtasks: `<parent>.<n>` → `T01.1`, `T01.2`, …
-- A parent's subtasks are every file matching `T01.*.md`.
-
-### File format
-
-Every task file — parent or subtask — has the same shape:
-
-```markdown
----
-status: open        # open | in-progress | done
-depends_on: []      # task ids that must be done first, e.g. [T01.1, T02]
----
-
-# <short title>
-
-## DESCRIPTION
-
-Free-form prose describing what and why. May use sub-headings for longer tasks.
-
-## ACCEPTANCE CRITERIA
-
-- [ ] checklist bullet
-- [ ] checklist bullet
-```
-
-- `status` — `open`, `in-progress`, or `done`.
-- `depends_on` — list of task ids this task is blocked by. Empty list = no blockers.
-- **DESCRIPTION** is required: what & why, free text, optional sub-headings.
-- **ACCEPTANCE CRITERIA** is required: checklist bullets. They are the source of
-  truth for "done" — tick them (`- [x]`) as each is met.
-
-### Working with tasks
-
-- **List** — read the files in `.tasks/`.
-- **Pick next** — the lowest-numbered task with `status: open` whose every
-  `depends_on` id is `done`. Finish a parent's subtasks before moving on.
-- **Start** — set `status: in-progress` before working on it.
-- **Finish** — tick all acceptance criteria, then set `status: done`.
-- **Create** — add a file with the next free id, fill in DESCRIPTION +
-  ACCEPTANCE CRITERIA, set `status: open`, and list any `depends_on` blockers.
-
-### Conventions
-
-- Keep DESCRIPTION accurate if scope changes; the acceptance criteria define done. -->
-
-## Tasks
-
-Use PLAN.md for tracking the development. 
-
-Never refer to PLAN.md or Task name/numbers in the code or docstrings.
+Never refer to feature files, feature names, or task names in the code or docstrings.

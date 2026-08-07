@@ -1,4 +1,16 @@
-# PLAN
+# First Edition — build log (archived)
+
+This was `PLAN.md`, the plan the app was built against for edition 1 of the course
+(taught June 13, 2026). It is kept as written, as a record of what was built and why.
+
+It predates the `.features/` conventions and does not follow them: no `status:`
+frontmatter, and task headings use `## Task N: … (DONE)` rather than `[TODO]` /
+`[DONE]`. The greps described in `.features/README.md` deliberately don't reach it.
+Its status markers had already drifted from the repo by the time it was archived —
+read it as history, not as a description of the code. Nothing here gets picked up
+again; work that is still live is shaped as a fresh feature.
+
+---
 
 The plan of what needs to be build, organized as tasks.
 
