@@ -3,9 +3,9 @@
 The phone recommender app built layer by layer in the
 [llmfn](https://llmfn.com/) course.
 
-> This is the repo as taught in the first edition of the llmfn course
-> on June 13, 2026, in Bengaluru. See [tags](../../tags) for other
-> editions, and `main` for the latest.
+> This repo is being updated for edition 2 of the llmfn course, planned
+> for August 8, 2026. For the version taught on June 13, 2026 (edition 1),
+> see the [edition-01](../../tree/edition-01) tag.
 
 ## Overview
 
