@@ -179,7 +179,7 @@ as does the raw wire tab showing the step's actual payload.
       returns the rail to pills, results untouched
 - [x] An unfolded step stays unfolded when the panel changes width
 
-### [TODO] llm-detail: the llm-call step opened up
+### [DONE] llm-detail: the llm-call step opened up
 
 The layers-2-through-4 experience completed. An llm-call step's detail
 renders by role — System, Input, Response — as literal text, its attributes
@@ -188,10 +188,10 @@ a raw tab showing the exact provider payload.
 
 **Acceptance Criteria:**
 
-- [ ] No double-encoded JSON or escaped `\n` anywhere in the llm detail
-- [ ] The step's attributes render in the same name–value list as the search
+- [x] No double-encoded JSON or escaped `\n` anywhere in the llm detail
+- [x] The step's attributes render in the same name–value list as the search
       step's, with no bespoke treatment
-- [ ] The raw tab matches what actually went to the provider
+- [x] The raw tab matches what actually went to the provider
 
 ### [TODO] live-steps: steps appear as the pipeline runs
 
@@ -245,125 +245,105 @@ the follow-up rounds.
 
 ## Handover
 
-`search-detail` is built and green. Clicking a pill unfolds its detail in
-place; several can be open at once, and collapsing one leaves the results and
-every other open step alone.
+`llm-detail` is built and green. An llm step opens into System / Input /
+Response as literal text, its model and schema in the same name-value list the
+search step uses, and a raw tab holding the request the provider received and
+the response it sent back.
 
-The detail is one generic shell for every step kind, not a search-specific
-view: `stepDetail` in `render.js` renders a formatted/raw tab pair, picks the
-formatted body by step name out of `STEP_BODIES`, and appends whatever values
-the body did not itself show as a name–value list. `search_bm25` and
-`search_semantic` have real bodies; everything else falls to `fallbackBody`,
-which prints input and output as formatted JSON — so an llm step is already
-readable today, and `llm-detail` is a body function plus its CSS rather than
-another shell. The raw tab is the whole step envelope as it came over the
-wire, `jsonPre` and the `.tok-*` rules restored from a43a178^.
+The step is no longer produced by the `trace.trace_function` decorator, and
+that is the whole slice. The decorator recorded `llmfn`'s own arguments, which
+is why the panel showed a prompt as `"You are...\n\nRules:\n- ..."` and layer
+4's summarize input as a JSON string holding another one. `llmfn` now curates
+its step with `new_step`, and what it records is the **request itself**:
+`_create_response` is split into `_build_request`, which returns the keyword
+arguments, and `_send`, which runs them. The step's `input.request` is that
+same dict, so the formatted view and the raw tab read one object and the panel
+cannot drift from what was sent. `trace._jsonable` became `trace.jsonable` for
+the same reason -- a step curating its own payload needs it.
 
-The cutoff drawn across the cosine chart is the engine's `min_score` (0.3),
-not a top-k — `search_semantic` has no k. The criterion above still says
-"top-k"; the panel is what is right, the wording is what is stale, but I left
-it for you rather than editing the task. `shown_scores` is capped at ten, so
-the chart shows the top ten of however many qualified; the attribute list
-carries `ranked candidates` and `qualifying` so the gap is visible rather than
-implied. A query where everything falls below the line ("a tractor for
-ploughing fields") renders every row dimmed with the cutoff near the right
-edge, which reads well as the failure it is.
+The payload is `input: {model, request}` and
+`output: {text, parsed, response_id, response}`. `text` and `parsed` are what
+the body renders literally; `response` is `Response.model_dump()`, the whole
+object, which is what the raw tab shows and where `tool-calls` will find its
+rounds. It carries `usage`, so token counts arrive as attributes whenever they
+are wanted, with no design change. Note the provider resolves the model alias:
+the request asks for `gpt-5.4-mini` and the response says
+`gpt-5.4-mini-2026-03-17`. Both are visible, which is the point.
 
-The BM25 view is built around one thing the first version got wrong: it showed
-`pink` in 15 phones, `phone` in 62, and 5 results, and those three numbers do
-not compose. They are two different mechanisms — presence decides membership,
-frequency and length decide rank — so the detail now shows them as two bands.
-**Tokens** is the catalogue: how many phones hold each word out of how many,
-and the weight rarity earns it, both identical for every result, closing on
-`holding every token → 5 phones`, the AND that is never merely the smallest
-count above it. **What that ranked** is the documents: a bar per phone split
-into a segment per token carrying that token's contribution, and under it the
-quantities that actually differ between rows — `pink ×4 · phone ×1 · 196
-words`. A token that matched nothing shows no weight at all: idf rewards
-rarity, so a word in zero documents scores 5.61, which would read as "this word
-counts for a lot" about a word that counts for nothing.
+**`text_format` is the one place the trace departs from the literal kwargs.**
+`_traceable` expands the schema class into `model_json_schema()`, because a
+class name is the one thing in the request a reader cannot act on: "Schema"
+says a schema was used without saying what was asked for. The expansion is what
+the provider is actually given, and it carries the field descriptions the layer
+wrote, so the panel renders it as a **schema asked for** block sitting between
+the input and the response -- the contract next to the answer. Everything else
+in `request` is the kwargs verbatim, and a test pins that the two differ in
+exactly this one key.
 
-That did need an engine change. `search_bm25` now traces `tokens`
-(matches + weight per token), and per ranked phone its `length` and per token
-`{count, score}` — all of it already computed in the scoring loop and
-previously discarded. `k1`, `b`, and the average document length ride the
-attribute list; the arithmetic is reproducible from the raw tab. The old
-`token_match_counts` key is gone, replaced by `tokens`.
+The line the raw tab draws is still the SDK call, not the HTTP body. Going a
+layer lower means hooking the client's transport, which is not worth it in a
+teaching app.
 
-Both are **lists, not objects, because their order carries meaning**: heaviest
-word first, so the token band reads as a ranking and each token keeps its
-place — and its colour — down every bar in the chart. This is worth knowing
-before adding another ordered field. The first version emitted objects and let
-dict order carry it, which held inside Python and then died on the wire:
-Flask serialises with `sort_keys=True`, so the panel was ordering tokens
-alphabetically while the fixture page, written with plain `json.dumps`, kept
-query order. The two disagreed for a whole slice because they were checked
-separately. Sorting misses last is deliberate too — a word in zero documents
-has the highest idf there is, so ranking on the raw weight floats exactly the
-words that matched nothing to the top.
+`llmBody` in `render.js` renders the three roles off `request`. Structured
+output shows `parsed` pretty-printed rather than the raw JSON text, since that
+object is what the layer's own code goes on to use. `llmInput` renders a
+message list as role-labelled rows -- enough that layer 5 does not fall apart
+today; the count line and the highlighted memory are `chat-turn`'s work.
 
-`search_semantic` needed nothing: it already traced everything its view draws.
-Two tests (`tests/test_trace.py`) pin the BM25 payload, both offline — on a
-query that whiffs, that the tokens nothing holds are reported and sort last;
-on `pink phone`, that the result count never exceeds the smallest per-token
-count, that the band is ordered by descending weight, that every ranked phone
-lists its tokens in that same order, and that a phone's per-token scores sum
-to its total. The semantic payload has no test: asserting it needs a query
-embedding, so its shape is verified visually instead.
+Two blocks of CSS matter. `.detail-scroll` caps long literal content and lets
+it scroll inside itself -- 260px in the rail, 460px at full width, so the toggle
+changes the room and never the content. It wraps the **raw pane too**, which is
+not cosmetic: an llm step's raw payload holds the entire provider response, and
+before the cap an open raw tab measured 5,593px tall and buried every step
+under it. `pre.wrapped` wraps the structured response's long strings instead of
+giving an already-scrolling block a second scrollbar; the raw tab keeps its
+side-scroll, where structure is what you are scanning for.
 
-Verified in headless Chrome two ways: against a fixture page holding real
-captured trace steps, at 1440 and 900 wide, and then end to end against
-running servers — the layer-1 solution for the semantic view (one pill, ten
-candidate rows, 21 results, detail still open across the width toggle, results
-untouched on collapse), and a throwaway layer swapping in `search_bm25` for
-the keyword view, since no solution uses that engine. Four bugs came out of
-those passes and are fixed: the open step overflowed the rail until
-`.step-item` got `min-width: 0` (its `<pre>` now scrolls inside itself), the
-fallback body was repeating its own JSON in the attribute list, the token
-band's weight column clipped its own header, and the token ordering above.
-The last one is the reason to trust the browser over the fixture when they
-disagree: only one of them goes through Flask.
+Labels landed with it, as the last handover asked. `llmfn` takes `label=`, and
+`solutions/layer2`, `layer3`, and `layer4` name their calls "rewrite" and
+"summarize" -- layer 4 no longer shows two pills that both read "llm call".
+Layers 5-7 still pass none; theirs belong with `chat-turn` and `tool-calls`.
 
-`llm-detail` is next, and the label point below still stands — worth doing
-first so layer 4 stops showing two pills that both read "llm call".
+Three tests in `tests/test_trace.py` pin it, all offline against a stub
+provider (the `fake_llm` fixture): that the traced request is the same dict the
+client was handed, that a prompt carrying newlines and indented JSON survives
+as itself, and that structured output records an object, expands the schema,
+and lets `label=` override the default. The untracked `tests/test_llm_tools.py` exercises the
+tool-round path through the refactor and passes unchanged -- worth landing, but
+it is yours to stage.
 
-The backend answers with a turn, not a step list. `RecommendResponse.trace`
-is a single `TraceTurn` — kind, the input that produced it, its steps, status,
-latency, and the error message when the pipeline threw. `Application.run_query`
-builds it and no longer lets a pipeline exception escape: a failed query comes
-back HTTP 200 with empty products and a turn holding everything that ran up to
-the failure. This is the one deliberate departure from the plan we agreed
-(which said 500 with the trace in the error body) — the response is a valid
-`RecommendResponse`, so the panel keeps a single render path and the failure
-surfaces where it teaches.
+Verified end to end in headless Chrome against layer 4 on a spare port, at 1440
+rail, 1440 full, and 900. Both llm steps open showing system/input/response,
+the rewrite step carrying its schema block between them; attributes read
+`model` and `response id` and nothing else; no escaped `\n` anywhere; the
+summarize input renders its embedded catalogue JSON indented.
+Open steps and the selected tab survive the width toggle, only the scroll cap
+changes (260 to 460), collapsing leaves the 69 results untouched, and nothing
+overflows horizontally at either width. The raw-pane height was the one real
+bug the browser caught, and only after clicking through to the raw tab -- worth
+doing on every future step kind, since the formatted view is the one you look
+at by habit.
 
-Steps carry a `label`, the plain-language purpose the pills show, defaulted from
-the step name via `trace.DEFAULT_LABELS` and overridable per call
-(`trace.new_step(..., label="summarize")`). Nothing in `solutions/` was touched,
-so layer 4 currently shows two pills both reading "llm call" — the rewrite and
-the summarize. Making those read their real purpose means passing `label=`
-through `llmfn` from the layer's own code; worth doing before `llm-detail`.
+Things worth knowing before the next slice:
 
-The panel is pinned to the window rather than riding in the shell grid: fixed
-to the right edge, the full height of the viewport, head parked and only the
-turn list scrolling. The page holds that width open through `--gutter-right`
-on `.app`, the single knob every rule that cancels the reservation turns; the
-rail rejoins the flow as a full-width band below 1100px. Full width is now the
-pinned panel widening to `100vw`, not a grid span.
+- **Open state lives in the DOM** (`.step-item.is-open`), not `state.js`,
+  because nothing re-renders a turn once it lands. `live-steps` changes that:
+  appending steps mid-turn means lifting that state or appending to the
+  existing list rather than rebuilding it. `stepDetail` is a pure step -> node
+  function either way.
+- **Flask serialises with `sort_keys=True`.** Anything whose order carries
+  meaning must be a list, not an object -- that killed a whole slice once, when
+  the fixture page and the browser disagreed because only one of them went
+  through Flask. The attribute list iterates `Object.entries`, so its rows are
+  alphabetical in the browser and insertion-ordered in a fixture; nothing
+  should depend on that order.
+- **A tool call's step is recorded before the `llmfn` step that contains it**,
+  since `new_step` writes on exit. `tool-calls` has to render the call inside
+  the response, so it will need to read the rounds out of `output.response`
+  rather than trust the flat order.
+- **Two criteria above are stale, not the panel.** `search-detail` says
+  "top-k" where the cosine chart draws the engine's `min_score` (0.3);
+  `turn-steps` says three pills where layer 4 shows four -- `rerank` is a real
+  traced step.
 
-All of it was checked in headless Chrome against the layer-4 solution at 1440
-and 900 wide: the panel holds the right edge at full height, the page scrolls
-under it without moving it, a long turn list scrolls inside the panel with the
-head staying put, and expand/collapse round-trips the same content. The width
-toggle does not re-render, which is what carries an unfolded step across it.
-
-One thing to know: a layer-4 query shows **four** pills, not the three the
-criterion names — `llmfn`, `search_semantic`, `rerank_by_persona`, `llmfn`. The
-rerank is a real traced step, so the count in the criterion is what is stale,
-not the panel.
-
-Open state lives in the DOM (`.step-item.is-open`), not in `state.js`, because
-nothing re-renders the turn once it lands. `live-steps` changes that: when it
-starts appending steps mid-turn it will need to lift that state, or append to
-the existing list rather than rebuild it. `stepDetail` is a pure step → node
-function so it can be reused either way.
+`live-steps` is next.

@@ -1264,6 +1264,41 @@ button {
   white-space: pre-wrap;
 }
 
+/* Long literal content -- a system prompt, a chat turn's message list -- keeps
+   its own scrollbar instead of being truncated or pushing every later step out
+   of the rail. Full width gives the same box more room, not different content. */
+.detail-scroll {
+  max-height: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.app[data-trace-width="full"] .detail-scroll {
+  max-height: 460px;
+}
+
+/* A chat turn's messages, in the order the model reads them. */
+.msg-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.msg-row + .msg-row {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--trace-border);
+}
+
+.msg-role {
+  display: block;
+  font-family: var(--font-sc);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--trace-muted);
+  margin-bottom: 2px;
+}
+
 .attr-list {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1532,6 +1567,14 @@ button {
   line-height: 1.65;
   color: var(--trace-dim);
   overflow-x: auto;
+}
+
+/* A structured response is something a student reads, not a payload they scan
+   for shape: its long strings wrap instead of adding a second scrollbar inside
+   an already-scrolling block. The raw tab keeps its side-scroll. */
+.step-detail pre.wrapped {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* JSON syntax colouring (spans emitted by render.js) */

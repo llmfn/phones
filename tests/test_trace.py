@@ -1,6 +1,10 @@
-import pytest
+import json
+from types import SimpleNamespace
 
-from phonekit import Application, search_bm25, trace
+import pytest
+from pydantic import BaseModel
+
+from phonekit import Application, llm, search_bm25, trace
 from phonekit.schema import Filters, RecommendResponse
 from phonekit.session import Session
 
@@ -125,6 +129,101 @@ def test_the_keyword_search_step_records_why_the_survivors_ranked():
     assert [facts["token"] for facts in top["tokens"]] == order
     assert all(facts["count"] >= 1 for facts in top["tokens"])
     assert round(sum(facts["score"] for facts in top["tokens"]), 3) == round(top["score"], 3)
+
+
+class Rewritten(BaseModel):
+    query: str
+
+
+class FakeResponses:
+    """Stands in for ``client.responses``, keeping the calls it received."""
+
+    def __init__(self, parsed=None):
+        self.calls = []
+        self.parsed = parsed
+
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
+        return SimpleNamespace(id="resp_1", output=[], output_text="A steady pick.")
+
+    def parse(self, **kwargs):
+        self.calls.append(kwargs)
+        return SimpleNamespace(
+            id="resp_1",
+            output=[],
+            output_text=self.parsed.model_dump_json(),
+            output_parsed=self.parsed,
+        )
+
+
+@pytest.fixture
+def fake_llm(monkeypatch):
+    """Run ``llmfn`` against a stub provider, so the trace can be read offline."""
+
+    def install(parsed=None):
+        responses = FakeResponses(parsed)
+        settings = SimpleNamespace(openai_model="test-model")
+        monkeypatch.setattr(llm.config, "get_settings", lambda: settings)
+        monkeypatch.setattr(llm, "get_openai_client", lambda: SimpleNamespace(responses=responses))
+        return responses
+
+    return install
+
+
+def test_the_llm_step_records_the_request_the_provider_received(fake_llm):
+    # The panel renders what was sent, not a rendering of the call the layer
+    # wrote: the step's request is the same object the client was handed.
+    responses = fake_llm()
+    prompt = "You are a phone expert.\n\nRules:\n- Be brief."
+
+    trace.reset()
+    llm.llmfn(instructions=prompt, input="a phone for my mom")
+    (step,) = trace.collect()
+
+    assert step.input["request"] == responses.calls[0]
+    assert step.input["request"]["instructions"] == prompt
+    assert step.input["model"] == "test-model"
+
+
+def test_the_llm_step_keeps_text_literal_rather_than_encoded(fake_llm):
+    # The prompt's newlines are newlines and its embedded JSON is still JSON --
+    # a string holding an escaped copy of either is what the panel exists to
+    # stop showing.
+    fake_llm()
+    context = json.dumps([{"name": "Pixel", "price": 45000}], indent=2)
+
+    trace.reset()
+    llm.llmfn(instructions="Summarize.", input=f"Phones:\n{context}")
+    (step,) = trace.collect()
+
+    sent = step.input["request"]["input"]
+    assert isinstance(sent, str)
+    assert sent == f"Phones:\n{context}"
+    assert "\\n" not in sent
+    assert step.output["text"] == "A steady pick."
+
+
+def test_the_llm_step_records_structured_output_as_an_object(fake_llm):
+    responses = fake_llm(parsed=Rewritten(query="budget android"))
+
+    trace.reset()
+    llm.llmfn(
+        instructions="Rewrite it.",
+        input="cheap phone",
+        output_schema=Rewritten,
+        label="rewrite",
+    )
+    (step,) = trace.collect()
+
+    assert step.label == "rewrite"
+    assert step.output["parsed"] == {"query": "budget android"}
+    # The schema the model was held to, not the name of the class holding it:
+    # "Rewritten" says a schema was used without saying what was asked for.
+    assert step.input["request"]["text_format"] == Rewritten.model_json_schema()
+    assert "query" in step.input["request"]["text_format"]["properties"]
+    # Expanding it is the only difference from the call the client received.
+    sent = dict(responses.calls[0], text_format=Rewritten.model_json_schema())
+    assert step.input["request"] == sent
 
 
 def test_recommend_returns_the_turn_in_the_response(tmp_path):

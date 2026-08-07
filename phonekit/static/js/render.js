@@ -411,6 +411,7 @@ function stepPill(step) {
 const STEP_BODIES = {
   search_bm25: bm25Body,
   search_semantic: semanticBody,
+  llmfn: llmBody,
 };
 
 function stepDetail(step) {
@@ -433,7 +434,10 @@ function stepDetail(step) {
   const raw = el("div", "step-pane");
   raw.dataset.pane = "raw";
   raw.hidden = true;
-  raw.appendChild(jsonPre(step));
+  // Scrolled like every other long block: an llm step's raw payload carries the
+  // provider's whole response object, which would otherwise run for thousands
+  // of pixels and bury the steps under it.
+  raw.appendChild(scroller(jsonPre(step)));
   detail.appendChild(raw);
 
   return detail;
@@ -635,6 +639,76 @@ function cosineAxis() {
   row.appendChild(track);
   row.appendChild(el("span"));
   return row;
+}
+
+// An LLM call by role, never as one JSON blob: what the model was told, what
+// it was given, what it said. Every string here is read straight out of the
+// request the provider received, and rendered as text -- a prompt's newlines
+// are newlines, and a prompt carrying JSON shows that JSON indented rather
+// than as one escaped line.
+function llmBody(step) {
+  const request = step.input?.request;
+  if (!request) return fallbackBody(step);
+
+  const node = el("div", "detail-body");
+  if (request.instructions) {
+    node.appendChild(block("system", scroller(el("div", "detail-text", request.instructions))));
+  }
+  node.appendChild(block("input", scroller(llmInput(request.input))));
+
+  // The shape the model was required to answer in, which is not the shape it
+  // answered with: optional fields, and the descriptions the layer wrote to
+  // steer each one, are only visible here.
+  if (request.text_format) {
+    node.appendChild(block("schema asked for", scroller(jsonPre(request.text_format))));
+  }
+
+  // Structured output: the object the schema produced, which is what the
+  // layer's own code goes on to use. Plain text otherwise.
+  const parsed = step.output?.parsed;
+  let response;
+  if (parsed) {
+    response = jsonPre(parsed);
+    response.className = "wrapped";
+  } else {
+    response = el("div", "detail-text", step.output?.text ?? "");
+  }
+  node.appendChild(block("response", scroller(response)));
+
+  return { node, consumed: ["request", "text", "parsed", "response"] };
+}
+
+// The input as the model received it: one literal string, or the message list
+// a chat turn sends. The list is shown whole -- windowing it here would hide
+// the growth that is the whole point of looking.
+function llmInput(input) {
+  if (!Array.isArray(input)) return el("div", "detail-text", String(input ?? ""));
+
+  const list = el("ol", "msg-list");
+  for (const message of input) {
+    const row = el("li", "msg-row");
+    row.appendChild(el("span", "msg-role", message?.role ?? "message"));
+    row.appendChild(el("div", "detail-text", contentText(message?.content)));
+    list.appendChild(row);
+  }
+  return list;
+}
+
+// A message's content is a string on the way in, but comes back from the
+// provider as typed parts; both have to read as the text they are.
+function contentText(content) {
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) return content.map((part) => part?.text ?? "").join("");
+  return JSON.stringify(content ?? "", null, 2);
+}
+
+// Long content scrolls inside its own block rather than being cut short: a
+// system prompt must be readable in full at either width, and it cannot be
+// allowed to bury every step under it in the rail.
+function scroller(node) {
+  const wrap = el("div", "detail-scroll");
+  wrap.appendChild(node);
+  return wrap;
 }
 
 // Any step we have no view for yet: its input and output as formatted JSON,

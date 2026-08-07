@@ -38,11 +38,11 @@ def summarize(query, products):
         for p in products[:3]
     ]
     input = f"Query: {query}\n\nPhones:\n{json.dumps(context, indent=2)}"
-    return llmfn(instructions=PROMPT_SUMMARY, input=input)
+    return llmfn(instructions=PROMPT_SUMMARY, input=input, label="summarize")
 
 def search(query, filters):
     PROMPT = app.read_file("prompt.md")
-    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema)
+    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema, label="rewrite")
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)

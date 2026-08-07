@@ -142,21 +142,22 @@ def new_step(name: str, input: dict, label: str = ""):
     )
 
 
-def _jsonable(value):
+def jsonable(value):
     """Best-effort JSON-safe view of a traced value.
 
     The trace rides back to the browser as JSON, so values that don't
     serialize (pydantic models, classes, clients) are reduced to something
-    readable rather than crashing the response.
+    readable rather than crashing the response. Steps that curate their own
+    payload use it on whatever they hand over.
     """
     if value is None or isinstance(value, (str, int, float, bool)):
         return value
     if isinstance(value, BaseModel):
         return value.model_dump()
     if isinstance(value, dict):
-        return {k: _jsonable(v) for k, v in value.items()}
+        return {k: jsonable(v) for k, v in value.items()}
     if isinstance(value, (list, tuple)):
-        return [_jsonable(v) for v in value]
+        return [jsonable(v) for v in value]
     if isinstance(value, type):
         return value.__name__
     return repr(value)
@@ -182,10 +183,10 @@ def trace_function(fn):
     def wrapper(*args, **kwargs):
         bound = signature.bind(*args, **kwargs)
         bound.apply_defaults()
-        inputs = {key: _jsonable(value) for key, value in bound.arguments.items()}
+        inputs = {key: jsonable(value) for key, value in bound.arguments.items()}
         with new_step(name=fn.__name__, input=inputs) as step:
             result = fn(*args, **kwargs)
-            step.set_output({"result": _jsonable(result)})
+            step.set_output({"result": jsonable(result)})
         return result
 
     return wrapper

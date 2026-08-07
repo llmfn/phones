@@ -10,7 +10,7 @@ def search(query, filters):
     prompt = app.read_file("prompt.md")
 
     # refine the query using llm
-    query_refined = llmfn(instructions=prompt, input=query)
+    query_refined = llmfn(instructions=prompt, input=query, label="rewrite")
 
     # search with the refined query
     products = search_semantic(query_refined)
