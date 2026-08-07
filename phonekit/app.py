@@ -22,6 +22,7 @@ layer's app.py. Templates and static assets always come from this package.
 
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any, Callable
 
@@ -38,6 +39,7 @@ from .schema import (
     Product,
     RangeFacet,
     RecommendResponse,
+    TraceTurn,
 )
 from .session import DEFAULT_SESSION_ROOT, Session
 
@@ -79,13 +81,34 @@ class Application(Flask):
         return self
 
     def run_query(self, query: str, filters: Filters | None = None) -> RecommendResponse:
-        """Dispatch one query to the layer's search, with a fresh trace."""
+        """Dispatch one query to the layer's search, as one traced turn.
+
+        A pipeline that raises still produces a turn: the steps that ran up to
+        the failure -- the last of them recorded as an error by ``new_step`` --
+        come back with an empty result set, because a broken query is exactly
+        when the trace is worth reading. Only a missing ``search`` raises,
+        since that is the layer's own wiring, not its pipeline.
+        """
         if self.search is None:
             raise RuntimeError("assign app.search before running queries")
         trace.reset()
         trace.set_layer_name(self.layer_name)
-        response = self.search(query, filters or Filters())
-        response.trace = trace.collect()
+        started = time.perf_counter()
+        try:
+            response = self.search(query, filters or Filters())
+        except Exception as exc:
+            response = RecommendResponse(products=[])
+            error = str(exc) or exc.__class__.__name__
+        else:
+            error = None
+        response.trace = TraceTurn(
+            kind="search",
+            input=query,
+            steps=trace.collect(),
+            status="error" if error else "success",
+            latency_ms=int((time.perf_counter() - started) * 1000),
+            error=error,
+        )
         return response
 
     def run_chat(self, session: Session, message: str) -> str | dict[str, Any]:
@@ -263,8 +286,13 @@ def _print_response(response: RecommendResponse) -> None:
         )
     if response.summary:
         print(f"\n{response.summary}")
-    print("\nTrace")
-    for step in response.trace:
-        print(f"[{step.layer}] {step.name}  {step.status}  {step.latency_ms}ms")
+    turn = response.trace
+    if turn is None:
+        return
+    print(f"\nTrace: {turn.input}  {turn.latency_ms}ms")
+    if turn.error:
+        print(f"  error: {turn.error}")
+    for step in turn.steps:
+        print(f"[{step.layer}] {step.label}  ({step.name})  {step.status}  {step.latency_ms}ms")
         print(f"    input:  {json.dumps(step.input)}")
         print(f"    output: {json.dumps(step.output)}")

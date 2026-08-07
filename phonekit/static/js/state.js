@@ -43,8 +43,11 @@ export const state = {
   // stable even though facet bounds narrow with filtering. Captured on the
   // first unfiltered response.
   priceBounds: null,
-  // Latest trace returned by the backend (for "copy as JSON").
-  lastTrace: [],
+  // Trace turns for the current session, oldest first. A search replaces them
+  // (a new search is a new session); later turns append.
+  turns: [],
+  // Whether the trace panel is grown to full-page width.
+  traceWide: false,
   sessionId: null,
   conversation: [],
 };

@@ -94,6 +94,7 @@
   --radius-lg: 0.5rem;
 
   /* trace panel — inverted dark surface */
+  --trace-w: clamp(320px, 32vw, 560px); /* the rail's pinned width */
   --trace-bg: oklch(20% 0.015 50);
   --trace-border: oklch(30% 0.015 50);
   --trace-row: oklch(23% 0.015 50);
@@ -161,13 +162,24 @@ button {
 /* ---- layout: fluid shell, two states via [data-state] ---- */
 
 .app {
+  /* The trace is pinned to the window's right edge (see below), so the page
+     holds that width open rather than letting results run underneath it.
+     Every rule that cancels the reservation moves this one value, so the
+     padding itself is declared exactly once. */
+  --gutter-right: calc(var(--trace-w) + var(--space-6));
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-4) var(--gutter-right) var(--space-4) var(--space-6);
 }
 
-/* Zero state: wordmark and search box centered; nothing else shows. */
+/* Zero state: wordmark and search box centered; nothing else shows. The
+   hidden shell takes the trace with it, so the page stops reserving the
+   width and the search box centres on the window. */
+.app[data-state="zero"] {
+  --gutter-right: var(--space-6);
+}
+
 .app[data-state="zero"] .shell,
 .app[data-state="zero"] .search-meta,
 .app[data-state="zero"] .chips {
@@ -264,26 +276,28 @@ button {
   background: var(--surface-alt);
 }
 
-/* Three-zone shell: flexing results, fixed filter rail, flexing trace. */
+/* Flowing shell: results plus the filter rail. The trace is not a column
+   here -- it is pinned to the window, and .app's right padding is what keeps
+   this grid clear of it. */
 .shell {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px minmax(320px, 32%);
+  grid-template-columns: minmax(0, 1fr) 220px;
   gap: var(--space-6);
   align-items: start;
   margin-top: var(--space-6);
 }
 
 .app[data-filter-ui="popover"] .shell {
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 32%);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .app[data-conversation-ui="left_sidebar"] .shell {
-  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) 220px minmax(300px, 28%);
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) 220px;
 }
 
 .app[data-conversation-ui="left_sidebar"][data-filter-ui="popover"] .shell {
-  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(300px, 28%);
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
 }
 
 /* ---- search bar: icon → input → badge ---- */
@@ -967,14 +981,23 @@ button {
 
 /* ---- trace: dark x-ray surface ---- */
 
+/* Pinned to the window, not the shell: flush to the right edge, the full
+   height of the viewport, and scrolling inside itself so the results column
+   scrolls independently underneath. The head stays put; only the turn list
+   moves. */
 .trace-rail {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: var(--trace-w);
+  display: flex;
+  flex-direction: column;
   background: var(--trace-bg);
-  border-radius: var(--radius-lg);
   padding: var(--space-4);
   color: var(--trace-fg);
 }
 
 .trace-head {
+  flex: none;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -995,6 +1018,11 @@ button {
   margin-bottom: -1px;
 }
 
+.trace-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
 .btn-trace {
   border-color: var(--trace-border);
   color: var(--trace-muted);
@@ -1009,115 +1037,132 @@ button {
   list-style: none;
   margin: 0;
   padding: 0;
+  /* The scrolling part of the pinned rail; min-height lets it shrink inside
+     the flex column instead of pushing the head off the top. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--trace-border) transparent;
+  scrollbar-width: thin;
 }
 
 .trace .empty {
   color: var(--trace-muted);
 }
 
-.trace-row {
+/* One group per turn: what the student asked, then a pill per step. */
+.trace-turn {
   border: 1px solid var(--trace-border);
   border-left-width: 3px;
+  border-left-color: var(--trace-step-bar);
   border-radius: var(--radius);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: 8px 10px;
   background: var(--trace-row);
 }
 
-.trace-row.success {
-  border-left-color: var(--trace-str);
-}
-.trace-row.fallback {
-  border-left-color: var(--trace-bool);
-}
-.trace-row.error {
+.trace-turn.error {
   border-left-color: var(--trace-err);
 }
-.trace-row.skip {
+
+.turn-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: 8px;
+}
+
+.turn-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-sc);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--trace-fg);
+  overflow-wrap: anywhere;
+}
+
+.turn-empty,
+.turn-error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--trace-muted);
+  overflow-wrap: anywhere;
+}
+
+.turn-error {
+  margin-top: 8px;
+  color: var(--trace-err);
+}
+
+.turn-steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.step-pill {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 9px;
+  border: 1px solid var(--trace-border);
+  border-left: 3px solid var(--trace-str);
+  border-radius: var(--radius-sm);
+  background: var(--trace-pre);
+}
+
+.step-pill.fallback {
+  border-left-color: var(--trace-bool);
+}
+.step-pill.error {
+  border-left-color: var(--trace-err);
+}
+.step-pill.skip {
   border-left-color: var(--trace-null);
   opacity: 0.55;
 }
 
-.trace-row summary {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 8px 10px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.trace-row summary::-webkit-details-marker {
-  display: none;
-}
-
-.layer-badge {
-  flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--trace-border);
-  color: var(--trace-fg);
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-.trace-row .layer-name {
-  flex: 1;
+.step-label {
   font-family: var(--font-sc);
   font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--trace-fg);
 }
 
-.trace-row .latency {
+.step-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--trace-bool);
+}
+
+.step-pill.error .step-status {
+  color: var(--trace-err);
+}
+
+.trace .latency {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--trace-muted);
 }
 
-.trace-detail {
-  padding: 0 10px 10px;
+/* Full width: the pinned panel widens to the whole window and the zones
+   behind it step aside. Only the room changes -- the panel renders exactly
+   the same content. */
+.app[data-trace-width="full"] .results,
+.app[data-trace-width="full"] .rail:not(.trace-rail) {
+  display: none;
 }
 
-.trace-detail .io-label {
-  font-family: var(--font-sc);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--trace-fg);
-  border-left: 2px solid var(--trace-step-bar);
-  padding-left: 8px;
-  margin: 8px 0 4px;
-}
-
-.trace-detail pre {
-  margin: 0;
-  padding: var(--space-2);
-  background: var(--trace-pre);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.65;
-  color: var(--trace-dim);
-  overflow-x: auto;
-}
-
-/* JSON syntax colouring (spans emitted by render.js) */
-.tok-key {
-  color: var(--trace-key);
-}
-.tok-str {
-  color: var(--trace-str);
-}
-.tok-num {
-  color: var(--trace-num);
-}
-.tok-bool {
-  color: var(--trace-bool);
-}
-.tok-null {
-  color: var(--trace-null);
+/* Pinned to both edges rather than sized at 100vw, which would overshoot by
+   the scrollbar's width whenever the page behind still has one. */
+.app[data-trace-width="full"] .trace-rail {
+  left: 0;
+  width: auto;
 }
 
 /* ---- responsive ---- */
@@ -1136,13 +1181,27 @@ button {
     grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   }
 
-  .app[data-conversation-ui="left_sidebar"] .filters,
-  .app[data-conversation-ui="left_sidebar"] .trace-rail {
+  .app[data-conversation-ui="left_sidebar"] .filters {
     grid-column: 1 / -1;
   }
 
-  .trace-rail {
+  /* Too narrow to give a pinned panel a third of the window: the trace
+     rejoins the flow as a full-width band under the results. */
+  .app {
+    --gutter-right: var(--space-6);
+  }
+
+  .trace-rail,
+  .app[data-trace-width="full"] .trace-rail {
+    position: static;
+    width: auto;
     grid-column: 1 / -1;
+    border-radius: var(--radius-lg);
+  }
+
+  .trace {
+    flex: none;
+    overflow-y: visible;
   }
 }
 

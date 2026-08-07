@@ -333,9 +333,9 @@ function chip(text, data) {
 
 // The badge on the search bar reflects which engine the layer actually ran,
 // read off the trace step names rather than any config the frontend holds.
-export function renderSearchMode(trace) {
+export function renderSearchMode(turn) {
   const badge = document.getElementById("search-mode");
-  const names = (trace ?? []).map((step) => step.name ?? "");
+  const names = (turn?.steps ?? []).map((step) => step.name ?? "");
   const semantic = names.some((n) => n.includes("search_semantic"));
   const keyword = names.some((n) => n.includes("search_bm25"));
   const mode = semantic && keyword ? "hybrid" : semantic ? "semantic" : keyword ? "keyword" : null;
@@ -345,60 +345,53 @@ export function renderSearchMode(trace) {
 
 // --- Trace ---
 
+// Steps are grouped under the turn that produced them: one <li> per turn,
+// carrying the input the student typed and a pill per pipeline step in the
+// order it ran. Latency is the only number the panel shows.
+
 const KNOWN_STATUSES = ["success", "fallback", "error", "skip"];
 
-export function renderTrace(trace) {
+export function renderTrace(turns) {
   const list = document.getElementById("trace");
   list.innerHTML = "";
 
-  if (!trace || !trace.length) {
+  if (!turns || !turns.length) {
     list.appendChild(el("li", "empty", "No trace yet."));
     return;
   }
 
-  for (const step of trace) {
-    const status = KNOWN_STATUSES.includes(step.status) ? step.status : "success";
-    const row = el("details", `trace-row ${status}`);
-    const summary = el("summary");
-    summary.appendChild(el("span", "layer-badge", String(step.layer)));
-    summary.appendChild(el("span", "layer-name", step.name ?? `Layer ${step.layer}`));
-    const latency = status === "skip" ? "skip" : `${step.latency_ms ?? 0} ms`;
-    summary.appendChild(el("span", "latency", latency));
-    row.appendChild(summary);
-
-    const detail = el("div", "trace-detail");
-    detail.appendChild(el("div", "io-label", "input"));
-    detail.appendChild(jsonPre(step.input ?? {}));
-    detail.appendChild(el("div", "io-label", "output"));
-    detail.appendChild(jsonPre(step.output ?? {}));
-    row.appendChild(detail);
-    list.appendChild(row);
-  }
+  for (const turn of turns) list.appendChild(traceTurn(turn));
 }
 
-// A <pre> of pretty-printed JSON with syntax-coloured spans (.tok-*). Built
-// from text nodes, never innerHTML, so values cannot inject markup.
-const JSON_TOKEN = /("(?:\\.|[^"\\])*")(\s*:)?|\b(?:true|false|null)\b|-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/g;
+function traceTurn(turn) {
+  const item = el("li", `trace-turn ${turn.status === "error" ? "error" : "success"}`);
 
-function jsonPre(value) {
-  const json = JSON.stringify(value, null, 2);
-  const pre = el("pre");
-  let last = 0;
-  for (const m of json.matchAll(JSON_TOKEN)) {
-    if (m.index > last) pre.append(json.slice(last, m.index));
-    if (m[1] !== undefined) {
-      // A string is a key when followed by a colon; the colon stays plain.
-      pre.append(el("span", m[2] ? "tok-key" : "tok-str", m[1]));
-      if (m[2]) pre.append(m[2]);
-    } else if (m[0] === "true" || m[0] === "false") {
-      pre.append(el("span", "tok-bool", m[0]));
-    } else if (m[0] === "null") {
-      pre.append(el("span", "tok-null", m[0]));
-    } else {
-      pre.append(el("span", "tok-num", m[0]));
-    }
-    last = m.index + m[0].length;
+  const head = el("div", "turn-head");
+  head.appendChild(el("span", "turn-input", turn.input || "(no query)"));
+  head.appendChild(el("span", "latency", `${turn.latency_ms ?? 0} ms`));
+  item.appendChild(head);
+
+  const steps = turn.steps ?? [];
+  if (steps.length) {
+    const pills = el("ol", "turn-steps");
+    for (const step of steps) pills.appendChild(stepPill(step));
+    item.appendChild(pills);
+  } else {
+    item.appendChild(el("div", "turn-empty", "no steps recorded"));
   }
-  pre.append(json.slice(last));
-  return pre;
+
+  // The literal error the pipeline raised — shown whether or not it landed
+  // inside a step, since a throw between steps has no pill to carry it.
+  if (turn.error) item.appendChild(el("div", "turn-error", turn.error));
+  return item;
+}
+
+function stepPill(step) {
+  const status = KNOWN_STATUSES.includes(step.status) ? step.status : "success";
+  const pill = el("li", `step-pill ${status}`);
+  pill.appendChild(el("span", "step-label", step.label || step.name || "step"));
+  // Success is carried by the pill's colour alone; anything else says so.
+  if (status !== "success") pill.appendChild(el("span", "step-status", status));
+  pill.appendChild(el("span", "latency", `${step.latency_ms ?? 0} ms`));
+  return pill;
 }

@@ -59,6 +59,7 @@
       data-chips-position="{{ design_flags.CHIPS_POSITION }}"
       data-filter-ui="{{ design_flags.FILTER_UI }}"
       data-conversation-ui="{{ design_flags.CONVERSATION_UI }}"
+      data-trace-width="rail"
     >
       <header class="topbar">
         <a class="wordmark" href="#">Phones</a>
@@ -134,9 +135,20 @@
         <aside class="rail trace-rail" aria-label="Trace">
           <div class="trace-head">
             <h2 class="trace-title">Trace</h2>
-            <button id="copy-trace" class="btn btn-trace btn-sm" type="button">
-              copy as JSON
-            </button>
+            <div class="trace-actions">
+              <button id="copy-trace" class="btn btn-trace btn-sm" type="button">
+                copy as JSON
+              </button>
+              <button
+                id="trace-width"
+                class="btn btn-trace btn-sm"
+                type="button"
+                aria-pressed="false"
+                aria-label="Grow trace to full width"
+              >
+                expand
+              </button>
+            </div>
           </div>
           <ol id="trace" class="trace"></ol>
         </aside>

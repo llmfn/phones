@@ -21,14 +21,37 @@ class TraceStep(BaseModel):
     ``input`` and ``output`` are deliberately free-form dicts -- each layer
     decides what explains its work (BM25 shows per-token match counts, semantic
     search shows cosine scores). The envelope is what the UI contract fixes.
+
+    ``name`` is the operation that ran (``search_semantic``, ``llmfn``);
+    ``label`` is the plain-language purpose the panel shows instead ("semantic
+    search"), derived from the name when the caller does not give one.
     """
 
     layer: int
     name: str
+    label: str = ""
     input: dict[str, Any] = Field(default_factory=dict)
     output: dict[str, Any] = Field(default_factory=dict)
     status: Literal["success", "fallback", "error", "skip"] = "success"
     latency_ms: int = 0
+
+
+class TraceTurn(BaseModel):
+    """One user action and every step the pipeline ran to answer it.
+
+    Steps belong to the turn that produced them, never to a flat per-request
+    list: a session is a sequence of turns, and the panel groups by this
+    envelope. ``kind`` distinguishes the opening search from later chat turns;
+    ``error`` carries the failure message when a turn did not complete, in
+    which case ``steps`` holds everything that ran up to the failing step.
+    """
+
+    kind: Literal["search", "chat"] = "search"
+    input: str = ""
+    steps: list[TraceStep] = Field(default_factory=list)
+    status: Literal["success", "error"] = "success"
+    latency_ms: int = 0
+    error: str | None = None
 
 
 # --- Products -------------------------------------------------------------
@@ -171,12 +194,13 @@ class Filters(BaseModel):
 class RecommendResponse(BaseModel):
     """The recommend payload, also passed between pipeline stages.
 
-    A search stage returns one with products and trace only; facets are
-    filled downstream, computed over what survives the filters.
+    A search stage returns one with products only; facets are filled
+    downstream, computed over what survives the filters, and the trace turn is
+    attached by the Application once the pipeline has run.
     """
 
     products: list[Product]
     facets: list[Facet] = Field(default_factory=list)
-    trace: list[TraceStep] = Field(default_factory=list)
+    trace: TraceTurn | None = None
     summary: str | None = None
     session_id: str | None = None

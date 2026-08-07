@@ -132,7 +132,8 @@ export async function runQuery({ resetThread = false } = {}) {
       renderConversation(state.conversation);
     }
     document.getElementById("results-head").textContent = err.message;
-    renderTrace([]);
+    state.turns = [];
+    renderTrace(state.turns);
     return;
   } finally {
     document.getElementById("spinner").hidden = true;
@@ -154,9 +155,16 @@ export async function runQuery({ resetThread = false } = {}) {
   renderSummary(data.summary);
   renderFilters(data.facets ?? [], state.filters, state.priceBounds);
   renderChips(state.filters);
-  state.lastTrace = data.trace ?? [];
-  renderTrace(state.lastTrace);
-  renderSearchMode(state.lastTrace);
+  // A search is a new session, so its turn replaces the panel rather than
+  // extending it; later turns in the same session append.
+  state.turns = data.trace ? [data.trace] : [];
+  renderTrace(state.turns);
+  renderSearchMode(data.trace);
+  // A pipeline that failed still answers with its turn: say so where the
+  // result count goes, and let the panel show how far it got.
+  if (data.trace?.error) {
+    document.getElementById("results-head").textContent = data.trace.error;
+  }
 }
 
 // Stop the dragged thumb from crossing the other one.
@@ -317,11 +325,26 @@ export function bindEvents() {
   });
 
   document.getElementById("copy-trace").addEventListener("click", async () => {
-    const json = JSON.stringify(state.lastTrace, null, 2);
+    const json = JSON.stringify(state.turns, null, 2);
     try {
       await navigator.clipboard.writeText(json);
     } catch {
       window.prompt("Copy trace JSON:", json);
     }
   });
+
+  // Width is a class on the shell and nothing more: no re-render, so whatever
+  // the reader has unfolded survives the toggle.
+  document.getElementById("trace-width").addEventListener("click", () => {
+    state.traceWide = !state.traceWide;
+    setTraceWidth(state.traceWide);
+  });
+}
+
+function setTraceWidth(wide) {
+  const button = document.getElementById("trace-width");
+  document.getElementById("app").dataset.traceWidth = wide ? "full" : "rail";
+  button.textContent = wide ? "collapse" : "expand";
+  button.setAttribute("aria-pressed", wide ? "true" : "false");
+  button.setAttribute("aria-label", wide ? "Shrink trace to the rail" : "Grow trace to full width");
 }

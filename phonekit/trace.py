@@ -23,10 +23,26 @@ from contextvars import ContextVar
 
 from pydantic import BaseModel
 
-from .schema import TraceStep
+from .schema import TraceStep, TraceTurn
 
 _steps: ContextVar[list[TraceStep] | None] = ContextVar("trace_steps", default=None)
 _layer_name: ContextVar[str] = ContextVar("trace_layer_name", default="")
+
+# The plain-language purpose the panel shows for each building block, so a step
+# reads as what it is for rather than what it is called. A step can override it
+# by passing ``label``; anything unlisted falls back to its own name.
+DEFAULT_LABELS = {
+    "search_bm25": "keyword search",
+    "search_semantic": "semantic search",
+    "rerank_by_persona": "rerank",
+    "llmfn": "llm call",
+    "tool_call": "tool call",
+}
+
+
+def default_label(name: str) -> str:
+    """The purpose label for a step name, when the caller gave none."""
+    return DEFAULT_LABELS.get(name, name.replace("_", " "))
 
 
 def reset() -> None:
@@ -50,12 +66,16 @@ def add_step(
     output: dict,
     status: str = "success",
     latency_ms: int = 0,
+    label: str = "",
 ) -> None:
     """Record one step of the current query's trace.
 
-    ``name`` is the operation that ran (e.g. ``"search_bm25"``, ``"llmfn"``)
-    and becomes the step's heading in the X-Ray; the layer number badge still
-    comes from the current layer's identity (see ``set_layer_name``).
+    ``name`` is the operation that ran (e.g. ``"search_bm25"``, ``"llmfn"``),
+    and ``label`` the plain-language purpose the panel shows for it -- pass one
+    when the operation alone doesn't say what the step is for (two ``llmfn``
+    calls that rewrite and then summarize), and it defaults to the name's
+    reading otherwise. The layer number badge comes from the current layer's
+    identity (see ``set_layer_name``).
     """
     steps = _steps.get()
     if steps is None:
@@ -66,6 +86,7 @@ def add_step(
         TraceStep(
             layer=number,
             name=name,
+            label=label or default_label(name),
             input=input,
             output=output,
             status=status,
@@ -87,7 +108,7 @@ class StepRecorder:
 
 
 @contextmanager
-def new_step(name: str, input: dict):
+def new_step(name: str, input: dict, label: str = ""):
     """Record one trace step around a block, timing it automatically.
 
         with trace.new_step(name="llmfn", input={...}) as step:
@@ -108,6 +129,7 @@ def new_step(name: str, input: dict):
             output={"error": str(exc)},
             status="error",
             latency_ms=int((time.perf_counter() - started) * 1000),
+            label=label,
         )
         raise
     add_step(
@@ -116,6 +138,7 @@ def new_step(name: str, input: dict):
         output=step.output,
         status=step.status,
         latency_ms=int((time.perf_counter() - started) * 1000),
+        label=label,
     )
 
 
