@@ -3,6 +3,10 @@
 The phone recommender app built layer by layer in the
 [llmfn](https://llmfn.com/) course.
 
+> This is the repo as taught in the first edition of the llmfn course
+> on June 13, 2026, in Bengaluru. See [tags](../../tags) for other
+> editions, and `main` for the latest.
+
 ## Overview
 
 We build one product recommender and improve it layer by layer. The system
