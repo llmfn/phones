@@ -95,6 +95,7 @@
 
   /* trace panel — inverted dark surface */
   --trace-w: clamp(320px, 32vw, 560px); /* the rail's pinned width */
+  --trace-row-h: 28px; /* one step row; the unit the frame stacks in */
   --trace-bg: oklch(20% 0.015 50);
   --trace-border: oklch(30% 0.015 50);
   --trace-row: oklch(23% 0.015 50);
@@ -1018,6 +1019,7 @@ button {
 .trace-rail {
   position: fixed;
   inset: 0 0 0 auto;
+  z-index: 40;
   width: var(--trace-w);
   display: flex;
   flex-direction: column;
@@ -1068,10 +1070,14 @@ button {
   margin: 0;
   padding: 0;
   /* The scrolling part of the pinned rail; min-height lets it shrink inside
-     the flex column instead of pushing the head off the top. */
+     the flex column instead of pushing the head off the top. This is the only
+     scrollbar in the panel: every block inside it wraps and unfolds at its
+     full height, so one gesture moves the whole trace. Sideways it never
+     scrolls -- anything too wide to fit wraps rather than running off. */
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-color: var(--trace-border) transparent;
   scrollbar-width: thin;
@@ -1081,11 +1087,13 @@ button {
   color: var(--trace-muted);
 }
 
-/* One group per turn: what the student asked, then a pill per step. */
+/* One group per turn: what the student asked, then a row per step. The left
+   edge carries no colour of its own -- inside the card every step already has
+   a status stripe, and two stripes running down the same panel read as a
+   ladder rather than as two facts. It speaks up only when something is off. */
 .trace-turn {
   border: 1px solid var(--trace-border);
   border-left-width: 3px;
-  border-left-color: var(--trace-step-bar);
   border-radius: var(--radius);
   margin-bottom: var(--space-3);
   padding: 8px 10px;
@@ -1096,11 +1104,14 @@ button {
   border-left-color: var(--trace-err);
 }
 
+/* Padding, not margin, for the gap under the head: the head pins to the top of
+   the rail while a step is open, and a margin would leave a strip of scrolling
+   content showing between it and the rows pinned underneath. */
 .turn-head {
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  margin-bottom: 8px;
+  padding-bottom: 8px;
 }
 
 /* Which action opened the turn, kept quiet: the text the student typed is what
@@ -1136,69 +1147,81 @@ button {
   color: var(--trace-err);
 }
 
+/* The steps run down the panel in the order the pipeline ran them, one line
+   each: the labels share a left edge and the durations a right one, so three
+   latencies can be compared by looking rather than by hunting. */
 .turn-steps {
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
   margin: 0;
   padding: 0;
 }
 
-/* An open step takes a line of its own so its detail unfolds directly under
-   its pill; the pills around it keep wrapping as before. min-width holds the
-   detail to the panel: without it a long prompt or a wide JSON line stretches
-   the flex item past the rail instead of scrolling inside it. */
-.step-item {
-  min-width: 0;
-}
-
-.step-item.is-open {
-  flex: 1 0 100%;
-}
-
-.step-pill {
+/* A contiguous stack, deliberately: rows separated by a gap would let the
+   detail show through between them once they are pinned. */
+.step-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
-  padding: 5px 9px;
-  border: 1px solid var(--trace-border);
+  width: 100%;
+  height: var(--trace-row-h);
+  padding: 0 8px;
+  border: 0;
   border-left: 3px solid var(--trace-str);
-  border-radius: var(--radius-sm);
-  background: var(--trace-pre);
+  border-bottom: 1px solid var(--trace-border);
+  background: var(--trace-row);
   font: inherit;
   color: inherit;
   text-align: left;
   cursor: pointer;
 }
 
-.step-pill:hover {
-  border-color: var(--primary);
+/* Hover takes the colour of the well the row opens into. */
+.step-row:hover {
+  background: var(--trace-pre);
 }
 
-.step-item.is-open .step-pill {
-  width: 100%;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.step-row:hover .step-caret {
+  border-color: var(--trace-fg);
 }
 
-.step-pill.fallback {
+.step-row.fallback {
   border-left-color: var(--trace-bool);
 }
-.step-pill.error {
+.step-row.error {
   border-left-color: var(--trace-err);
 }
-.step-pill.skip {
+.step-row.skip {
   border-left-color: var(--trace-null);
   opacity: 0.55;
 }
 
+/* Open or closed, said once and in one place: the chevron turns and nothing
+   else changes, because colour on this panel already means status. */
+.step-caret {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-right: 2px;
+  border-right: 1.5px solid var(--trace-muted);
+  border-bottom: 1.5px solid var(--trace-muted);
+  transform: rotate(-45deg);
+  transition: transform 120ms ease;
+}
+
+.step-item.is-open .step-caret {
+  transform: rotate(45deg);
+}
+
 /* A step still running: no hover, no pointer, because there is nothing to
-   open until it settles. The pulsing dot is the only thing on the pill that
+   open until it settles. The pulsing dot is the only thing on the row that
    moves, so a glance at the panel says which step the query is inside. */
-.step-pill.is-running {
+.step-row.is-running {
   border-left-color: var(--trace-muted);
   cursor: default;
+}
+
+.step-row.is-running:hover {
+  background: var(--trace-row);
 }
 
 .step-dot {
@@ -1224,20 +1247,28 @@ button {
   border-left-color: var(--trace-muted);
 }
 
+/* One line, always: the sticky offsets below are counted in whole rows, so a
+   label that wrapped would put every row under it out of place. */
 .step-label {
+  flex: 1;
+  min-width: 0;
   font-family: var(--font-sc);
   font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--trace-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .step-status {
+  flex: none;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--trace-bool);
 }
 
-.step-pill.error .step-status {
+.step-row.error .step-status {
   color: var(--trace-err);
 }
 
@@ -1247,12 +1278,48 @@ button {
   color: var(--trace-muted);
 }
 
+.step-row .latency {
+  flex: none;
+}
+
+/* ---- the frame ---- */
+
+/* One step is open at a time, and while it is, its turn holds still: the head
+   and the steps above the open one pin under the top of the rail, the steps
+   below pin to the floor, and the detail scrolls between them. So the pipeline
+   stays on screen, in order, while you read one part of it -- and it costs no
+   scroll container of its own, which is the point. The offsets are counted in
+   whole rows (--i, set per row by render.js) from the head's measured height. */
+.trace-turn.has-open .turn-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--trace-row);
+}
+
+/* The rows above pin as whole items; the open row pins inside its own item,
+   which is the only one tall enough to give it somewhere to travel. */
+.trace-turn.has-open .step-item.pin-top,
+.trace-turn.has-open .step-item.is-open .step-row {
+  position: sticky;
+  top: calc(var(--head-h, 0px) + var(--i, 0) * var(--trace-row-h));
+  z-index: 2;
+}
+
+.trace-turn.has-open .step-item.pin-bottom {
+  position: sticky;
+  bottom: calc(var(--i, 0) * var(--trace-row-h));
+  z-index: 2;
+}
+
 /* ---- step detail ---- */
 
+/* A well under the open row: darker than the rows, so what scrolls is plainly
+   behind what is pinned. The dim left edge continues the row's stripe without
+   claiming a status colour of its own. */
 .step-detail {
-  border: 1px solid var(--trace-border);
-  border-top: 0;
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  border-left: 3px solid var(--trace-border);
+  border-bottom: 1px solid var(--trace-border);
   padding: 8px 10px 10px;
   background: var(--trace-pre);
 }
@@ -1305,19 +1372,6 @@ button {
   white-space: pre-wrap;
 }
 
-/* Long literal content -- a system prompt, a chat turn's message list -- keeps
-   its own scrollbar instead of being truncated or pushing every later step out
-   of the rail. Full width gives the same box more room, not different content. */
-.detail-scroll {
-  max-height: 260px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.app[data-trace-width="full"] .detail-scroll {
-  max-height: 460px;
-}
-
 /* Text the layer folded in from somewhere else -- a remembered profile inside a
    prompt. Marked in place, so the string around it reads exactly as it was sent. */
 .detail-text mark {
@@ -1334,8 +1388,7 @@ button {
   color: var(--trace-muted);
 }
 
-/* How many messages this call carried, held above the scrolling list so it
-   stays readable while the transcript itself is scrolled. */
+/* How many messages this call carried, above the list it describes. */
 .msg-count {
   margin-bottom: 6px;
   font-family: var(--font-mono);
@@ -1636,13 +1689,9 @@ button {
   font-size: 12px;
   line-height: 1.65;
   color: var(--trace-dim);
-  overflow-x: auto;
-}
-
-/* A structured response is something a student reads, not a payload they scan
-   for shape: its long strings wrap instead of adding a second scrollbar inside
-   an already-scrolling block. The raw tab keeps its side-scroll. */
-.step-detail pre.wrapped {
+  /* Wrapped, never side-scrolled: the rail owns the only scrollbar in the
+     panel, so a long JSON line folds onto the next line instead of hiding its
+     tail behind a scrollbar of its own. */
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -1713,9 +1762,11 @@ button {
     border-radius: var(--radius-lg);
   }
 
+  /* In the flow the band has no height of its own to scroll inside: the page
+     scrolls it, which keeps the one-scrollbar rule the pinned rail follows. */
   .trace {
     flex: none;
-    overflow-y: visible;
+    overflow: visible;
   }
 }
 

@@ -25,6 +25,9 @@ import {
 } from "./state.js";
 import {
   setAppState,
+  openStep,
+  closeStep,
+  reframe,
   renderResults,
   renderSummary,
   renderFilters,
@@ -401,9 +404,13 @@ export function bindEvents() {
       showPane(tab);
       return;
     }
-    const pill = e.target.closest(".step-pill");
-    if (pill) toggleStep(pill);
+    const row = e.target.closest(".step-row");
+    if (row) toggleStep(row);
   });
+
+  // The frame is measured in pixels, so a window that changes size has to be
+  // measured again — the turn's head rewraps and every pinned row moves with it.
+  window.addEventListener("resize", reframe);
 
   // Width is a class on the shell and nothing more: no re-render, so whatever
   // the reader has unfolded survives the toggle.
@@ -413,16 +420,12 @@ export function bindEvents() {
   });
 }
 
-function toggleStep(pill) {
-  const item = pill.closest(".step-item");
-  // A step that is still running carries no detail: there is nothing settled
-  // to show yet, so its pill opens nothing.
-  const detail = item.querySelector(".step-detail");
-  if (!detail) return;
-  const open = !item.classList.contains("is-open");
-  item.classList.toggle("is-open", open);
-  pill.setAttribute("aria-expanded", open ? "true" : "false");
-  detail.hidden = !open;
+// One step is open at a time: the panel's shape is worth more than reading two
+// details at once, which a rail this narrow could not show side by side anyway.
+// A step that is still running carries no detail, so its row opens nothing.
+function toggleStep(row) {
+  if (row.closest(".step-item").classList.contains("is-open")) closeStep();
+  else openStep(row);
 }
 
 function showPane(tab) {
@@ -443,4 +446,7 @@ function setTraceWidth(wide) {
   button.textContent = wide ? "collapse" : "expand";
   button.setAttribute("aria-pressed", wide ? "true" : "false");
   button.setAttribute("aria-label", wide ? "Shrink trace to the rail" : "Grow trace to full width");
+  // The panel just changed width, so the open turn's head sits on a different
+  // number of lines and everything pinned below it has moved.
+  reframe();
 }

@@ -387,6 +387,7 @@ export function renderTrace(turns) {
   });
   while (list.children.length > turns.length) list.lastElementChild.remove();
 
+  reframe();
   startClocks();
 }
 
@@ -410,7 +411,10 @@ function traceTurn(turn) {
 
 function patchTurn(item, turn) {
   const running = turn.status === "running";
-  item.className = `trace-turn ${running ? "running" : turn.status === "error" ? "error" : "success"}`;
+  // Status is the only class the turn's own state owns: the frame's classes are
+  // the reader's, and a step settling elsewhere must not fold the panel up.
+  item.classList.remove("running", "error", "success");
+  item.classList.add(running ? "running" : turn.status === "error" ? "error" : "success");
 
   const head = item.querySelector(".turn-head");
   head.querySelector(".turn-kind").textContent = turn.kind || "turn";
@@ -445,7 +449,7 @@ function patchSteps(list, steps) {
     const key = stepKey(step, index);
     const existing = list.children[index];
     if (existing?.dataset.stepKey === key) return;
-    const node = stepPill(step);
+    const node = stepRow(step);
     node.dataset.stepKey = key;
     if (existing) list.replaceChild(node, existing);
     else list.appendChild(node);
@@ -453,39 +457,119 @@ function patchSteps(list, steps) {
   while (list.children.length > steps.length) list.lastElementChild.remove();
 }
 
-// What makes a pill the same pill: its place, what ran, and where it got to.
+// What makes a row the same row: its place, what ran, and where it got to.
 // A settled step never changes again, so its node — and anything the reader
 // has opened inside it — survives every later render of the turn.
 function stepKey(step, index) {
   return [index, step.name, step.status, step.latency_ms].join("|");
 }
 
-function stepPill(step) {
+function stepRow(step) {
   const item = el("li", "step-item");
 
   if (step.status === "running") {
     // A running step is not a control: it has no detail to open yet, so it is
-    // not a button and nothing about it invites a click.
-    const pill = el("span", "step-pill is-running");
-    pill.appendChild(el("span", "step-dot"));
-    pill.appendChild(el("span", "step-label", step.label || step.name || "step"));
-    pill.appendChild(el("span", "latency"));
-    setClock(pill, true, null);
-    item.appendChild(pill);
+    // not a button and nothing about it invites a click. It carries the dot
+    // where a settled row carries its chevron.
+    const row = el("span", "step-row is-running");
+    row.appendChild(el("span", "step-dot"));
+    row.appendChild(el("span", "step-label", step.label || step.name || "step"));
+    row.appendChild(el("span", "latency"));
+    setClock(row, true, null);
+    item.appendChild(row);
     return item;
   }
 
   const status = KNOWN_STATUSES.includes(step.status) ? step.status : "success";
-  const pill = el("button", `step-pill ${status}`);
-  pill.type = "button";
-  pill.setAttribute("aria-expanded", "false");
-  pill.appendChild(el("span", "step-label", step.label || step.name || "step"));
-  // Success is carried by the pill's colour alone; anything else says so.
-  if (status !== "success") pill.appendChild(el("span", "step-status", status));
-  pill.appendChild(el("span", "latency", `${step.latency_ms ?? 0} ms`));
-  item.appendChild(pill);
+  const row = el("button", `step-row ${status}`);
+  row.type = "button";
+  row.setAttribute("aria-expanded", "false");
+  row.appendChild(el("span", "step-label", step.label || step.name || "step"));
+  // Success is carried by the row's stripe alone; anything else says so.
+  if (status !== "success") row.appendChild(el("span", "step-status", status));
+  row.appendChild(el("span", "latency", `${step.latency_ms ?? 0} ms`));
+  row.appendChild(el("span", "step-caret"));
+  item.appendChild(row);
   item.appendChild(stepDetail(step));
   return item;
+}
+
+// --- The frame ---
+
+// Opening a step closes whatever was open: one step at a time is what lets the
+// panel hold its shape around the one you are reading. The turn's head and the
+// steps around the open one pin in place (see .has-open in styles.css), so the
+// pipeline stays on screen while its detail scrolls past.
+
+const SMOOTH = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+export function openStep(row) {
+  const item = row.closest(".step-item");
+  const detail = item.querySelector(".step-detail");
+  if (!detail) return;
+
+  closeStep();
+  item.classList.add("is-open");
+  row.setAttribute("aria-expanded", "true");
+  detail.hidden = false;
+
+  // Measured before the frame goes on, while the row still reports where the
+  // layout put it: once it is pinned, its own rect gives the pinned position.
+  const list = document.getElementById("trace");
+  const top = row.getBoundingClientRect().top - list.getBoundingClientRect().top + list.scrollTop;
+  const resting = frame(item);
+  // A row clicked at the foot of the rail would otherwise open its detail below
+  // the fold; the panel carries it up to where it comes to rest instead.
+  if (list.scrollHeight > list.clientHeight) list.scrollTo({ top: top - resting, behavior: SMOOTH });
+  else row.scrollIntoView({ block: "start", behavior: SMOOTH });
+}
+
+export function closeStep() {
+  const item = document.querySelector("#trace .step-item.is-open");
+  if (!item) return;
+  item.classList.remove("is-open");
+  item.querySelector(".step-row")?.setAttribute("aria-expanded", "false");
+  item.querySelector(".step-detail").hidden = true;
+  unframe(item.closest(".trace-turn"));
+}
+
+// The frame is measured, so it has to be re-measured: a step arriving in the
+// open turn moves the rows below it, and the head rewraps whenever the rail
+// changes width.
+export function reframe() {
+  const item = document.querySelector("#trace .step-item.is-open");
+  if (item) frame(item);
+}
+
+// Pins the open step's turn around it, and answers where in the rail the open
+// row comes to rest — which is where the panel scrolls it to.
+function frame(item) {
+  const turn = item.closest(".trace-turn");
+  const head = turn.querySelector(".turn-head");
+  const items = [...turn.querySelectorAll(".step-item")];
+  const open = items.indexOf(item);
+  const headHeight = head.getBoundingClientRect().height;
+
+  turn.classList.add("has-open");
+  turn.style.setProperty("--head-h", `${headHeight}px`);
+  items.forEach((step, index) => {
+    step.classList.toggle("pin-top", index < open);
+    step.classList.toggle("pin-bottom", index > open);
+    // Above the open step the rows stack downwards from the head; below it they
+    // stack upwards from the floor, so the last one rests flush with it.
+    step.style.setProperty("--i", index <= open ? index : items.length - 1 - index);
+  });
+
+  return headHeight + open * item.querySelector(".step-row").getBoundingClientRect().height;
+}
+
+function unframe(turn) {
+  turn.classList.remove("has-open");
+  turn.style.removeProperty("--head-h");
+  for (const step of turn.querySelectorAll(".step-item")) {
+    step.classList.remove("pin-top", "pin-bottom");
+    step.style.removeProperty("--i");
+  }
 }
 
 // --- The running clock ---
@@ -559,10 +643,7 @@ function stepDetail(step) {
   const raw = el("div", "step-pane");
   raw.dataset.pane = "raw";
   raw.hidden = true;
-  // Scrolled like every other long block: an llm step's raw payload carries the
-  // provider's whole response object, which would otherwise run for thousands
-  // of pixels and bury the steps under it.
-  raw.appendChild(scroller(jsonPre(step)));
+  raw.appendChild(jsonPre(step));
   detail.appendChild(raw);
 
   return detail;
@@ -778,7 +859,7 @@ function llmBody(step) {
   const node = el("div", "detail-body");
   const highlights = step.input?.highlights ?? [];
   if (request.instructions) {
-    const system = block("system", scroller(markedText(request.instructions, highlights)));
+    const system = block("system", markedText(request.instructions, highlights));
     // The mark is the only thing in the panel a reader cannot account for by
     // looking, so it says what it means -- and only when there is one.
     if (highlights.length) {
@@ -792,7 +873,7 @@ function llmBody(step) {
   // answered with: optional fields, and the descriptions the layer wrote to
   // steer each one, are only visible here.
   if (request.text_format) {
-    node.appendChild(block("schema asked for", scroller(jsonPre(request.text_format))));
+    node.appendChild(block("schema asked for", jsonPre(request.text_format)));
   }
 
   // Structured output: the object the schema produced, which is what the
@@ -803,11 +884,10 @@ function llmBody(step) {
     response = parsedFields(parsed);
   } else if (parsed !== null && parsed !== undefined) {
     response = jsonPre(parsed);
-    response.className = "wrapped";
   } else {
     response = el("div", "detail-text", step.output?.text ?? "");
   }
-  node.appendChild(block("response", scroller(response)));
+  node.appendChild(block("response", response));
 
   return { node, consumed: ["request", "highlights", "text", "parsed", "response"] };
 }
@@ -823,9 +903,7 @@ function parsedFields(parsed) {
     const field = el("div", "field");
     field.appendChild(el("div", "field-name", name));
     if (value !== null && typeof value === "object") {
-      const pre = jsonPre(value);
-      pre.className = "wrapped";
-      field.appendChild(pre);
+      field.appendChild(jsonPre(value));
     } else {
       field.appendChild(el("div", "detail-text", String(value)));
     }
@@ -862,12 +940,11 @@ function markLabels(highlights) {
 }
 
 // The input the model was given, and — when that input is the conversation —
-// how many messages it took this turn. The count sits outside the scroller so
-// it stays visible while the list itself is scrolled.
+// how many messages it took this turn.
 function llmInputBlock(input) {
   const wrap = el("div", "detail-input");
   if (isMessageList(input)) wrap.appendChild(el("div", "msg-count", messageCount(input.length)));
-  wrap.appendChild(scroller(llmInput(input)));
+  wrap.appendChild(llmInput(input));
   return wrap;
 }
 
@@ -911,15 +988,6 @@ function contentText(content) {
   if (typeof content === "string") return content;
   if (Array.isArray(content)) return content.map((part) => part?.text ?? "").join("");
   return JSON.stringify(content ?? "", null, 2);
-}
-
-// Long content scrolls inside its own block rather than being cut short: a
-// system prompt must be readable in full at either width, and it cannot be
-// allowed to bury every step under it in the rail.
-function scroller(node) {
-  const wrap = el("div", "detail-scroll");
-  wrap.appendChild(node);
-  return wrap;
 }
 
 // Any step we have no view for yet: its input and output as formatted JSON,
