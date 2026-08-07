@@ -1486,6 +1486,31 @@ button {
   color: var(--trace-num);
 }
 
+/* The 0..1 ruler under the bars. Ticks are centred on their position, and the
+   two ends pull inwards so "0" and "1" stay inside the track. */
+.cand-scale {
+  position: relative;
+  height: 12px;
+  margin-top: 2px;
+  border-top: 1px solid var(--trace-row);
+}
+
+.cand-tick {
+  position: absolute;
+  top: 1px;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: var(--trace-muted);
+}
+
+.cand-tick:first-child {
+  transform: none;
+}
+
+.cand-tick:last-child {
+  transform: translateX(-100%);
+}
+
 .cand-row.is-below {
   opacity: 0.45;
 }
