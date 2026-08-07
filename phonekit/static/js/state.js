@@ -26,9 +26,19 @@ function write(key, value) {
   }
 }
 
-function makeUserId() {
+function randomId(prefix) {
   if (crypto?.randomUUID) return crypto.randomUUID();
-  return "user-" + Math.random().toString(16).slice(2);
+  return prefix + Math.random().toString(16).slice(2);
+}
+
+function makeUserId() {
+  return randomId("user-");
+}
+
+// One id per action, minted before the request goes out so the trace panel can
+// start watching the run at the same moment the work starts.
+export function newRunId() {
+  return randomId("run-");
 }
 
 function emptyFilters() {
@@ -76,6 +86,43 @@ export function hasFilters() {
 
 export function setQuery(q) {
   state.query = q;
+}
+
+// --- Trace turns ---
+
+// A turn appears in the panel when the work starts, not when it answers, so it
+// begins as a running placeholder that the run's steps fill in and the
+// response finally replaces. Every mutator below takes the turn object rather
+// than its index and checks it is still in the panel: that one check is what
+// makes an abandoned turn's late poll a no-op, without any generation counter
+// to keep in step.
+
+let nextTurnId = 1;
+
+export function startTurn(kind, input, { append = false } = {}) {
+  // The id follows the turn through settling, so the panel can tell "this turn,
+  // further along" from "a different turn in the same place" -- one keeps the
+  // reader's open steps and its clock, the other must not.
+  const turn = { id: nextTurnId++, kind, input, steps: [], status: "running", latency_ms: null };
+  if (append) state.turns.push(turn);
+  else state.turns = [turn];
+  return turn;
+}
+
+export function applyTraceChanges(turn, changed) {
+  if (!state.turns.includes(turn)) return false;
+  for (const { index, step } of changed ?? []) turn.steps[index] = step;
+  return true;
+}
+
+// The response's turn is the authoritative one: it replaces the live turn
+// whole, so what the panel settles on is exactly what a pre-liveness render
+// would have shown.
+export function settleTurn(turn, settled) {
+  const index = state.turns.indexOf(turn);
+  if (index === -1) return;
+  if (settled) state.turns[index] = { ...settled, id: turn.id };
+  else state.turns.splice(index, 1);
 }
 
 export function resetConversation(summary) {

@@ -145,13 +145,13 @@ order. Pills open nothing yet, and the turn renders when the response lands.
 The width toggle also lands here: the panel grows from rail to full-page
 width and back, same content with more room. Because pills need only a label
 and timing, this slice already works for every step kind: layer 1 shows one
-search pill, layer 4 shows three pills.
+search pill, layer 4 shows four.
 
 **Acceptance Criteria:**
 
 - [x] Running the layer-1 solution, a query shows one turn: its input and a
       single labeled search pill
-- [x] A layer-4 query shows one turn with three pills in pipeline order, each
+- [x] A layer-4 query shows one turn with a pill per step in pipeline order, each
       with status and latency
 - [x] A query that fails still shows its turn, the failing step marked as an
       error, with no steps after it
@@ -164,8 +164,8 @@ search pill, layer 4 shows three pills.
 
 Clicking a search pill unfolds the first detail view in place, accordion
 style: BM25 shows the query as sent and per-token match counts; semantic
-shows the ranked cosine bar chart with the dashed top-k cutoff, below-cutoff
-candidates dimmed. The generic attribute list arrives here (engine, top-k),
+shows the ranked cosine bar chart with the dashed min-score cutoff, below-cutoff
+candidates dimmed. The generic attribute list arrives here (engine, min score),
 as does the raw wire tab showing the step's actual payload.
 
 **Acceptance Criteria:**
@@ -173,7 +173,7 @@ as does the raw wire tab showing the step's actual payload.
 - [x] Over BM25, "samsung 5g" shows which tokens matched and how often;
       "a phone for my mom" visibly matches nothing
 - [x] Over semantic search, the step shows bars with scores and a dashed
-      cutoff at top-k, candidates below it dimmed but present
+      cutoff at the min score, candidates below it dimmed but present
 - [x] The step's attributes render as a name–value list in its detail
 - [x] The raw tab shows the step's actual payload; collapsing the step
       returns the rail to pills, results untouched
@@ -193,7 +193,7 @@ a raw tab showing the exact provider payload.
       step's, with no bespoke treatment
 - [x] The raw tab matches what actually went to the provider
 
-### [TODO] live-steps: steps appear as the pipeline runs
+### [DONE] live-steps: steps appear as the pipeline runs
 
 Liveness across the whole panel, landing now that the layer-4 pipeline gives
 it something to dramatize. Steps show up when they start, the active one
@@ -201,26 +201,33 @@ marked running, and settle with status and latency when they finish — the
 response no longer has to land before the turn appears. A running step offers
 no detail; its detail becomes available when it settles.
 
+Both actions a session is made of, not just the opening search: from layer 5
+on the follow-up is where most of the pipeline runs, and a panel that went
+quiet after the first query would be showing the smaller half of the work.
+Chat turns therefore get an envelope and appear as turns of their own here;
+what a chat step *contains* stays with `chat-turn`.
+
 **Acceptance Criteria:**
 
-- [ ] During a layer-4 query the three steps appear one after another, the
-      active one marked running
-- [ ] A step that errors settles live as an error while later steps never
+- [x] During a layer-4 query the steps appear one after another, the active
+      one marked running
+- [x] A step that errors settles live as an error while later steps never
       appear
-- [ ] A settled turn is identical to what the pre-liveness rendering showed
+- [x] A settled turn is identical to what the pre-liveness rendering showed
+- [x] A step opened while a later one is still running is still open once the
+      turn settles
+- [x] A layer-5 follow-up appears as a second turn group under the first, its
+      steps arriving the same way a search's do
 
-### [TODO] chat-turn: the chat action as a second turn kind
+### [TODO] chat-turn: what a chat turn shows
 
-The layers-5-and-6 experience. A follow-up message appends a chat turn to the
-session; turns accumulate and nothing from earlier turns is lost. The chat
-turn's llm step shows the full message list, unwindowed, with the growth
-count line; memory folded into the system prompt renders highlighted within
-that literal text.
+The layers-5-and-6 experience. The chat turn's llm step shows the full
+message list, unwindowed, with the growth count line; memory folded into the
+system prompt renders highlighted within that literal text. The turn itself —
+appended to the session, traced, live — arrived with `live-steps`.
 
 **Acceptance Criteria:**
 
-- [ ] A layer-5 follow-up appears as a second turn group under the first; a
-      three-turn session shows three groups with no step outside its turn
 - [ ] The chat step lists every prior message and states the count this turn
       and next
 - [ ] In layer 6, the memory sentences are visibly highlighted inside the
@@ -245,105 +252,105 @@ the follow-up rounds.
 
 ## Handover
 
-`llm-detail` is built and green. An llm step opens into System / Input /
-Response as literal text, its model and schema in the same name-value list the
-search step uses, and a raw tab holding the request the provider received and
-the response it sent back.
+`live-steps` is built and green, for search turns and chat turns alike.
 
-The step is no longer produced by the `trace.trace_function` decorator, and
-that is the whole slice. The decorator recorded `llmfn`'s own arguments, which
-is why the panel showed a prompt as `"You are...\n\nRules:\n- ..."` and layer
-4's summarize input as a JSON string holding another one. `llmfn` now curates
-its step with `new_step`, and what it records is the **request itself**:
-`_create_response` is split into `_build_request`, which returns the keyword
-arguments, and `_send`, which runs them. The step's `input.request` is that
-same dict, so the formatted view and the raw tab read one object and the panel
-cannot drift from what was sent. `trace._jsonable` became `trace.jsonable` for
-the same reason -- a step curating its own payload needs it.
+**The shape: the panel watches a second endpoint rather than the answer's own
+response.** Each action mints a run id, sends it as `X-Run-Id`, and polls
+`GET /api/trace/<run_id>?since=<version>` while the work happens.
+`/api/recommend` is untouched — same request, same body, same turn — which is
+why "a settled turn is identical to what the pre-liveness rendering showed"
+is a fact rather than an argument: the response is still what the panel
+settles on. The alternative considered and dropped was streaming the turn out
+of `/api/recommend` as NDJSON. It reads tidier until you notice a generator
+cannot yield from inside `add_step` three frames down, so it buys liveness
+with a worker thread, a queue and a sentinel; polling leaves the pipeline
+running exactly where it always ran.
 
-The payload is `input: {model, request}` and
-`output: {text, parsed, response_id, response}`. `text` and `parsed` are what
-the body renders literally; `response` is `Response.model_dump()`, the whole
-object, which is what the raw tab shows and where `tool-calls` will find its
-rounds. It carries `usage`, so token counts arrive as attributes whenever they
-are wanted, with no design change. Note the provider resolves the model alias:
-the request asks for `gpt-5.4-mini` and the response says
-`gpt-5.4-mini-2026-03-17`. Both are visible, which is the point.
+The poll **blocks** (`TraceRun.poll`, up to `trace.POLL_TIMEOUT`, 25s) until
+the run's version passes the one the browser holds, and answers with only the
+steps stamped after it. That is what keeps a six-second query to about five
+requests instead of thirty — measured: layer 4 spends 8 requests on an
+11-second query, the scratch pipeline 5 on a 6.5-second one. A timeout
+answers with an unchanged version and an empty delta, which the panel reads
+as "ask again". Per-step stamps are not decoration: changes are not
+tail-only, because a step nested inside another settles behind it.
 
-**`text_format` is the one place the trace departs from the literal kwargs.**
-`_traceable` expands the schema class into `model_json_schema()`, because a
-class name is the one thing in the request a reader cannot act on: "Schema"
-says a schema was used without saying what was asked for. The expansion is what
-the provider is actually given, and it carries the field descriptions the layer
-wrote, so the panel renders it as a **schema asked for** block sitting between
-the input and the response -- the contract next to the answer. Everything else
-in `request` is the kwargs verbatim, and a test pins that the two differ in
-exactly this one key.
+**`new_step` now records on entry, not on exit.** The step goes in as
+`status: "running"` and is replaced in place when the block leaves — that is
+the whole liveness mechanism, and `"running"` is the one `TraceStep` status a
+finished response never carries. Two consequences worth knowing:
 
-The line the raw tab draws is still the SDK call, not the HTTP body. Going a
-layer lower means hooking the client's transport, which is not worth it in a
-teaching app.
+- Recorded order is now **start order**, so a `tool_call` lands *after* the
+  `llmfn` containing it. The old handover warned `tool-calls` about the
+  reverse; that warning is now void, and the new order is the one the reader
+  lived through.
+- `trace.collect()` reads the same list the poller is reading. There is one
+  store, not two — `_run` holds a `TraceRun`, and every read and write goes
+  through its condition's lock.
 
-`llmBody` in `render.js` renders the three roles off `request`. Structured
-output shows `parsed` pretty-printed rather than the raw JSON text, since that
-object is what the layer's own code goes on to use. `llmInput` renders a
-message list as role-labelled rows -- enough that layer 5 does not fall apart
-today; the count line and the highlighted memory are `chat-turn`'s work.
+`run_chat` mirrors `run_query`: it resets the trace, times the turn, and
+returns `(reply, TraceTurn)`, which `/api/conversation` now includes as
+`trace`. A chat hook that raises answers with its own error message and an
+error turn instead of a bare 500 — a small behavior change, made because a
+broken chat turn should be readable in the panel.
 
-Two blocks of CSS matter. `.detail-scroll` caps long literal content and lets
-it scroll inside itself -- 260px in the rail, 460px at full width, so the toggle
-changes the room and never the content. It wraps the **raw pane too**, which is
-not cosmetic: an llm step's raw payload holds the entire provider response, and
-before the cap an open raw tab measured 5,593px tall and buried every step
-under it. `pre.wrapped` wraps the structured response's long strings instead of
-giving an already-scrolling block a second scrollbar; the raw tab keeps its
-side-scroll, where structure is what you are scanning for.
+On the browser side, **`renderTrace` patches instead of rebuilding**. It has
+to: a step the reader unfolded holds its open state in the DOM, and the panel
+now re-renders on every delta. A turn node survives while its client-side
+`id` matches, a pill survives while `index|name|status|latency` matches, and
+anything else is replaced outright. The turn id is minted by `startTurn` and
+**carried across settling** (`{...settled, id: turn.id}`) — without that, the
+authoritative turn looks like a different turn and the reader's open step
+snaps shut at the last moment. A near-identical bug is what the browser
+caught: a new search reused the previous turn's `<li>`, inheriting its
+`data-started`, so the running clock read 8001 ms for a turn the server timed
+at 6504 ms.
 
-Labels landed with it, as the last handover asked. `llmfn` takes `label=`, and
-`solutions/layer2`, `layer3`, and `layer4` name their calls "rewrite" and
-"summarize" -- layer 4 no longer shows two pills that both read "llm call".
-Layers 5-7 still pass none; theirs belong with `chat-turn` and `tool-calls`.
+Every mutator in `state.js` takes the turn *object* and checks
+`state.turns.includes(turn)`. That one check is what makes an abandoned
+turn's late delta a no-op, with no generation counter to keep in step — a new
+search replaces `state.turns`, and the old watcher's writes stop landing on
+their own.
 
-Three tests in `tests/test_trace.py` pin it, all offline against a stub
-provider (the `fake_llm` fixture): that the traced request is the same dict the
-client was handed, that a prompt carrying newlines and indented JSON survives
-as itself, and that structured output records an object, expands the schema,
-and lets `label=` override the default. The untracked `tests/test_llm_tools.py` exercises the
-tool-round path through the refactor and passes unchanged -- worth landing, but
-it is yours to stage.
+A running pill is a `<span>`, not a `<button>`, and carries no `.step-detail`
+at all; `toggleStep` guards on the missing detail rather than on a class. Its
+latency is the browser's own clock (one 100ms interval for the whole panel,
+stopped when nothing is running), replaced by the server's measurement the
+instant the step settles.
 
-Verified end to end in headless Chrome against layer 4 on a spare port, at 1440
-rail, 1440 full, and 900. Both llm steps open showing system/input/response,
-the rewrite step carrying its schema block between them; attributes read
-`model` and `response id` and nothing else; no escaped `\n` anywhere; the
-summarize input renders its embedded catalogue JSON indented.
-Open steps and the selected tab survive the width toggle, only the scroll cap
-changes (260 to 460), collapsing leaves the 69 results untouched, and nothing
-overflows horizontally at either width. The raw-pane height was the one real
-bug the browser caught, and only after clicking through to the raw tab -- worth
-doing on every future step kind, since the formatted view is the one you look
-at by habit.
+Verified in headless Chrome at 1440 and 1600: steps appearing one at a time
+with the dot pulsing on the active one; a step opened mid-flight still open
+after the turn settled; a failing pipeline settling the failing step as an
+error with nothing after it; a second search abandoning the first without
+leaving a turn or a poll behind; and a three-turn session — one search, two
+follow-ups — with no step outside its turn. Then one real layer-4 query,
+where the 8-second rewrite step is visible the whole time it runs. That is
+the slice in one screenshot.
 
 Things worth knowing before the next slice:
 
-- **Open state lives in the DOM** (`.step-item.is-open`), not `state.js`,
-  because nothing re-renders a turn once it lands. `live-steps` changes that:
-  appending steps mid-turn means lifting that state or appending to the
-  existing list rather than rebuilding it. `stepDetail` is a pure step -> node
-  function either way.
-- **Flask serialises with `sort_keys=True`.** Anything whose order carries
-  meaning must be a list, not an object -- that killed a whole slice once, when
-  the fixture page and the browser disagreed because only one of them went
-  through Flask. The attribute list iterates `Object.entries`, so its rows are
-  alphabetical in the browser and insertion-ordered in a fixture; nothing
-  should depend on that order.
-- **A tool call's step is recorded before the `llmfn` step that contains it**,
-  since `new_step` writes on exit. `tool-calls` has to render the call inside
-  the response, so it will need to read the rounds out of `output.response`
-  rather than trust the flat order.
-- **Two criteria above are stale, not the panel.** `search-detail` says
-  "top-k" where the cosine chart draws the engine's `min_score` (0.3);
-  `turn-steps` says three pills where layer 4 shows four -- `rerank` is a real
-  traced step.
+- **Poll deltas carry whole steps**, including an llm step's entire provider
+  response. A settled step must be openable while a later one runs, so the
+  payload cannot be trimmed to labels. It is re-sent once per step, not once
+  per tick, so this only ever costs what the step itself weighs.
+- **`copy as JSON` mid-query copies running placeholders**, which is what the
+  panel is showing at that moment. Left as is deliberately.
+- **`docs/specs.md` does not describe any of this**, and already carries a
+  warning that its trace shape is out of date (it still shows a flat step
+  array). The contract additions here — the `X-Run-Id` header, the trace
+  endpoint, `trace` on the conversation response — are worth folding in
+  whenever that file gets its pass.
+- **Three tests use threads** (`test_a_poll_waits_for_the_pipeline_rather_than_polling_it`
+  is the one that matters: it pins that a poll with nothing to say does not
+  answer, and that a step landing wakes it well inside its own timeout). They
+  are gated on events rather than sleeps; the first draft passed by luck and
+  was rewritten.
+- **Flask serialises with `sort_keys=True`** — carried forward from the last
+  slice, because it still bites. Anything whose order carries meaning must be
+  a list, not an object. The attribute list iterates `Object.entries`, so its
+  rows are alphabetical in the browser and insertion-ordered in a fixture;
+  nothing should depend on that order.
 
-`live-steps` is next.
+`chat-turn` is next, and it is now purely about what a chat step *shows*: the
+unwindowed message list with its growth count line, and memory highlighted
+inside the literal system text.

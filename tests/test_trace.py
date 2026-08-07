@@ -1,4 +1,5 @@
 import json
+import threading
 from types import SimpleNamespace
 
 import pytest
@@ -239,3 +240,171 @@ def test_recommend_returns_the_turn_in_the_response(tmp_path):
     turn = response.get_json()["trace"]
     assert turn["input"] == "samsung 5g"
     assert [step["label"] for step in turn["steps"]] == ["keyword search"]
+
+
+# --- Watching a run while it happens ---
+
+
+def test_a_step_is_visible_while_it_is_still_running(tmp_path):
+    # The point of the whole slice: the panel can see the step the query is
+    # inside, not just the ones it has finished.
+    seen = []
+
+    def search(query, filters):
+        with trace.new_step(name="search_semantic", input={"query": query}) as step:
+            seen.append(trace.poll("run-1", 0, timeout=0)["changed"])
+            step.set_output({"qualifying": 3})
+        return RecommendResponse(products=[])
+
+    make_app(tmp_path, search).run_query("a small phone", run_id="run-1")
+
+    (mid_flight,) = seen
+    assert [(row["index"], row["step"]["status"]) for row in mid_flight] == [(0, "running")]
+    assert mid_flight[0]["step"]["label"] == "semantic search"
+
+    settled = trace.poll("run-1", 0, timeout=0)
+    assert [(row["index"], row["step"]["status"]) for row in settled["changed"]] == [(0, "success")]
+    assert settled["done"] is True
+
+
+def test_a_poll_carries_only_what_changed_since_the_version_it_holds(tmp_path):
+    versions = []
+
+    def search(query, filters):
+        for name in ("search_semantic", "rerank_by_persona"):
+            versions.append(trace.poll("run-2", 0, timeout=0)["version"])
+            with trace.new_step(name=name, input={}) as step:
+                step.set_output({})
+        return RecommendResponse(products=[])
+
+    make_app(tmp_path, search).run_query("a small phone", run_id="run-2")
+
+    # Asked from the version held after the first step settled, the delta
+    # carries the second step and nothing about the first.
+    delta = trace.poll("run-2", versions[1], timeout=0)
+    assert [row["index"] for row in delta["changed"]] == [1]
+
+
+def test_a_poll_waits_for_the_pipeline_rather_than_polling_it(tmp_path):
+    # The wait is the whole reason watching a query costs a handful of
+    # requests instead of one every tick, so it is worth pinning both halves:
+    # a poll with nothing to report does not answer, and it comes back on the
+    # step landing rather than on its own timeout.
+    started = threading.Event()
+    released = threading.Event()
+    answers = []
+
+    def search(query, filters):
+        started.set()
+        released.wait(timeout=5)
+        with trace.new_step(name="search_bm25", input={}) as step:
+            step.set_output({"results": 1})
+        return RecommendResponse(products=[])
+
+    app = make_app(tmp_path, search)
+    pipeline = threading.Thread(target=app.run_query, args=("samsung 5g", None, "run-3"))
+    pipeline.start()
+    assert started.wait(timeout=5)
+
+    # From the version the run has now, with the pipeline parked, there is
+    # nothing for a poll to say.
+    since = trace.poll("run-3", 0, timeout=0)["version"]
+    watcher = threading.Thread(target=lambda: answers.append(trace.poll("run-3", since, timeout=5)))
+    watcher.start()
+    watcher.join(timeout=0.2)
+    assert answers == [], "the poll answered before the pipeline had anything to say"
+
+    released.set()
+    watcher.join(timeout=2)
+    pipeline.join(timeout=5)
+
+    # Back well inside its own five-second timeout, because the step woke it.
+    assert not watcher.is_alive()
+    assert [row["step"]["name"] for row in answers[0]["changed"]] == ["search_bm25"]
+
+
+def test_a_poll_that_waits_through_a_quiet_pipeline_gives_up(tmp_path):
+    # Nothing is running under this id, so the wait times out and answers with
+    # an unchanged version -- which the panel reads as "ask again".
+    answer = trace.poll("run-4", 0, timeout=0.05)
+
+    assert answer == {"version": 0, "done": False, "changed": []}
+
+
+def test_a_failing_step_settles_as_an_error_with_nothing_after_it(tmp_path):
+    def search(query, filters):
+        with trace.new_step(name="search_semantic", input={}) as step:
+            step.set_output({"qualifying": 3})
+        with trace.new_step(name="llmfn", input={}):
+            raise RuntimeError("no API key configured")
+
+    make_app(tmp_path, search).run_query("a small phone", run_id="run-5")
+
+    answer = trace.poll("run-5", 0, timeout=0)
+    assert [(row["step"]["name"], row["step"]["status"]) for row in answer["changed"]] == [
+        ("search_semantic", "success"),
+        ("llmfn", "error"),
+    ]
+    assert answer["done"] is True
+
+
+def test_a_watched_turn_is_the_turn_the_response_carries(tmp_path):
+    def search(query, filters):
+        with trace.new_step(name="search_bm25", input={"query": query}) as step:
+            step.set_output({"results": 0})
+        return RecommendResponse(products=[])
+
+    app = make_app(tmp_path, search)
+    client = app.test_client()
+    watched = client.post("/api/recommend", json={"query": "samsung 5g"}, headers={"X-Run-Id": "run-6"})
+    plain = client.post("/api/recommend", json={"query": "samsung 5g"})
+
+    # Being watched changes nothing about the answer: same steps, same shape.
+    assert watched.get_json()["trace"]["steps"] == plain.get_json()["trace"]["steps"]
+    # And what was watched is what the response settled on.
+    changed = trace.poll("run-6", 0, timeout=0)["changed"]
+    assert [row["step"] for row in changed] == watched.get_json()["trace"]["steps"]
+
+
+def test_a_chat_turn_is_traced_like_a_search_turn(tmp_path):
+    app = make_app(tmp_path, lambda query, filters: RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+
+    def chat(active_session, message):
+        with trace.new_step(name="llmfn", input={"input": message}, label="reply") as step:
+            step.set_output({"text": "Try the Pixel 8a."})
+        return "Try the Pixel 8a."
+
+    app.chat = chat
+    response = app.test_client().post(
+        "/api/conversation",
+        json={"session_id": session.session_id, "message": "Need a good camera"},
+        headers={"X-Run-Id": "run-7"},
+    )
+
+    turn = response.get_json()["trace"]
+    assert turn["kind"] == "chat"
+    assert turn["input"] == "Need a good camera"
+    assert [step["label"] for step in turn["steps"]] == ["reply"]
+    # And it was watchable while it ran, exactly as a search turn is.
+    assert trace.poll("run-7", 0, timeout=0)["changed"][0]["step"]["label"] == "reply"
+
+
+def test_a_chat_hook_that_raises_is_readable_in_the_panel(tmp_path):
+    app = make_app(tmp_path, lambda query, filters: RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+
+    def chat(active_session, message):
+        raise RuntimeError("no API key configured")
+
+    app.chat = chat
+    response = app.test_client().post(
+        "/api/conversation",
+        json={"session_id": session.session_id, "message": "Need a good camera"},
+    )
+
+    assert response.status_code == 200
+    body = response.get_json()
+    assert body["reply"] == "no API key configured"
+    assert body["trace"]["status"] == "error"
+    assert body["trace"]["error"] == "no API key configured"

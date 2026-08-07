@@ -1183,6 +1183,37 @@ button {
   opacity: 0.55;
 }
 
+/* A step still running: no hover, no pointer, because there is nothing to
+   open until it settles. The pulsing dot is the only thing on the pill that
+   moves, so a glance at the panel says which step the query is inside. */
+.step-pill.is-running {
+  border-left-color: var(--trace-muted);
+  cursor: default;
+}
+
+.step-dot {
+  align-self: center;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.trace-turn.running {
+  border-left-color: var(--trace-muted);
+}
+
 .step-label {
   font-family: var(--font-sc);
   font-size: 12px;

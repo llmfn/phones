@@ -34,7 +34,8 @@ def test_conversation_uses_default_reply_when_no_hook_is_assigned(tmp_path):
     )
 
     assert response.status_code == 200
-    assert response.get_json() == {"session_id": session.session_id, "reply": "message received"}
+    body = response.get_json()
+    assert (body["session_id"], body["reply"]) == (session.session_id, "message received")
     conversation = read_json(session.path / "conversation.json")
     assert conversation["messages"] == [
         {"role": "user", "content": "I prefer compact phones"},
@@ -59,7 +60,8 @@ def test_conversation_dispatches_to_layer_chat_hook(tmp_path):
     )
 
     assert response.status_code == 200
-    assert response.get_json() == {"session_id": session.session_id, "reply": "Try the Pixel 8a."}
+    body = response.get_json()
+    assert (body["session_id"], body["reply"]) == (session.session_id, "Try the Pixel 8a.")
     assert calls == [(session.session_id, "Need a good camera")]
 
     conversation = read_json(session.path / "conversation.json")
@@ -87,12 +89,11 @@ def test_conversation_accepts_rich_chat_reply(tmp_path):
     )
 
     assert response.status_code == 200
-    assert response.get_json() == {
-        "session_id": session.session_id,
-        "reply": {
-            "text": "A compact phone would fit best.",
-            "suggestions": ["Show compact iPhones", "Compare Pixel options"],
-        },
+    body = response.get_json()
+    assert body["session_id"] == session.session_id
+    assert body["reply"] == {
+        "text": "A compact phone would fit best.",
+        "suggestions": ["Show compact iPhones", "Compare Pixel options"],
     }
 
     conversation = read_json(session.path / "conversation.json")

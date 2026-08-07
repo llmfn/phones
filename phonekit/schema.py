@@ -25,6 +25,10 @@ class TraceStep(BaseModel):
     ``name`` is the operation that ran (``search_semantic``, ``llmfn``);
     ``label`` is the plain-language purpose the panel shows instead ("semantic
     search"), derived from the name when the caller does not give one.
+
+    ``running`` is the one status a finished response never carries: it
+    belongs to a step being watched while it happens (see ``phonekit.trace``),
+    and every step has settled by the time the turn is built.
     """
 
     layer: int
@@ -32,7 +36,7 @@ class TraceStep(BaseModel):
     label: str = ""
     input: dict[str, Any] = Field(default_factory=dict)
     output: dict[str, Any] = Field(default_factory=dict)
-    status: Literal["success", "fallback", "error", "skip"] = "success"
+    status: Literal["success", "fallback", "error", "skip", "running"] = "success"
     latency_ms: int = 0
 
 

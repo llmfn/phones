@@ -2,12 +2,16 @@
 // change re-queries the backend (see docs/specs.md); the response drives the
 // results grid, facets, chips, and trace.
 
-import { recommend, sendConversationMessage } from "./api.js";
+import { recommend, sendConversationMessage, traceSince } from "./api.js";
 import {
   state,
   hasFilters,
+  newRunId,
   niceBounds,
   setQuery,
+  startTurn,
+  applyTraceChanges,
+  settleTurn,
   toggleFacetValue,
   removeFacetValue,
   setPrice,
@@ -35,6 +39,44 @@ let conversationQueue = [];
 let conversationInFlight = false;
 let conversationToken = 0;
 
+// The panel follows one turn at a time — a search resets the thread, and the
+// conversation queue serializes chat — so starting a watch ends the one before
+// it rather than accumulating parked connections.
+let traceWatch = null;
+
+// Follow a run while it computes: each request hangs until the pipeline moves,
+// so this loop turns over about once per step. The response is still what
+// settles the turn; this only fills the panel in the meantime, and gives up
+// quietly the moment the turn it was watching leaves the panel.
+function watchTrace(runId, turn) {
+  traceWatch?.abort();
+  const watch = new AbortController();
+  traceWatch = watch;
+
+  (async () => {
+    let since = 0;
+    while (!watch.signal.aborted) {
+      let delta;
+      try {
+        delta = await traceSince(runId, since, watch.signal);
+      } catch {
+        // Aborted, or the watch itself failed: the answer still lands on its
+        // own request, so there is nothing to recover here.
+        return;
+      }
+      since = delta.version;
+      if (!applyTraceChanges(turn, delta.changed)) return;
+      renderTrace(state.turns);
+      if (delta.done) return;
+    }
+  })();
+}
+
+function stopWatchingTrace() {
+  traceWatch?.abort();
+  traceWatch = null;
+}
+
 function hasConversationUi() {
   return document.getElementById("app").dataset.conversationUi === "left_sidebar";
 }
@@ -44,6 +86,7 @@ function resetConversationTransport() {
   conversationInFlight = false;
   conversationToken += 1;
   state.sessionId = null;
+  stopWatchingTrace();
 }
 
 function normalizeConversationReply(reply) {
@@ -69,19 +112,30 @@ async function flushConversationQueue(token = conversationToken) {
 
   conversationInFlight = true;
   const message = conversationQueue.shift();
+  // A follow-up is a turn of its own: it appends to the panel rather than
+  // replacing it, so a session's turns accumulate as the conversation grows.
+  const runId = newRunId();
+  const turn = startTurn("chat", message, { append: true });
+  renderTrace(state.turns);
+  watchTrace(runId, turn);
   try {
-    const data = await sendConversationMessage(state.sessionId, message);
+    const data = await sendConversationMessage(state.sessionId, message, runId);
     if (token === conversationToken) {
       const reply = normalizeConversationReply(data.reply);
       addConversationMessage("assistant", reply.text, reply.suggestions);
       renderConversation(state.conversation);
+      settleTurn(turn, data.trace);
+      renderTrace(state.turns);
     }
   } catch (err) {
     if (token === conversationToken) {
       addConversationMessage("assistant", err.message);
       renderConversation(state.conversation);
+      settleTurn(turn, null);
+      renderTrace(state.turns);
     }
   } finally {
+    stopWatchingTrace();
     if (token !== conversationToken) return;
     conversationInFlight = false;
     if (conversationQueue.length > 0) {
@@ -119,11 +173,18 @@ export async function runQuery({ resetThread = false } = {}) {
   setAppState("search");
   syncUrl();
   const payload = buildPayload();
+  // The turn goes up before the request does: a new search is a new session,
+  // so it replaces the panel, and its steps fill in as the pipeline records
+  // them.
+  const runId = newRunId();
+  const turn = startTurn("search", state.query);
+  renderTrace(state.turns);
+  watchTrace(runId, turn);
 
   let data;
   document.getElementById("spinner").hidden = false;
   try {
-    data = await recommend(payload);
+    data = await recommend(payload, runId);
   } catch (err) {
     renderResults([]);
     renderSummary(null);
@@ -136,6 +197,7 @@ export async function runQuery({ resetThread = false } = {}) {
     renderTrace(state.turns);
     return;
   } finally {
+    stopWatchingTrace();
     document.getElementById("spinner").hidden = true;
   }
 
@@ -155,9 +217,7 @@ export async function runQuery({ resetThread = false } = {}) {
   renderSummary(data.summary);
   renderFilters(data.facets ?? [], state.filters, state.priceBounds);
   renderChips(state.filters);
-  // A search is a new session, so its turn replaces the panel rather than
-  // extending it; later turns in the same session append.
-  state.turns = data.trace ? [data.trace] : [];
+  settleTurn(turn, data.trace);
   renderTrace(state.turns);
   renderSearchMode(data.trace);
   // A pipeline that failed still answers with its turn: say so where the
@@ -355,10 +415,14 @@ export function bindEvents() {
 
 function toggleStep(pill) {
   const item = pill.closest(".step-item");
+  // A step that is still running carries no detail: there is nothing settled
+  // to show yet, so its pill opens nothing.
+  const detail = item.querySelector(".step-detail");
+  if (!detail) return;
   const open = !item.classList.contains("is-open");
   item.classList.toggle("is-open", open);
   pill.setAttribute("aria-expanded", open ? "true" : "false");
-  item.querySelector(".step-detail").hidden = !open;
+  detail.hidden = !open;
 }
 
 function showPane(tab) {

@@ -70,6 +70,7 @@ class Application(Flask):
         self.add_url_rule("/", view_func=IndexView.as_view("index", self))
         self.add_url_rule("/api/recommend", view_func=RecommendView.as_view("recommend", self))
         self.add_url_rule("/api/conversation", view_func=ConversationView.as_view("conversation", self))
+        self.add_url_rule("/api/trace/<run_id>", view_func=TraceView.as_view("trace", self))
         self.register_blueprint(playground)
 
     def read_file(self, path: str) -> str:
@@ -82,7 +83,9 @@ class Application(Flask):
         self.design_flags[name] = value
         return self
 
-    def run_query(self, query: str, filters: Filters | None = None) -> RecommendResponse:
+    def run_query(
+        self, query: str, filters: Filters | None = None, run_id: str = ""
+    ) -> RecommendResponse:
         """Dispatch one query to the layer's search, as one traced turn.
 
         A pipeline that raises still produces a turn: the steps that ran up to
@@ -90,10 +93,14 @@ class Application(Flask):
         come back with an empty result set, because a broken query is exactly
         when the trace is worth reading. Only a missing ``search`` raises,
         since that is the layer's own wiring, not its pipeline.
+
+        ``run_id`` makes the turn watchable while it runs (see
+        ``phonekit.trace.poll``); the turn returned here is the same one
+        either way.
         """
         if self.search is None:
             raise RuntimeError("assign app.search before running queries")
-        trace.reset()
+        trace.reset(run_id)
         trace.set_layer_name(self.layer_name)
         started = time.perf_counter()
         try:
@@ -111,13 +118,40 @@ class Application(Flask):
             latency_ms=int((time.perf_counter() - started) * 1000),
             error=error,
         )
+        trace.finish()
         return response
 
-    def run_chat(self, session: Session, message: str) -> str | dict[str, Any]:
-        """Dispatch one chat message to the layer's optional chat hook."""
-        if self.chat is None:
-            return "message received"
-        return self.chat(session, message)
+    def run_chat(
+        self, session: Session, message: str, run_id: str = ""
+    ) -> tuple[str | dict[str, Any], TraceTurn]:
+        """Dispatch one chat message to the layer's chat hook, as one traced turn.
+
+        A chat turn is traced exactly like a search turn -- from layer 5 on,
+        the follow-up is where most of the pipeline runs, and a panel that
+        went quiet after the first query would be showing the smaller half of
+        the work. A hook that raises answers with its own error message, so a
+        broken chat turn is readable in the panel instead of being a bare 500.
+        """
+        trace.reset(run_id)
+        trace.set_layer_name(self.layer_name)
+        started = time.perf_counter()
+        try:
+            reply = "message received" if self.chat is None else self.chat(session, message)
+        except Exception as exc:
+            error = str(exc) or exc.__class__.__name__
+            reply = error
+        else:
+            error = None
+        turn = TraceTurn(
+            kind="chat",
+            input=message,
+            steps=trace.collect(),
+            status="error" if error else "success",
+            latency_ms=int((time.perf_counter() - started) * 1000),
+            error=error,
+        )
+        trace.finish()
+        return reply, turn
 
     def run(self, *args, **kwargs):
         """CLI when invoked with a query, the dev server otherwise.
@@ -139,14 +173,20 @@ class IndexView(BaseMethodView):
         return render_template("index.html", design_flags=self.app.design_flags)
 
 
+# The panel mints one id per action and sends it with the request, so it can
+# watch the trace while the answer is still being computed. A request without
+# one is answered exactly as before, untraced by anyone -- which is what curl,
+# the tests, and the CLI want.
+RUN_ID_HEADER = "X-Run-Id"
+
+
 class RecommendView(BaseMethodView):
     def post(self):
-        trace.set_layer_name(self.app.layer_name)
         body = request.get_json(silent=True) or {}
         query = body.get("query", "")
         filters = Filters.model_validate(body.get("filters") or {})
 
-        result = self.app.run_query(query, filters)
+        result = self.app.run_query(query, filters, request.headers.get(RUN_ID_HEADER, ""))
         Session.new(query, filters, result)
         return jsonify(result.model_dump(exclude_none=True))
 
@@ -167,10 +207,31 @@ class ConversationView(BaseMethodView):
 
         session.add_message(message)
 
-        reply = _normalize_chat_reply(self.app.run_chat(session, message))
+        run_id = request.headers.get(RUN_ID_HEADER, "")
+        reply, turn = self.app.run_chat(session, message, run_id)
+        reply = _normalize_chat_reply(reply)
 
         session.add_message(_reply_text(reply), role="assistant")
-        return jsonify({"session_id": session.session_id, "reply": reply})
+        return jsonify(
+            {
+                "session_id": session.session_id,
+                "reply": reply,
+                "trace": turn.model_dump(exclude_none=True),
+            }
+        )
+
+
+class TraceView(BaseMethodView):
+    """The live view of a run: what changed since the version you hold.
+
+    Blocks until something does, so watching a query costs about one request
+    per step rather than one per tick. An answer that carries no changes means
+    the wait timed out and the pipeline is still working.
+    """
+
+    def get(self, run_id: str):
+        since = request.args.get("since", default=0, type=int)
+        return jsonify(trace.poll(run_id, since))
 
 
 def _normalize_chat_reply(reply: str | dict[str, Any]) -> str | dict[str, Any]:

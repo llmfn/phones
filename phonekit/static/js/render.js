@@ -351,44 +351,120 @@ export function renderSearchMode(turn) {
 
 const KNOWN_STATUSES = ["success", "fallback", "error", "skip"];
 
+// The panel is redrawn every time the run reports a change, so rendering
+// patches what is there rather than rebuilding it. That is not an
+// optimisation: a step the reader has unfolded holds its open state in the
+// DOM, and replacing its node mid-query would close it under them. A node is
+// left strictly alone while its key is unchanged, and replaced outright the
+// moment anything about it moves.
+
 export function renderTrace(turns) {
   const list = document.getElementById("trace");
-  list.innerHTML = "";
 
   if (!turns || !turns.length) {
+    list.innerHTML = "";
     list.appendChild(el("li", "empty", "No trace yet."));
     return;
   }
+  list.querySelector(".empty")?.remove();
 
-  for (const turn of turns) list.appendChild(traceTurn(turn));
+  turns.forEach((turn, index) => {
+    const existing = list.children[index];
+    if (existing?.dataset.turnId === String(turn.id)) {
+      patchTurn(existing, turn);
+      return;
+    }
+    const item = traceTurn(turn);
+    if (existing) list.replaceChild(item, existing);
+    else list.appendChild(item);
+  });
+  while (list.children.length > turns.length) list.lastElementChild.remove();
+
+  startClocks();
 }
 
+// The turn's shell, filled by the same patch every later render uses — one
+// place writes the content, so a turn built live and a turn built settled
+// cannot say different things.
 function traceTurn(turn) {
-  const item = el("li", `trace-turn ${turn.status === "error" ? "error" : "success"}`);
-
+  const item = el("li", "trace-turn");
+  item.dataset.turnId = String(turn.id);
   const head = el("div", "turn-head");
-  head.appendChild(el("span", "turn-input", turn.input || "(no query)"));
-  head.appendChild(el("span", "latency", `${turn.latency_ms ?? 0} ms`));
+  head.appendChild(el("span", "turn-input"));
+  head.appendChild(el("span", "latency"));
   item.appendChild(head);
-
-  const steps = turn.steps ?? [];
-  if (steps.length) {
-    const pills = el("ol", "turn-steps");
-    for (const step of steps) pills.appendChild(stepPill(step));
-    item.appendChild(pills);
-  } else {
-    item.appendChild(el("div", "turn-empty", "no steps recorded"));
-  }
-
-  // The literal error the pipeline raised — shown whether or not it landed
-  // inside a step, since a throw between steps has no pill to carry it.
-  if (turn.error) item.appendChild(el("div", "turn-error", turn.error));
+  item.appendChild(el("ol", "turn-steps"));
+  patchTurn(item, turn);
   return item;
 }
 
+function patchTurn(item, turn) {
+  const running = turn.status === "running";
+  item.className = `trace-turn ${running ? "running" : turn.status === "error" ? "error" : "success"}`;
+
+  const head = item.querySelector(".turn-head");
+  head.querySelector(".turn-input").textContent = turn.input || "(no query)";
+  setClock(head, running, turn.latency_ms);
+
+  patchSteps(item.querySelector(".turn-steps"), turn.steps ?? []);
+
+  // "No steps" is a fact about a finished turn; a turn that is still working
+  // simply has not recorded any yet.
+  const steps = turn.steps ?? [];
+  toggleNote(item, "turn-empty", !running && !steps.length ? "no steps recorded" : "");
+  // The literal error the pipeline raised — shown whether or not it landed
+  // inside a step, since a throw between steps has no pill to carry it.
+  toggleNote(item, "turn-error", turn.error || "");
+}
+
+// A one-line note under a turn: created when it has something to say, removed
+// when it does not, so nothing empty is left sitting in the panel.
+function toggleNote(item, className, text) {
+  const existing = item.querySelector(`.${className}`);
+  if (!text) {
+    existing?.remove();
+    return;
+  }
+  if (existing) existing.textContent = text;
+  else item.appendChild(el("div", className, text));
+}
+
+function patchSteps(list, steps) {
+  steps.forEach((step, index) => {
+    const key = stepKey(step, index);
+    const existing = list.children[index];
+    if (existing?.dataset.stepKey === key) return;
+    const node = stepPill(step);
+    node.dataset.stepKey = key;
+    if (existing) list.replaceChild(node, existing);
+    else list.appendChild(node);
+  });
+  while (list.children.length > steps.length) list.lastElementChild.remove();
+}
+
+// What makes a pill the same pill: its place, what ran, and where it got to.
+// A settled step never changes again, so its node — and anything the reader
+// has opened inside it — survives every later render of the turn.
+function stepKey(step, index) {
+  return [index, step.name, step.status, step.latency_ms].join("|");
+}
+
 function stepPill(step) {
-  const status = KNOWN_STATUSES.includes(step.status) ? step.status : "success";
   const item = el("li", "step-item");
+
+  if (step.status === "running") {
+    // A running step is not a control: it has no detail to open yet, so it is
+    // not a button and nothing about it invites a click.
+    const pill = el("span", "step-pill is-running");
+    pill.appendChild(el("span", "step-dot"));
+    pill.appendChild(el("span", "step-label", step.label || step.name || "step"));
+    pill.appendChild(el("span", "latency"));
+    setClock(pill, true, null);
+    item.appendChild(pill);
+    return item;
+  }
+
+  const status = KNOWN_STATUSES.includes(step.status) ? step.status : "success";
   const pill = el("button", `step-pill ${status}`);
   pill.type = "button";
   pill.setAttribute("aria-expanded", "false");
@@ -399,6 +475,44 @@ function stepPill(step) {
   item.appendChild(pill);
   item.appendChild(stepDetail(step));
   return item;
+}
+
+// --- The running clock ---
+
+// While a step runs, its latency is the browser's own count from the moment
+// the panel first saw it — the wait is the thing worth showing, and a blank
+// where the number goes would hide it. The server's measurement replaces it
+// the instant the step settles, and that is the number the panel keeps.
+
+let clockTimer = null;
+
+function setClock(node, running, latency) {
+  const readout = node.querySelector(":scope > .latency");
+  if (running) {
+    if (!node.dataset.started) node.dataset.started = String(performance.now());
+    return;
+  }
+  delete node.dataset.started;
+  readout.textContent = `${latency ?? 0} ms`;
+}
+
+function startClocks() {
+  tickClocks();
+  if (clockTimer === null) clockTimer = setInterval(tickClocks, 100);
+}
+
+function tickClocks() {
+  const running = document.querySelectorAll("#trace [data-started]");
+  if (!running.length && clockTimer !== null) {
+    clearInterval(clockTimer);
+    clockTimer = null;
+    return;
+  }
+  const now = performance.now();
+  for (const node of running) {
+    const readout = node.querySelector(":scope > .latency");
+    if (readout) readout.textContent = `${Math.round(now - Number(node.dataset.started))} ms`;
+  }
 }
 
 // --- Step detail ---
