@@ -1,0 +1,146 @@
+{#
+  The page's interactive pieces, kept out of the prose. Each macro emits a
+  block of HTML flush against the left margin: indented output would be read
+  as a code block by the markdown pass that runs after Jinja.
+#}
+
+{% macro query_picker(e, link) -%}
+<div class="pg-picker">
+{% for query, shows in e.curated %}
+<a class="pg-query{% if query == e.query %} on{% endif %}" href="{{ link(q=query, row=0, token='') }}">
+<span class="pg-query-text">{{ query }}</span>
+<span class="pg-query-shows">{{ shows }}</span>
+</a>
+{% endfor %}
+<form class="pg-free" method="get" action="">
+<input type="hidden" name="k1" value="{{ e.k1 }}">
+<input type="hidden" name="b" value="{{ e.b }}">
+<input type="search" name="q" value="{{ e.query }}" aria-label="Any query" placeholder="or type any query">
+<button type="submit">score it</button>
+</form>
+</div>
+{%- endmacro %}
+
+
+{% macro corpus_panel(e) -%}
+<div class="pg-corpus">
+<span><b>{{ e.corpus.documents }}</b> documents</span>
+<span><b>{{ "%.1f"|format(e.corpus.avg_length) }}</b> tokens average</span>
+<span class="pg-tokenize"><em>{{ e.corpus.sample_text }}</em> &rarr; {% for t in e.corpus.sample_tokens %}<code>{{ t }}</code>{% endfor %}</span>
+</div>
+{%- endmacro %}
+
+
+{% macro token_table(e) -%}
+<table class="pg-table pg-tokens">
+<thead><tr><th>token</th><th class="num">df</th><th class="num">weight</th><th></th></tr></thead>
+<tbody>
+{% for t in e.tokens %}
+<tr{% if t.absent %} class="absent"{% endif %}>
+<td><code>{{ t.token }}</code></td>
+<td class="num">{{ t.df }}</td>
+<td class="num">{% if t.absent %}&mdash;{% else %}{{ "%.3f"|format(t.weight) }}{% endif %}</td>
+<td class="pg-note">{% if t.absent %}in no record{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{%- endmacro %}
+
+
+{#
+  ``columns`` narrows which query tokens get a tf/score pair. A query whose
+  words are mostly absent would otherwise render a wall of empty cells, so the
+  closing section passes only the tokens that actually matched -- which is also
+  the sharper way to say what the ranking was built from.
+#}
+{% macro ranked_table(e, link, columns=none) -%}
+{% set cols = columns if columns is not none else e.tokens %}
+<table class="pg-table pg-ranked">
+<thead>
+<tr>
+<th rowspan="2">phone</th><th class="num" rowspan="2">len</th>
+{% for t in cols %}<th class="num pg-group" colspan="2">{{ t.token }}</th>{% endfor %}
+<th class="num" rowspan="2">total</th>
+</tr>
+<tr>{% for t in cols %}<th class="num pg-sub">tf</th><th class="num pg-sub">score</th>{% endfor %}</tr>
+</thead>
+<tbody>
+{% for row in e.rows %}
+<tr{% if e.derivation and e.derivation.row == row.index %} class="pg-focus"{% endif %}>
+<td>{{ row.name }}</td>
+<td class="num">{{ row.length }}</td>
+{% for t in cols %}
+{% set c = row.cells|selectattr("token", "equalto", t.token)|first %}
+<td class="num pg-tf">{% if c.tf %}{{ c.tf }}{% endif %}</td>
+<td class="num">{% if c.tf %}<a href="{{ link(row=row.index, token=c.token) }}">{{ "%.2f"|format(c.score) }}</a>{% endif %}</td>
+{% endfor %}
+<td class="num pg-total">{{ "%.2f"|format(row.total) }}</td>
+</tr>
+{% endfor %}
+</tbody>
+<tfoot><tr><td colspan="{{ 3 + 2 * cols|length }}">{{ e.matched }} of {{ e.corpus.documents }} matched</td></tr></tfoot>
+</table>
+{%- endmacro %}
+
+
+{% macro derivation(e) -%}
+{% set d = e.derivation %}
+<div class="pg-derivation">
+<p class="pg-derivation-head"><code>{{ d.token }}</code> in {{ d.name }} &mdash; said {{ d.tf }}&times; in {{ d.length }} tokens</p>
+<table class="pg-table pg-steps">
+<tbody>
+{% for step in d.steps %}
+{% for line in step.working %}
+<tr>
+<th>{% if loop.first %}{{ step.name }}{% endif %}</th>
+<td class="pg-working">{{ line }}</td>
+<td class="num">{% if loop.last %}{{ "%.3f"|format(step.value) }}{% endif %}</td>
+</tr>
+{% endfor %}
+{% endfor %}
+</tbody>
+</table>
+</div>
+{%- endmacro %}
+
+
+{% macro knobs(e, link_default) -%}
+<form class="pg-knobs" method="get" action="" data-live>
+<input type="hidden" name="q" value="{{ e.query }}">
+<input type="hidden" name="row" value="{{ e.derivation.row if e.derivation else 0 }}">
+<input type="hidden" name="token" value="{{ e.derivation.token if e.derivation else '' }}">
+<label>
+<span>k1 <em>how fast repetition stops counting</em></span>
+<input type="range" name="k1" min="0" max="3" step="0.1" value="{{ e.k1 }}">
+<output>{{ "%.1f"|format(e.k1) }}</output>
+</label>
+<label>
+<span>b <em>how much length counts</em></span>
+<input type="range" name="b" min="0" max="1" step="0.05" value="{{ e.b }}">
+<output>{{ "%.2f"|format(e.b) }}</output>
+</label>
+<button type="submit">rescore</button>
+<a class="pg-reset" href="{{ link_default }}">reset</a>
+</form>
+{%- endmacro %}
+
+
+{% macro sweep(s) -%}
+<table class="pg-table pg-sweep">
+<caption>{{ s.varying }}<br><em>{{ s.fixed }}</em></caption>
+<tbody>
+{% for at, value in s.points %}
+<tr><th class="num">{{ at }}</th><td class="num">{{ "%.2f"|format(value) }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{%- endmacro %}
+
+
+{% macro sweeps(e) -%}
+<div class="pg-sweeps">
+{{ sweep(e.tf_sweep) }}
+{{ sweep(e.length_sweep) }}
+</div>
+{%- endmacro %}

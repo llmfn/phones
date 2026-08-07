@@ -41,6 +41,7 @@ from .schema import (
     RecommendResponse,
     TraceTurn,
 )
+from .playground import playground
 from .session import DEFAULT_SESSION_ROOT, Session
 
 _PACKAGE_DIR = Path(__file__).parent
@@ -69,6 +70,7 @@ class Application(Flask):
         self.add_url_rule("/", view_func=IndexView.as_view("index", self))
         self.add_url_rule("/api/recommend", view_func=RecommendView.as_view("recommend", self))
         self.add_url_rule("/api/conversation", view_func=ConversationView.as_view("conversation", self))
+        self.register_blueprint(playground)
 
     def read_file(self, path: str) -> str:
         """Read a file sitting beside the layer's app.py (prompts, schemas)."""

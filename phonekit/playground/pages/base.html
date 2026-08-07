@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='playground/playground.css') }}" />
+  </head>
+  <body class="pg-body">
+    <header class="pg-nav">
+      <a class="pg-back" href="{{ url_for('index') }}">Phones</a>
+      <nav class="pg-tabs" aria-label="Playgrounds">
+        {% for page in pages -%}
+          {% if page.endpoint -%}
+            <a
+              href="{{ url_for(page.endpoint) }}"
+              class="pg-tab{% if page.slug == current %} on{% endif %}"
+              {% if page.slug == current %}aria-current="page"{% endif %}
+            >{{ page.title }}</a>
+          {%- else -%}
+            <span class="pg-tab soon" title="Not built yet">{{ page.title }}</span>
+          {%- endif %}
+        {%- endfor %}
+      </nav>
+    </header>
+    <main class="pg-page" id="pg-page">
+      {{ body|safe }}
+    </main>
+    <script type="module" src="{{ url_for('static', filename='playground/playground.js') }}"></script>
+  </body>
+</html>
