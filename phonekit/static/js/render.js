@@ -375,8 +375,15 @@ export function renderTrace(turns) {
       return;
     }
     const item = traceTurn(turn);
-    if (existing) list.replaceChild(item, existing);
-    else list.appendChild(item);
+    if (existing) {
+      list.replaceChild(item, existing);
+      return;
+    }
+    list.appendChild(item);
+    // A follow-up in a long session arrives below the fold. Only the turn's
+    // arrival scrolls the panel: its steps filling in afterwards must not pull
+    // the rail away from a step the reader has opened above.
+    if (index > 0) item.scrollIntoView({ block: "nearest" });
   });
   while (list.children.length > turns.length) list.lastElementChild.remove();
 
@@ -390,6 +397,9 @@ function traceTurn(turn) {
   const item = el("li", "trace-turn");
   item.dataset.turnId = String(turn.id);
   const head = el("div", "turn-head");
+  // Which action opened the turn, now that a session runs two kinds of them
+  // and both carry nothing but the text the student typed.
+  head.appendChild(el("span", "turn-kind"));
   head.appendChild(el("span", "turn-input"));
   head.appendChild(el("span", "latency"));
   item.appendChild(head);
@@ -403,6 +413,7 @@ function patchTurn(item, turn) {
   item.className = `trace-turn ${running ? "running" : turn.status === "error" ? "error" : "success"}`;
 
   const head = item.querySelector(".turn-head");
+  head.querySelector(".turn-kind").textContent = turn.kind || "turn";
   head.querySelector(".turn-input").textContent = turn.input || "(no query)";
   setClock(head, running, turn.latency_ms);
 
@@ -765,10 +776,17 @@ function llmBody(step) {
   if (!request) return fallbackBody(step);
 
   const node = el("div", "detail-body");
+  const highlights = step.input?.highlights ?? [];
   if (request.instructions) {
-    node.appendChild(block("system", scroller(el("div", "detail-text", request.instructions))));
+    const system = block("system", scroller(markedText(request.instructions, highlights)));
+    // The mark is the only thing in the panel a reader cannot account for by
+    // looking, so it says what it means -- and only when there is one.
+    if (highlights.length) {
+      system.appendChild(el("div", "detail-note", `highlighted: folded in from ${markLabels(highlights)}`));
+    }
+    node.appendChild(system);
   }
-  node.appendChild(block("input", scroller(llmInput(request.input))));
+  node.appendChild(block("input", llmInputBlock(request.input)));
 
   // The shape the model was required to answer in, which is not the shape it
   // answered with: optional fields, and the descriptions the layer wrote to
@@ -781,7 +799,9 @@ function llmBody(step) {
   // layer's own code goes on to use. Plain text otherwise.
   const parsed = step.output?.parsed;
   let response;
-  if (parsed) {
+  if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+    response = parsedFields(parsed);
+  } else if (parsed !== null && parsed !== undefined) {
     response = jsonPre(parsed);
     response.className = "wrapped";
   } else {
@@ -789,7 +809,84 @@ function llmBody(step) {
   }
   node.appendChild(block("response", scroller(response)));
 
-  return { node, consumed: ["request", "text", "parsed", "response"] };
+  return { node, consumed: ["request", "highlights", "text", "parsed", "response"] };
+}
+
+// A structured response field by field, because pretty-printing the object
+// turns the model's prose into a JSON string: a reply written over three
+// paragraphs comes out as one line holding \n, which is the whole thing this
+// panel exists to stop showing. A string field reads as the text it is; a
+// nested one keeps its shape.
+function parsedFields(parsed) {
+  const node = el("div", "field-list");
+  for (const [name, value] of Object.entries(parsed)) {
+    const field = el("div", "field");
+    field.appendChild(el("div", "field-name", name));
+    if (value !== null && typeof value === "object") {
+      const pre = jsonPre(value);
+      pre.className = "wrapped";
+      field.appendChild(pre);
+    } else {
+      field.appendChild(el("div", "detail-text", String(value)));
+    }
+    node.appendChild(field);
+  }
+  return node;
+}
+
+// The literal instructions, with the ranges the step marked wrapped and every
+// other character left exactly where it was. The panel searches for nothing:
+// the step recorded where the marked text sits in the string it sent, and a
+// range that does not line up is dropped rather than guessed at.
+function markedText(text, highlights) {
+  const node = el("div", "detail-text");
+  let last = 0;
+  for (const mark of highlights ?? []) {
+    const start = Number(mark?.start);
+    const end = Number(mark?.end);
+    if (!(start >= last && end > start && end <= text.length)) continue;
+    if (start > last) node.append(text.slice(last, start));
+    node.appendChild(el("mark", `hl-${markClass(mark?.label)}`, text.slice(start, end)));
+    last = end;
+  }
+  node.append(text.slice(last));
+  return node;
+}
+
+function markClass(label) {
+  return String(label ?? "mark").replace(/[^a-z0-9-]/gi, "") || "mark";
+}
+
+function markLabels(highlights) {
+  return [...new Set(highlights.map((mark) => String(mark?.label ?? "elsewhere")))].join(", ");
+}
+
+// The input the model was given, and — when that input is the conversation —
+// how many messages it took this turn. The count sits outside the scroller so
+// it stays visible while the list itself is scrolled.
+function llmInputBlock(input) {
+  const wrap = el("div", "detail-input");
+  if (isMessageList(input)) wrap.appendChild(el("div", "msg-count", messageCount(input.length)));
+  wrap.appendChild(scroller(llmInput(input)));
+  return wrap;
+}
+
+// A chat turn's transcript, as against the function-call outputs a tool round
+// sends back through the same argument: those carry no role, so they get no
+// count line.
+function isMessageList(input) {
+  return (
+    Array.isArray(input) &&
+    input.length > 0 &&
+    input.every((message) => typeof message?.role === "string" && typeof message?.content === "string")
+  );
+}
+
+// Growth stated rather than left to be noticed: next turn's call carries this
+// turn's reply and the message that answers it, because the session appends
+// both before the next one reads the transcript back.
+function messageCount(count) {
+  return `${count} message${count === 1 ? "" : "s"} this turn · ${count + 2} next turn`;
 }
 
 // The input as the model received it: one literal string, or the message list

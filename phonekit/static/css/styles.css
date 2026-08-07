@@ -1103,6 +1103,16 @@ button {
   margin-bottom: 8px;
 }
 
+/* Which action opened the turn, kept quiet: the text the student typed is what
+   the eye should land on. */
+.turn-kind {
+  flex: none;
+  font-family: var(--font-sc);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--trace-muted);
+}
+
 .turn-input {
   flex: 1;
   min-width: 0;
@@ -1308,6 +1318,31 @@ button {
   max-height: 460px;
 }
 
+/* Text the layer folded in from somewhere else -- a remembered profile inside a
+   prompt. Marked in place, so the string around it reads exactly as it was sent. */
+.detail-text mark {
+  background: color-mix(in srgb, var(--trace-key) 25%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.detail-note {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--trace-muted);
+}
+
+/* How many messages this call carried, held above the scrolling list so it
+   stays readable while the transcript itself is scrolled. */
+.msg-count {
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--trace-muted);
+}
+
 /* A chat turn's messages, in the order the model reads them. */
 .msg-list {
   list-style: none;
@@ -1315,13 +1350,17 @@ button {
   padding: 0;
 }
 
-.msg-row + .msg-row {
+/* One row per message, and — for a structured reply — one per field, so the
+   model's prose stays prose instead of becoming a line of JSON. */
+.msg-row + .msg-row,
+.field + .field {
   margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid var(--trace-border);
 }
 
-.msg-role {
+.msg-role,
+.field-name {
   display: block;
   font-family: var(--font-sc);
   font-size: 10px;

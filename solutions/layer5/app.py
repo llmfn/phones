@@ -39,12 +39,12 @@ def summarize(query, products):
         for p in products[:3]
     ]
     input = f"Query: {query}\n\nPhones:\n{json.dumps(context, indent=2)}"
-    return llmfn(instructions=PROMPT_SUMMARY, input=input)
+    return llmfn(instructions=PROMPT_SUMMARY, input=input, label="summarize")
 
 def search(query, filters):
     """Run the contextual search pipeline that creates a new stateful session."""
     PROMPT = app.read_file("prompt.md")
-    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema)
+    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema, label="rewrite")
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)
@@ -67,7 +67,9 @@ def chat(session, message):
     past_messages = session.get_messages()
     # TODO: inject the search results as the first message so that the agent
     # has context of the current results the user is looking at
-    response = llmfn(instructions=PROMPT_CHAT, input=past_messages, output_schema=ChatResponseSchema)
+    response = llmfn(
+        instructions=PROMPT_CHAT, input=past_messages, output_schema=ChatResponseSchema, label="chat"
+    )
     return response.model_dump()
 
 if __name__ == "__main__":

@@ -408,3 +408,79 @@ def test_a_chat_hook_that_raises_is_readable_in_the_panel(tmp_path):
     assert body["reply"] == "no API key configured"
     assert body["trace"]["status"] == "error"
     assert body["trace"]["error"] == "no API key configured"
+
+
+def test_the_chat_step_carries_the_whole_transcript(tmp_path, fake_llm):
+    # What the panel shows of a chat turn is the message list as sent: every
+    # prior message, in order, neither windowed nor summarized.
+    fake_llm()
+    app = make_app(tmp_path, lambda query, filters: RecommendResponse(products=[]))
+    session = Session.new(
+        "small phone", Filters(), RecommendResponse(products=[], summary="Three compact picks.")
+    )
+
+    def chat(active_session, message):
+        return llm.llmfn(instructions="Answer it.", input=active_session.get_messages())
+
+    app.chat = chat
+    client = app.test_client()
+    sent = []
+    for message in ["Need a good camera", "And battery?"]:
+        response = client.post(
+            "/api/conversation", json={"session_id": session.session_id, "message": message}
+        )
+        (step,) = response.get_json()["trace"]["steps"]
+        sent.append(step["input"]["request"]["input"])
+
+    assert sent[0] == [
+        {"role": "assistant", "content": "Three compact picks."},
+        {"role": "user", "content": "Need a good camera"},
+    ]
+    # A turn later, both the reply to that message and the message answering it
+    # are in the list -- the growth of two per turn the panel states outright.
+    assert [message["content"] for message in sent[1]] == [
+        "Three compact picks.",
+        "Need a good camera",
+        "A steady pick.",
+        "And battery?",
+    ]
+    assert len(sent[1]) == len(sent[0]) + 2
+
+
+def test_marked_text_is_recorded_where_it_sits_in_the_prompt(fake_llm):
+    # Memory reaches the model inside one prompt string, so the step records
+    # where it landed rather than leaving the panel to search for it.
+    fake_llm()
+    hint = "What you already know about this user:\n- Budget: ₹30,000 (firm)"
+    prompt = f"Answer the follow-up.\n\n{hint}"
+
+    trace.reset()
+    trace.highlight(hint)
+    llm.llmfn(instructions=prompt, input="Which one?")
+    (step,) = trace.collect()
+
+    (span,) = step.input["highlights"]
+    assert span["label"] == "memory"
+    assert prompt[span["start"] : span["end"]] == hint
+    # The prompt itself is untouched by having been marked.
+    assert step.input["request"]["instructions"] == prompt
+
+
+def test_an_unmarked_prompt_records_nothing_to_highlight(fake_llm):
+    fake_llm()
+
+    trace.reset()
+    trace.highlight("")  # an empty profile marks nothing
+    llm.llmfn(instructions="Answer the follow-up.", input="Which one?")
+    (step,) = trace.collect()
+    assert "highlights" not in step.input
+
+    # A mark belongs to the query that made it: the next turn starts clean, so
+    # a profile that has since changed cannot highlight yesterday's prompt.
+    trace.reset()
+    trace.highlight("Budget: ₹30,000")
+    llm.llmfn(instructions="Budget: ₹30,000 is what we know.", input="Which one?")
+    trace.reset()
+    llm.llmfn(instructions="Budget: ₹30,000 is what we know.", input="Which one?")
+    (step,) = trace.collect()
+    assert "highlights" not in step.input

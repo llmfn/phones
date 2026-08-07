@@ -34,6 +34,9 @@ from .schema import TraceStep, TraceTurn
 
 _run: ContextVar["TraceRun | None"] = ContextVar("trace_run", default=None)
 _layer_name: ContextVar[str] = ContextVar("trace_layer_name", default="")
+# Text a layer has said came from somewhere worth pointing out, as
+# (text, label) pairs. Query-scoped like the run itself; see ``highlight``.
+_marks: ContextVar[tuple[tuple[str, str], ...]] = ContextVar("trace_marks", default=())
 
 # How long a poll waits for the pipeline to move before answering with what it
 # already has. Long enough that watching an idle query costs one request rather
@@ -171,6 +174,7 @@ def reset(run_id: str = "") -> None:
     else:
         run = TraceRun()
     _run.set(run)
+    _marks.set(())
 
 
 def finish() -> None:
@@ -233,6 +237,43 @@ def add_step(
     if run is None:
         return
     run.append(_build(name, input, output, status, latency_ms, label))
+
+
+def highlight(text: str, label: str = "memory") -> None:
+    """Say that ``text`` came from somewhere the panel should point out.
+
+    A prompt reaches the provider as one string, so a layer that folds a
+    remembered profile into its instructions sends something the panel cannot
+    take apart afterwards -- the memory is in there, indistinguishable from the
+    prompt the layer wrote. Marking it here is the layer saying which part that
+    is, and the mark holds until the next ``reset``.
+
+        hint = profile_hint(mem.load())
+        trace.highlight(hint)
+
+    Nothing is searched for or guessed: a step records the character ranges
+    where the marked text literally appears in what it sent (see
+    ``marks_in``), and the panel wraps exactly those.
+    """
+    mark = (text, label)
+    if text and mark not in _marks.get():
+        _marks.set((*_marks.get(), mark))
+
+
+def marks_in(text: str) -> list[dict]:
+    """Where the marked texts (see ``highlight``) sit inside ``text``.
+
+    Every occurrence, as ``{start, end, label}`` character ranges over the
+    string as sent, ordered by position. Marked text that isn't in this string
+    -- a memory hint folded into one prompt but not another -- yields nothing.
+    """
+    spans = []
+    for marked, label in _marks.get():
+        start = text.find(marked)
+        while start != -1:
+            spans.append({"start": start, "end": start + len(marked), "label": label})
+            start = text.find(marked, start + len(marked))
+    return sorted(spans, key=lambda span: span["start"])
 
 
 class StepRecorder:

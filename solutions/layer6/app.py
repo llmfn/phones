@@ -12,7 +12,7 @@ import json
 
 from phonekit import Application, apply_filters, rerank_by_persona, search_semantic, llmfn
 from phonekit.catalog import load_catalog
-from phonekit import memory as mem
+from phonekit import memory as mem, trace
 from pydantic import BaseModel, Field
 from phonekit.schema import Filters
 
@@ -60,7 +60,11 @@ def _profile_hint(profile: dict) -> str:
         lines.append(f"- Brand preferences: {', '.join(profile['brands_preferred'])}")
     if profile.get("context"):
         lines.append(f"- Context: {profile['context']}")
-    return "\n".join(lines)
+    hint = "\n".join(lines)
+    # The prompt reaches the model as one string, so the panel cannot tell which
+    # part of it came from the profile unless this layer says so.
+    trace.highlight(hint)
+    return hint
 
 
 def summarize(query, products, hint=""):
@@ -78,7 +82,7 @@ def summarize(query, products, hint=""):
     ]
     input_text = f"Query: {query}\n\nPhones:\n{json.dumps(context, indent=2)}"
     instructions = f"{PROMPT_SUMMARY}\n\n{hint}" if hint else PROMPT_SUMMARY
-    return llmfn(instructions=instructions, input=input_text)
+    return llmfn(instructions=instructions, input=input_text, label="summarize")
 
 
 def search(query, filters):
@@ -88,7 +92,7 @@ def search(query, filters):
     hint = _profile_hint(profile)
     instructions = f"{PROMPT}\n\n{hint}" if hint else PROMPT
 
-    response = llmfn(instructions=instructions, input=query, output_schema=Schema)
+    response = llmfn(instructions=instructions, input=query, output_schema=Schema, label="rewrite")
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)
@@ -106,7 +110,9 @@ def chat(session, message):
     instructions = f"{PROMPT_CHAT}\n\n{hint}" if hint else PROMPT_CHAT
 
     past_messages = session.get_messages()
-    response = llmfn(instructions=instructions, input=past_messages, output_schema=ChatResponseSchema)
+    response = llmfn(
+        instructions=instructions, input=past_messages, output_schema=ChatResponseSchema, label="chat"
+    )
 
     if response.memory:
         mem.merge(response.memory.model_dump(exclude_none=True))

@@ -219,7 +219,7 @@ what a chat step *contains* stays with `chat-turn`.
 - [x] A layer-5 follow-up appears as a second turn group under the first, its
       steps arriving the same way a search's do
 
-### [TODO] chat-turn: what a chat turn shows
+### [DONE] chat-turn: what a chat turn shows
 
 The layers-5-and-6 experience. The chat turn's llm step shows the full
 message list, unwindowed, with the growth count line; memory folded into the
@@ -228,9 +228,9 @@ appended to the session, traced, live — arrived with `live-steps`.
 
 **Acceptance Criteria:**
 
-- [ ] The chat step lists every prior message and states the count this turn
+- [x] The chat step lists every prior message and states the count this turn
       and next
-- [ ] In layer 6, the memory sentences are visibly highlighted inside the
+- [x] In layer 6, the memory sentences are visibly highlighted inside the
       system text, not shown as a separate object
 
 ### [TODO] tool-calls: tools on llm steps
@@ -252,105 +252,76 @@ the follow-up rounds.
 
 ## Handover
 
-`live-steps` is built and green, for search turns and chat turns alike.
+`chat-turn` is built and green. A chat step opens showing the whole transcript
+as sent, with a line saying how much of it there is and how much there will be
+next turn, and at layer 6 the remembered profile is marked where it sits inside
+the literal system prompt.
 
-**The shape: the panel watches a second endpoint rather than the answer's own
-response.** Each action mints a run id, sends it as `X-Run-Id`, and polls
-`GET /api/trace/<run_id>?since=<version>` while the work happens.
-`/api/recommend` is untouched — same request, same body, same turn — which is
-why "a settled turn is identical to what the pre-liveness rendering showed"
-is a fact rather than an argument: the response is still what the panel
-settles on. The alternative considered and dropped was streaming the turn out
-of `/api/recommend` as NDJSON. It reads tidier until you notice a generator
-cannot yield from inside `add_step` three frames down, so it buys liveness
-with a worker thread, a queue and a sentinel; polling leaves the pipeline
-running exactly where it always ran.
+**The count line is derived, not recorded.** `llmInputBlock` renders it when
+the request's `input` is a chat message list — every element carrying a string
+`role` and `content`, which is exactly what layer 7's `function_call_output`
+rounds are not, so a tool round takes the same path without a count line and no
+turn context has to be threaded into `stepDetail`. "Next turn" is this count
+plus two, because `ConversationView` appends the user's message before the hook
+and the reply after it; `test_the_chat_step_carries_the_whole_transcript` pins
+that arithmetic against a real two-turn session so the panel's claim cannot
+quietly stop being true. The line sits **outside** the scroller, so it stays
+readable while the transcript is scrolled.
 
-The poll **blocks** (`TraceRun.poll`, up to `trace.POLL_TIMEOUT`, 25s) until
-the run's version passes the one the browser holds, and answers with only the
-steps stamped after it. That is what keeps a six-second query to about five
-requests instead of thirty — measured: layer 4 spends 8 requests on an
-11-second query, the scratch pipeline 5 on a 6.5-second one. A timeout
-answers with an unchanged version and an empty delta, which the panel reads
-as "ask again". Per-step stamps are not decoration: changes are not
-tail-only, because a step nested inside another settles behind it.
+**Memory is marked by the layer, never searched for by the panel.** The prompt
+reaches the provider as one concatenated string, so nothing downstream can take
+it apart afterwards. `trace.highlight(text)` records what came from somewhere
+worth pointing out; `llmfn` then records, in `input.highlights`, the character
+ranges where that text literally appears in the instructions it sent; the panel
+wraps exactly those ranges and searches for nothing. A mark that isn't in this
+prompt yields no ranges, and marks are cleared by `reset`, so they cannot reach
+the next turn. Layer 6 spends one line on it, inside `_profile_hint` — the one
+place the hint is built, so `search` and `chat` both get it.
 
-**`new_step` now records on entry, not on exit.** The step goes in as
-`status: "running"` and is replaced in place when the block leaves — that is
-the whole liveness mechanism, and `"running"` is the one `TraceStep` status a
-finished response never carries. Two consequences worth knowing:
+Two alternatives were dropped: matching profile values against prompt lines in
+the browser (the first mis-marked line is worse than no mark at all), and a
+`highlight=` kwarg on `llmfn` (it grows the signature students meet first, at
+three call sites in layer 6, for what is telemetry).
 
-- Recorded order is now **start order**, so a `tool_call` lands *after* the
-  `llmfn` containing it. The old handover warned `tool-calls` about the
-  reverse; that warning is now void, and the new order is the one the reader
-  lived through.
-- `trace.collect()` reads the same list the poller is reading. There is one
-  store, not two — `_run` holds a `TraceRun`, and every read and write goes
-  through its condition's lock.
+**The response block was rebuilt, and this is the part that was not planned.**
+Structured output was pretty-printed as one JSON object, which was fine at
+layer 4 where every parsed value is a single line — and wrong the moment a chat
+reply arrived, because a three-paragraph answer inside JSON is one line holding
+`\n`. That is precisely what `llm-detail` says must never appear, and only the
+chat turn exposed it. `parsedFields` now renders a structured response field by
+field: a string field is literal text, anything nested keeps its shape as JSON.
+Layer 6's `memory` field is a visible bonus — the write side of memory, for
+free, next to the read side highlighted above it.
 
-`run_chat` mirrors `run_query`: it resets the trace, times the turn, and
-returns `(reply, TraceTurn)`, which `/api/conversation` now includes as
-`trace`. A chat hook that raises answers with its own error message and an
-error turn instead of a bare 500 — a small behavior change, made because a
-broken chat turn should be readable in the panel.
+Two smaller things landed with it. Every turn head carries its **kind**
+(`search` / `chat`), now that one panel holds both. And an appended turn calls
+`scrollIntoView` **once, on arrival only** — its steps filling in afterwards
+must never pull the rail away from a step the reader has open above.
 
-On the browser side, **`renderTrace` patches instead of rebuilding**. It has
-to: a step the reader unfolded holds its open state in the DOM, and the panel
-now re-renders on every delta. A turn node survives while its client-side
-`id` matches, a pill survives while `index|name|status|latency` matches, and
-anything else is replaced outright. The turn id is minted by `startTurn` and
-**carried across settling** (`{...settled, id: turn.id}`) — without that, the
-authoritative turn looks like a different turn and the reader's open step
-snaps shut at the last moment. A near-identical bug is what the browser
-caught: a new search reused the previous turn's `<li>`, inheriting its
-`data-started`, so the running clock read 8001 ms for a turn the server timed
-at 6504 ms.
+Labels now cover layers 5 and 6 (`rewrite`, `summarize`, `chat`), so a layer-6
+session no longer shows four pills all reading "llm call". Layer 7 still passes
+none; those belong with `tool-calls`.
 
-Every mutator in `state.js` takes the turn *object* and checks
-`state.turns.includes(turn)`. That one check is what makes an abandoned
-turn's late delta a no-op, with no generation counter to keep in step — a new
-search replaces `state.turns`, and the old watcher's writes stop landing on
-their own.
-
-A running pill is a `<span>`, not a `<button>`, and carries no `.step-detail`
-at all; `toggleStep` guards on the missing detail rather than on a class. Its
-latency is the browser's own clock (one 100ms interval for the whole panel,
-stopped when nothing is running), replaced by the server's measurement the
-instant the step settles.
-
-Verified in headless Chrome at 1440 and 1600: steps appearing one at a time
-with the dot pulsing on the active one; a step opened mid-flight still open
-after the turn settled; a failing pipeline settling the failing step as an
-error with nothing after it; a second search abandoning the first without
-leaving a turn or a poll behind; and a three-turn session — one search, two
-follow-ups — with no step outside its turn. Then one real layer-4 query,
-where the 8-second rewrite step is visible the whole time it runs. That is
-the slice in one screenshot.
+Verified in headless Chrome at 1440 against real layer-5 and layer-6 sessions:
+a search plus three follow-ups showing four turn groups with no step outside
+its turn, the count line agreeing with the rows below it, the mark landing on
+the profile block with the note under it, no escaped `\n` anywhere in the
+formatted pane, and open steps plus the selected tab surviving both the width
+toggle and later turns arriving. Layer 6 rewrites `data/memory/memory.json` as
+it runs — back it up before a session and restore it after, or the next run
+starts from a profile the model wrote.
 
 Things worth knowing before the next slice:
 
-- **Poll deltas carry whole steps**, including an llm step's entire provider
-  response. A settled step must be openable while a later one runs, so the
-  payload cannot be trimmed to labels. It is re-sent once per step, not once
-  per tick, so this only ever costs what the step itself weighs.
-- **`copy as JSON` mid-query copies running placeholders**, which is what the
-  panel is showing at that moment. Left as is deliberately.
-- **`docs/specs.md` does not describe any of this**, and already carries a
-  warning that its trace shape is out of date (it still shows a flat step
-  array). The contract additions here — the `X-Run-Id` header, the trace
-  endpoint, `trace` on the conversation response — are worth folding in
-  whenever that file gets its pass.
-- **Three tests use threads** (`test_a_poll_waits_for_the_pipeline_rather_than_polling_it`
-  is the one that matters: it pins that a poll with nothing to say does not
-  answer, and that a step landing wakes it well inside its own timeout). They
-  are gated on events rather than sleeps; the first draft passed by luck and
-  was rewritten.
-- **Flask serialises with `sort_keys=True`** — carried forward from the last
-  slice, because it still bites. Anything whose order carries meaning must be
-  a list, not an object. The attribute list iterates `Object.entries`, so its
-  rows are alphabetical in the browser and insertion-ordered in a fixture;
-  nothing should depend on that order.
+- **The raw pane is JSON and shows `\n` correctly**; only the formatted pane
+  must be free of it. A check that reads the whole detail will report a false
+  positive, which cost a round trip here.
+- **`Page.navigate` to the URL the page already holds leaves the previous
+  run's in-memory state alone** — panel width and all. Go through
+  `about:blank` first, or a verification run silently measures the last one.
+- The two stale criteria the previous handover flagged are **still stale**:
+  `search-detail` says "top-k" where the cosine chart draws `min_score`, and
+  `turn-steps` says three pills where layer 4 shows four.
 
-`chat-turn` is next, and it is now purely about what a chat step *shows*: the
-unwindowed message list with its growth count line, and memory highlighted
-inside the literal system text.
+`tool-calls` is next. Its rounds are in `output.response`, and start order now
+puts a `tool_call` step *after* the `llmfn` step containing it.

@@ -34,6 +34,12 @@ def llmfn(instructions, input, output_schema=None, tools=None, label=""):
         tool_defs=tool_defs,
     )
     step_input = {"model": settings.openai_model, "request": _traceable(request, output_schema)}
+    # Where anything the layer marked (see ``trace.highlight``) ended up in the
+    # instructions it built -- ranges over the string as sent, so the panel
+    # points at the memory folded into a prompt without taking the prompt apart.
+    marks = trace.marks_in(instructions) if isinstance(instructions, str) else []
+    if marks:
+        step_input["highlights"] = marks
 
     with trace.new_step(name="llmfn", input=step_input, label=label) as step:
         response = _send(client, request)
