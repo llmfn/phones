@@ -14,8 +14,10 @@ evolves from search to prompts, schema, context, state, memory, tool use, and
 evals. Each layer reveals what the system needs next. We learn by building,
 breaking and refining the systems together.
 
-Every layer is a small, self-contained app: the same product, one capability
-richer than the layer before it.
+You build the app yourself, from the ground up. Each layer is a small,
+self-contained version of it: the same product, one capability richer than the
+layer before it. A worked solution for every layer lives in `solutions/` to
+check yourself against.
 
 ## The layers
 
@@ -25,21 +27,28 @@ richer than the layer before it.
 | 2 | Prompt | An LLM rewrites the user's query before semantic search, so vibe queries land near the right narratives. |
 | 3 | Schema | The LLM call returns structured output (pydantic): a rewritten query plus hard filters and a persona extracted from the request. |
 | 4 | Context | A second LLM pass takes the top-3 results, gets their full catalogue records as context, and writes a short recommendation paragraph grounded in them. |
-| 5–8 | State, Memory, Tool use, Evals | Upcoming. |
+| 5 | State | Follow-up chat turns get the session's message history, so a conversation carries across turns. HTTP and LLM calls stay stateless — the app appends each turn to a transcript and passes it back in. |
+| 6 | Memory | A profile that outlives the session. Loaded before both passes, so a returning user's budget and priorities shape every recommendation; the model reports what it learned each turn and the layer saves it. |
+| 7 | Tool use | The assistant can call a local store finder — asking for a city when it needs one, then grounding its reply in what the tool returned. |
+| 8 | Evals | Upcoming. |
 
 ## Layout
 
-- `phonekit/` — the building blocks every layer composes: the search engines
+- `app.py` — the app you build. It starts as a skeleton whose `search()`
+  returns nothing; you grow it a layer at a time.
+- `phonekit/` — the building blocks `app.py` composes: the search engines
   (`search_bm25`, `search_semantic`), the LLM helper (`llmfn`), filtering and
-  facets (`apply_filters`), the trace, and `Application` (Flask server + CLI
-  runner in one).
-- `layer1/` … `layer4/` — one directory per layer: an `app.py` of a few dozen
-  lines plus its prompt files. phonekit is a library, not a framework — each
-  layer owns its pipeline top-to-bottom, so you can read any layer's `app.py`
-  on its own.
+  facets (`apply_filters`), sessions and memory, the trace, and `Application`
+  (the Flask server, templates, and frontend). phonekit is a library, not a
+  framework — your `app.py` owns its pipeline top-to-bottom.
+- `solutions/layer1/` … `solutions/layer7/` — a worked `app.py` per layer, a
+  few dozen lines each plus its prompt files, from the first edition of the
+  course. Each reads on its own; `diff` two of them and the lesson is the
+  difference.
 - `data/phones/` — the catalogue, one JSON document per phone.
 - `docs/specs.md` — the design spec and the source of truth for the
-  `POST /api/recommend` contract; `docs/mockups.md` covers the visual surface.
+  `POST /api/recommend` contract; `docs/mockups.md` covers the visual surface,
+  and `docs/teaching.md` the eight layers and the story each one tells.
 
 ## Setup
 
@@ -50,32 +59,30 @@ nothing to install explicitly. Configure your OpenAI credentials once:
 cp settings.py.example settings.py   # then fill in OPENAI_API_KEY
 ```
 
-Layer 1 (BM25) runs without a key; layers 2+ call OpenAI for query rewriting,
-embeddings, and summaries.
+BM25 keyword search runs without a key; semantic search and everything from
+Layer 2 on call OpenAI for query rewriting, embeddings, and summaries.
 
-## Running a layer
+## Running it
 
-Each layer runs the same way. Without arguments it serves the app at
-http://127.0.0.1:5000:
+Serve your app at http://127.0.0.1:5000:
 
 ```sh
-uv run layer4/app.py
+make run          # or: uv run python app.py
 ```
 
-With a query it runs the same pipeline as a CLI — no server, just the ranked
-cards, the summary, and the trace printed to the terminal:
+Any worked solution runs the same way, so you can compare against one as you
+go:
 
 ```sh
-uv run layer4/app.py "a phone for my mom under 30000"
+make layer4       # or: uv run python solutions/layer4/app.py
 ```
 
 ## The X-Ray trace
 
-Every response carries a trace of what the layer did to answer the query: BM25
+Every response carries a trace of what the app did to answer the query: BM25
 per-token match counts, cosine scores, each LLM call's instructions and output,
-status, and latency. The UI renders it and the CLI prints it — it is the
-course's main debugging tool, showing exactly which step helped or hurt a
-query.
+status, and latency. The UI renders it beside the results — it is the course's
+main debugging tool, showing exactly which step helped or hurt a query.
 
 ## Data & catalogue
 
