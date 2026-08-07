@@ -1105,6 +1105,18 @@ button {
   padding: 0;
 }
 
+/* An open step takes a line of its own so its detail unfolds directly under
+   its pill; the pills around it keep wrapping as before. min-width holds the
+   detail to the panel: without it a long prompt or a wide JSON line stretches
+   the flex item past the rail instead of scrolling inside it. */
+.step-item {
+  min-width: 0;
+}
+
+.step-item.is-open {
+  flex: 1 0 100%;
+}
+
 .step-pill {
   display: flex;
   align-items: baseline;
@@ -1114,6 +1126,20 @@ button {
   border-left: 3px solid var(--trace-str);
   border-radius: var(--radius-sm);
   background: var(--trace-pre);
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.step-pill:hover {
+  border-color: var(--primary);
+}
+
+.step-item.is-open .step-pill {
+  width: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .step-pill.fallback {
@@ -1148,6 +1174,326 @@ button {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--trace-muted);
+}
+
+/* ---- step detail ---- */
+
+.step-detail {
+  border: 1px solid var(--trace-border);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  padding: 8px 10px 10px;
+  background: var(--trace-pre);
+}
+
+.step-tabs {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--trace-border);
+}
+
+.step-tab {
+  padding: 0 0 4px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  font-family: var(--font-sc);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  color: var(--trace-muted);
+  cursor: pointer;
+}
+
+.step-tab.is-active {
+  color: var(--trace-tab-act);
+  border-bottom-color: var(--primary);
+}
+
+.detail-block + .detail-block {
+  margin-top: 10px;
+}
+
+.io-label {
+  font-family: var(--font-sc);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--trace-fg);
+  border-left: 2px solid var(--trace-step-bar);
+  padding-left: 8px;
+  margin-bottom: 4px;
+}
+
+.detail-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--trace-str);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.attr-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--space-3);
+  margin: 10px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--trace-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.attr-list dt {
+  color: var(--trace-muted);
+}
+
+.attr-list dd {
+  margin: 0;
+  color: var(--trace-num);
+  overflow-wrap: anywhere;
+}
+
+/* Keyword search: one row per query token. A token nothing matched is the
+   reason an AND query came back empty, so it reads as a miss, not a zero. */
+.token-matches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.token-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 6ch;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 2px 0;
+}
+
+.token-row.is-head {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--trace-muted);
+}
+
+.token-weight {
+  text-align: right;
+  color: var(--trace-num);
+}
+
+.token-row.is-head .token,
+.token-row.is-head .token-count,
+.token-row.is-head .token-weight,
+.token-row.is-miss .token-weight {
+  color: var(--trace-muted);
+}
+
+.token-row .token {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--trace-str);
+  overflow-wrap: anywhere;
+}
+
+/* Ties a token to its share of the ranked bars below. */
+.token-swatch {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+/* The count the rows above do not add up to: how many phones hold every token,
+   which is what the result list actually is. */
+.token-row.is-total {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--trace-border);
+}
+
+.token-row.is-total .token,
+.token-row.is-total .token-count {
+  color: var(--trace-fg);
+}
+
+/* The funnel's floor, so it lands under the numbers it does not follow from. */
+.token-row.is-total .token-count {
+  grid-column: 2 / -1;
+  text-align: right;
+}
+
+/* The AND landing on zero is the whole lesson, so it reads as the failure it
+   is -- but as a count, not as a struck-out word like a missing token. */
+.token-row.is-total.is-miss .token,
+.token-row.is-total.is-miss .token-count {
+  color: var(--trace-err);
+  text-decoration: none;
+}
+
+/* What that ranked: two lines per phone -- name and total over a split bar,
+   then the quantities that differ between rows and put them in this order. */
+.rank-chart {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 3px var(--space-3);
+  padding: 4px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.rank-row + .rank-row {
+  border-top: 1px solid var(--trace-row);
+}
+
+.rank-name {
+  color: var(--trace-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rank-score {
+  color: var(--trace-num);
+}
+
+.rank-track {
+  grid-column: 1 / -1;
+  display: flex;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--trace-row);
+  overflow: hidden;
+}
+
+.rank-bar {
+  flex: none;
+  height: 100%;
+}
+
+.rank-meta {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  color: var(--trace-muted);
+  overflow-wrap: anywhere;
+}
+
+.token-row .token-count {
+  flex: none;
+  color: var(--trace-muted);
+}
+
+.token-row.is-miss .token {
+  color: var(--trace-err);
+  text-decoration: line-through;
+}
+
+.token-row.is-miss .token-count {
+  color: var(--trace-err);
+}
+
+/* Semantic search: cosine scores as bars, with the engine's minimum score
+   drawn across every track as a dashed line. */
+.cand-chart {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cand-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 45% auto;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.cand-name {
+  color: var(--trace-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cand-track {
+  position: relative;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--trace-row);
+}
+
+.cand-bar {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--trace-step-bar);
+}
+
+/* The cutoff repeats on every track rather than crossing the chart as one
+   element, so it lines up with the bars whatever the rail's width. */
+.cand-track::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: var(--cutoff, -1px);
+  border-left: 1px dashed var(--trace-muted);
+}
+
+.cand-score {
+  color: var(--trace-num);
+}
+
+.cand-row.is-below {
+  opacity: 0.45;
+}
+
+.cand-legend {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--trace-muted);
+}
+
+.step-detail pre {
+  margin: 0;
+  padding: var(--space-2);
+  background: var(--trace-bg);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--trace-dim);
+  overflow-x: auto;
+}
+
+/* JSON syntax colouring (spans emitted by render.js) */
+.tok-key {
+  color: var(--trace-key);
+}
+.tok-str {
+  color: var(--trace-str);
+}
+.tok-num {
+  color: var(--trace-num);
+}
+.tok-bool {
+  color: var(--trace-bool);
+}
+.tok-null {
+  color: var(--trace-null);
 }
 
 /* Full width: the pinned panel widens to the whole window and the zones

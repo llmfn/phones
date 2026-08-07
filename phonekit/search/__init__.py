@@ -24,8 +24,9 @@ from .bm25 import tokenize
 from .embeddings import EMBEDDING_MODEL, corpus_embeddings, cosine, embed
 from .index import catalog_index
 
-# How many semantic scores to include in the trace.
+# How many scored phones to include in the trace, per engine.
 SEMANTIC_TRACE_TOP_N = 10
+BM25_TRACE_TOP_N = 10
 
 # Phones whose cosine similarity to the query falls below this threshold are
 # excluded from results. Cosine never returns zero so without a cutoff every
@@ -52,18 +53,64 @@ def search_bm25(query: str) -> list[Product]:
         # AND is what makes naive keyword search whiff on vibe queries -- the
         # Layer 1 limitation docs/specs.md calls out.
         scored = [
-            (sum(token_scores.values()), entry)
-            for token_scores, entry in zip(per_doc_scores, entries)
+            (sum(token_scores.values()), token_scores, position, entry)
+            for position, (token_scores, entry) in enumerate(zip(per_doc_scores, entries))
             if len(token_scores) == len(set(tokens))
         ]
-        scored.sort(key=lambda pair: -pair[0])
-        # How many phones each token appears in -- the zeros are the story.
-        match_counts = {
+        scored.sort(key=lambda row: -row[0])
+        matches = {
             token: sum(1 for doc_scores in per_doc_scores if token in doc_scores)
             for token in dict.fromkeys(tokens)
         }
-        step.set_output({"token_match_counts": match_counts, "results": len(scored)})
-    return [Product.from_entry(entry) for _, entry in scored]
+        # Heaviest word first, and the words nothing holds last, next to the
+        # count they caused. Lists rather than objects because the order carries
+        # meaning and a JSON object's keys are the serializer's to reorder --
+        # Flask sorts them alphabetically, which is a fact about spelling.
+        # A token in no document scores the highest idf of all, so ranking on
+        # the raw weight would float exactly the words that matched nothing to
+        # the top; sorting misses out first is what keeps that honest.
+        ordered = sorted(matches, key=lambda token: (matches[token] == 0, -index.idf(token)))
+        # Two separate stories, so the trace reports them separately. Per token,
+        # facts about the catalogue that are the same for every result: how many
+        # phones hold the word (the zeros are why a vibe query dies) and the
+        # weight rarity earns it. Per ranked phone, the facts that actually
+        # differ and therefore decide the order: how often it repeats each word,
+        # how long the record is, and what each word contributed.
+        step.set_output(
+            {
+                "catalogue_size": len(entries),
+                "average_length": round(index.avg_len, 1),
+                "k1": index.k1,
+                "b": index.b,
+                "tokens": [
+                    {
+                        "token": token,
+                        "matches": matches[token],
+                        "weight": round(index.idf(token), 4),
+                    }
+                    for token in ordered
+                ],
+                "results": len(scored),
+                "top_scores": [
+                    {
+                        "id": entry.doc.id,
+                        "name": entry.doc.name,
+                        "score": round(total, 4),
+                        "length": index.doc_lens[position],
+                        "tokens": [
+                            {
+                                "token": token,
+                                "count": index.doc_counts[position][token],
+                                "score": round(token_scores[token], 4),
+                            }
+                            for token in ordered
+                        ],
+                    }
+                    for total, token_scores, position, entry in scored[:BM25_TRACE_TOP_N]
+                ],
+            }
+        )
+    return [Product.from_entry(entry) for *_, entry in scored]
 
 
 def search_semantic(query: str, min_score: float = SEMANTIC_MIN_SCORE) -> list[Product]:

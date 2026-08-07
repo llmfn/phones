@@ -388,10 +388,270 @@ function traceTurn(turn) {
 
 function stepPill(step) {
   const status = KNOWN_STATUSES.includes(step.status) ? step.status : "success";
-  const pill = el("li", `step-pill ${status}`);
+  const item = el("li", "step-item");
+  const pill = el("button", `step-pill ${status}`);
+  pill.type = "button";
+  pill.setAttribute("aria-expanded", "false");
   pill.appendChild(el("span", "step-label", step.label || step.name || "step"));
   // Success is carried by the pill's colour alone; anything else says so.
   if (status !== "success") pill.appendChild(el("span", "step-status", status));
   pill.appendChild(el("span", "latency", `${step.latency_ms ?? 0} ms`));
-  return pill;
+  item.appendChild(pill);
+  item.appendChild(stepDetail(step));
+  return item;
+}
+
+// --- Step detail ---
+
+// One shell for every step kind: a body rendered by what the step is, the
+// values it carries as a name-value list, and a raw tab holding the step
+// exactly as it came over the wire. A step whose shape we don't recognise
+// falls back to formatted JSON rather than showing nothing.
+
+const STEP_BODIES = {
+  search_bm25: bm25Body,
+  search_semantic: semanticBody,
+};
+
+function stepDetail(step) {
+  const detail = el("div", "step-detail");
+  detail.hidden = true;
+
+  const tabs = el("div", "step-tabs");
+  tabs.appendChild(tab("formatted", true));
+  tabs.appendChild(tab("raw", false));
+  detail.appendChild(tabs);
+
+  const formatted = el("div", "step-pane");
+  formatted.dataset.pane = "formatted";
+  const built = (STEP_BODIES[step.name] ?? fallbackBody)(step);
+  formatted.appendChild(built.node);
+  const attributes = attributeList(step, built.consumed);
+  if (attributes) formatted.appendChild(attributes);
+  detail.appendChild(formatted);
+
+  const raw = el("div", "step-pane");
+  raw.dataset.pane = "raw";
+  raw.hidden = true;
+  raw.appendChild(jsonPre(step));
+  detail.appendChild(raw);
+
+  return detail;
+}
+
+function tab(name, active) {
+  const button = el("button", `step-tab${active ? " is-active" : ""}`, name);
+  button.type = "button";
+  button.dataset.pane = name;
+  button.setAttribute("aria-selected", active ? "true" : "false");
+  return button;
+}
+
+function block(label, node) {
+  const wrap = el("div", "detail-block");
+  wrap.appendChild(el("div", "io-label", label));
+  wrap.appendChild(node);
+  return wrap;
+}
+
+// Everything the body did not already show, as long as it is a single value:
+// nested structures would only repeat the body or the raw tab.
+function attributeList(step, consumed) {
+  const list = el("dl", "attr-list");
+  for (const source of [step.input ?? {}, step.output ?? {}]) {
+    for (const [key, value] of Object.entries(source)) {
+      if (consumed.includes(key)) continue;
+      if (value === null || typeof value === "object") continue;
+      list.appendChild(el("dt", null, key.replace(/_/g, " ")));
+      list.appendChild(el("dd", null, String(value)));
+    }
+  }
+  return list.children.length ? list : null;
+}
+
+// One colour per matching token, shared by its row and its share of every
+// ranked bar, so a token can be followed from "how often it hit" to "how much
+// of the score it carried".
+const TOKEN_COLORS = [
+  "var(--trace-step-bar)",
+  "var(--trace-num)",
+  "var(--trace-str)",
+  "var(--trace-bool)",
+  "var(--trace-key)",
+];
+
+// Keyword search in two bands, because the step runs on two mechanisms and
+// mixing them is what makes the numbers unreadable. The token band is the
+// catalogue: how many phones hold each word and the weight its rarity earns,
+// both identical for every result, ending in the AND that decides which phones
+// qualify at all. The ranked band is the documents: what differs between the
+// survivors, and so what put them in this order.
+function bm25Body(step) {
+  const tokens = step.output?.tokens;
+  if (!Array.isArray(tokens) || !tokens.length) return fallbackBody(step);
+
+  const size = step.output?.catalogue_size;
+  const colors = new Map();
+  for (const facts of tokens) {
+    if (facts?.matches) colors.set(facts.token, TOKEN_COLORS[colors.size % TOKEN_COLORS.length]);
+  }
+
+  const node = el("div", "detail-body");
+  node.appendChild(block("query as sent", el("div", "detail-text", step.input?.query ?? "")));
+
+  const rows = el("ul", "token-matches");
+  const head = el("li", "token-row is-head");
+  head.appendChild(el("span", "token", "token"));
+  head.appendChild(el("span", "token-count", "in catalogue"));
+  head.appendChild(el("span", "token-weight", "weight"));
+  rows.appendChild(head);
+
+  for (const facts of tokens) {
+    const matches = facts?.matches ?? 0;
+    const row = el("li", `token-row${matches ? "" : " is-miss"}`);
+    const name = el("span", "token");
+    if (matches) {
+      const swatch = el("span", "token-swatch");
+      swatch.style.background = colors.get(facts.token);
+      name.appendChild(swatch);
+    }
+    name.appendChild(el("span", null, facts.token));
+    row.appendChild(name);
+    const held = size ? `${matches} of ${size} phones` : `${matches} phones`;
+    row.appendChild(el("span", "token-count", matches ? held : "no matches"));
+    // A token in no document still has an idf -- a large one, since the formula
+    // rewards rarity -- and showing it would read as "this word counts for a
+    // lot" about a word that counts for nothing at all.
+    const weight = matches ? (Number(facts?.weight) || 0).toFixed(2) : "—";
+    row.appendChild(el("span", "token-weight", weight));
+    rows.appendChild(row);
+  }
+
+  // The line the counts above do not add up to on their own: a phone qualifies
+  // only by holding every word, so this is never merely the smallest count.
+  const results = step.output?.results ?? 0;
+  const every = el("li", `token-row is-total${results ? "" : " is-miss"}`);
+  every.appendChild(el("span", "token", tokens.length === 1 ? "holding that token" : "holding every token"));
+  every.appendChild(el("span", "token-count", `${results} phones`));
+  rows.appendChild(every);
+  node.appendChild(block("tokens", rows));
+
+  const ranked = step.output?.top_scores;
+  if (Array.isArray(ranked) && ranked.length) {
+    node.appendChild(block("what that ranked", rankedChart(ranked, colors)));
+    node.appendChild(
+      el(
+        "div",
+        "cand-legend",
+        "bar = each token's share of the score · rare words weigh more, repeats saturate, long records dilute"
+      )
+    );
+  }
+  return { node, consumed: ["query", "tokens", "catalogue_size", "results", "top_scores"] };
+}
+
+// One row per surviving phone: its total, a bar split into a segment per token
+// carrying that token's contribution, and under it the three things that
+// actually differ between rows -- how often each word repeats, and how long the
+// record is.
+function rankedChart(ranked, colors) {
+  const axis = Math.max(...ranked.map((row) => Number(row.score) || 0)) * 1.05 || 1;
+  const chart = el("ol", "rank-chart");
+  for (const entry of ranked) {
+    const row = el("li", "rank-row");
+    row.appendChild(el("span", "rank-name", entry.name ?? entry.id ?? ""));
+    row.appendChild(el("span", "rank-score", (Number(entry.score) || 0).toFixed(2)));
+
+    const track = el("span", "rank-track");
+    const parts = [];
+    for (const facts of entry.tokens ?? []) {
+      const segment = el("span", "rank-bar");
+      segment.style.width = `${((Number(facts?.score) || 0) / axis) * 100}%`;
+      segment.style.background = colors.get(facts.token) ?? "var(--trace-step-bar)";
+      segment.title = `${facts.token}: ${facts.score}`;
+      track.appendChild(segment);
+      parts.push(`${facts.token} ×${facts?.count ?? 0}`);
+    }
+    row.appendChild(track);
+    parts.push(`${entry.length ?? 0} words`);
+    row.appendChild(el("span", "rank-meta", parts.join(" · ")));
+    chart.appendChild(row);
+  }
+  return chart;
+}
+
+// Semantic search: the cosine ranking as a bar chart. The dashed line is the
+// minimum score the engine kept, so the candidates dimmed below it are the
+// ones this step dropped -- present, because seeing what just missed is the
+// point of showing the ranking at all.
+function semanticBody(step) {
+  const candidates = step.output?.shown_scores;
+  if (!Array.isArray(candidates) || !candidates.length) return fallbackBody(step);
+
+  const minScore = Number(step.input?.min_score ?? 0);
+  const scores = candidates.map((c) => Number(c.cosine) || 0);
+  // Headroom so the longest bar stops short of the edge, and so the cutoff
+  // stays on the chart even when every candidate cleared it.
+  const axis = Math.max(...scores, minScore) * 1.05 || 1;
+
+  const node = el("div", "detail-body");
+  node.appendChild(block("query as sent", el("div", "detail-text", step.input?.query ?? "")));
+
+  const chart = el("ol", "cand-chart");
+  for (const candidate of candidates) {
+    const score = Number(candidate.cosine) || 0;
+    const row = el("li", `cand-row${score < minScore ? " is-below" : ""}`);
+    row.appendChild(el("span", "cand-name", candidate.name ?? candidate.id ?? ""));
+    const track = el("span", "cand-track");
+    if (minScore > 0) track.style.setProperty("--cutoff", `${(minScore / axis) * 100}%`);
+    const bar = el("span", "cand-bar");
+    bar.style.width = `${(score / axis) * 100}%`;
+    track.appendChild(bar);
+    row.appendChild(track);
+    row.appendChild(el("span", "cand-score", score.toFixed(3)));
+    chart.appendChild(row);
+  }
+  node.appendChild(block("cosine ranking", chart));
+  if (minScore > 0) {
+    node.appendChild(el("div", "cand-legend", `dashed line: min score ${minScore} — dimmed candidates were dropped`));
+  }
+  return { node, consumed: ["query", "shown_scores"] };
+}
+
+// Any step we have no view for yet: its input and output as formatted JSON,
+// so a new step kind joins the panel readable rather than blank. The JSON
+// already shows every value, so nothing is left for the attribute list.
+function fallbackBody(step) {
+  const node = el("div", "detail-body");
+  node.appendChild(block("input", jsonPre(step.input ?? {})));
+  node.appendChild(block("output", jsonPre(step.output ?? {})));
+  const consumed = [...Object.keys(step.input ?? {}), ...Object.keys(step.output ?? {})];
+  return { node, consumed };
+}
+
+// A <pre> of pretty-printed JSON with syntax-coloured spans (.tok-*). Built
+// from text nodes, never innerHTML, so values cannot inject markup.
+const JSON_TOKEN = /("(?:\\.|[^"\\])*")(\s*:)?|\b(?:true|false|null)\b|-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/g;
+
+function jsonPre(value) {
+  const json = JSON.stringify(value, null, 2);
+  const pre = el("pre");
+  let last = 0;
+  for (const m of json.matchAll(JSON_TOKEN)) {
+    if (m.index > last) pre.append(json.slice(last, m.index));
+    if (m[1] !== undefined) {
+      // A string is a key when followed by a colon; the colon stays plain.
+      pre.append(el("span", m[2] ? "tok-key" : "tok-str", m[1]));
+      if (m[2]) pre.append(m[2]);
+    } else if (m[0] === "true" || m[0] === "false") {
+      pre.append(el("span", "tok-bool", m[0]));
+    } else if (m[0] === "null") {
+      pre.append(el("span", "tok-null", m[0]));
+    } else {
+      pre.append(el("span", "tok-num", m[0]));
+    }
+    last = m.index + m[0].length;
+  }
+  pre.append(json.slice(last));
+  return pre;
 }

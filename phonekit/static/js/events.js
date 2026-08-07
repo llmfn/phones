@@ -333,12 +333,44 @@ export function bindEvents() {
     }
   });
 
+  // A step unfolds in place and nothing else moves: no query, no re-render, so
+  // the results and every other open step stay exactly as they were.
+  document.getElementById("trace").addEventListener("click", (e) => {
+    const tab = e.target.closest(".step-tab");
+    if (tab) {
+      showPane(tab);
+      return;
+    }
+    const pill = e.target.closest(".step-pill");
+    if (pill) toggleStep(pill);
+  });
+
   // Width is a class on the shell and nothing more: no re-render, so whatever
   // the reader has unfolded survives the toggle.
   document.getElementById("trace-width").addEventListener("click", () => {
     state.traceWide = !state.traceWide;
     setTraceWidth(state.traceWide);
   });
+}
+
+function toggleStep(pill) {
+  const item = pill.closest(".step-item");
+  const open = !item.classList.contains("is-open");
+  item.classList.toggle("is-open", open);
+  pill.setAttribute("aria-expanded", open ? "true" : "false");
+  item.querySelector(".step-detail").hidden = !open;
+}
+
+function showPane(tab) {
+  const detail = tab.closest(".step-detail");
+  for (const other of detail.querySelectorAll(".step-tab")) {
+    const active = other === tab;
+    other.classList.toggle("is-active", active);
+    other.setAttribute("aria-selected", active ? "true" : "false");
+  }
+  for (const pane of detail.querySelectorAll(".step-pane")) {
+    pane.hidden = pane.dataset.pane !== tab.dataset.pane;
+  }
 }
 
 function setTraceWidth(wide) {

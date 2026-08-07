@@ -160,7 +160,7 @@ search pill, layer 4 shows three pills.
 - [x] Latency reads from the rail with nothing unfolded; no number besides
       latency appears anywhere
 
-### [TODO] search-detail: the search step opened up
+### [DONE] search-detail: the search step opened up
 
 Clicking a search pill unfolds the first detail view in place, accordion
 style: BM25 shows the query as sent and per-token match counts; semantic
@@ -170,14 +170,14 @@ as does the raw wire tab showing the step's actual payload.
 
 **Acceptance Criteria:**
 
-- [ ] Over BM25, "samsung 5g" shows which tokens matched and how often;
+- [x] Over BM25, "samsung 5g" shows which tokens matched and how often;
       "a phone for my mom" visibly matches nothing
-- [ ] Over semantic search, the step shows bars with scores and a dashed
+- [x] Over semantic search, the step shows bars with scores and a dashed
       cutoff at top-k, candidates below it dimmed but present
-- [ ] The step's attributes render as a name–value list in its detail
-- [ ] The raw tab shows the step's actual payload; collapsing the step
+- [x] The step's attributes render as a name–value list in its detail
+- [x] The raw tab shows the step's actual payload; collapsing the step
       returns the rail to pills, results untouched
-- [ ] An unfolded step stays unfolded when the panel changes width
+- [x] An unfolded step stays unfolded when the panel changes width
 
 ### [TODO] llm-detail: the llm-call step opened up
 
@@ -245,11 +245,89 @@ the follow-up rounds.
 
 ## Handover
 
-`turn-steps` is built and green: `tests/test_trace.py` covers grouping, labels,
-and both failure shapes, and the layer-1 and layer-4 solutions were run through
-the API for real.
+`search-detail` is built and green. Clicking a pill unfolds its detail in
+place; several can be open at once, and collapsing one leaves the results and
+every other open step alone.
 
-The backend now answers with a turn, not a step list. `RecommendResponse.trace`
+The detail is one generic shell for every step kind, not a search-specific
+view: `stepDetail` in `render.js` renders a formatted/raw tab pair, picks the
+formatted body by step name out of `STEP_BODIES`, and appends whatever values
+the body did not itself show as a name–value list. `search_bm25` and
+`search_semantic` have real bodies; everything else falls to `fallbackBody`,
+which prints input and output as formatted JSON — so an llm step is already
+readable today, and `llm-detail` is a body function plus its CSS rather than
+another shell. The raw tab is the whole step envelope as it came over the
+wire, `jsonPre` and the `.tok-*` rules restored from a43a178^.
+
+The cutoff drawn across the cosine chart is the engine's `min_score` (0.3),
+not a top-k — `search_semantic` has no k. The criterion above still says
+"top-k"; the panel is what is right, the wording is what is stale, but I left
+it for you rather than editing the task. `shown_scores` is capped at ten, so
+the chart shows the top ten of however many qualified; the attribute list
+carries `ranked candidates` and `qualifying` so the gap is visible rather than
+implied. A query where everything falls below the line ("a tractor for
+ploughing fields") renders every row dimmed with the cutoff near the right
+edge, which reads well as the failure it is.
+
+The BM25 view is built around one thing the first version got wrong: it showed
+`pink` in 15 phones, `phone` in 62, and 5 results, and those three numbers do
+not compose. They are two different mechanisms — presence decides membership,
+frequency and length decide rank — so the detail now shows them as two bands.
+**Tokens** is the catalogue: how many phones hold each word out of how many,
+and the weight rarity earns it, both identical for every result, closing on
+`holding every token → 5 phones`, the AND that is never merely the smallest
+count above it. **What that ranked** is the documents: a bar per phone split
+into a segment per token carrying that token's contribution, and under it the
+quantities that actually differ between rows — `pink ×4 · phone ×1 · 196
+words`. A token that matched nothing shows no weight at all: idf rewards
+rarity, so a word in zero documents scores 5.61, which would read as "this word
+counts for a lot" about a word that counts for nothing.
+
+That did need an engine change. `search_bm25` now traces `tokens`
+(matches + weight per token), and per ranked phone its `length` and per token
+`{count, score}` — all of it already computed in the scoring loop and
+previously discarded. `k1`, `b`, and the average document length ride the
+attribute list; the arithmetic is reproducible from the raw tab. The old
+`token_match_counts` key is gone, replaced by `tokens`.
+
+Both are **lists, not objects, because their order carries meaning**: heaviest
+word first, so the token band reads as a ranking and each token keeps its
+place — and its colour — down every bar in the chart. This is worth knowing
+before adding another ordered field. The first version emitted objects and let
+dict order carry it, which held inside Python and then died on the wire:
+Flask serialises with `sort_keys=True`, so the panel was ordering tokens
+alphabetically while the fixture page, written with plain `json.dumps`, kept
+query order. The two disagreed for a whole slice because they were checked
+separately. Sorting misses last is deliberate too — a word in zero documents
+has the highest idf there is, so ranking on the raw weight floats exactly the
+words that matched nothing to the top.
+
+`search_semantic` needed nothing: it already traced everything its view draws.
+Two tests (`tests/test_trace.py`) pin the BM25 payload, both offline — on a
+query that whiffs, that the tokens nothing holds are reported and sort last;
+on `pink phone`, that the result count never exceeds the smallest per-token
+count, that the band is ordered by descending weight, that every ranked phone
+lists its tokens in that same order, and that a phone's per-token scores sum
+to its total. The semantic payload has no test: asserting it needs a query
+embedding, so its shape is verified visually instead.
+
+Verified in headless Chrome two ways: against a fixture page holding real
+captured trace steps, at 1440 and 900 wide, and then end to end against
+running servers — the layer-1 solution for the semantic view (one pill, ten
+candidate rows, 21 results, detail still open across the width toggle, results
+untouched on collapse), and a throwaway layer swapping in `search_bm25` for
+the keyword view, since no solution uses that engine. Four bugs came out of
+those passes and are fixed: the open step overflowed the rail until
+`.step-item` got `min-width: 0` (its `<pre>` now scrolls inside itself), the
+fallback body was repeating its own JSON in the attribute list, the token
+band's weight column clipped its own header, and the token ordering above.
+The last one is the reason to trust the browser over the fixture when they
+disagree: only one of them goes through Flask.
+
+`llm-detail` is next, and the label point below still stands — worth doing
+first so layer 4 stops showing two pills that both read "llm call".
+
+The backend answers with a turn, not a step list. `RecommendResponse.trace`
 is a single `TraceTurn` — kind, the input that produced it, its steps, status,
 latency, and the error message when the pipeline threw. `Application.run_query`
 builds it and no longer lets a pipeline exception escape: a failed query comes
@@ -277,15 +355,15 @@ All of it was checked in headless Chrome against the layer-4 solution at 1440
 and 900 wide: the panel holds the right edge at full height, the page scrolls
 under it without moving it, a long turn list scrolls inside the panel with the
 head staying put, and expand/collapse round-trips the same content. The width
-toggle deliberately does not re-render, so unfolded detail will survive it in
-the next slice.
+toggle does not re-render, which is what carries an unfolded step across it.
 
 One thing to know: a layer-4 query shows **four** pills, not the three the
 criterion names — `llmfn`, `search_semantic`, `rerank_by_persona`, `llmfn`. The
 rerank is a real traced step, so the count in the criterion is what is stale,
 not the panel.
 
-`search-detail` is next. The panel currently renders no JSON at all, so
-`jsonPre` and its `.tok-*` rules came out of `render.js` and `styles.css`; the
-`--trace-key` / `--trace-num` / `--trace-dim` tokens are still in the palette
-for it to pick back up.
+Open state lives in the DOM (`.step-item.is-open`), not in `state.js`, because
+nothing re-renders the turn once it lands. `live-steps` changes that: when it
+starts appending steps mid-turn it will need to lift that state, or append to
+the existing list rather than rebuild it. `stepDetail` is a pure step → node
+function so it can be reused either way.

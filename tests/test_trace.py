@@ -1,6 +1,6 @@
 import pytest
 
-from phonekit import Application, trace
+from phonekit import Application, search_bm25, trace
 from phonekit.schema import Filters, RecommendResponse
 from phonekit.session import Session
 
@@ -83,6 +83,48 @@ def test_a_failure_outside_a_step_is_carried_by_the_turn(tmp_path):
     assert turn.status == "error"
     assert turn.error == "bad filters"
     assert [step.status for step in turn.steps] == ["success"]
+
+
+def test_the_keyword_search_step_records_what_each_token_matched():
+    # The token band's two facts, on words the catalogue has and words it does
+    # not: a query dies on the tokens nothing holds, and those sort last -- an
+    # absent word earns the highest weight of all, so ranking on weight alone
+    # would float exactly the words that matched nothing to the top.
+    trace.reset()
+    search_bm25("a phone for my mom")
+
+    (step,) = trace.collect()
+    tokens = {facts["token"]: facts for facts in step.output["tokens"]}
+    assert tokens["phone"]["matches"] > 0
+    assert tokens["mom"]["matches"] == 0
+    assert [facts["token"] for facts in step.output["tokens"][-2:]] == ["my", "mom"]
+    assert step.output["results"] == 0
+    assert step.output["top_scores"] == []
+
+
+def test_the_keyword_search_step_records_why_the_survivors_ranked():
+    # Every result holds every token, so the order comes from the per-document
+    # facts: how often each word repeats and how long the record is. The result
+    # count is the AND, never merely the smallest per-token count.
+    trace.reset()
+    search_bm25("pink phone")
+
+    (step,) = trace.collect()
+    output = step.output
+    assert output["results"] <= min(facts["matches"] for facts in output["tokens"])
+
+    # Heaviest word first, and every ranked phone lists its tokens in that same
+    # order, so a token keeps its place -- and its colour -- down the chart.
+    weights = [facts["weight"] for facts in output["tokens"]]
+    assert weights == sorted(weights, reverse=True)
+    order = [facts["token"] for facts in output["tokens"]]
+    assert order == ["pink", "phone"]
+
+    top = output["top_scores"][0]
+    assert top["length"] > 0
+    assert [facts["token"] for facts in top["tokens"]] == order
+    assert all(facts["count"] >= 1 for facts in top["tokens"])
+    assert round(sum(facts["score"] for facts in top["tokens"]), 3) == round(top["score"], 3)
 
 
 def test_recommend_returns_the_turn_in_the_response(tmp_path):
