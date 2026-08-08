@@ -7,9 +7,10 @@ Pick from three search implmentations.
     - semantic: nearest match | vector
 """
 
-from phonekit import Application, RecommendResponse, apply_filters, search_semantic
+from phonekit import Application, SearchResult, apply_filters, search_bm25, search_semantic
 
-def search(q, filters) -> RecommendResponse:
+def search(q, filters) -> SearchResult:
+    # products = search_bm25(q)
     products = search_semantic(q)
     return apply_filters(products, filters)
 
