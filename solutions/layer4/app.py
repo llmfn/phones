@@ -26,7 +26,7 @@ class Schema(BaseModel):
 
 def summarize(query, products):
     """Recommendation paragraph for the top-3 products, grounded in their catalogue records."""
-    PROMPT_SUMMARY = app.read_file("prompt_summary.md")
+    PROMPT_SUMMARY = app.read_file("prompts/summarize.md")
     docs = {entry.doc.id: entry.doc for entry in load_catalog()}
     context = [
         {
@@ -41,8 +41,8 @@ def summarize(query, products):
     return llmfn(instructions=PROMPT_SUMMARY, input=input, label="summarize")
 
 def search(query, filters):
-    PROMPT = app.read_file("prompt.md")
-    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema, label="rewrite")
+    PROMPT_REWRITE = app.read_file("prompts/rewrite.md")
+    response = llmfn(instructions=PROMPT_REWRITE, input=query, output_schema=Schema, label="rewrite")
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)

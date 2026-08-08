@@ -17,8 +17,8 @@ class Schema(BaseModel):
     persona: str | None = Field(description='one of "elderly", "teen", "camera-lover", "gamer", "value-seeker", or null')
 
 def search(query, filters):
-    PROMPT = app.read_file("prompt.md")
-    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema, label="rewrite")
+    PROMPT_REWRITE = app.read_file("prompts/rewrite.md")
+    response = llmfn(instructions=PROMPT_REWRITE, input=query, output_schema=Schema, label="rewrite")
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)

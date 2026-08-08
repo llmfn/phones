@@ -105,7 +105,7 @@ def _profile_hint(profile: dict) -> str:
 
 def summarize(query, products, hint=""):
     """Generate a grounded assistant summary for the retrieved products."""
-    PROMPT_SUMMARY = app.read_file("prompt_summary.md")
+    PROMPT_SUMMARY = app.read_file("prompts/summarize.md")
     docs = {entry.doc.id: entry.doc for entry in load_catalog()}
     context = [
         {
@@ -123,10 +123,10 @@ def summarize(query, products, hint=""):
 
 def search(query, filters):
     """Run the contextual search pipeline, personalised with the stored profile."""
-    PROMPT = app.read_file("prompt.md")
+    PROMPT_REWRITE = app.read_file("prompts/rewrite.md")
     profile = mem.load()
     hint = _profile_hint(profile)
-    instructions = f"{PROMPT}\n\n{hint}" if hint else PROMPT
+    instructions = f"{PROMPT_REWRITE}\n\n{hint}" if hint else PROMPT_REWRITE
 
     response = llmfn(instructions=instructions, input=query, output_schema=Schema)
     products = search_semantic(response.query)
@@ -140,7 +140,7 @@ def search(query, filters):
 
 def chat(session, message):
     """Answer a follow-up, ask a narrowing question, and update the stored profile."""
-    PROMPT_CHAT = app.read_file("prompt_chat.md")
+    PROMPT_CHAT = app.read_file("prompts/chat.md")
     profile = mem.load()
     hint = _profile_hint(profile)
     instructions = f"{PROMPT_CHAT}\n\n{hint}" if hint else PROMPT_CHAT

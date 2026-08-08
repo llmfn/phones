@@ -7,10 +7,10 @@ from pathlib import Path
 
 app = Application(__name__)
 def search(query, filters):
-    prompt = app.read_file("prompt.md")
+    prompt_rewrite = app.read_file("prompts/rewrite.md")
 
     # refine the query using llm
-    query_refined = llmfn(instructions=prompt, input=query, label="rewrite")
+    query_refined = llmfn(instructions=prompt_rewrite, input=query, label="rewrite")
 
     # search with the refined query
     products = search_semantic(query_refined)

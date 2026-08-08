@@ -27,7 +27,7 @@ class Schema(BaseModel):
 
 def summarize(query, products):
     """Generate the first assistant turn from the top-3 retrieved products."""
-    PROMPT_SUMMARY = app.read_file("prompt_summary.md")
+    PROMPT_SUMMARY = app.read_file("prompts/summarize.md")
     docs = {entry.doc.id: entry.doc for entry in load_catalog()}
     context = [
         {
@@ -43,8 +43,8 @@ def summarize(query, products):
 
 def search(query, filters):
     """Run the contextual search pipeline that creates a new stateful session."""
-    PROMPT = app.read_file("prompt.md")
-    response = llmfn(instructions=PROMPT, input=query, output_schema=Schema, label="rewrite")
+    PROMPT_REWRITE = app.read_file("prompts/rewrite.md")
+    response = llmfn(instructions=PROMPT_REWRITE, input=query, output_schema=Schema, label="rewrite")
     products = search_semantic(response.query)
     products = rerank_by_persona(products, response.persona)
     result = apply_filters(products, filters)
@@ -61,7 +61,7 @@ class ChatResponseSchema(BaseModel):
 
 def chat(session, message):
     """Answer a follow-up using the session transcript as conversation state."""
-    PROMPT_CHAT = app.read_file("prompt_chat.md")
+    PROMPT_CHAT = app.read_file("prompts/chat.md")
     # The current message has already been appended to the transcript by
     # PhoneKit before this hook runs.
     past_messages = session.get_messages()
