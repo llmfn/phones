@@ -3,13 +3,28 @@
 import json
 from pathlib import Path
 
-_MEMORY_PATH = Path(__file__).parent.parent / "data" / "memory" / "memory.json"
+DEFAULT_MEMORY_PATH = Path(__file__).parent.parent / "data" / "memory" / "memory.json"
+
+_path = DEFAULT_MEMORY_PATH
+
+
+def configure_path(path: str | Path) -> None:
+    """Set the file the profile is read from and written to.
+
+    One profile per installation is what the product wants and what the layers
+    assume. A caller that runs many conversations at once -- scoring a file of
+    evals, say -- points this at a scratch file first, so the runs neither
+    teach each other preferences nor overwrite the profile of whoever is using
+    the app.
+    """
+    global _path
+    _path = Path(path)
 
 
 def load() -> dict:
     """Load the profile, returning an empty dict if none exists yet."""
     try:
-        return json.loads(_MEMORY_PATH.read_text())
+        return json.loads(_path.read_text())
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
@@ -23,6 +38,6 @@ def merge(updates: dict) -> dict:
     """
     profile = load()
     profile.update(updates)
-    _MEMORY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    _MEMORY_PATH.write_text(json.dumps(profile, indent=2) + "\n")
+    _path.parent.mkdir(parents=True, exist_ok=True)
+    _path.write_text(json.dumps(profile, indent=2) + "\n")
     return profile

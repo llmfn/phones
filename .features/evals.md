@@ -1,5 +1,5 @@
 ---
-status: draft
+status: in-progress
 created: 2026-08-08
 ---
 
@@ -97,7 +97,7 @@ is invalidated by adding multi-turn cases.
 
 ## Tasks
 
-### [TODO] basic: score the eval file against any layer
+### [DONE] basic: score the eval file against any layer
 
 `app.py --eval` runs every case in `evals/evals.yaml` through this app's
 `search`, judges each closed-book against `evals/judge.md`, and prints a table
@@ -156,3 +156,40 @@ needs something to measure against.
 - [ ] Default runs make no tool call
 - [ ] With the tool on, scores for the same eval file are recorded beside the
       closed-book scores for at least two layers, so the divergence is visible
+
+## Handover
+
+`evals.basic` is done and `evals.catalogue-tool` has not been started. The
+harness works end to end: `evals/evals.yaml` (20 cases) and `evals/judge.md`
+hold the content, `phonekit/evals.py` the machinery, and `Application.run`
+dispatches `--eval` before it reaches Flask. `make eval` runs it against the
+skeleton. Covered by `tests/test_evals.py`, which stubs the judge, so the
+suite makes no network calls.
+
+Measured baselines, the numbers `evals.catalogue-tool` compares against:
+
+| Layer | Passed | Avg | Wall |
+|---|---|---|---|
+| `solutions/layer1` | 11/20 | 3.2 | 19s |
+| `solutions/layer4` | 16/20 | 4.1 | 25s |
+
+Three things a reader should know before continuing:
+
+**The layer 1 baseline is not the baseline the course describes.**
+`solutions/layer1/app.py` calls `search_semantic`, not `search_bm25`, so the
+"before" in the demo is already layer 2's retrieval and 11/20 is flattering. A
+true BM25 baseline would score far lower and the climb would be much steeper.
+Whether the solution or the docs are wrong is a question for the course, not
+for this feature, so nothing here was changed.
+
+**Exact model lookups fail at both layers.** "samsung galaxy s24 fe" and
+"oneplus 13" score 1–2 whether or not the LLM is in the loop, because cosine
+similarity does not privilege an exact name. This is the hybrid-search argument
+in `docs/teaching.md` showing up as a number, and it is the most useful thing
+the run currently says.
+
+**The judge already catches summary hallucinations.** Several layer 4 cases
+lost a point for a summary claiming something the specs contradict, unprompted
+by the expectation. That is `docs/teaching.md`'s fidelity dimension arriving
+for free, and worth keeping in mind when writing new cases: they do not need to
+ask for grounding to measure it.

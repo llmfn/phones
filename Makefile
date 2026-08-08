@@ -3,6 +3,10 @@
 run:
 	uv run python app.py
 
+.PHONY: eval
+eval:
+	uv run python app.py --eval
+
 .PHONY: layer1
 layer1:
 	uv run python solutions/layer1/app.py

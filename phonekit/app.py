@@ -154,11 +154,21 @@ class Application(Flask):
         return reply, turn
 
     def run(self, *args, **kwargs):
-        """CLI when invoked with a query, the dev server otherwise.
+        """CLI when invoked with a flag, the dev server otherwise.
 
-        ``uv run app.py "a phone for my mom"`` prints cards and the trace
-        without touching Flask; bare ``uv run app.py`` serves this layer.
+        ``uv run app.py --eval`` scores this layer against ``evals/evals.yaml``
+        and exits with the result; bare ``uv run app.py`` serves this layer.
+
+        Dispatching on argv here rather than from a separate runner script is
+        what lets any layer be measured by invoking it -- the app is already
+        wired by the time ``run`` is called, so the eval needs no way to reach
+        inside a module and assemble one. ``evals`` is imported lazily because
+        the server path has no use for it.
         """
+        if "--eval" in sys.argv[1:]:
+            from .evals import run_evals
+
+            raise SystemExit(run_evals(self))
         kwargs.setdefault("debug", True)
         super().run(*args, **kwargs)
 
