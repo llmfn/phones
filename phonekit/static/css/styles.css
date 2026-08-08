@@ -1363,8 +1363,8 @@ button {
   margin-bottom: 4px;
 }
 
-/* A label that carries a control on its right, which only the schema block
-   does. Text-only labels keep the plain block layout. */
+/* A label that carries a control on its right -- the schema's view switch, or
+   the input's. Text-only labels keep the plain block layout. */
 .io-label.has-aside {
   display: flex;
   align-items: baseline;
@@ -1372,7 +1372,7 @@ button {
   gap: var(--space-2);
 }
 
-.schema-toggle {
+.detail-toggle {
   border: 0;
   background: none;
   padding: 0;
@@ -1383,7 +1383,7 @@ button {
   cursor: pointer;
 }
 
-.schema-toggle:hover {
+.detail-toggle:hover {
   color: var(--trace-tab-act);
 }
 
@@ -1486,6 +1486,68 @@ button {
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--trace-muted);
+}
+
+/* A prompt with a document folded into it: the prose reads as prose, and the
+   document as the list of names it is a list of. */
+.folded-text > * + * {
+  margin-top: 6px;
+}
+
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 10px;
+}
+
+/* The name a record calls itself by, coloured as the handle it is rather than
+   as more of the prompt's prose. */
+.doc-name {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  border: 0;
+  background: none;
+  padding: 1px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--trace-key);
+  text-align: left;
+  cursor: pointer;
+}
+
+.doc-name:hover {
+  color: var(--trace-tab-act);
+}
+
+.doc-caret {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid var(--trace-muted);
+  border-bottom: 1.5px solid var(--trace-muted);
+  transform: translateY(-2px) rotate(-45deg);
+  transition: transform 120ms ease;
+}
+
+.doc-item.is-open .doc-caret {
+  transform: translateY(-3px) rotate(45deg);
+}
+
+/* An entry that is a plain value has nothing behind it to open, so it lines up
+   with the names rather than carrying a caret that would do nothing. */
+.doc-plain {
+  padding-left: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--trace-str);
+  overflow-wrap: anywhere;
+}
+
+.doc-item pre {
+  margin: 2px 0 6px 12px;
 }
 
 /* How many messages this call carried, above the list it describes. */

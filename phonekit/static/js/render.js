@@ -869,7 +869,7 @@ function llmBody(step) {
     }
     node.appendChild(system);
   }
-  node.appendChild(block("input", llmInputBlock(request.input)));
+  node.appendChild(llmInputBlock(request.input));
 
   // The shape the model was required to answer in, which is not the shape it
   // answered with: optional fields, and the descriptions the layer wrote to
@@ -937,7 +937,7 @@ function schemaBlock(schema) {
   const view = el("div", "schema-view");
   view.append(types, json);
 
-  const toggle = el("button", "schema-toggle", "json");
+  const toggle = el("button", "detail-toggle schema-toggle", "json");
   toggle.type = "button";
   toggle.title = "show the JSON Schema as sent";
   return block("schema", view, toggle);
@@ -1074,8 +1074,21 @@ function markLabels(highlights) {
 function llmInputBlock(input) {
   const wrap = el("div", "detail-input");
   if (isMessageList(input)) wrap.appendChild(el("div", "msg-count", messageCount(input.length)));
-  wrap.appendChild(llmInput(input));
-  return wrap;
+  const view = llmInput(input);
+  wrap.appendChild(view);
+  if (!view.classList.contains("folded-text")) return block("input", wrap);
+
+  // Folding is the one place this panel stops showing the string the provider
+  // was handed, so the string itself stays one click away rather than only in
+  // the raw tab, where it is a single escaped line.
+  const literal = el("div", "detail-text", String(input ?? ""));
+  literal.hidden = true;
+  wrap.appendChild(literal);
+
+  const toggle = el("button", "detail-toggle text-toggle", "text");
+  toggle.type = "button";
+  toggle.title = "show the input as sent";
+  return block("input", wrap, toggle);
 }
 
 // A chat turn's transcript, as against the function-call outputs a tool round
@@ -1100,7 +1113,7 @@ function messageCount(count) {
 // a chat turn sends. The list is shown whole -- windowing it here would hide
 // the growth that is the whole point of looking.
 function llmInput(input) {
-  if (!Array.isArray(input)) return el("div", "detail-text", String(input ?? ""));
+  if (!Array.isArray(input)) return foldedText(String(input ?? ""));
 
   const list = el("ol", "msg-list");
   for (const message of input) {
@@ -1110,6 +1123,128 @@ function llmInput(input) {
     list.appendChild(row);
   }
   return list;
+}
+
+// A prompt that carries a JSON document, shown as the prose it is written in
+// with the document folded to the names of what it holds. A summarize call
+// sends one line of query and then a few hundred lines of catalogue records,
+// and printing those records whole buries the line they were gathered for.
+// Nothing is dropped: the record sits under the name that stands for it.
+function foldedText(text) {
+  const spans = jsonSpans(text);
+  if (!spans.length) return el("div", "detail-text", text);
+
+  const wrap = el("div", "folded-text");
+  let last = 0;
+  for (const span of spans) {
+    prose(wrap, text.slice(last, span.start));
+    wrap.appendChild(docFold(span.value));
+    last = span.end;
+  }
+  prose(wrap, text.slice(last));
+  return wrap;
+}
+
+// The prose around a fold, without the newline that used to run into the
+// document: the fold is a block of its own and brings its own spacing.
+function prose(wrap, text) {
+  const trimmed = text.replace(/^\n+|\n+$/g, "");
+  if (trimmed) wrap.appendChild(el("div", "detail-text", trimmed));
+}
+
+// A document has to be long enough to be in the way before folding it helps:
+// a one-line object reads perfectly well where it stands, and hiding it behind
+// a name would cost a click to learn less.
+const FOLD_MIN = 200;
+
+// Every JSON document embedded in a string, found by parsing rather than by
+// pattern-matching: a run that starts at a bracket and parses whole is one,
+// and a brace in an English sentence is not. Layers write their own prompts,
+// so this looks for the shape rather than for any layer's wording.
+function jsonSpans(text) {
+  const spans = [];
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (char !== "[" && char !== "{") continue;
+    // A bracket mid-word belongs to the sentence around it.
+    if (i > 0 && !/[\s:=]/.test(text[i - 1])) continue;
+    const end = jsonEnd(text, i);
+    if (end < 0 || end - i < FOLD_MIN) continue;
+    let value;
+    try {
+      value = JSON.parse(text.slice(i, end));
+    } catch {
+      continue;
+    }
+    spans.push({ start: i, end, value });
+    i = end - 1;
+  }
+  return spans;
+}
+
+// Where the bracketed run opening at `start` closes: depth counted, and
+// anything inside a string stepped over so a brace in a narrative cannot end
+// the document that quotes it. -1 when it never closes.
+function jsonEnd(text, start) {
+  let depth = 0;
+  let quoted = false;
+  for (let i = start; i < text.length; i++) {
+    const char = text[i];
+    if (quoted) {
+      if (char === "\\") i++;
+      else if (char === '"') quoted = false;
+    } else if (char === '"') {
+      quoted = true;
+    } else if (char === "[" || char === "{") {
+      depth++;
+    } else if (char === "]" || char === "}") {
+      if (--depth === 0) return i + 1;
+    }
+  }
+  return -1;
+}
+
+// What a record calls itself, in the order a catalogue tends to answer.
+const NAME_KEYS = ["name", "title", "label", "id"];
+
+// One row per record. A list folds to its entries; a lone object folds to
+// itself, so the same rule reads both.
+function docFold(value) {
+  const items = Array.isArray(value) ? value : [value];
+  const list = el("ul", "doc-list");
+  items.forEach((item, index) => list.appendChild(docItem(item, index)));
+  return list;
+}
+
+function docItem(item, index) {
+  const node = el("li", "doc-item");
+  const named = item !== null && typeof item === "object";
+  if (!named) {
+    // A plain value is already the whole record: there is nothing to open.
+    node.appendChild(el("div", "doc-plain", String(item)));
+    return node;
+  }
+
+  const name = el("button", "doc-name");
+  name.type = "button";
+  name.setAttribute("aria-expanded", "false");
+  name.appendChild(el("span", "doc-caret"));
+  name.appendChild(el("span", "doc-title", docTitle(item, index)));
+  node.appendChild(name);
+
+  const body = jsonPre(item);
+  body.hidden = true;
+  node.appendChild(body);
+  return node;
+}
+
+function docTitle(item, index) {
+  for (const key of NAME_KEYS) {
+    const value = item[key];
+    if (typeof value === "string" && value.trim()) return value;
+    if (typeof value === "number") return String(value);
+  }
+  return `#${index + 1}`;
 }
 
 // A message's content is a string on the way in, but comes back from the

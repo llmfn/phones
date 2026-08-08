@@ -409,6 +409,16 @@ export function bindEvents() {
       showSchema(schema);
       return;
     }
+    const text = e.target.closest(".text-toggle");
+    if (text) {
+      showLiteral(text);
+      return;
+    }
+    const record = e.target.closest(".doc-name");
+    if (record) {
+      showRecord(record);
+      return;
+    }
     const row = e.target.closest(".step-row");
     if (row) toggleStep(row);
   });
@@ -443,6 +453,31 @@ function showSchema(button) {
   json.hidden = raw;
   button.textContent = raw ? "json" : "types";
   button.title = raw ? "show the JSON Schema as sent" : "show the type view";
+}
+
+// The input block swaps between the folded document and the string as sent,
+// on the same terms as the schema's toggle: the button names the view it will
+// give you, never the one already on screen.
+function showLiteral(button) {
+  const input = button.closest(".detail-block").querySelector(".detail-input");
+  const folded = input.querySelector(".folded-text");
+  const literal = input.querySelector(":scope > .detail-text");
+  const raw = folded.hidden;
+  folded.hidden = !raw;
+  literal.hidden = raw;
+  button.textContent = raw ? "text" : "folded";
+  button.title = raw ? "show the input as sent" : "show the folded view";
+}
+
+// A folded record opens under the name that stands for it, and every other
+// record stays where it is: this is a list being read, not a step being
+// chosen, so there is nothing to be gained by closing the neighbours.
+function showRecord(button) {
+  const item = button.closest(".doc-item");
+  const open = !item.classList.contains("is-open");
+  item.classList.toggle("is-open", open);
+  button.setAttribute("aria-expanded", open ? "true" : "false");
+  item.querySelector("pre").hidden = !open;
 }
 
 function showPane(tab) {
