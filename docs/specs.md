@@ -331,8 +331,9 @@ an LLM; it replies with `message received` unless a layer assigns `app.chat`.
 
 ## Evals
 
-`evals.yml` sits beside `app.py` and contains a list of shopper queries and
-plain-language expectations:
+`evals.yml` sits at the repo root and contains a list of shopper queries and
+plain-language expectations. Every layer is measured against this one file, so
+the scores are comparable; the judge prompt is each app's own `prompts/eval.md`:
 
 ```yaml
 - query: a phone for video calls

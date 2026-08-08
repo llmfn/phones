@@ -29,8 +29,9 @@ def write_eval_files(tmp_path, queries=("a phone",)):
     (prompts / "eval.md").write_text("Judge this answer with yes or no.\n")
 
 
-def an_app(tmp_path, search):
+def an_app(monkeypatch, tmp_path, search):
     write_eval_files(tmp_path)
+    monkeypatch.setattr(evals, "CASES_PATH", tmp_path / "evals.yml")
     app = Application(__name__, session_root=tmp_path / "state")
     app.root_path = str(tmp_path)
     app.search = search
@@ -48,26 +49,30 @@ def stub_judge(monkeypatch, passed=True, reason="meets the expectation"):
     return seen
 
 
-def test_shipped_cases_live_beside_app_py():
-    app = type("App", (), {"root_path": str(ROOT)})()
+def test_shipped_cases_load_from_the_repo_root():
+    assert evals.CASES_PATH == ROOT / "evals.yml"
 
-    cases = evals.load_cases(app)
+    cases = evals.load_cases(None)
 
     assert len(cases) == 5
     assert all(case.query and case.expect for case in cases)
 
 
+def test_every_solution_can_read_the_judge_prompt():
+    for layer in sorted((ROOT / "solutions").glob("layer*")):
+        assert (layer / "prompts" / "eval.md").exists(), layer.name
+
+
 def test_unknown_key_in_a_case_fails_at_load(tmp_path):
     (tmp_path / "evals.yml").write_text("- query: a phone\n  expects: a typo\n")
-    app = type("App", (), {"root_path": str(tmp_path)})()
 
     with pytest.raises(Exception):
-        evals.load_cases(app)
+        evals.load_cases(None, tmp_path / "evals.yml")
 
 
 def test_judge_uses_the_app_prompt_and_answer(monkeypatch, tmp_path):
     seen = stub_judge(monkeypatch)
-    app = an_app(tmp_path, lambda q, f: a_response())
+    app = an_app(monkeypatch, tmp_path, lambda q, f: a_response())
     case = evals.Case(query="a foldable phone", expect="every result folds")
 
     evals.judge(app, case, a_response(count=2, summary="Two folding phones."))
@@ -98,7 +103,7 @@ def test_a_passing_case_keeps_the_search_trace(monkeypatch, tmp_path):
         return a_response()
 
     result = evals.run_case(
-        an_app(tmp_path, search),
+        an_app(monkeypatch, tmp_path, search),
         evals.Case(query="a phone", expect="one useful phone"),
     )
 
@@ -110,7 +115,7 @@ def test_a_passing_case_keeps_the_search_trace(monkeypatch, tmp_path):
 
 def test_empty_results_fail_without_asking_the_judge(monkeypatch, tmp_path):
     seen = stub_judge(monkeypatch)
-    app = an_app(tmp_path, lambda q, f: SearchResult(products=[]))
+    app = an_app(monkeypatch, tmp_path, lambda q, f: SearchResult(products=[]))
 
     result = evals.run_case(app, evals.Case(query="anything", expect="something"))
 
@@ -125,7 +130,7 @@ def test_pipeline_and_judge_failures_become_failed_results(monkeypatch, tmp_path
         raise ValueError("embeddings unavailable")
 
     pipeline = evals.run_case(
-        an_app(tmp_path, explode),
+        an_app(monkeypatch, tmp_path, explode),
         evals.Case(query="a phone", expect="phones"),
     )
     assert pipeline.passed is False
@@ -136,7 +141,7 @@ def test_pipeline_and_judge_failures_become_failed_results(monkeypatch, tmp_path
 
     monkeypatch.setattr(evals, "llmfn", broken_judge)
     judged = evals.run_case(
-        an_app(tmp_path, lambda q, f: a_response()),
+        an_app(monkeypatch, tmp_path, lambda q, f: a_response()),
         evals.Case(query="a phone", expect="phones"),
     )
     assert judged.passed is False
@@ -150,7 +155,7 @@ def test_cli_runs_in_order_and_reports_yes_or_no(monkeypatch, tmp_path, capsys):
         seen.append(query)
         return a_response()
 
-    app = an_app(tmp_path, search)
+    app = an_app(monkeypatch, tmp_path, search)
     write_eval_files(tmp_path, ("one", "two"))
     stub_judge(monkeypatch)
 
@@ -164,7 +169,7 @@ def test_cli_runs_in_order_and_reports_yes_or_no(monkeypatch, tmp_path, capsys):
 
 
 def test_cli_exits_nonzero_when_the_judge_says_no(monkeypatch, tmp_path, capsys):
-    app = an_app(tmp_path, lambda q, f: a_response())
+    app = an_app(monkeypatch, tmp_path, lambda q, f: a_response())
     stub_judge(monkeypatch, passed=False, reason="wrong phone")
 
     code = evals.run_evals(app)
@@ -173,9 +178,9 @@ def test_cli_exits_nonzero_when_the_judge_says_no(monkeypatch, tmp_path, capsys)
     assert "NO" in capsys.readouterr().out
 
 
-def test_evals_page_lists_cases_without_running_them(tmp_path):
+def test_evals_page_lists_cases_without_running_them(monkeypatch, tmp_path):
     calls = []
-    app = an_app(tmp_path, lambda q, f: calls.append(q) or a_response())
+    app = an_app(monkeypatch, tmp_path, lambda q, f: calls.append(q) or a_response())
 
     response = app.test_client().get("/evals")
     page = response.data.decode()
@@ -196,7 +201,7 @@ def test_eval_endpoint_runs_one_case_and_returns_its_trace(monkeypatch, tmp_path
             step.set_output({"results": 1})
         return a_response()
 
-    app = an_app(tmp_path, search)
+    app = an_app(monkeypatch, tmp_path, search)
     response = app.test_client().post("/api/evals/0")
     body = response.get_json()
 
@@ -208,8 +213,8 @@ def test_eval_endpoint_runs_one_case_and_returns_its_trace(monkeypatch, tmp_path
     assert "score" not in body
 
 
-def test_unknown_eval_index_returns_404(tmp_path):
-    app = an_app(tmp_path, lambda q, f: a_response())
+def test_unknown_eval_index_returns_404(monkeypatch, tmp_path):
+    app = an_app(monkeypatch, tmp_path, lambda q, f: a_response())
 
     response = app.test_client().post("/api/evals/9")
 
@@ -217,8 +222,8 @@ def test_unknown_eval_index_returns_404(tmp_path):
     assert response.get_json() == {"error": "unknown eval"}
 
 
-def test_home_page_links_to_evals(tmp_path):
-    app = an_app(tmp_path, lambda q, f: a_response())
+def test_home_page_links_to_evals(monkeypatch, tmp_path):
+    app = an_app(monkeypatch, tmp_path, lambda q, f: a_response())
 
     assert 'href="/evals">Evals</a>' in app.test_client().get("/").data.decode()
 
@@ -233,7 +238,7 @@ def test_eval_flag_runs_evals_instead_of_server(monkeypatch, tmp_path):
     monkeypatch.setattr(evals, "run_evals", fake_run_evals)
     monkeypatch.setattr("sys.argv", ["app.py", "--eval"])
 
-    app = an_app(tmp_path, lambda q, f: a_response())
+    app = an_app(monkeypatch, tmp_path, lambda q, f: a_response())
     with pytest.raises(SystemExit):
         app.run()
 
@@ -245,6 +250,6 @@ def test_bare_invocation_still_serves(monkeypatch, tmp_path):
     monkeypatch.setattr("flask.Flask.run", lambda self, *a, **k: served.setdefault("debug", k.get("debug")))
     monkeypatch.setattr("sys.argv", ["app.py"])
 
-    an_app(tmp_path, lambda q, f: a_response()).run()
+    an_app(monkeypatch, tmp_path, lambda q, f: a_response()).run()
 
     assert served["debug"] is True

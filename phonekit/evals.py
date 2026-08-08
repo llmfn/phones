@@ -1,4 +1,4 @@
-"""Run app-local query expectations through a simple yes/no judge."""
+"""Run the shared query expectations through a simple yes/no judge."""
 
 import json
 import time
@@ -11,6 +11,11 @@ from pydantic import BaseModel, ConfigDict, Field
 from .catalog import load_catalog
 from .llm import llmfn
 from .schema import SearchResult, TraceTurn
+
+# One case file for every layer: the same shopper queries run against whichever
+# app.py is being measured, which is what makes the scores comparable. Anchored
+# to the repo root so a solution's app.py finds it too.
+CASES_PATH = Path(__file__).resolve().parent.parent / "evals.yml"
 
 MAX_PRODUCTS = 5
 SPEC_FIELDS = (
@@ -67,8 +72,8 @@ class Result(BaseModel):
 
 
 def load_cases(app, path: Path | None = None) -> list[Case]:
-    """Read the evals.yml beside this app's app.py."""
-    path = path or Path(app.root_path) / "evals.yml"
+    """Read the evals.yml at the repo root, shared by every layer."""
+    path = path or CASES_PATH
     raw = yaml.safe_load(path.read_text()) or []
     if not isinstance(raw, list):
         raise RuntimeError(f"{path.name} must be a list of cases")
