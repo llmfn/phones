@@ -194,7 +194,7 @@ row loads that case's trace into the panel.
 │ Phones                       Playground  │ TRACE  copy as JSON  expand  │
 │                                          ├──────────────────────────────┤
 │ Can the app answer these shoppers?       │ search                      │
-│                         [ Run 20 evals ]  │ a phone for video calls      │
+│                            [ Run evals ]  │ a phone for video calls      │
 │                                          │                              │
 │ 01  samsung galaxy s24 fe          YES   │  semantic search      120 ms │
 │     The named phone leads.                │  llm call              800 ms│

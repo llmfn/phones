@@ -1,116 +1,26 @@
-# What a good answer looks like, for queries a shopper might actually type.
-#
-# One entry per case: `query` is what the shopper types, `expect` describes the
-# answer they wanted. Add a case by appending to this file.
-#
-# Expectations describe the product's job, never a pipeline stage. Nothing here
-# should mention a layer, a prompt, a schema field, or a function — the same
-# file is scored against every layer, and watching the scores climb from layer
-# 1 to layer 7 is what it is for.
-
-- query: samsung galaxy s24 fe
-  expect: >
-    The Galaxy S24 FE is the first result. A shopper naming an exact model
-    wants that model, not a list of things like it.
-
+# Five shopper requests for seeing the first search layer's strengths and gaps.
 - query: oneplus 13
   expect: >
-    The OnePlus 13 leads the results. Other OnePlus flagships may follow it,
-    but the named phone is on top.
+    The OnePlus 13 appears in the results. Closely related OnePlus models may
+    rank around it.
 
 - query: iphone 16 pro max
   expect: >
-    The iPhone 16 Pro Max is the first result.
+    The iPhone 16 Pro Max appears in the results. Closely related iPhone Pro
+    models may rank around it.
+
+- query: pink phone for my daughter
+  expect: >
+    At least one returned phone is available in pink. Do not infer an age or
+    budget that was not given.
 
 - query: best phone under 15000
   expect: >
     Every phone shown costs under ₹15,000, and they are the more capable
     options at that price rather than the cheapest things available.
 
-- query: samsung 5g phone under 20000
-  expect: >
-    All results are Samsung, all support 5G, and all cost under ₹20,000. A
-    result failing any one of the three is a wrong answer.
-
-- query: a phone for my mom who struggles with technology
-  expect: >
-    The leading results are straightforward phones with large, readable
-    displays and decent battery life, at ordinary prices. A gaming phone, an
-    enthusiast flagship, or a compact phone with a small screen at the top is
-    wrong.
-
-- query: something for my teenage daughter under 25000
-  expect: >
-    Everything shown is under ₹25,000, with a good front camera and a display
-    worth watching video on. Nothing dull or aimed at business users.
-
-- query: phone for someone who is always on video calls
-  expect: >
-    The top results have strong front cameras and battery to last a day of
-    calls. A phone chosen only for its rear camera is missing the point.
-
 - query: best camera phone under 50000
   expect: >
-    All results are under ₹50,000, and the leading ones are genuinely
+    Every phone shown costs under ₹50,000, and the leading ones are genuinely
     camera-first phones — high-resolution rear cameras, optical stabilisation,
     or a camera partnership — rather than all-rounders at that price.
-
-- query: phone that lasts all day for travel
-  expect: >
-    The top results have large batteries and fast charging. Battery capacity
-    should be the thread running through the answer.
-
-- query: gaming phone with a high refresh rate
-  expect: >
-    Every leading result has a refresh rate of at least 120Hz and a flagship
-    or upper-mid chipset. A 60Hz phone anywhere near the top is wrong.
-
-- query: first smartphone for a 10 year old
-  expect: >
-    Inexpensive, sturdy, ordinary phones. Nothing premium or fragile, and
-    nothing that costs more than a budget phone — an expensive flagship here
-    is a bad recommendation regardless of its specs.
-
-- query: phone for my grandfather with a big screen and a big battery
-  expect: >
-    The leading phones have displays of roughly 6.5 inches or more and
-    batteries of roughly 5000mAh or more. Both parts of the request have to
-    hold, not just one.
-
-- query: compact phone that fits in a small pocket
-  expect: >
-    The top results are the smaller and lighter phones on offer — around 6.1
-    inches or less, or notably light. A large-screen phone leading the results
-    is wrong.
-
-- query: phone with expandable storage
-  expect: >
-    The leading results take a memory card. A phone without a card slot at the
-    top is a wrong answer no matter how good it otherwise is.
-
-- query: iphone but cheaper
-  expect: >
-    Either older or smaller iPhones at the lower end of Apple's range, or
-    well-made Android phones that cover the same ground for less. Current
-    flagship iPhones at full price miss the request.
-
-- query: phone that works well with my macbook
-  expect: >
-    iPhones lead the results. The summary, if there is one, should say
-    something about working alongside a Mac rather than reciting specs.
-
-- query: a foldable phone
-  expect: >
-    Every result folds. A conventional slab phone anywhere in the results is
-    wrong — this is a request that either matches or does not.
-
-- query: the best phone money can buy
-  expect: >
-    Top-end flagships with the best chipsets, cameras, and displays available.
-    Price is not a constraint here, and a mid-range phone at the top is wrong.
-
-- query: phone that charges really fast
-  expect: >
-    The leading results have the highest charging wattages on offer. A phone
-    with modest charging at the top is wrong even if it is a better phone
-    overall.

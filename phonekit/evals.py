@@ -87,6 +87,7 @@ def evidence_for(response: SearchResult) -> dict:
                 "name": product.name,
                 "brand": product.brand,
                 "price_inr": product.price,
+                "colors": [color.name for color in product.colors],
                 "specs": {key: value for key, value in specs.items() if key in SPEC_FIELDS},
             }
         )

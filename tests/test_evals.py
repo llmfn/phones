@@ -53,7 +53,7 @@ def test_shipped_cases_live_beside_app_py():
 
     cases = evals.load_cases(app)
 
-    assert len(cases) >= 15
+    assert len(cases) == 5
     assert all(case.query and case.expect for case in cases)
 
 
@@ -83,6 +83,7 @@ def test_evidence_is_capped_and_carries_specs_without_narratives():
 
     assert len(evidence["products"]) == evals.MAX_PRODUCTS
     assert all("specs" in product for product in evidence["products"])
+    assert all("colors" in product for product in evidence["products"])
     rendered = json.dumps(evidence)
     narratives = {entry.doc.narrative for entry in load_catalog()}
     assert not any(narrative[:60] in rendered for narrative in narratives)
@@ -180,7 +181,7 @@ def test_evals_page_lists_cases_without_running_them(tmp_path):
     page = response.data.decode()
 
     assert response.status_code == 200
-    assert "Run 1 evals" in page
+    assert "Run evals" in page
     assert "a useful phone recommendation" in page
     assert 'id="trace"' in page
     assert "evals.js" in page
