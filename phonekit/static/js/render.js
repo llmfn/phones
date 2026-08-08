@@ -795,27 +795,27 @@ function rankedChart(ranked, colors) {
 // Semantic search: the cosine ranking as a bar chart. The bars run against the
 // full 0..1 cosine scale rather than the top candidate, so a best match of
 // 0.36 reads as the weak match it is instead of filling the track the way 0.75
-// would. The dashed line is the minimum score the engine kept, so the
-// candidates dimmed below it are the ones this step dropped -- present,
-// because seeing what just missed is the point of showing the ranking at all.
-const COSINE_TICKS = [0, 0.25, 0.5, 0.75, 1];
-
+// would. The dashed line is the minimum score the engine kept, and it is drawn
+// only when something actually fell below it -- a cutoff nothing hit is a mark
+// the reader has to decode for no reason.
 function semanticBody(step) {
   const candidates = step.output?.shown_scores;
   if (!Array.isArray(candidates) || !candidates.length) return fallbackBody(step);
 
   const minScore = Number(step.input?.min_score ?? 0);
+  const scores = candidates.map((candidate) => Number(candidate.cosine) || 0);
+  const dropped = minScore > 0 && scores.some((score) => score < minScore);
 
   const node = el("div", "detail-body");
   node.appendChild(block("query as sent", el("div", "detail-text", step.input?.query ?? "")));
 
   const chart = el("ol", "cand-chart");
-  for (const candidate of candidates) {
-    const score = Number(candidate.cosine) || 0;
-    const row = el("li", `cand-row${score < minScore ? " is-below" : ""}`);
+  candidates.forEach((candidate, index) => {
+    const score = scores[index];
+    const row = el("li", `cand-row${dropped && score < minScore ? " is-below" : ""}`);
     row.appendChild(el("span", "cand-name", candidate.name ?? candidate.id ?? ""));
-    const track = el("span", "cand-track");
-    if (minScore > 0) track.style.setProperty("--cutoff", `${minScore * 100}%`);
+    const track = el("span", `cand-track${dropped ? " has-cutoff" : ""}`);
+    if (dropped) track.style.setProperty("--cutoff", `${minScore * 100}%`);
     const bar = el("span", "cand-bar");
     // Negative cosines exist in principle; the scale starts at 0, so clamp.
     bar.style.width = `${Math.max(0, Math.min(1, score)) * 100}%`;
@@ -823,30 +823,13 @@ function semanticBody(step) {
     row.appendChild(track);
     row.appendChild(el("span", "cand-score", score.toFixed(3)));
     chart.appendChild(row);
-  }
-  chart.appendChild(cosineAxis());
+  });
   node.appendChild(block("cosine ranking", chart));
-  if (minScore > 0) {
-    node.appendChild(el("div", "cand-legend", `bars run 0 to 1 on the cosine scale · dashed line: min score ${minScore} — dimmed candidates were dropped`));
+  if (dropped) {
+    const legend = `dimmed candidates scored below the dashed line — min score ${minScore} — and were dropped`;
+    node.appendChild(el("div", "cand-legend", legend));
   }
   return { node, consumed: ["query", "shown_scores"] };
-}
-
-// The ruler under the chart: without it a 0..1 scale is just short bars, and
-// the reader has no way to see where a score sits between "unrelated" and
-// "identical".
-function cosineAxis() {
-  const row = el("li", "cand-row cand-axis");
-  row.appendChild(el("span"));
-  const track = el("span", "cand-scale");
-  for (const tick of COSINE_TICKS) {
-    const mark = el("span", "cand-tick", String(tick));
-    mark.style.left = `${tick * 100}%`;
-    track.appendChild(mark);
-  }
-  row.appendChild(track);
-  row.appendChild(el("span"));
-  return row;
 }
 
 // An LLM call by role, never as one JSON blob: what the model was told, what

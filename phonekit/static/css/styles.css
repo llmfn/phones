@@ -1792,43 +1792,20 @@ button {
 }
 
 /* The cutoff repeats on every track rather than crossing the chart as one
-   element, so it lines up with the bars whatever the rail's width. */
-.cand-track::after {
+   element, so it lines up with the bars whatever the rail's width. It is drawn
+   only for a chart that dropped something -- hence the class, not a default
+   value for --cutoff, which would put stray dashes at 0 on every other chart. */
+.cand-track.has-cutoff::after {
   content: "";
   position: absolute;
   top: -2px;
   bottom: -2px;
-  left: var(--cutoff, -1px);
+  left: var(--cutoff);
   border-left: 1px dashed var(--trace-muted);
 }
 
 .cand-score {
   color: var(--trace-num);
-}
-
-/* The 0..1 ruler under the bars. Ticks are centred on their position, and the
-   two ends pull inwards so "0" and "1" stay inside the track. */
-.cand-scale {
-  position: relative;
-  height: 12px;
-  margin-top: 2px;
-  border-top: 1px solid var(--trace-row);
-}
-
-.cand-tick {
-  position: absolute;
-  top: 1px;
-  transform: translateX(-50%);
-  font-size: 9px;
-  color: var(--trace-muted);
-}
-
-.cand-tick:first-child {
-  transform: none;
-}
-
-.cand-tick:last-child {
-  transform: translateX(-100%);
 }
 
 .cand-row.is-below {
