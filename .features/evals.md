@@ -87,6 +87,17 @@ way `catalog.py` resolves `data/phones/`. The prompt stays outside phonekit
 because phonekit holds no prompts, and because a judge you cannot read is a
 judge you cannot trust — reading it is part of the lesson.
 
+### The file stays small
+
+The eval file will not grow past about 50 cases. It is a hand-written set that
+has to stay readable and cheap enough to run on every prompt change, not a
+corpus.
+
+Worth knowing because it settles questions that would otherwise need designing
+around: one layer-4 case's trace is ~16KB, so holding every case's trace costs
+under a megabyte, and a run costs a couple of minutes at worst. Neither needs
+sampling, paging, or a store.
+
 ### Non-goals for this version
 
 Single-query only: each case runs one query through the layer's `search`. It
