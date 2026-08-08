@@ -161,7 +161,8 @@ class Application(Flask):
         """CLI when invoked with a flag, the dev server otherwise.
 
         ``uv run app.py --check`` verifies setup, ``--eval`` checks this layer
-        against ``evals.yml``, and bare ``uv run app.py`` serves it.
+        against ``evals.yml``, and bare ``uv run app.py`` serves it --
+        ``--port 5001`` moves it off the default port.
 
         Dispatching on argv here rather than from a separate runner script is
         what lets any layer be measured by invoking it -- the app is already
@@ -183,8 +184,27 @@ class Application(Flask):
             from .evals import run_evals
 
             raise SystemExit(run_evals(self))
+        port = _port_from_argv(sys.argv[1:])
+        if port is not None:
+            # Typed at the prompt, so it outranks anything the layer passed.
+            kwargs["port"] = port
         kwargs.setdefault("debug", True)
         super().run(*args, **kwargs)
+
+
+def _port_from_argv(args: list[str]) -> int | None:
+    """The port from ``--port 5001`` or ``--port=5001``, if either was given."""
+    for index, arg in enumerate(args):
+        if arg.startswith("--port="):
+            value = arg.split("=", 1)[1]
+        elif arg == "--port":
+            value = args[index + 1] if index + 1 < len(args) else ""
+        else:
+            continue
+        if not value.isdigit():
+            raise SystemExit(f"--port needs a port number, got {value!r}")
+        return int(value)
+    return None
 
 
 class BaseMethodView(MethodView):
