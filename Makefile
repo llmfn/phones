@@ -3,6 +3,10 @@
 run:
 	uv run python app.py
 
+.PHONY: check
+check:
+	uv run python app.py --check
+
 .PHONY: eval
 eval:
 	uv run python app.py --eval

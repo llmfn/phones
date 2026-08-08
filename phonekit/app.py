@@ -156,8 +156,8 @@ class Application(Flask):
     def run(self, *args, **kwargs):
         """CLI when invoked with a flag, the dev server otherwise.
 
-        ``uv run app.py --eval`` scores this layer against ``evals/evals.yaml``
-        and exits with the result; bare ``uv run app.py`` serves this layer.
+        ``uv run app.py --check`` verifies setup, ``--eval`` scores this layer
+        against ``evals/evals.yaml``, and bare ``uv run app.py`` serves it.
 
         Dispatching on argv here rather than from a separate runner script is
         what lets any layer be measured by invoking it -- the app is already
@@ -165,6 +165,16 @@ class Application(Flask):
         inside a module and assemble one. ``evals`` is imported lazily because
         the server path has no use for it.
         """
+        if "--check" in sys.argv[1:]:
+            from .config import check_settings
+
+            try:
+                check_settings()
+            except RuntimeError as exc:
+                print(f"Setup check failed: {exc}", file=sys.stderr)
+                raise SystemExit(1) from None
+            print("Setup check passed: settings.py exists and OPENAI_API_KEY is set.")
+            raise SystemExit(0)
         if "--eval" in sys.argv[1:]:
             from .evals import run_evals
 
