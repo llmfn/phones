@@ -11,7 +11,7 @@ not apply filters or limit the number of results. An empty query returns the
 full catalogue so a filter-only search still works.
 
 ```python
-from phonekit import SearchResult, search_bm25, search_semantic
+from phonekit import SearchResult, rerank_by_persona, search_bm25, search_semantic
 ```
 
 ### `search_bm25`
@@ -75,6 +75,25 @@ def search(query, filters) -> SearchResult:
 
 Call `apply_filters` after searching so the search engine can rank the full
 catalogue before products are removed.
+
+### `rerank_by_persona`
+
+```python
+rerank_by_persona(products: list[Product], persona: str | None) -> list[Product]
+```
+
+Moves phones whose catalogue persona signals match `persona` ahead of the other
+results. This is a soft re-rank rather than a filter: all products remain, and
+their existing order is preserved within the matching and non-matching groups.
+Passing `None` returns the ranking unchanged.
+
+```python
+products = search_semantic(rewrite.query)
+products = rerank_by_persona(products, rewrite.persona)
+return apply_filters(products, filters)
+```
+
+Call it after search and before `apply_filters`.
 
 ## LLM Call
 
