@@ -487,7 +487,9 @@ function stepRow(step) {
   row.appendChild(el("span", "step-label", step.label || step.name || "step"));
   // Success is carried by the row's stripe alone; anything else says so.
   if (status !== "success") row.appendChild(el("span", "step-status", status));
-  row.appendChild(el("span", "latency", `${step.latency_ms ?? 0} ms`));
+  const summary = STEP_SUMMARIES[step.name]?.(step);
+  if (summary) row.appendChild(el("span", "step-summary", summary));
+  else row.appendChild(el("span", "latency", `${step.latency_ms ?? 0} ms`));
   row.appendChild(el("span", "step-caret"));
   item.appendChild(row);
   item.appendChild(stepDetail(step));
@@ -621,6 +623,20 @@ const STEP_BODIES = {
   search_bm25: bm25Body,
   search_semantic: semanticBody,
   llmfn: llmBody,
+  apply_filters: filtersBody,
+};
+
+// A step whose headline is a number rather than a duration says so on its
+// closed row, in the slot the duration would have taken. Filtering is the case
+// that needs it: it runs in a millisecond and can still delete most of the
+// results, so the time it took is the least interesting thing about it and
+// "94 → 5" is a reason to open the row rather than something found inside.
+const STEP_SUMMARIES = {
+  apply_filters: (step) => {
+    const before = step.input?.in;
+    const after = step.output?.kept;
+    return typeof before === "number" && typeof after === "number" ? `${before} → ${after}` : null;
+  },
 };
 
 function stepDetail(step) {
@@ -830,6 +846,74 @@ function semanticBody(step) {
     node.appendChild(el("div", "cand-legend", legend));
   }
   return { node, consumed: ["query", "shown_scores"] };
+}
+
+// One colour per band, kept first. Kept borrows the step bar's colour because
+// it is the same claim the rest of the panel makes with it -- this is the part
+// that went on -- and the cutting filters take the palette after it.
+const FILTER_COLORS = ["var(--trace-step-bar)", "var(--trace-num)", "var(--trace-str)", "var(--trace-bool)"];
+
+// Filtering as one bar the width of what came in, divided into what survived
+// and what each filter took. Counts alone let the eye slide over the drop that
+// matters: "kept 5, colors -89" is two numbers to compare, while a bar that is
+// almost entirely one colour is the answer before it is read.
+function filtersBody(step) {
+  const removed = step.output?.removed;
+  const kept = step.output?.kept;
+  if (!removed || typeof kept !== "number") return fallbackBody(step);
+
+  const node = el("div", "detail-body");
+  const applied = appliedFilters(step.input?.filters);
+  if (applied) node.appendChild(block("filters applied", applied));
+
+  // Heaviest cut first, so the bar runs from what survived to what took the
+  // most, and the legend reads in the order the bar is drawn.
+  const cuts = Object.entries(removed).sort((a, b) => b[1] - a[1]);
+  const bands = [["kept", kept], ...cuts].map(([name, count], index) => ({
+    name,
+    count,
+    color: FILTER_COLORS[index % FILTER_COLORS.length],
+  }));
+  const total = bands.reduce((sum, band) => sum + band.count, 0);
+
+  const bar = el("div", "filter-bar");
+  const legend = el("dl", "filter-legend");
+  for (const band of bands) {
+    const segment = el("span", "filter-band");
+    segment.style.width = `${total ? (band.count / total) * 100 : 0}%`;
+    segment.style.background = band.color;
+    bar.appendChild(segment);
+
+    const term = el("dt");
+    const dot = el("span", "filter-swatch");
+    dot.style.background = band.color;
+    term.append(dot, el("span", null, band.name));
+    legend.append(term, el("dd", null, band.name === "kept" ? `${band.count}` : `−${band.count}`));
+  }
+
+  const survived = el("div", "filter-survived");
+  survived.append(bar, legend);
+  node.appendChild(block("what survived", survived));
+  return { node, consumed: ["in", "filters", "kept", "removed"] };
+}
+
+// Only the dimensions actually set. An empty brand list is not a filter, and
+// listing it as one would put three rows under a heading where one thing
+// happened -- and invite the reader to blame a filter that never ran.
+function appliedFilters(filters) {
+  if (!filters || typeof filters !== "object") return null;
+  const list = el("dl", "filter-applied");
+  for (const [name, value] of Object.entries(filters)) {
+    const text = filterValue(value);
+    if (text) list.append(el("dt", null, name), el("dd", null, text));
+  }
+  return list.children.length ? list : null;
+}
+
+function filterValue(value) {
+  if (Array.isArray(value)) return value.join(", ");
+  if (value && typeof value === "object") return `${rupees(value.min)} – ${rupees(value.max)}`;
+  return value == null ? "" : String(value);
 }
 
 // An LLM call by role, never as one JSON blob: what the model was told, what

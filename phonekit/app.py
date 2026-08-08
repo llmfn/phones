@@ -274,39 +274,57 @@ def apply_filters(products: list[Product], filters: Filters | None) -> Recommend
     filters)``.
     """
     filters = filters or Filters()
-    survivors = [
-        survivor
-        for product in products
-        if (survivor := _filter_product(product, filters)) is not None
-    ]
+    if not (filters.brands or filters.colors or filters.price):
+        # Nothing to apply, and so nothing worth a row: a step reporting that it
+        # let everything through is one the reader has to open to find out it
+        # wasted the trip. The facets are still owed to the caller.
+        return RecommendResponse(products=products, facets=_compute_facets(products))
+
+    step_input = {"in": len(products), "filters": filters.model_dump()}
+    with trace.new_step(name="apply_filters", input=step_input) as step:
+        survivors: list[Product] = []
+        removed: dict[str, int] = {}
+        for product in products:
+            survivor, cut = _filter_product(product, filters)
+            if survivor is None:
+                # One product, one cause. ``_filter_product`` stops at the first
+                # dimension that excludes it, so a phone that is both the wrong
+                # brand and too expensive is counted under brand alone -- which
+                # is what makes these counts and the survivors add up to the
+                # input. Counting every reason would total more than went in.
+                removed[cut] = removed.get(cut, 0) + 1
+            else:
+                survivors.append(survivor)
+        step.set_output({"kept": len(survivors), "removed": removed})
     return RecommendResponse(products=survivors, facets=_compute_facets(survivors))
 
 
-def _filter_product(product: Product, filters: Filters) -> Product | None:
-    """The product with only its surviving options, or None if excluded.
+def _filter_product(product: Product, filters: Filters) -> tuple[Product | None, str | None]:
+    """The product with only its surviving options, and the filter that cut it.
 
-    Brand is a parent property; colour matches against each option's family
-    and price against each storage tier's price. A product is excluded when
-    any active filter eliminates all options in its dimension. When options
-    were trimmed, the card's lead fields are re-derived from the first
-    survivors.
+    Exactly one half is set: a survivor and no cut, or no survivor and the name
+    of the first dimension that excluded it. Brand is a parent property; colour
+    matches against each option's family and price against each storage tier's
+    price. A product is excluded when any active filter eliminates all options
+    in its dimension. When options were trimmed, the card's lead fields are
+    re-derived from the first survivors.
     """
     if filters.brands and product.brand not in set(filters.brands):
-        return None
+        return None, "brands"
     colors = product.colors
     if filters.colors:
         wanted = set(filters.colors)
         colors = [c for c in colors if c.family in wanted]
         if not colors:
-            return None
+            return None, "colors"
     storage_options = product.storage_options
     if filters.price is not None:
         lo, hi = filters.price.min, filters.price.max
         storage_options = [s for s in storage_options if lo <= s.price <= hi]
         if not storage_options:
-            return None
+            return None, "price"
     if colors is product.colors and storage_options is product.storage_options:
-        return product
+        return product, None
     lead_color, lead_storage = colors[0], storage_options[0]
     return product.model_copy(
         update={
@@ -321,7 +339,7 @@ def _filter_product(product: Product, filters: Filters) -> Product | None:
             "colors": colors,
             "storage_options": storage_options,
         }
-    )
+    ), None
 
 
 def _compute_facets(products: list[Product]) -> list[Facet]:

@@ -1282,6 +1282,16 @@ button {
   flex: none;
 }
 
+/* The count a step leads with, in the slot its duration would have used. It
+   carries the reading colour rather than the muted one a duration gets: this
+   is the number the row is about. */
+.step-summary {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--trace-num);
+}
+
 /* ---- the frame ---- */
 
 /* One step is open at a time, and while it is, its turn holds still: the head
@@ -1817,6 +1827,74 @@ button {
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--trace-muted);
+}
+
+/* ---- filtering ---- */
+
+/* The filters as they were passed, without the rule .attr-list carries: this
+   list opens a block rather than closing one. */
+.filter-applied {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--space-3);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.filter-applied dt {
+  color: var(--trace-muted);
+}
+
+.filter-applied dd {
+  margin: 0;
+  color: var(--trace-num);
+  overflow-wrap: anywhere;
+}
+
+/* One track the width of what came in. The bands are laid end to end and sized
+   as their share of it, so the bar needs no scale and no axis -- it is the
+   input, cut up. A band can round to nothing on screen when a filter took one
+   product out of a hundred; the legend is where the exact counts live. */
+.filter-bar {
+  display: flex;
+  height: 10px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--trace-border);
+}
+
+.filter-band {
+  min-width: 1px;
+}
+
+.filter-legend {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px var(--space-3);
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.filter-legend dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--trace-fg);
+}
+
+.filter-legend dd {
+  margin: 0;
+  text-align: right;
+  color: var(--trace-num);
+}
+
+.filter-swatch {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 2px;
 }
 
 .step-detail pre {
