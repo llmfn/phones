@@ -657,9 +657,11 @@ function tab(name, active) {
   return button;
 }
 
-function block(label, node) {
+function block(label, node, aside) {
   const wrap = el("div", "detail-block");
-  wrap.appendChild(el("div", "io-label", label));
+  const head = el("div", `io-label${aside ? " has-aside" : ""}`, label);
+  if (aside) head.appendChild(aside);
+  wrap.appendChild(head);
   wrap.appendChild(node);
   return wrap;
 }
@@ -873,7 +875,7 @@ function llmBody(step) {
   // answered with: optional fields, and the descriptions the layer wrote to
   // steer each one, are only visible here.
   if (request.text_format) {
-    node.appendChild(block("schema asked for", jsonPre(request.text_format)));
+    node.appendChild(schemaBlock(request.text_format));
   }
 
   // Structured output: the object the schema produced, which is what the
@@ -910,6 +912,134 @@ function parsedFields(parsed) {
     node.appendChild(field);
   }
   return node;
+}
+
+// The schema as a type signature, not as the JSON Schema document the provider
+// received. That document spends most of its lines on `title` keys generated
+// from the field names and on `$defs` indirection, neither of which a reader
+// can act on; what is left -- the name, the type, whether it may be null, and
+// the description the layer wrote to steer the field -- is the whole of what
+// this block is for. The JSON stays one click away for the rest.
+function schemaBlock(schema) {
+  const tree = schemaFields(schema, schema?.$defs ?? {}, [], 0);
+  if (!tree) return block("schema", jsonPre(schema));
+
+  // The schema's own description -- the model's docstring -- says what the
+  // whole shape is for, which is a thing no single field says: "optionally
+  // influenced by remembered preferences" is the only place a layer states
+  // that its plan is allowed to lean on memory.
+  const types = el("div", "schema-types");
+  if (schema.description) types.appendChild(el("div", "schema-about", schema.description));
+  types.appendChild(tree);
+
+  const json = jsonPre(schema);
+  json.hidden = true;
+  const view = el("div", "schema-view");
+  view.append(types, json);
+
+  const toggle = el("button", "schema-toggle", "json");
+  toggle.type = "button";
+  toggle.title = "show the JSON Schema as sent";
+  return block("schema", view, toggle);
+}
+
+// A nested model is expanded where it is used rather than named and defined
+// elsewhere: `filters: Filters` is a dead end unless the reader can see what
+// Filters holds without going to look for it. The depth cap and the trail of
+// already-expanded definitions are what keep a self-referencing schema from
+// expanding forever.
+const SCHEMA_MAX_DEPTH = 4;
+
+function schemaFields(node, defs, seen, depth) {
+  const properties = node?.properties;
+  if (!properties || typeof properties !== "object") return null;
+
+  const list = el("ul", depth ? "schema-nest" : "schema-tree");
+  for (const [name, field] of Object.entries(properties)) {
+    const item = el("li", "schema-field");
+    const head = el("div", "schema-head");
+    head.appendChild(el("span", "schema-name", name));
+    head.appendChild(el("span", "schema-type", typeLabel(field, defs)));
+    item.appendChild(head);
+
+    // Full text, on its own line: these descriptions carry their point in the
+    // tail -- "empty means all brands", "prefix avoided brands with 'not:'" --
+    // so clipping the end would cut the half the field name cannot imply.
+    if (field?.description) item.appendChild(el("div", "schema-desc", field.description));
+
+    const nested = depth < SCHEMA_MAX_DEPTH ? expansion(field, defs, seen) : null;
+    if (nested) {
+      // A nested model's docstring, when it says something the field that
+      // holds it did not already say.
+      const about = nested.def.description;
+      if (about && about !== field?.description) item.appendChild(el("div", "schema-about", about));
+      const child = schemaFields(nested.def, defs, [...seen, nested.name], depth + 1);
+      if (child) item.appendChild(child);
+    }
+    list.appendChild(item);
+  }
+  return list;
+}
+
+// A field's type as it would be written down. `?` means nullable and nothing
+// else: a field absent from `required` is a weaker claim than it looks, since
+// strict structured output requires every field regardless, and marking
+// `list[str] = []` as optional would suggest the model may answer with null
+// when the schema never allows it.
+function typeLabel(node, defs) {
+  if (!node || typeof node !== "object") return "any";
+  const { node: inner, nullable } = withoutNull(node);
+  const base = baseType(inner, defs);
+  return nullable ? `${group(base)}?` : base;
+}
+
+// A union has to be bracketed before `?` or `[]` can hang off it, or
+// `string | int?` reads as a union whose second branch is the optional one.
+function group(label) {
+  return label.includes(" | ") ? `(${label})` : label;
+}
+
+const SCALARS = { string: "string", integer: "int", number: "number", boolean: "bool", null: "null" };
+
+function baseType(node, defs) {
+  const ref = refName(node);
+  if (ref) return ref;
+  if (node.const !== undefined) return JSON.stringify(node.const);
+  if (Array.isArray(node.enum)) return node.enum.map((value) => JSON.stringify(value)).join(" | ");
+  if (Array.isArray(node.anyOf)) return node.anyOf.map((one) => typeLabel(one, defs)).join(" | ");
+  if (node.type === "array") return `${group(typeLabel(node.items, defs))}[]`;
+  if (node.type === "object") return "object";
+  return SCALARS[node.type] ?? "any";
+}
+
+// `str | None` reaches the panel as a two-branch anyOf holding a null, which
+// is a spelling of nullable rather than a union worth reading as one.
+function withoutNull(node) {
+  if (!Array.isArray(node.anyOf)) return { node, nullable: false };
+  const branches = node.anyOf.filter((one) => one?.type !== "null");
+  const nullable = branches.length !== node.anyOf.length;
+  if (branches.length === 1) return { node: branches[0], nullable };
+  return { node: { ...node, anyOf: branches }, nullable };
+}
+
+function refName(node) {
+  const ref = node?.$ref;
+  return typeof ref === "string" && ref.startsWith("#/$defs/") ? ref.slice(8) : null;
+}
+
+// What to expand under a field, if anything: the model it refers to, or the
+// model its items refer to, and neither if that model is already open further
+// up this branch.
+function expansion(field, defs, seen) {
+  const { node } = withoutNull(field ?? {});
+  return target(node, defs, seen) ?? target(withoutNull(node.items ?? {}).node, defs, seen);
+}
+
+function target(node, defs, seen) {
+  const name = refName(node);
+  if (!name) return null;
+  if (seen.includes(name)) return null;
+  return defs[name]?.properties ? { def: defs[name], name } : null;
 }
 
 // The literal instructions, with the ranges the step marked wrapped and every

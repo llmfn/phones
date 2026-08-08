@@ -404,6 +404,11 @@ export function bindEvents() {
       showPane(tab);
       return;
     }
+    const schema = e.target.closest(".schema-toggle");
+    if (schema) {
+      showSchema(schema);
+      return;
+    }
     const row = e.target.closest(".step-row");
     if (row) toggleStep(row);
   });
@@ -426,6 +431,18 @@ export function bindEvents() {
 function toggleStep(row) {
   if (row.closest(".step-item").classList.contains("is-open")) closeStep();
   else openStep(row);
+}
+
+// The schema block swaps between the type view and the JSON Schema the
+// provider was sent. The button names the view it will give you, never the one
+// already on screen.
+function showSchema(button) {
+  const [tree, json] = button.closest(".detail-block").querySelector(".schema-view").children;
+  const raw = tree.hidden;
+  tree.hidden = !raw;
+  json.hidden = raw;
+  button.textContent = raw ? "json" : "types";
+  button.title = raw ? "show the JSON Schema as sent" : "show the type view";
 }
 
 function showPane(tab) {
