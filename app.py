@@ -4,14 +4,15 @@ This is the phone recommender application used in teaching the llmfn course.
 
 Your goal is to build this llm-powered application layer by layer.
 
-Layer 1 of Phone recommender with search functionalitiy. 
+See README.md for instructions and docs/phonekit.md for docs.
 """
 
 from phonekit import Application, SearchResult
 
-
 def search(q, filters):
-    return SearchResult(products=[])
+    # FIXME
+    products = []
+    return SearchResult(products=products)
 
 app = Application()
 app.search = search
