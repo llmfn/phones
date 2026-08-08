@@ -6,12 +6,12 @@ import pytest
 from phonekit import evals, memory
 from phonekit.app import Application
 from phonekit.catalog import load_catalog
-from phonekit.schema import Product, RecommendResponse
+from phonekit.schema import Product, SearchResult
 
 
 def a_response(count=1, summary=None):
     entries = load_catalog()[:count]
-    return RecommendResponse(
+    return SearchResult(
         products=[Product.from_entry(entry) for entry in entries],
         summary=summary,
     )
@@ -95,7 +95,7 @@ def test_judge_is_sent_the_query_expectation_and_answer(monkeypatch):
 
 def test_empty_results_score_zero_without_asking_the_judge(monkeypatch):
     seen = stub_judge(monkeypatch)
-    app = an_app(lambda q, f: RecommendResponse(products=[]))
+    app = an_app(lambda q, f: SearchResult(products=[]))
 
     result = evals.run_case(app, evals.Case(query="anything", expect="something"))
 

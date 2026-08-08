@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from phonekit.schema import Filters, RecommendResponse
+from phonekit.schema import Filters, SearchResult
 from phonekit.session import DEFAULT_SESSION_ROOT, Session
 
 
@@ -19,7 +19,7 @@ def read_json(path):
 
 def test_new_session_writes_search_results_and_summary_conversation(tmp_path):
     Session.configure_root(tmp_path)
-    response = RecommendResponse(products=[], summary="Here are the best options.")
+    response = SearchResult(products=[], summary="Here are the best options.")
 
     session = Session.new("small phone", Filters(brands=["Apple"]), response)
 
@@ -43,7 +43,7 @@ def test_new_session_writes_search_results_and_summary_conversation(tmp_path):
 def test_new_session_writes_empty_conversation_without_summary(tmp_path):
     Session.configure_root(tmp_path)
 
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     conversation = read_json(session.path / "conversation.json")
     assert conversation == {"session_id": session.session_id, "messages": []}
@@ -51,7 +51,7 @@ def test_new_session_writes_empty_conversation_without_summary(tmp_path):
 
 def test_load_returns_existing_session_and_add_message_appends(tmp_path):
     Session.configure_root(tmp_path)
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     loaded = Session.load(session.session_id)
     loaded.add_message("I prefer compact phones")
@@ -66,7 +66,7 @@ def test_load_returns_existing_session_and_add_message_appends(tmp_path):
 
 def test_get_messages_returns_openai_style_conversation(tmp_path):
     Session.configure_root(tmp_path)
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[], summary="Start here."))
+    session = Session.new("small phone", Filters(), SearchResult(products=[], summary="Start here."))
 
     session.add_message("I prefer compact phones")
     session.add_message("Try the Pixel 8a.", role="assistant")
@@ -91,7 +91,7 @@ def test_load_rejects_missing_or_invalid_session(tmp_path):
 
 def test_add_message_rejects_invalid_role(tmp_path):
     Session.configure_root(tmp_path)
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     with pytest.raises(ValueError, match="role must be"):
         session.add_message("hello", role="system")

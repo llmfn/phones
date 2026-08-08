@@ -12,7 +12,7 @@ import uuid
 from pathlib import Path
 from typing import Any, ClassVar, Literal, TypedDict
 
-from .schema import Filters, RecommendResponse
+from .schema import Filters, SearchResult
 
 DEFAULT_SESSION_ROOT = Path(__file__).parent.parent / "data" / "state"
 ChatRole = Literal["user", "assistant"]
@@ -41,7 +41,7 @@ class Session:
         cls.root = Path(root)
 
     @classmethod
-    def new(cls, query: str, filters: Filters, response: RecommendResponse) -> "Session":
+    def new(cls, query: str, filters: Filters, response: SearchResult) -> "Session":
         """Create a new persisted search session from a recommendation response.
 
         The response is assigned a fresh UUID ``session_id`` before being saved.

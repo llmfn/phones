@@ -6,7 +6,7 @@ import pytest
 from pydantic import BaseModel
 
 from phonekit import Application, llm, search_bm25, trace
-from phonekit.schema import Filters, RecommendResponse
+from phonekit.schema import Filters, SearchResult
 from phonekit.session import Session
 
 
@@ -30,7 +30,7 @@ def test_steps_are_grouped_under_the_turn_that_produced_them(tmp_path):
             step.set_output({"result": "compact android phone"})
         with trace.new_step(name="search_semantic", input={"query": query}) as step:
             step.set_output({"qualifying": 3})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     turn = make_app(tmp_path, search).run_query("a small phone").trace
 
@@ -49,7 +49,7 @@ def test_steps_carry_a_purpose_label(tmp_path):
             step.set_output({})
         with trace.new_step(name="curate_shortlist", input={}) as step:
             step.set_output({})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     turn = make_app(tmp_path, search).run_query("a small phone").trace
 
@@ -231,7 +231,7 @@ def test_recommend_returns_the_turn_in_the_response(tmp_path):
     def search(query, filters):
         with trace.new_step(name="search_bm25", input={"query": query}) as step:
             step.set_output({"results": 0})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     app = make_app(tmp_path, search)
     response = app.test_client().post("/api/recommend", json={"query": "samsung 5g"})
@@ -254,7 +254,7 @@ def test_a_step_is_visible_while_it_is_still_running(tmp_path):
         with trace.new_step(name="search_semantic", input={"query": query}) as step:
             seen.append(trace.poll("run-1", 0, timeout=0)["changed"])
             step.set_output({"qualifying": 3})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     make_app(tmp_path, search).run_query("a small phone", run_id="run-1")
 
@@ -275,7 +275,7 @@ def test_a_poll_carries_only_what_changed_since_the_version_it_holds(tmp_path):
             versions.append(trace.poll("run-2", 0, timeout=0)["version"])
             with trace.new_step(name=name, input={}) as step:
                 step.set_output({})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     make_app(tmp_path, search).run_query("a small phone", run_id="run-2")
 
@@ -299,7 +299,7 @@ def test_a_poll_waits_for_the_pipeline_rather_than_polling_it(tmp_path):
         released.wait(timeout=5)
         with trace.new_step(name="search_bm25", input={}) as step:
             step.set_output({"results": 1})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     app = make_app(tmp_path, search)
     pipeline = threading.Thread(target=app.run_query, args=("samsung 5g", None, "run-3"))
@@ -352,7 +352,7 @@ def test_a_watched_turn_is_the_turn_the_response_carries(tmp_path):
     def search(query, filters):
         with trace.new_step(name="search_bm25", input={"query": query}) as step:
             step.set_output({"results": 0})
-        return RecommendResponse(products=[])
+        return SearchResult(products=[])
 
     app = make_app(tmp_path, search)
     client = app.test_client()
@@ -367,8 +367,8 @@ def test_a_watched_turn_is_the_turn_the_response_carries(tmp_path):
 
 
 def test_a_chat_turn_is_traced_like_a_search_turn(tmp_path):
-    app = make_app(tmp_path, lambda query, filters: RecommendResponse(products=[]))
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    app = make_app(tmp_path, lambda query, filters: SearchResult(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     def chat(active_session, message):
         with trace.new_step(name="llmfn", input={"input": message}, label="reply") as step:
@@ -391,8 +391,8 @@ def test_a_chat_turn_is_traced_like_a_search_turn(tmp_path):
 
 
 def test_a_chat_hook_that_raises_is_readable_in_the_panel(tmp_path):
-    app = make_app(tmp_path, lambda query, filters: RecommendResponse(products=[]))
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    app = make_app(tmp_path, lambda query, filters: SearchResult(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     def chat(active_session, message):
         raise RuntimeError("no API key configured")
@@ -414,9 +414,9 @@ def test_the_chat_step_carries_the_whole_transcript(tmp_path, fake_llm):
     # What the panel shows of a chat turn is the message list as sent: every
     # prior message, in order, neither windowed nor summarized.
     fake_llm()
-    app = make_app(tmp_path, lambda query, filters: RecommendResponse(products=[]))
+    app = make_app(tmp_path, lambda query, filters: SearchResult(products=[]))
     session = Session.new(
-        "small phone", Filters(), RecommendResponse(products=[], summary="Three compact picks.")
+        "small phone", Filters(), SearchResult(products=[], summary="Three compact picks.")
     )
 
     def chat(active_session, message):

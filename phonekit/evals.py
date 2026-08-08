@@ -31,7 +31,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from . import memory
 from .catalog import load_catalog
 from .llm import llmfn
-from .schema import RecommendResponse
+from .schema import SearchResult
 
 EVALS_DIR = Path(__file__).resolve().parent.parent / "evals"
 CASES_PATH = EVALS_DIR / "evals.yaml"
@@ -124,7 +124,7 @@ def load_cases(path: Path | None = None) -> list[Case]:
     return [Case.model_validate(case) for case in raw]
 
 
-def evidence_for(response: RecommendResponse) -> dict:
+def evidence_for(response: SearchResult) -> dict:
     """What the judge is shown of one answer.
 
     The products in rank order with the specs worth grading on, joined back to
@@ -147,7 +147,7 @@ def evidence_for(response: RecommendResponse) -> dict:
     return {"products": products, "summary": response.summary}
 
 
-def judge(case: Case, response: RecommendResponse) -> Judgement:
+def judge(case: Case, response: SearchResult) -> Judgement:
     """Score one answer against its expectation."""
     payload = {
         "query": case.query,

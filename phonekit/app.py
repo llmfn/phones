@@ -38,7 +38,7 @@ from .schema import (
     Filters,
     Product,
     RangeFacet,
-    RecommendResponse,
+    SearchResult,
     TraceTurn,
 )
 from .playground import playground
@@ -59,7 +59,7 @@ class Application(Flask):
         # -> parent dir ("layer1"), which Flask has already resolved as
         # root_path. Trace steps are stamped with it.
         self.layer_name = Path(self.root_path).name
-        self.search: Callable[[str, Filters], RecommendResponse] | None = None
+        self.search: Callable[[str, Filters], SearchResult] | None = None
         self.chat: Callable[[Session, str], str | dict[str, Any]] | None = None
         self.design_flags = default_design_flags()
         self.session_root = Path(session_root) if session_root else DEFAULT_SESSION_ROOT
@@ -85,7 +85,7 @@ class Application(Flask):
 
     def run_query(
         self, query: str, filters: Filters | None = None, run_id: str = ""
-    ) -> RecommendResponse:
+    ) -> SearchResult:
         """Dispatch one query to the layer's search, as one traced turn.
 
         A pipeline that raises still produces a turn: the steps that ran up to
@@ -106,7 +106,7 @@ class Application(Flask):
         try:
             response = self.search(query, filters or Filters())
         except Exception as exc:
-            response = RecommendResponse(products=[])
+            response = SearchResult(products=[])
             error = str(exc) or exc.__class__.__name__
         else:
             error = None
@@ -265,7 +265,7 @@ def _reply_text(reply: str | dict[str, Any]) -> str:
     return reply["text"]
 
 
-def apply_filters(products: list[Product], filters: Filters | None) -> RecommendResponse:
+def apply_filters(products: list[Product], filters: Filters | None) -> SearchResult:
     """Apply the filters to searched products and build the response.
 
     Keeps each product whose variants survive the filters (trimmed to the
@@ -278,7 +278,7 @@ def apply_filters(products: list[Product], filters: Filters | None) -> Recommend
         # Nothing to apply, and so nothing worth a row: a step reporting that it
         # let everything through is one the reader has to open to find out it
         # wasted the trip. The facets are still owed to the caller.
-        return RecommendResponse(products=products, facets=_compute_facets(products))
+        return SearchResult(products=products, facets=_compute_facets(products))
 
     step_input = {"in": len(products), "filters": filters.model_dump()}
     with trace.new_step(name="apply_filters", input=step_input) as step:
@@ -296,7 +296,7 @@ def apply_filters(products: list[Product], filters: Filters | None) -> Recommend
             else:
                 survivors.append(survivor)
         step.set_output({"kept": len(survivors), "removed": removed})
-    return RecommendResponse(products=survivors, facets=_compute_facets(survivors))
+    return SearchResult(products=survivors, facets=_compute_facets(survivors))
 
 
 def _filter_product(product: Product, filters: Filters) -> tuple[Product | None, str | None]:
@@ -367,7 +367,7 @@ def _categorical(field: str, counts: dict[str, int], hex_map: dict[str, str] | N
     return CategoricalFacet(field=field, values=values)
 
 
-def _print_response(response: RecommendResponse) -> None:
+def _print_response(response: SearchResult) -> None:
     if not response.products:
         print("No results.")
     for rank, p in enumerate(response.products, 1):

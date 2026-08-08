@@ -3,7 +3,7 @@ import json
 import pytest
 
 from phonekit import Application
-from phonekit.schema import Filters, RecommendResponse
+from phonekit.schema import Filters, SearchResult
 from phonekit.session import Session
 
 
@@ -26,7 +26,7 @@ def make_app(tmp_path):
 
 def test_conversation_uses_default_reply_when_no_hook_is_assigned(tmp_path):
     app = make_app(tmp_path)
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     response = app.test_client().post(
         "/api/conversation",
@@ -45,7 +45,7 @@ def test_conversation_uses_default_reply_when_no_hook_is_assigned(tmp_path):
 
 def test_conversation_dispatches_to_layer_chat_hook(tmp_path):
     app = make_app(tmp_path)
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
     calls = []
 
     def chat(active_session, message):
@@ -73,7 +73,7 @@ def test_conversation_dispatches_to_layer_chat_hook(tmp_path):
 
 def test_conversation_accepts_rich_chat_reply(tmp_path):
     app = make_app(tmp_path)
-    session = Session.new("small phone", Filters(), RecommendResponse(products=[]))
+    session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     def chat(active_session, message):
         return {

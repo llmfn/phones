@@ -7,11 +7,11 @@ Your goal is to build this llm-powered application layer by layer.
 Layer 1 of Phone recommender with search functionalitiy. 
 """
 
-from phonekit import Application, RecommendResponse
+from phonekit import Application, SearchResult
 
 
 def search(q, filters):
-    return RecommendResponse(products=[])
+    return SearchResult(products=[])
 
 app = Application()
 app.search = search

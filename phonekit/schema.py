@@ -1,7 +1,7 @@
 """Typed request and response models for the recommend API.
 
 These mirror the contract in ``docs/specs.md``. Every layer produces a
-``RecommendResponse``; using pydantic means a malformed product or an
+``SearchResult``; using pydantic means a malformed product or an
 out-of-range facet fails loudly at the layer boundary rather than silently
 reaching the browser.
 """
@@ -195,7 +195,7 @@ class Filters(BaseModel):
 # --- Response -------------------------------------------------------------
 
 
-class RecommendResponse(BaseModel):
+class SearchResult(BaseModel):
     """The recommend payload, also passed between pipeline stages.
 
     A search stage returns one with products only; facets are filled
