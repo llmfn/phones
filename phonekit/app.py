@@ -71,6 +71,10 @@ class Application(Flask):
         self.add_url_rule("/api/recommend", view_func=RecommendView.as_view("recommend", self))
         self.add_url_rule("/api/conversation", view_func=ConversationView.as_view("conversation", self))
         self.add_url_rule("/api/trace/<run_id>", view_func=TraceView.as_view("trace", self))
+        self.add_url_rule("/evals", view_func=EvalsView.as_view("evals", self))
+        self.add_url_rule(
+            "/api/evals/<int:index>", view_func=EvalCaseView.as_view("eval_case", self)
+        )
         self.register_blueprint(playground)
 
     def read_file(self, path: str) -> str:
@@ -156,8 +160,8 @@ class Application(Flask):
     def run(self, *args, **kwargs):
         """CLI when invoked with a flag, the dev server otherwise.
 
-        ``uv run app.py --check`` verifies setup, ``--eval`` scores this layer
-        against ``evals/evals.yaml``, and bare ``uv run app.py`` serves it.
+        ``uv run app.py --check`` verifies setup, ``--eval`` checks this layer
+        against ``evals.yml``, and bare ``uv run app.py`` serves it.
 
         Dispatching on argv here rather than from a separate runner script is
         what lets any layer be measured by invoking it -- the app is already
@@ -191,6 +195,35 @@ class BaseMethodView(MethodView):
 class IndexView(BaseMethodView):
     def get(self):
         return render_template("index.html", design_flags=self.app.design_flags)
+
+
+class EvalsView(BaseMethodView):
+    def get(self):
+        from .evals import load_cases
+
+        try:
+            cases = load_cases(self.app)
+        except Exception as exc:
+            cases = []
+            error = str(exc) or exc.__class__.__name__
+        else:
+            error = None
+        return render_template("evals.html", cases=cases, error=error)
+
+
+class EvalCaseView(BaseMethodView):
+    def post(self, index: int):
+        from .evals import load_cases, run_case
+
+        try:
+            cases = load_cases(self.app)
+        except Exception as exc:
+            return jsonify({"error": str(exc) or exc.__class__.__name__}), 500
+        if index >= len(cases):
+            return jsonify({"error": "unknown eval"}), 404
+
+        result = run_case(self.app, cases[index])
+        return jsonify(result.model_dump(exclude_none=True))
 
 
 # The panel mints one id per action and sends it with the request, so it can

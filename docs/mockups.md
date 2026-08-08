@@ -181,3 +181,32 @@ query at Layer 1, the filters auto-populating from natural language once state
 is involved, action buttons on cards at the tools layer, a quality score at
 evals, and so on. Those per-layer drawings will be added here as separate headed
 sections as the behavior is pinned down.
+
+
+## 5. Evals
+
+The eval report keeps the existing trace panel on the right. Cases complete in
+file order; their rows change from neutral to green or red. Selecting a finished
+row loads that case's trace into the panel.
+
+```text
+┌──────────────────────────────────────────┬──────────────────────────────┐
+│ Phones                       Playground  │ TRACE  copy as JSON  expand  │
+│                                          ├──────────────────────────────┤
+│ Can the app answer these shoppers?       │ search                      │
+│                         [ Run 20 evals ]  │ a phone for video calls      │
+│                                          │                              │
+│ 01  samsung galaxy s24 fe          YES   │  semantic search      120 ms │
+│     The named phone leads.                │  llm call              800 ms│
+│                                          │                              │
+│ 02  a phone for video calls         NO   │  [formatted] [raw]           │
+│     Front camera and battery matter.      │                              │
+│     The returned phones miss the need.    │  ...selected step...         │
+│                                          │                              │
+│ 03  compact phone                 running│                              │
+│ 04  fast charging                 waiting│                              │
+└──────────────────────────────────────────┴──────────────────────────────┘
+```
+
+On narrow screens the trace returns to normal document flow below the case
+list, matching the home page's responsive trace behavior.

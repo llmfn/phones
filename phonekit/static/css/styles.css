@@ -271,12 +271,21 @@ button {
   background: var(--surface);
 }
 
+.tool-links {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
 /* The zero state is a centered column, so in-flow it would land under the
    search box and read as a second thing to do. Corner instead. */
-.app[data-state="zero"] .playground-link {
+.app[data-state="zero"] .tool-links {
   position: fixed;
   top: var(--space-4);
   right: var(--space-5);
+}
+
+.app[data-state="zero"] .tool-links .playground-link {
   margin-top: 0;
 }
 

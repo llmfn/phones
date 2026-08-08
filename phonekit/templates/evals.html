@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='evals.css') }}" />
+  </head>
+  <body>
+    <div id="app" class="app eval-app" data-state="search" data-trace-width="rail">
+      <header class="eval-nav">
+        <a class="wordmark" href="{{ url_for('index') }}">Phones</a>
+        <nav class="eval-links" aria-label="Tools">
+          <a href="{{ url_for('playground.index') }}">Playground</a>
+          <a href="{{ url_for('evals') }}" aria-current="page">Evals</a>
+        </nav>
+      </header>
+
+      <main class="shell eval-shell">
+        <section class="eval-main" aria-labelledby="eval-title">
+          <div class="eval-heading">
+            <div>
+              <p class="eval-kicker">Evaluation set</p>
+              <h1 id="eval-title">Can the app answer these shoppers?</h1>
+              <p class="eval-intro">
+                Each case runs through this app and receives a yes or no from the judge.
+                Select a completed case to inspect the same trace shown on the home page.
+              </p>
+            </div>
+            <button
+              id="run-evals"
+              class="eval-run"
+              type="button"
+              {% if error or not cases %}disabled{% endif %}
+            >Run {{ cases|length }} evals</button>
+          </div>
+
+          <p id="eval-status" class="eval-status" role="status" aria-live="polite">
+            {% if error %}{{ error }}{% else %}Ready to run.{% endif %}
+          </p>
+
+          <ol id="eval-list" class="eval-list" aria-busy="false">
+            {% for case in cases %}
+              <li>
+                <button class="eval-case" type="button" data-index="{{ loop.index0 }}" disabled>
+                  <span class="eval-number">{{ "%02d"|format(loop.index) }}</span>
+                  <span class="eval-copy">
+                    <strong>{{ case.query }}</strong>
+                    <span>{{ case.expect }}</span>
+                    <span class="eval-reason" hidden></span>
+                  </span>
+                  <span class="eval-verdict">waiting</span>
+                </button>
+              </li>
+            {% endfor %}
+          </ol>
+        </section>
+
+        <aside class="rail trace-rail" aria-label="Trace">
+          <div class="trace-head">
+            <h2 class="trace-title">Trace</h2>
+            <div class="trace-actions">
+              <button id="copy-trace" class="btn btn-trace btn-sm" type="button">
+                copy as JSON
+              </button>
+              <button
+                id="trace-width"
+                class="btn btn-trace btn-sm"
+                type="button"
+                aria-pressed="false"
+                aria-label="Grow trace to full width"
+              >expand</button>
+            </div>
+          </div>
+          <ol id="trace" class="trace"></ol>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="{{ url_for('static', filename='evals.js') }}"></script>
+  </body>
+</html>

@@ -1,60 +1,18 @@
-"""Scoring a layer's answers against a file of expectations.
-
-``evals/evals.yaml`` holds cases -- a query a shopper might type and prose
-describing the answer they wanted. Every case runs through the layer's own
-``search``, and an LLM judge scores what came back against what was expected.
-``app.py --eval`` is the whole interface (see ``Application.run``).
-
-The judge is closed-book: it sees the query, the expectation, and the products
-the layer returned, and never the catalogue. A judge that could browse all 136
-phones would be a second recommender, and a disagreement would then have two
-possible causes -- the layer missed a phone, or the judge decided it should
-have been returned -- with no way to tell them apart. Everything the judge is
-shown comes from the answer under test, so a bad score always belongs to the
-layer.
-
-One file scores every layer, which is the point of it: the expectations
-describe the product's job rather than any pipeline stage, so the same cases
-run against layer 1 and layer 7 and the pass count climbs.
-"""
+"""Run app-local query expectations through a simple yes/no judge."""
 
 import json
-import tempfile
 import time
 import warnings
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field
 
-from . import memory
 from .catalog import load_catalog
 from .llm import llmfn
-from .schema import SearchResult
+from .schema import SearchResult, TraceTurn
 
-EVALS_DIR = Path(__file__).resolve().parent.parent / "evals"
-CASES_PATH = EVALS_DIR / "evals.yaml"
-JUDGE_PATH = EVALS_DIR / "judge.md"
-
-# How many of a layer's results the judge is shown. A shopper reads the top of
-# the list, and every product past that is context the judge pays for without
-# grading -- the rank-5 result rarely decides whether an answer was good.
 MAX_PRODUCTS = 5
-
-# The score at which a case counts as passing. The number the run reports is
-# this count, not the mean: an unanchored average drifts between identical
-# runs and so cannot gate a prompt change, while "17 of 20" can.
-PASS_SCORE = 4
-
-# Cases are independent and each spends most of its time waiting on the model.
-# The trace is ContextVar-scoped, so each worker collects its own steps.
-MAX_WORKERS = 6
-
-# The spec fields worth grading on. The catalogue's documents also carry
-# product URLs, stock counts, and marketing bullets, which say nothing about
-# whether a phone suits the shopper and would have the judge grading the
-# catalogue's copywriting. Narratives are left out for the same reason.
 SPEC_FIELDS = (
     "display_inches",
     "display_type",
@@ -82,12 +40,7 @@ SPEC_FIELDS = (
 
 
 class Case(BaseModel):
-    """One eval: what the shopper typed, and what a good answer looks like.
-
-    Extra keys are rejected rather than ignored, so a misspelled field in a
-    hand-written file fails at load instead of silently dropping the
-    expectation it was meant to carry.
-    """
+    """One shopper query and the answer it should produce."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -96,28 +49,26 @@ class Case(BaseModel):
 
 
 class Judgement(BaseModel):
-    """The judge's verdict on one answer."""
+    """The judge's yes/no decision and its short explanation."""
 
-    score: int = Field(description="how well the answer met the expectation, from 0 to 5")
-    reason: str = Field(description="one line naming the phone or number that decided the score")
+    passed: bool = Field(description="true only when the answer meets the expectation")
+    reason: str = Field(description="one short sentence explaining the decision")
 
 
 class Result(BaseModel):
-    """One scored case, as the report renders it."""
+    """One completed eval, including the app trace students inspect."""
 
     query: str
-    score: int
+    expect: str
+    passed: bool
     reason: str
     latency_ms: int = 0
-
-    @property
-    def passed(self) -> bool:
-        return self.score >= PASS_SCORE
+    trace: TraceTurn | None = None
 
 
-def load_cases(path: Path | None = None) -> list[Case]:
-    """Read and validate the eval file."""
-    path = path or CASES_PATH
+def load_cases(app, path: Path | None = None) -> list[Case]:
+    """Read the evals.yml beside this app's app.py."""
+    path = path or Path(app.root_path) / "evals.yml"
     raw = yaml.safe_load(path.read_text()) or []
     if not isinstance(raw, list):
         raise RuntimeError(f"{path.name} must be a list of cases")
@@ -125,12 +76,7 @@ def load_cases(path: Path | None = None) -> list[Case]:
 
 
 def evidence_for(response: SearchResult) -> dict:
-    """What the judge is shown of one answer.
-
-    The products in rank order with the specs worth grading on, joined back to
-    the catalogue because the card projection carries prices and colours but no
-    specs, plus the summary when the layer wrote one.
-    """
+    """Return the ranked products and useful specs the judge may grade."""
     docs = {entry.doc.id: entry.doc for entry in load_catalog()}
     products = []
     for product in response.products[:MAX_PRODUCTS]:
@@ -141,21 +87,21 @@ def evidence_for(response: SearchResult) -> dict:
                 "name": product.name,
                 "brand": product.brand,
                 "price_inr": product.price,
-                "specs": {k: v for k, v in specs.items() if k in SPEC_FIELDS},
+                "specs": {key: value for key, value in specs.items() if key in SPEC_FIELDS},
             }
         )
     return {"products": products, "summary": response.summary}
 
 
-def judge(case: Case, response: SearchResult) -> Judgement:
-    """Score one answer against its expectation."""
+def judge(app, case: Case, response: SearchResult) -> Judgement:
+    """Ask the app-local judge prompt for one yes/no decision."""
     payload = {
         "query": case.query,
         "expectation": case.expect,
         "answer": evidence_for(response),
     }
     return llmfn(
-        instructions=JUDGE_PATH.read_text(),
+        instructions=app.read_file("prompts/eval.md"),
         input=json.dumps(payload, indent=2),
         output_schema=Judgement,
         label="judge",
@@ -163,104 +109,69 @@ def judge(case: Case, response: SearchResult) -> Judgement:
 
 
 def run_case(app, case: Case) -> Result:
-    """Run one case through the layer and score what comes back.
-
-    Nothing here raises. A pipeline that breaks, a layer that finds nothing,
-    and a judge call that fails are all answers of a sort -- each scores 0 and
-    says why in the report, so one bad case never costs the other nineteen.
-    """
+    """Run and judge one case without allowing it to stop the remaining cases."""
     started = time.perf_counter()
+    trace = None
 
-    def done(score: int, reason: str) -> Result:
-        elapsed = int((time.perf_counter() - started) * 1000)
-        return Result(query=case.query, score=score, reason=reason, latency_ms=elapsed)
+    def done(passed: bool, reason: str) -> Result:
+        return Result(
+            query=case.query,
+            expect=case.expect,
+            passed=passed,
+            reason=reason.strip(),
+            latency_ms=int((time.perf_counter() - started) * 1000),
+            trace=trace,
+        )
 
     try:
         response = app.run_query(case.query)
     except Exception as exc:
-        return done(0, f"pipeline raised: {exc}")
+        return done(False, f"pipeline raised: {exc}")
 
-    # run_query catches what the pipeline raised and reports it on the turn
-    # rather than propagating, so the error arrives here rather than above.
-    turn = response.trace
-    if turn is not None and turn.error:
-        return done(0, f"pipeline failed: {turn.error}")
+    trace = response.trace
+    if trace is not None and trace.error:
+        return done(False, f"pipeline failed: {trace.error}")
     if not response.products:
-        return done(0, "no results")
+        return done(False, "no results")
 
     try:
-        judgement = judge(case, response)
+        judgement = judge(app, case, response)
     except Exception as exc:
-        return done(0, f"judge failed: {exc}")
-    return done(max(0, min(5, judgement.score)), judgement.reason.strip())
+        return done(False, f"judge failed: {exc}")
+    return done(judgement.passed, judgement.reason)
 
 
 def run_evals(app, path: Path | None = None) -> int:
-    """Score every case against this app and report. Returns an exit code.
-
-    The profile is pointed at a scratch file for the duration: layers 6 and 7
-    read and write one shared ``data/memory/memory.json``, so without this the
-    cases would teach each other preferences and the run would leave whatever
-    it learned in the profile of whoever is using the app.
-    """
-    cases = load_cases(path)
+    """Run every case sequentially, print yes/no results, and return an exit code."""
+    cases = load_cases(app, path)
     started = time.perf_counter()
-    with tempfile.TemporaryDirectory() as scratch:
-        memory.configure_path(Path(scratch) / "memory.json")
-        try:
-            results = _run_quietly(app, cases)
-        finally:
-            memory.configure_path(memory.DEFAULT_MEMORY_PATH)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        results = [run_case(app, case) for case in cases]
     report(results, time.perf_counter() - started)
     return 1 if any(not result.passed for result in results) else 0
 
 
-def _run_quietly(app, cases: list[Case]) -> list[Result]:
-    """Run every case with the SDK's serialisation warnings silenced.
-
-    The trace records each response as the provider returned it, and putting
-    those objects back through pydantic warns once per union member per call.
-    Under a server that noise goes to a log nobody reads; here it would bury
-    the report it is printed alongside.
-    """
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", UserWarning)
-        return _run_all(app, cases)
-
-
-def _run_all(app, cases: list[Case]) -> list[Result]:
-    if not cases:
-        return []
-    workers = min(MAX_WORKERS, len(cases))
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        return list(pool.map(lambda case: run_case(app, case), cases))
-
-
-# --- Report ---------------------------------------------------------------
-
 QUERY_WIDTH = 42
-REASON_WIDTH = 62
+REASON_WIDTH = 68
 
 
 def report(results: list[Result], elapsed: float) -> None:
-    """Print one line per case, then the count that is the actual result."""
+    """Print one yes/no line per case followed by the pass count."""
     for result in results:
-        mark = "PASS" if result.passed else "FAIL"
-        query = _fit(result.query, QUERY_WIDTH)
-        reason = _fit(result.reason, REASON_WIDTH)
-        print(f"{result.score}  {mark}  {query}  {reason}")
+        verdict = "YES" if result.passed else "NO"
+        print(f"{verdict:<3}  {_fit(result.query, QUERY_WIDTH)}  {_fit(result.reason, REASON_WIDTH)}")
 
     if not results:
         print("no cases")
         return
 
-    passed = sum(1 for result in results if result.passed)
-    average = sum(result.score for result in results) / len(results)
-    print(f"\n{passed}/{len(results)} passed · avg {average:.1f} · {elapsed:.1f}s")
+    passed = sum(result.passed for result in results)
+    print(f"\n{passed}/{len(results)} passed | {elapsed:.1f}s")
 
 
 def _fit(text: str, width: int) -> str:
     text = " ".join(text.split())
     if len(text) > width:
-        text = text[: width - 1] + "…"
+        text = text[: width - 3] + "..."
     return text.ljust(width)

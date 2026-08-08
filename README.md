@@ -86,13 +86,13 @@ Run the evaluation set against your current `app.py`:
 make eval
 ```
 
-The evals are in `evals/evals.yaml`. Some failures are expected at this step.
+The evals are in `evals.yml`. Some failures are expected at this step.
 The point is to establish a baseline and see which kinds of query keyword
 search cannot handle.
 
 ### Add a failing query
 
-Add one query that BM25 handles poorly to `evals/evals.yaml`:
+Add one query that BM25 handles poorly to `evals.yml`:
 
 ```yaml
 - query: describe what the shopper needs

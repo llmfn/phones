@@ -329,6 +329,46 @@ The backend appends user messages and assistant replies to
 an LLM; it replies with `message received` unless a layer assigns `app.chat`.
 
 
+## Evals
+
+`evals.yml` sits beside `app.py` and contains a list of shopper queries and
+plain-language expectations:
+
+```yaml
+- query: a phone for video calls
+  expect: The results favour dependable front cameras and battery life.
+```
+
+`prompts/eval.md`, also relative to `app.py`, tells the LLM judge how to return
+a yes/no decision and one short reason. `app.py --eval` runs the cases in file
+order and prints the verdicts in the terminal.
+
+`GET /evals` renders the case list without running it. The browser starts one
+case at a time with `POST /api/evals/<index>`, allowing each row to turn green
+or red as it completes. A completed response is:
+
+```json
+{
+  "query": "a phone for video calls",
+  "expect": "The results favour dependable front cameras and battery life.",
+  "passed": true,
+  "reason": "The leading phones have strong front cameras and large batteries.",
+  "latency_ms": 1250,
+  "trace": {
+    "kind": "search",
+    "input": "a phone for video calls",
+    "steps": [],
+    "status": "success",
+    "latency_ms": 30
+  }
+}
+```
+
+The trace is the app's search trace, captured before the judge runs. Selecting
+a completed case loads it into the same formatted/raw trace panel used on the
+home page.
+
+
 ## State & Persistence (localStorage)
 
 | Key | Value |
@@ -348,8 +388,11 @@ debug/session files are written under `data/state/` and are not committed.
 - `POST /api/recommend` — the contract above.
 - `POST /api/conversation` — append one user message to a search session and
   return the next assistant reply.
+- `GET /evals` — list this app's eval cases and provide the run control.
+- `POST /api/evals/<index>` — run and judge one eval case.
+- `GET /playground/` — inspect the search mechanisms used by the app.
 
-No other pages. No auth. No navigation.
+No auth. All pages and APIs are served same-origin.
 
 
 ## Constraints

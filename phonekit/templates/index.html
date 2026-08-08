@@ -110,7 +110,10 @@
             </div>
           {% endif %}
         </div>
-        <a class="playground-link" href="{{ url_for('playground.index') }}">Playground</a>
+        <nav class="tool-links" aria-label="Tools">
+          <a class="playground-link" href="{{ url_for('playground.index') }}">Playground</a>
+          <a class="playground-link" href="{{ url_for('evals') }}">Evals</a>
+        </nav>
       </header>
 
       <div class="shell">
