@@ -324,9 +324,10 @@ Expected response:
 `text` for the assistant message and optional `suggestions` for quick-reply
 buttons. `suggestions` may be omitted or an empty list.
 
-The backend appends user messages and assistant replies to
-`data/state/<session_id>/conversation.json`. The default backend does not call
-an LLM; it replies with `message received` unless a layer assigns `app.chat`.
+The assigned chat function appends user messages and assistant replies to
+`data/state/<session_id>/conversation.json`. The default chat function does not
+modify the session or call an LLM; it replies with `message received` unless a
+layer assigns `app.chat`.
 
 
 ## Evals
@@ -387,7 +388,7 @@ debug/session files are written under `data/state/` and are not committed.
 - `GET /` — the single page (zero state on load; resolves to search state after
   the first query).
 - `POST /api/recommend` — the contract above.
-- `POST /api/conversation` — append one user message to a search session and
+- `POST /api/conversation` — send one user message to a search session and
   return the next assistant reply.
 - `GET /evals` — list this app's eval cases and provide the run control.
 - `POST /api/evals/<index>` — run and judge one eval case.

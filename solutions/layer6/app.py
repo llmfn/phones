@@ -109,6 +109,7 @@ def chat(session, message):
     hint = _profile_hint(profile)
     instructions = f"{PROMPT_CHAT}\n\n{hint}" if hint else PROMPT_CHAT
 
+    session.add_message(message, role="user")
     past_messages = session.get_messages()
     response = llmfn(
         instructions=instructions, input=past_messages, output_schema=ChatResponseSchema, label="chat"
@@ -117,6 +118,7 @@ def chat(session, message):
     if response.memory:
         mem.merge(response.memory.model_dump(exclude_none=True))
 
+    session.add_message(response.text, role="assistant")
     return {"text": response.text, "suggestions": response.suggestions}
 
 

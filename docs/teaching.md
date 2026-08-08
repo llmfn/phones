@@ -345,6 +345,10 @@ messages = [
 ]
 ```
 
+The chat pipeline makes each state change explicit: append the current user
+message, read the full transcript for the LLM call, then append the assistant
+response before returning it.
+
 Both Pass 1 and Pass 2 receive the full history.
 
 **Why keep search box + cards rather than moving to full chat UI:**

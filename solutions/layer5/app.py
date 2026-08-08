@@ -62,14 +62,14 @@ class ChatResponseSchema(BaseModel):
 def chat(session, message):
     """Answer a follow-up using the session transcript as conversation state."""
     PROMPT_CHAT = app.read_file("prompts/chat.md")
-    # The current message has already been appended to the transcript by
-    # PhoneKit before this hook runs.
+    session.add_message(message, role="user")
     past_messages = session.get_messages()
     # TODO: inject the search results as the first message so that the agent
     # has context of the current results the user is looking at
     response = llmfn(
         instructions=PROMPT_CHAT, input=past_messages, output_schema=ChatResponseSchema, label="chat"
     )
+    session.add_message(response.text, role="assistant")
     return response.model_dump()
 
 if __name__ == "__main__":

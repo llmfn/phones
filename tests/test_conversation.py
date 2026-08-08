@@ -24,7 +24,7 @@ def make_app(tmp_path):
     return app
 
 
-def test_conversation_uses_default_reply_when_no_hook_is_assigned(tmp_path):
+def test_conversation_uses_stateless_default_reply_when_no_hook_is_assigned(tmp_path):
     app = make_app(tmp_path)
     session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
@@ -37,20 +37,22 @@ def test_conversation_uses_default_reply_when_no_hook_is_assigned(tmp_path):
     body = response.get_json()
     assert (body["session_id"], body["reply"]) == (session.session_id, "message received")
     conversation = read_json(session.path / "conversation.json")
-    assert conversation["messages"] == [
-        {"role": "user", "content": "I prefer compact phones"},
-        {"role": "assistant", "content": "message received"},
-    ]
+    assert conversation["messages"] == []
 
 
 def test_conversation_dispatches_to_layer_chat_hook(tmp_path):
     app = make_app(tmp_path)
     session = Session.new("small phone", Filters(), SearchResult(products=[]))
     calls = []
+    transcripts = []
 
     def chat(active_session, message):
         calls.append((active_session.session_id, message))
-        return "Try the Pixel 8a."
+        transcripts.append(active_session.get_messages())
+        active_session.add_message(message, role="user")
+        reply = "Try the Pixel 8a."
+        active_session.add_message(reply, role="assistant")
+        return reply
 
     app.chat = chat
 
@@ -63,6 +65,7 @@ def test_conversation_dispatches_to_layer_chat_hook(tmp_path):
     body = response.get_json()
     assert (body["session_id"], body["reply"]) == (session.session_id, "Try the Pixel 8a.")
     assert calls == [(session.session_id, "Need a good camera")]
+    assert transcripts == [[]]
 
     conversation = read_json(session.path / "conversation.json")
     assert conversation["messages"] == [
@@ -76,10 +79,13 @@ def test_conversation_accepts_rich_chat_reply(tmp_path):
     session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     def chat(active_session, message):
-        return {
+        active_session.add_message(message, role="user")
+        reply = {
             "text": "A compact phone would fit best.",
             "suggestions": ["Show compact iPhones", "Compare Pixel options", 12],
         }
+        active_session.add_message(reply["text"], role="assistant")
+        return reply
 
     app.chat = chat
 

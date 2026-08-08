@@ -371,9 +371,12 @@ def test_a_chat_turn_is_traced_like_a_search_turn(tmp_path):
     session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     def chat(active_session, message):
+        active_session.add_message(message, role="user")
         with trace.new_step(name="llmfn", input={"input": message}, label="reply") as step:
             step.set_output({"text": "Try the Pixel 8a."})
-        return "Try the Pixel 8a."
+        reply = "Try the Pixel 8a."
+        active_session.add_message(reply, role="assistant")
+        return reply
 
     app.chat = chat
     response = app.test_client().post(
@@ -395,6 +398,7 @@ def test_a_chat_hook_that_raises_is_readable_in_the_panel(tmp_path):
     session = Session.new("small phone", Filters(), SearchResult(products=[]))
 
     def chat(active_session, message):
+        active_session.add_message(message, role="user")
         raise RuntimeError("no API key configured")
 
     app.chat = chat
@@ -408,6 +412,7 @@ def test_a_chat_hook_that_raises_is_readable_in_the_panel(tmp_path):
     assert body["reply"] == "no API key configured"
     assert body["trace"]["status"] == "error"
     assert body["trace"]["error"] == "no API key configured"
+    assert session.get_messages() == [{"role": "user", "content": "Need a good camera"}]
 
 
 def test_the_chat_step_carries_the_whole_transcript(tmp_path, fake_llm):
@@ -420,7 +425,10 @@ def test_the_chat_step_carries_the_whole_transcript(tmp_path, fake_llm):
     )
 
     def chat(active_session, message):
-        return llm.llmfn(instructions="Answer it.", input=active_session.get_messages())
+        active_session.add_message(message, role="user")
+        reply = llm.llmfn(instructions="Answer it.", input=active_session.get_messages())
+        active_session.add_message(reply, role="assistant")
+        return reply
 
     app.chat = chat
     client = app.test_client()

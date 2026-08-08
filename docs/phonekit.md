@@ -95,6 +95,40 @@ return apply_filters(products, filters)
 
 Call it after search and before `apply_filters`.
 
+## Conversation State
+
+```python
+from phonekit import Session, llmfn
+```
+
+An assigned `app.chat` function receives the current `Session` and owns the
+complete conversation state transition. Append the user message before reading
+the transcript so the current turn is included in the LLM input, then append the
+assistant reply before returning it.
+
+```python
+def chat(session, message):
+    session.add_message(message, role="user")
+    messages = session.get_messages()
+
+    reply = llmfn(
+        instructions="Answer as a phone shopping assistant.",
+        input=messages,
+        label="chat",
+    )
+
+    session.add_message(reply, role="assistant")
+    return reply
+
+
+app.chat = chat
+```
+
+`session.get_messages()` returns a copy of the transcript as OpenAI-style
+`{"role": ..., "content": ...}` dictionaries. For a rich reply, store only its
+assistant text; suggestions and other interface metadata are not conversation
+messages.
+
 ## LLM Call
 
 ```python

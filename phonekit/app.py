@@ -2,11 +2,11 @@
 
 ``Application`` extends Flask, so one object is the whole product: the same
 instance that answers ``POST /api/recommend`` also runs the terminal CLI
-(``run()`` picks by invocation). The layer owns its pipeline top-to-bottom
-inside the ``search(query, filters)`` callable it assigns -- which engine to
-call, prompts, fallback policy, and applying the filters, typically via
-``apply_filters`` as its last line. The Application only dispatches the query
-and injects the collected trace (see ``phonekit.trace``) into the response.
+(``run()`` picks by invocation). The layer owns its search and chat pipelines
+top-to-bottom inside the callables it assigns -- engines, prompts, state
+changes, fallback policy, and filtering. The Application only dispatches
+requests and injects the collected trace (see ``phonekit.trace``) into each
+response.
 
 Filters work at the variant level (see docs/specs.md, "Catalogue & variants"):
 a phone stays in the results if any variant survives the colour and price
@@ -45,6 +45,11 @@ from .playground import playground
 from .session import DEFAULT_SESSION_ROOT, Session
 
 _PACKAGE_DIR = Path(__file__).parent
+
+
+def _default_chat(session: Session, message: str) -> str:
+    """Acknowledge a message when the layer has no chat hook."""
+    return "message received"
 
 
 class Application(Flask):
@@ -130,6 +135,8 @@ class Application(Flask):
     ) -> tuple[str | dict[str, Any], TraceTurn]:
         """Dispatch one chat message to the layer's chat hook, as one traced turn.
 
+        The hook owns appending the user message and assistant reply to the
+        session; dispatch does not mutate conversation state around the hook.
         A chat turn is traced exactly like a search turn -- from layer 5 on,
         the follow-up is where most of the pipeline runs, and a panel that
         went quiet after the first query would be showing the smaller half of
@@ -140,7 +147,8 @@ class Application(Flask):
         trace.set_layer_name(self.layer_name)
         started = time.perf_counter()
         try:
-            reply = "message received" if self.chat is None else self.chat(session, message)
+            chat = self.chat or _default_chat
+            reply = chat(session, message)
         except Exception as exc:
             error = str(exc) or exc.__class__.__name__
             reply = error
@@ -278,13 +286,10 @@ class ConversationView(BaseMethodView):
         if not message:
             return jsonify({"error": "message is required"}), 400
 
-        session.add_message(message)
-
         run_id = request.headers.get(RUN_ID_HEADER, "")
         reply, turn = self.app.run_chat(session, message, run_id)
         reply = _normalize_chat_reply(reply)
 
-        session.add_message(_reply_text(reply), role="assistant")
         return jsonify(
             {
                 "session_id": session.session_id,
@@ -320,12 +325,6 @@ def _normalize_chat_reply(reply: str | dict[str, Any]) -> str | dict[str, Any]:
     if isinstance(suggestions, list):
         normalized["suggestions"] = [item for item in suggestions if isinstance(item, str)]
     return normalized
-
-
-def _reply_text(reply: str | dict[str, Any]) -> str:
-    if isinstance(reply, str):
-        return reply
-    return reply["text"]
 
 
 def apply_filters(products: list[Product], filters: Filters | None) -> SearchResult:
