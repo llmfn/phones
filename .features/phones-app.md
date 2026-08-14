@@ -1,5 +1,5 @@
 ---
-status: draft
+status: in-progress
 created: 2026-08-15
 ---
 
@@ -19,8 +19,9 @@ Subdomains are never provisioned. A wildcard DNS record and a wildcard Worker
 route mean any hostname under `phones.llmfn.com` reaches the Worker, so adding
 a student is a database row, never a DNS or deployment change.
 
-The Worker lives in `web/` and becomes the app for this repo; the existing
-Python app may be ported to TS/JS + Svelte.
+The Worker lives in `web/` and becomes the app for this repo. It uses SvelteKit
+with TypeScript and the Cloudflare adapter; the existing Python app may be
+ported into it over time.
 
 ## Tasks
 
@@ -40,3 +41,15 @@ the same parsing.
 - [ ] `https://phones.llmfn.com` returns `Hello, phones.llmfn.com`
 - [ ] An arbitrary unregistered subdomain returns its own hostname
 - [ ] Both are served over HTTPS with no certificate warning
+
+## Handover
+
+The SvelteKit and TypeScript skeleton is complete in `web/`. Unit tests,
+Svelte diagnostics, the production build, and a Wrangler dry run pass.
+
+Production deployment and all three acceptance checks remain. Do not make
+authenticated Cloudflare requests without explicit permission. A deployment
+attempt was rejected during compatibility-date validation after its asset
+upload; no Worker script or routes were published. The compatibility date is
+now corrected. DNS records for `phones` and `*.phones` and wildcard certificate
+coverage still need to be configured before the live checks can pass.

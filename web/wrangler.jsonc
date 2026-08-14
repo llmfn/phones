@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "llmfn-phones",
+  "main": ".svelte-kit/cloudflare/_worker.js",
+  "compatibility_date": "2026-08-14",
+  "compatibility_flags": ["nodejs_als"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "phones.llmfn.com/*",
+      "zone_name": "llmfn.com"
+    },
+    {
+      "pattern": "*.phones.llmfn.com/*",
+      "zone_name": "llmfn.com"
+    }
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".svelte-kit/cloudflare"
+  }
+}
