@@ -7,7 +7,7 @@ created: 2026-08-15
 
 The edition-3 hosted phones app: a Cloudflare Worker serving every student
 their own live instance at `<slug>.phones.llmfn.com`, with `phones.llmfn.com`
-as the single entry point that logs them in and routes them there.
+as the instance finder and each subdomain owning its admin authentication.
 
 ## Design / Approach
 
@@ -19,9 +19,10 @@ Subdomains are never provisioned. A wildcard DNS record and a wildcard Worker
 route mean any hostname under `phones.llmfn.com` reaches the Worker, so a
 student arrives without any DNS or deployment change.
 
-There is no database yet. Slugs are derived from the email and both tokens and
-sessions are signed rather than stored, so nothing needs persisting until
-per-student app state arrives.
+There is no database yet. Slugs are derived from the email, while short-lived
+code challenges and sessions are signed rather than stored, so nothing needs
+persisting until per-student app state arrives. Student instances are public;
+authentication protects only their admin routes.
 
 The Worker lives in `web/` and becomes the app for this repo. It uses SvelteKit
 with TypeScript and the Cloudflare adapter; the existing Python app may be
@@ -37,65 +38,92 @@ the requested host and renders a plain `Hello, {sitename}` page, where
 `{sitename}` is that host verbatim — no login, no database, no app logic.
 
 Keep the host parsing in one small function; later tasks replace the echo
-behaviour with real routing (apex → login, subdomain → student app) built on
-the same parsing.
+behaviour with real routing (apex → instance finder, subdomain → student app)
+built on the same parsing.
 
 **Acceptance Criteria:**
 
 - [x] The SvelteKit page renders `Hello, {sitename}` from the requested host
 - [x] Tests cover both an apex-shaped host and an arbitrary subdomain
 
-### [TODO] login: sign in with a magic link
+### [DONE] login: find an instance and sign into its admin
 
-The apex serves a login screen asking for an email. On submit, the Worker
+The apex serves an instance finder asking for an email. On submit, the Worker
 takes the slug from the email's local part, lowercased with anything invalid
-in a hostname stripped, signs a short-lived token carrying it, and sends a
-link to `<slug>.phones.llmfn.com/login/verify?token=...` via Cloudflare
-Email Service.
+in a hostname stripped, and redirects to the public student subdomain. It
+sends no email and stores no authentication state.
 
-Every path on the subdomain serves the recommender publicly — anyone with the
-URL can use that student's instance. Only `/login/verify` requires a session,
-and what the session unlocks beyond it is later work.
+The subdomain homepage is a Svelte page with a link to `/admin`. The
+recommender remains public, while `/admin` requires a session and offers a
+logout action. A signed-out visit continues to `/admin/login`.
 
-`/login/verify` accepts either a token or an existing session. A token is
-valid only if its signature holds, it hasn't expired, and its slug matches the
-host it arrived on. A valid one mints a session cookie scoped to that host
-alone — never to `.phones.llmfn.com` — and a pointer cookie on the apex
-holding just the slug, which carries no authority beyond routing. With neither
-a valid session nor a valid token, it redirects to the apex, which clears the
-pointer and shows the login screen again.
+The admin login derives its owner email from the current slug, displays the
+masked address, and sends a six-digit verification code via Cloudflare Email
+Service. For now the owner is `<slug>@gmail.com`; a later student mapping must
+replace this temporary rule. The signed challenge is kept in a short-lived,
+host-only cookie, so no database or one-time enforcement is required yet.
 
-Tokens are signed rather than stored: valid for a few minutes, and reusable
-within that window so mail scanners that follow the link don't consume it.
+Entering a valid code mints a signed session cookie scoped to that host alone
+— never to `.phones.llmfn.com` — and enters the admin. The code remains valid
+for five minutes and may be retried during that window. Invalid, expired, or
+wrong-host challenges are refused.
 
-In dev the Worker logs the magic link rather than sending it. `local.pipal.in`
-stands in for the apex, with instances one label below it, so hostnames and
-cookie scoping behave as they do in production. Known apex hosts are a constant
-in the code, so dev and production both work unconfigured; any other host is an
-instance, with the slug as its first label.
+The apex always shows the instance finder and does not remember or redirect a
+returning student.
+
+In dev the Worker logs the verification code rather than sending it.
+`local.pipal.in` stands in for the apex, with instances one label below it, so
+hostnames and cookie scoping behave as they do in production. Known apex hosts
+are a constant in the code, so dev and production both work unconfigured; any
+other host is an instance, with the slug as its first label.
 
 **Acceptance Criteria:**
 
-- [ ] Submitting an email delivers a link to that student's subdomain
-- [ ] A fresh link reaches the app, and following it twice still works
-- [ ] An expired, altered, or wrong-host token is refused
-- [ ] The session cookie is not sent to another subdomain
-- [ ] A return visit to the apex reaches the app with no login screen
-- [ ] A subdomain visit with no session serves the recommender
-- [ ] A stale pointer cookie ends at the login screen with the pointer cleared
+- [x] Submitting an email on the apex redirects to the public student instance
+- [x] The Svelte student homepage links to its protected admin
+- [x] Admin login sends a code to the masked temporary Gmail owner
+- [x] Invalid, expired, or wrong-host code challenges are refused
+- [x] The session cookie is host-only and logout clears it
+- [x] Every visit to the apex shows the instance finder
+
+### [TODO] deploy: connect production domains and email
+
+Once Cloudflare account and DNS access are available, onboard
+`phones.llmfn.com` with Email Service, configure `login@phones.llmfn.com` as
+the sender, set `AUTH_SECRET`, add apex and wildcard DNS and certificate
+coverage, restore both Worker routes, and deploy. Do not make authenticated
+Cloudflare requests without explicit permission.
+
+**Acceptance Criteria:**
+
+- [ ] The apex and an arbitrary student subdomain work over HTTPS
+- [ ] A verification code is delivered through Cloudflare Email Service
 
 ## Handover
 
-The first task is complete. The SvelteKit and TypeScript skeleton is in `web/`.
-Unit tests, Svelte diagnostics, the production build, and a Wrangler dry run
-pass.
+The hostname routing and login tasks are complete in `web/`. The apex only
+finds and redirects to public student instances. Their Svelte homepage links
+to a session-protected admin, where a six-digit email code creates one signed,
+host-only session. Admin logout clears that session. Local development logs
+codes for the `local.pipal.in` hosts, while production uses the `EMAIL`
+binding.
 
-Custom-domain deployment remains deferred. Do not make authenticated Cloudflare
-requests without explicit permission. A deployment attempt was rejected during
-compatibility-date validation after its asset upload; no Worker script or
-routes were published. The compatibility date is now corrected. DNS records
-for `phones` and `*.phones` and wildcard certificate coverage still need to be
-configured before the custom domains can go live.
+The 29 tests cover slug derivation, instance discovery, temporary Gmail owner
+mapping, code delivery and refusal, cookie scope, admin access and logout, and
+public instance access. Unit tests, Svelte diagnostics, the production build,
+a Wrangler dry run, and whitespace checks pass.
+
+The `<slug>@gmail.com` owner rule is temporary. Replace it with the real
+student mapping as soon as that mapping exists; admin authentication should
+then send only to the mapped owner address. Code attempts and email sends are
+not throttled yet; add limits before the admin controls private or destructive
+functionality.
+
+Live email delivery and custom-domain deployment remain deferred. Do not make
+authenticated Cloudflare requests without explicit permission. Production
+needs an `AUTH_SECRET`, an Email Service onboarding for
+`login@phones.llmfn.com`, DNS records for `phones` and `*.phones`, and wildcard
+certificate coverage.
 
 Until DNS access is available, Wrangler is configured to deploy to the stable
 `llmfn-phones.<account-subdomain>.workers.dev` hostname with version preview

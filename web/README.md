@@ -17,6 +17,10 @@ npm run build
 npx wrangler deploy --dry-run
 ```
 
+Local development uses `local.pipal.in` as the apex and logs verification
+codes to the terminal. Open `http://local.pipal.in:5173` after starting Vite;
+student instances use `<slug>.local.pipal.in:5173`.
+
 ## Cloudflare setup
 
 The `llmfn.com` zone needs proxied DNS records for both `phones` and
@@ -26,3 +30,10 @@ routes intercept requests before that address is used.
 Universal SSL does not cover the deeper `*.phones.llmfn.com` hostnames. The
 zone therefore needs an Advanced Certificate that includes
 `*.phones.llmfn.com` before deploying with `npm run deploy`.
+
+Before deployment, onboard `phones.llmfn.com` with Cloudflare Email Service,
+verify `login@phones.llmfn.com` as a sender, and set the signing secret:
+
+```sh
+npx wrangler secret put AUTH_SECRET
+```

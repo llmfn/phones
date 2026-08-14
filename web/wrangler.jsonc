@@ -6,6 +6,7 @@
   "compatibility_flags": ["nodejs_als"],
   "workers_dev": true,
   "preview_urls": true,
+  "send_email": [{ "name": "EMAIL" }],
   "assets": {
     "binding": "ASSETS",
     "directory": ".svelte-kit/cloudflare"
