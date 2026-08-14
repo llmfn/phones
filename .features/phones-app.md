@@ -86,6 +86,26 @@ other host is an instance, with the slug as its first label.
 - [x] The session cookie is host-only and logout clears it
 - [x] Every visit to the apex shows the instance finder
 
+### [DONE] design: share the editorial design language
+
+Use the warm terracotta design system from `DESIGN.md` and the Python app
+across the hosted app. Self-host the same Alegreya and Fira Code fonts, keep
+the design tokens and shared components in one global stylesheet, and avoid
+shadows, gradients, and page-specific palettes.
+
+The public student homepage uses the Python app's zero-state composition: a
+centred Phones wordmark and phone search bar, with Admin available in the
+top navigation. The search control is the visual shell only until the
+recommender API is ported. The apex finder, admin login, admin page, and public
+fallback pages use the same typography, colour, controls, and navigation.
+
+**Acceptance Criteria:**
+
+- [x] Apex and student pages share the terracotta tokens and self-hosted fonts
+- [x] The student homepage matches the Python app's responsive search zero state
+- [x] The student top navigation links to Admin
+- [x] Svelte diagnostics, tests, and the production build pass
+
 ### [TODO] deploy: connect production domains and email
 
 Once Cloudflare account and DNS access are available, onboard
@@ -107,6 +127,12 @@ to a session-protected admin, where a six-digit email code creates one signed,
 host-only session. Admin logout clears that session. Local development logs
 codes for the `local.pipal.in` hosts, while production uses the `EMAIL`
 binding.
+
+All hosted pages now use the shared editorial design system in `web/src/app.css`
+with self-hosted fonts in `web/static/fonts/`. The student homepage mirrors
+the Python app's centred zero state with a phone search bar and an Admin
+link in the top navigation. The search bar is not connected to results yet;
+that belongs with the future recommender API port.
 
 The 29 tests cover slug derivation, instance discovery, temporary Gmail owner
 mapping, code delivery and refusal, cookie scope, admin access and logout, and

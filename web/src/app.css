@@ -1,0 +1,465 @@
+/* Warm editorial UI shared with the Python phone recommender. */
+
+/* ---- reset ---- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ---- fonts ---- */
+
+@font-face {
+  font-family: "Alegreya";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/alegreya-v39-latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/alegreya-v39-latin-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/alegreya-v39-latin-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/alegreya-sans-v26-latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/alegreya-sans-v26-latin-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/alegreya-sans-v26-latin-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya SC";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/alegreya-sc-v26-latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Alegreya SC";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/alegreya-sc-v26-latin-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/fira-code-v27-latin-regular.woff2") format("woff2");
+}
+
+/* ---- tokens ---- */
+
+:root {
+  --bg: oklch(97% 0.012 55);
+  --fg: oklch(22% 0.02 45);
+  --primary: oklch(52% 0.13 45);
+  --primary-hover: oklch(45% 0.15 45);
+  --muted: oklch(48% 0.04 50);
+  --subtle: oklch(62% 0.03 50);
+  --faint: oklch(88% 0.02 50);
+  --faint-strong: oklch(80% 0.025 50);
+  --surface: oklch(99% 0.006 55);
+  --surface-alt: oklch(95% 0.018 50);
+  --surface-tint: oklch(93% 0.022 50);
+  --danger: oklch(48% 0.14 30);
+
+  --radius-sm: 0.2rem;
+  --radius: 0.3rem;
+  --radius-lg: 0.5rem;
+
+  --text-flow--1: clamp(0.83rem, 0.81rem + 0.11vw, 0.91rem);
+  --text-flow-0: clamp(1rem, 0.97rem + 0.14vw, 1.1rem);
+  --text-flow-1: clamp(1.13rem, 1.08rem + 0.2vw, 1.27rem);
+  --text-flow-2: clamp(1.27rem, 1.2rem + 0.32vw, 1.48rem);
+  --text-flow-3: clamp(1.42rem, 1.33rem + 0.47vw, 1.73rem);
+  --text-flow-4: clamp(1.6rem, 1.46rem + 0.67vw, 2.07rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --font-serif: "Alegreya", Georgia, serif;
+  --font-sans: "Alegreya Sans", system-ui, sans-serif;
+  --font-sc: "Alegreya SC", Georgia, serif;
+  --font-mono: "Fira Code", ui-monospace, monospace;
+}
+
+/* ---- base ---- */
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-flow-0);
+  line-height: 1.6;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--primary);
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---- shared navigation ---- */
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+}
+
+.wordmark {
+  color: var(--primary);
+  font-family: var(--font-sc);
+  font-size: var(--text-flow-3);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.nav-link {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--faint);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: var(--text-flow--1);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.15s ease;
+}
+
+.nav-link:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.eyebrow,
+.field-label {
+  font-family: var(--font-sc);
+  font-size: var(--text-flow--1);
+  letter-spacing: 0.07em;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--primary);
+}
+
+/* ---- student zero state ---- */
+
+.student-home {
+  min-height: 100vh;
+  padding: var(--space-4) var(--space-6);
+}
+
+.student-topbar {
+  position: relative;
+  min-height: calc(100vh - var(--space-6));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+}
+
+.student-topbar .wordmark {
+  font-size: var(--text-flow-4);
+}
+
+.tool-links {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.search {
+  width: min(35rem, 100%);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--faint);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 0.15s ease;
+}
+
+.search:focus-within {
+  border-color: var(--faint-strong);
+}
+
+.search-icon {
+  flex: none;
+  align-self: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-left: var(--space-4);
+  color: var(--subtle);
+}
+
+.search-input {
+  min-width: 0;
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--fg);
+}
+
+.search-input::placeholder,
+.form-input::placeholder {
+  color: var(--subtle);
+  opacity: 1;
+}
+
+/* ---- apex finder ---- */
+
+.apex-page,
+.auth-page,
+.message-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.apex-main,
+.auth-main,
+.message-main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+}
+
+.editorial-panel {
+  width: min(42rem, 100%);
+  padding: var(--space-6) 0;
+  border-top: 2px solid var(--primary);
+  border-bottom: 1px solid var(--faint);
+}
+
+.editorial-panel h1 {
+  max-width: 36rem;
+  margin: var(--space-3) 0 var(--space-4);
+  font-family: var(--font-serif);
+  font-size: var(--text-flow-4);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.intro {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+.finder-form,
+.auth-form {
+  margin-top: var(--space-6);
+}
+
+.field-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--muted);
+}
+
+.field-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.form-input {
+  min-width: 0;
+  min-height: 3rem;
+  flex: 1;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--faint);
+  border-radius: var(--radius);
+  outline: 0;
+  background: var(--surface);
+  color: var(--fg);
+  transition: border-color 0.15s ease;
+}
+
+.form-input:focus {
+  border-color: var(--faint-strong);
+}
+
+.button {
+  min-height: 3rem;
+  padding: 0 var(--space-5);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--surface);
+  cursor: pointer;
+  font-family: var(--font-sc);
+  font-size: var(--text-flow--1);
+  letter-spacing: 0.05em;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.button:hover {
+  border-color: var(--primary-hover);
+  background: var(--primary-hover);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--primary);
+}
+
+.button-secondary:hover {
+  color: var(--surface);
+}
+
+.error {
+  margin: var(--space-3) 0 0;
+  color: var(--danger);
+  font-size: var(--text-flow--1);
+}
+
+/* ---- admin ---- */
+
+.auth-panel {
+  width: min(34rem, 100%);
+}
+
+.auth-copy {
+  margin: var(--space-4) 0 0;
+  color: var(--muted);
+}
+
+.auth-copy strong {
+  color: var(--fg);
+}
+
+.auth-form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.auth-form .form-input {
+  width: 100%;
+}
+
+.code-input {
+  font-family: var(--font-mono);
+  letter-spacing: 0.28em;
+}
+
+.hint {
+  margin-top: calc(-1 * var(--space-2));
+  color: var(--subtle);
+  font-size: var(--text-flow--1);
+}
+
+.admin-actions {
+  margin-top: var(--space-6);
+}
+
+.message-panel {
+  text-align: center;
+}
+
+/* ---- responsive ---- */
+
+@media (max-width: 47.5rem) {
+  .site-nav {
+    padding: var(--space-4);
+  }
+
+  .student-home {
+    padding: var(--space-4);
+  }
+
+  .apex-main,
+  .auth-main,
+  .message-main {
+    padding: var(--space-4);
+  }
+
+  .editorial-panel {
+    padding: var(--space-5) 0;
+  }
+
+  .field-row {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 30rem) {
+  .tool-links {
+    right: 0;
+  }
+}
