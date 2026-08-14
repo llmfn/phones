@@ -45,6 +45,45 @@ the same parsing.
 - [x] The SvelteKit page renders `Hello, {sitename}` from the requested host
 - [x] Tests cover both an apex-shaped host and an arbitrary subdomain
 
+### [TODO] login: sign in with a magic link
+
+The apex serves a login screen asking for an email. On submit, the Worker
+takes the slug from the email's local part, lowercased with anything invalid
+in a hostname stripped, signs a short-lived token carrying it, and sends a
+link to `<slug>.phones.llmfn.com/login/verify?token=...` via Cloudflare
+Email Service.
+
+Every path on the subdomain serves the recommender publicly — anyone with the
+URL can use that student's instance. Only `/login/verify` requires a session,
+and what the session unlocks beyond it is later work.
+
+`/login/verify` accepts either a token or an existing session. A token is
+valid only if its signature holds, it hasn't expired, and its slug matches the
+host it arrived on. A valid one mints a session cookie scoped to that host
+alone — never to `.phones.llmfn.com` — and a pointer cookie on the apex
+holding just the slug, which carries no authority beyond routing. With neither
+a valid session nor a valid token, it redirects to the apex, which clears the
+pointer and shows the login screen again.
+
+Tokens are signed rather than stored: valid for a few minutes, and reusable
+within that window so mail scanners that follow the link don't consume it.
+
+In dev the Worker logs the magic link rather than sending it. `local.pipal.in`
+stands in for the apex, with instances one label below it, so hostnames and
+cookie scoping behave as they do in production. Known apex hosts are a constant
+in the code, so dev and production both work unconfigured; any other host is an
+instance, with the slug as its first label.
+
+**Acceptance Criteria:**
+
+- [ ] Submitting an email delivers a link to that student's subdomain
+- [ ] A fresh link reaches the app, and following it twice still works
+- [ ] An expired, altered, or wrong-host token is refused
+- [ ] The session cookie is not sent to another subdomain
+- [ ] A return visit to the apex reaches the app with no login screen
+- [ ] A subdomain visit with no session serves the recommender
+- [ ] A stale pointer cookie ends at the login screen with the pointer cleared
+
 ## Handover
 
 The first task is complete. The SvelteKit and TypeScript skeleton is in `web/`.
