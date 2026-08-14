@@ -6,8 +6,8 @@ created: 2026-08-15
 # Phones App (phones-app)
 
 The edition-3 hosted phones app: a Cloudflare Worker serving every student
-their own live instance at `<slug>.phones.llmfn.com`, with `phones.llmfn.com`
-as the instance finder and each subdomain owning its admin authentication.
+their own live instance at `<slug>-phones.llmfn.com`, with `phones.llmfn.com`
+as the instance finder and each hostname owning its admin authentication.
 
 ## Design / Approach
 
@@ -15,9 +15,10 @@ Students work entirely in the browser — no local dev, no terminal. Each one
 gets their own instance (their own prompts, schema, memory config, eval runs)
 at a stable address.
 
-Subdomains are never provisioned. A wildcard DNS record and a wildcard Worker
-route mean any hostname under `phones.llmfn.com` reaches the Worker, so a
-student arrives without any DNS or deployment change.
+Student hostnames are never provisioned. A wildcard DNS record and a wildcard
+Worker route mean any first-level hostname ending in `-phones.llmfn.com`
+reaches the Worker, so a student arrives without any DNS or deployment change.
+This naming keeps instances within free Cloudflare Universal SSL coverage.
 
 There is no database yet. Slugs are derived from the email, while short-lived
 code challenges and sessions are signed rather than stored, so nothing needs
@@ -110,13 +111,13 @@ fallback pages use the same typography, colour, controls, and navigation.
 
 Once Cloudflare account and DNS access are available, onboard
 `phones.llmfn.com` with Email Service, configure `login@phones.llmfn.com` as
-the sender, set `AUTH_SECRET`, add apex and wildcard DNS and certificate
-coverage, restore both Worker routes, and deploy. Do not make authenticated
+the sender, set `AUTH_SECRET`, add proxied DNS records for `phones` and `*`,
+and deploy the configured Worker routes. Do not make authenticated
 Cloudflare requests without explicit permission.
 
 **Acceptance Criteria:**
 
-- [ ] The apex and an arbitrary student subdomain work over HTTPS
+- [ ] The apex and an arbitrary student hostname work over HTTPS
 - [ ] A verification code is delivered through Cloudflare Email Service
 
 ## Handover
@@ -134,7 +135,7 @@ the Python app's centred zero state with a phone search bar and an Admin
 link in the top navigation. The search bar is not connected to results yet;
 that belongs with the future recommender API port.
 
-The 29 tests cover slug derivation, instance discovery, temporary Gmail owner
+The 30 tests cover slug derivation, instance discovery, temporary Gmail owner
 mapping, code delivery and refusal, cookie scope, admin access and logout, and
 public instance access. Unit tests, Svelte diagnostics, the production build,
 a Wrangler dry run, and whitespace checks pass.
@@ -145,16 +146,14 @@ then send only to the mapped owner address. Code attempts and email sends are
 not throttled yet; add limits before the admin controls private or destructive
 functionality.
 
-Live email delivery and custom-domain deployment remain deferred. Do not make
+Live email delivery and production deployment remain deferred. Do not make
 authenticated Cloudflare requests without explicit permission. Production
-needs an `AUTH_SECRET`, an Email Service onboarding for
-`login@phones.llmfn.com`, DNS records for `phones` and `*.phones`, and wildcard
-certificate coverage.
+needs an `AUTH_SECRET`, Email Service onboarding for
+`login@phones.llmfn.com`, and proxied DNS records for `phones` and `*` pointing
+to the originless placeholder. Free Universal SSL covers both the apex and the
+`<slug>-phones.llmfn.com` instance hostnames.
 
-Until DNS access is available, Wrangler is configured to deploy to the stable
-`llmfn-phones.<account-subdomain>.workers.dev` hostname with version preview
-URLs enabled. The custom routes are intentionally absent from
-`web/wrangler.jsonc` so this deployment does not depend on DNS. Once DNS and
-certificate coverage are ready, restore routes for `phones.llmfn.com/*` and
-`*.phones.llmfn.com/*`, then disable `workers_dev` and `preview_urls` if the
-Cloudflare-provided URLs should no longer be public.
+Wrangler is configured with routes for `phones.llmfn.com/*` and
+`*-phones.llmfn.com/*`; `workers_dev` and version preview URLs are disabled.
+After the remaining secret and email setup, deploy and verify both hostname
+shapes over HTTPS.

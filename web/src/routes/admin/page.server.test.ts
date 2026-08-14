@@ -8,13 +8,13 @@ const SECRET = 'admin-page-test-secret';
 
 describe('admin session', () => {
   it('allows the session only on its own subdomain', async () => {
-    const session = await signCredential('session', 'alice.phones.llmfn.com', SECRET, 300);
+    const session = await signCredential('session', 'alice-phones.llmfn.com', SECRET, 300);
 
     await expect(
       load({
         cookies: { get: vi.fn().mockReturnValue(session) },
         platform: { env: { AUTH_SECRET: SECRET } },
-        url: new URL('https://alice.phones.llmfn.com/admin')
+        url: new URL('https://alice-phones.llmfn.com/admin')
       } as never)
     ).resolves.toEqual({ slug: 'alice' });
   });
@@ -25,7 +25,7 @@ describe('admin session', () => {
     try {
       await actions.logout?.({
         cookies,
-        url: new URL('https://alice.phones.llmfn.com/admin')
+        url: new URL('https://alice-phones.llmfn.com/admin')
       } as never);
       throw new Error('Expected a redirect');
     } catch (error) {

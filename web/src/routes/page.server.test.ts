@@ -19,9 +19,9 @@ describe('apex discovery routing', () => {
   });
 
   it('serves an instance without requiring a session', () => {
-    expect(load(event('https://alice.phones.llmfn.com/') as never)).toMatchObject({
+    expect(load(event('https://alice-phones.llmfn.com/') as never)).toMatchObject({
       page: 'app',
-      sitename: 'alice.phones.llmfn.com'
+      sitename: 'alice-phones.llmfn.com'
     });
   });
 
@@ -38,7 +38,7 @@ describe('apex discovery routing', () => {
     } catch (error) {
       expect(error).toMatchObject({
         status: 303,
-        location: 'https://aliceexample.phones.llmfn.com/'
+        location: 'https://aliceexample-phones.llmfn.com/'
       });
     }
   });

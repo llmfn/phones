@@ -8,7 +8,7 @@ const SECRET = 'admin-login-test-secret';
 
 describe('admin code login', () => {
   it('shows the temporary masked Gmail owner', () => {
-    expect(load({ url: new URL('https://alice.phones.llmfn.com/admin/login') } as never)).toEqual({
+    expect(load({ url: new URL('https://alice-phones.llmfn.com/admin/login') } as never)).toEqual({
       maskedEmail: 'a***@gmail.com'
     });
   });
@@ -21,7 +21,7 @@ describe('admin code login', () => {
       actions.send?.({
         cookies,
         platform: { env: { AUTH_SECRET: SECRET } },
-        url: new URL('https://alice.phones.llmfn.com/admin/login')
+        url: new URL('https://alice-phones.llmfn.com/admin/login')
       } as never)
     ).resolves.toEqual({ sent: true });
 
@@ -36,7 +36,7 @@ describe('admin code login', () => {
 
   it('turns a valid code challenge into a host-only session', async () => {
     const challenge = await createLoginChallenge(
-      'alice.phones.llmfn.com',
+      'alice-phones.llmfn.com',
       '123456',
       SECRET,
       300
@@ -53,11 +53,11 @@ describe('admin code login', () => {
       await actions.verify?.({
         cookies,
         platform: { env: { AUTH_SECRET: SECRET } },
-        request: new Request('https://alice.phones.llmfn.com/admin/login', {
+        request: new Request('https://alice-phones.llmfn.com/admin/login', {
           method: 'POST',
           body: form
         }),
-        url: new URL('https://alice.phones.llmfn.com/admin/login')
+        url: new URL('https://alice-phones.llmfn.com/admin/login')
       } as never);
       throw new Error('Expected a redirect');
     } catch (error) {

@@ -4,7 +4,7 @@ import { loginChallengeCookieOptions, sessionCookieOptions } from './cookies';
 
 describe('login cookie scope', () => {
   it('keeps the authoritative session cookie host-only', () => {
-    const options = sessionCookieOptions(new URL('https://alice.phones.llmfn.com/'));
+    const options = sessionCookieOptions(new URL('https://alice-phones.llmfn.com/'));
 
     expect(options).not.toHaveProperty('domain');
     expect(options).toMatchObject({ httpOnly: true, path: '/', secure: true });
@@ -16,7 +16,7 @@ describe('login cookie scope', () => {
 
   it('keeps the login challenge host-only and short-lived', () => {
     const options = loginChallengeCookieOptions(
-      new URL('https://alice.phones.llmfn.com/admin/login')
+      new URL('https://alice-phones.llmfn.com/admin/login')
     );
 
     expect(options).not.toHaveProperty('domain');

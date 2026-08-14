@@ -10,9 +10,9 @@ describe('getSitename', () => {
   });
 
   it('returns an arbitrary subdomain hostname', () => {
-    const request = new Request('https://unregistered.phones.llmfn.com/path?q=phone');
+    const request = new Request('https://unregistered-phones.llmfn.com/path?q=phone');
 
-    expect(getSitename(request)).toBe('unregistered.phones.llmfn.com');
+    expect(getSitename(request)).toBe('unregistered-phones.llmfn.com');
   });
 
   it('preserves a local development port', () => {

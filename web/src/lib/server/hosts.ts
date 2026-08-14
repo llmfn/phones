@@ -1,6 +1,8 @@
 export const APEX_HOSTNAMES = ['phones.llmfn.com', 'local.pipal.in'] as const;
 
 const DEFAULT_APEX_HOSTNAME = APEX_HOSTNAMES[0];
+const PRODUCTION_INSTANCE_SUFFIX = '-phones.llmfn.com';
+const MAX_SLUG_LENGTH = 63 - '-phones'.length;
 const SLUG_PATTERN = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+$/;
 
@@ -15,15 +17,18 @@ export function getSite(url: URL): Site {
     return { kind: 'apex', hostname, apexHostname: hostname };
   }
 
-  const apexHostname =
-    APEX_HOSTNAMES.find((apex) => hostname.endsWith(`.${apex}`)) ??
-    DEFAULT_APEX_HOSTNAME;
+  const isProductionInstance = hostname.endsWith(PRODUCTION_INSTANCE_SUFFIX);
+  const apexHostname = isProductionInstance
+    ? DEFAULT_APEX_HOSTNAME
+    : (APEX_HOSTNAMES.find((apex) => hostname.endsWith(`.${apex}`)) ?? DEFAULT_APEX_HOSTNAME);
 
   return {
     kind: 'instance',
     hostname,
     apexHostname,
-    slug: hostname.split('.')[0]
+    slug: isProductionInstance
+      ? hostname.slice(0, -PRODUCTION_INSTANCE_SUFFIX.length)
+      : hostname.split('.')[0]
   };
 }
 
@@ -35,14 +40,14 @@ export function getSlugFromEmail(email: string): string | null {
     .slice(0, separator)
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, '')
-    .slice(0, 63)
+    .slice(0, MAX_SLUG_LENGTH)
     .replace(/^-+|-+$/g, '');
 
   return isValidSlug(slug) ? slug : null;
 }
 
 export function isValidSlug(slug: string): boolean {
-  return slug.length <= 63 && SLUG_PATTERN.test(slug);
+  return slug.length <= MAX_SLUG_LENGTH && SLUG_PATTERN.test(slug);
 }
 
 export function getOwnerEmail(slug: string): string {
@@ -60,6 +65,10 @@ export function getSiteUrl(
   path = '/'
 ): URL {
   const target = new URL(path, currentUrl);
-  target.hostname = slug ? `${slug}.${apexHostname}` : apexHostname;
+  target.hostname = slug
+    ? apexHostname === DEFAULT_APEX_HOSTNAME
+      ? `${slug}${PRODUCTION_INSTANCE_SUFFIX}`
+      : `${slug}.${apexHostname}`
+    : apexHostname;
   return target;
 }

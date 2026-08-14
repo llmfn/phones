@@ -17,34 +17,34 @@ describe('login code challenges', () => {
   });
 
   it('accepts a fresh code more than once', async () => {
-    const challenge = await createLoginChallenge('alice.phones.llmfn.com', '123456', SECRET, 300, NOW);
+    const challenge = await createLoginChallenge('alice-phones.llmfn.com', '123456', SECRET, 300, NOW);
 
     await expect(
-      verifyLoginChallenge(challenge, 'alice.phones.llmfn.com', '123456', SECRET, NOW)
+      verifyLoginChallenge(challenge, 'alice-phones.llmfn.com', '123456', SECRET, NOW)
     ).resolves.toBe(true);
     await expect(
-      verifyLoginChallenge(challenge, 'alice.phones.llmfn.com', '123456', SECRET, NOW)
+      verifyLoginChallenge(challenge, 'alice-phones.llmfn.com', '123456', SECRET, NOW)
     ).resolves.toBe(true);
   });
 
   it('refuses an expired code', async () => {
-    const challenge = await createLoginChallenge('alice.phones.llmfn.com', '123456', SECRET, 300, NOW);
+    const challenge = await createLoginChallenge('alice-phones.llmfn.com', '123456', SECRET, 300, NOW);
 
     await expect(
-      verifyLoginChallenge(challenge, 'alice.phones.llmfn.com', '123456', SECRET, NOW + 301_000)
+      verifyLoginChallenge(challenge, 'alice-phones.llmfn.com', '123456', SECRET, NOW + 301_000)
     ).resolves.toBe(false);
   });
 
   it('refuses an incorrect code', async () => {
-    const challenge = await createLoginChallenge('alice.phones.llmfn.com', '123456', SECRET, 300, NOW);
+    const challenge = await createLoginChallenge('alice-phones.llmfn.com', '123456', SECRET, 300, NOW);
 
     await expect(
-      verifyLoginChallenge(challenge, 'alice.phones.llmfn.com', '654321', SECRET, NOW)
+      verifyLoginChallenge(challenge, 'alice-phones.llmfn.com', '654321', SECRET, NOW)
     ).resolves.toBe(false);
   });
 
   it('refuses a code on the wrong student host', async () => {
-    const challenge = await createLoginChallenge('alice.phones.llmfn.com', '123456', SECRET, 300, NOW);
+    const challenge = await createLoginChallenge('alice-phones.llmfn.com', '123456', SECRET, 300, NOW);
 
     await expect(
       verifyLoginChallenge(challenge, 'alice.local.pipal.in', '123456', SECRET, NOW)
@@ -54,10 +54,10 @@ describe('login code challenges', () => {
 
 describe('signed sessions', () => {
   it('accepts a valid session only on its student host', async () => {
-    const session = await signCredential('session', 'alice.phones.llmfn.com', SECRET, 300, NOW);
+    const session = await signCredential('session', 'alice-phones.llmfn.com', SECRET, 300, NOW);
 
     await expect(
-      verifyCredential(session, 'session', 'alice.phones.llmfn.com', SECRET, NOW)
+      verifyCredential(session, 'session', 'alice-phones.llmfn.com', SECRET, NOW)
     ).resolves.toBe(true);
     await expect(
       verifyCredential(session, 'session', 'alice.local.pipal.in', SECRET, NOW)

@@ -16,12 +16,23 @@ describe('host routing', () => {
   });
 
   it('treats any other host as a public instance', () => {
-    expect(getSite(new URL('https://alice.phones.llmfn.com/phones'))).toEqual({
+    expect(getSite(new URL('https://alice-phones.llmfn.com/phones'))).toEqual({
       kind: 'instance',
-      hostname: 'alice.phones.llmfn.com',
+      hostname: 'alice-phones.llmfn.com',
       apexHostname: 'phones.llmfn.com',
       slug: 'alice'
     });
+  });
+
+  it('builds a production instance URL in a first-level subdomain', () => {
+    const url = getSiteUrl(
+      new URL('https://phones.llmfn.com/'),
+      'phones.llmfn.com',
+      'alice',
+      '/admin/login'
+    );
+
+    expect(url.toString()).toBe('https://alice-phones.llmfn.com/admin/login');
   });
 
   it('builds a local instance URL with its development port', () => {
@@ -48,7 +59,7 @@ describe('email slugs', () => {
   it('rejects malformed and overlong hostname labels', () => {
     expect(getSlugFromEmail('not-an-email')).toBeNull();
     expect(getSlugFromEmail('alice@example.com@attacker.test')).toBeNull();
-    expect(isValidSlug('a'.repeat(64))).toBe(false);
+    expect(isValidSlug('a'.repeat(57))).toBe(false);
   });
 });
 
