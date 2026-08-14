@@ -53,3 +53,11 @@ attempt was rejected during compatibility-date validation after its asset
 upload; no Worker script or routes were published. The compatibility date is
 now corrected. DNS records for `phones` and `*.phones` and wildcard certificate
 coverage still need to be configured before the live checks can pass.
+
+Until DNS access is available, Wrangler deploys to the stable
+`llmfn-phones.<account-subdomain>.workers.dev` hostname with version preview
+URLs enabled. The custom routes are intentionally absent from
+`web/wrangler.jsonc` so this deployment does not depend on DNS. Once DNS and
+certificate coverage are ready, restore routes for `phones.llmfn.com/*` and
+`*.phones.llmfn.com/*`, then disable `workers_dev` and `preview_urls` if the
+Cloudflare-provided URLs should no longer be public.
