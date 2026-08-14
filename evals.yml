@@ -9,6 +9,12 @@
     The iPhone 16 Pro Max appears in the results. Closely related iPhone Pro
     models may rank around it.
 
+- query: best phone for shooting insects
+  expect: >
+    The highest-ranked phones explicitly support macro or close-up photography.
+    General camera phones without a stated macro capability do not satisfy the
+    request.
+
 - query: iphone for my dad
   expect: >
     Every phone shown is an iPhone. Older or simpler iPhones are reasonable,
