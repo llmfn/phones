@@ -6,6 +6,13 @@ context → state → memory → tool use → evals). In edition 2 students buil
 app from the ground up: each layer is written from scratch in `app.py`, against
 the building blocks in `phonekit`.
 
+## Edition 3
+
+The next version of the app lives in `web/` — a Cloudflare Worker, deployed to
+`phones.llmfn.com`, where each student gets their own instance on a subdomain.
+It becomes the main app for this repo. Everything below describes edition 2,
+including the note that there is no separate `web/` deployment.
+
 ## Layout
 
 - `app.py` — the app being built. Starts as a skeleton: a `search(q, filters)`
