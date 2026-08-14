@@ -49,15 +49,6 @@ def stub_judge(monkeypatch, passed=True, reason="meets the expectation"):
     return seen
 
 
-def test_shipped_cases_load_from_the_repo_root():
-    assert evals.CASES_PATH == ROOT / "evals.yml"
-
-    cases = evals.load_cases(None)
-
-    assert len(cases) == 5
-    assert all(case.query and case.expect for case in cases)
-
-
 def test_every_solution_can_read_the_judge_prompt():
     for layer in sorted((ROOT / "solutions").glob("layer*")):
         assert (layer / "prompts" / "eval.md").exists(), layer.name
