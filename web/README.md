@@ -22,16 +22,26 @@ codes to the terminal. Open `http://local.pipal.in:5173` after starting Vite;
 student instances use `<slug>.local.pipal.in:5173`. Production instances use
 `<slug>-phones.llmfn.com` so Cloudflare Universal SSL covers them.
 
-## Cloudflare setup
+## Production
+
+The app is live at `https://phones.llmfn.com`; student instances use
+`https://<slug>-phones.llmfn.com`.
 
 The `llmfn.com` zone needs proxied DNS records for both `phones` and `*`. They
 can point to the originless placeholder `192.0.2.1`; the Worker routes intercept
 `phones.llmfn.com` and `*-phones.llmfn.com` requests before that address is
 used. Existing explicit DNS records take precedence over the wildcard.
 
-Before deployment, onboard `phones.llmfn.com` with Cloudflare Email Service,
-verify `login@phones.llmfn.com` as a sender, and set the signing secret:
+Production email is sent from `login@phones.llmfn.com` through the `EMAIL`
+binding. The `phones.llmfn.com` sending domain must remain onboarded in
+Cloudflare Email Service. Set the authentication signing secret with:
 
 ```sh
 npx wrangler secret put AUTH_SECRET
+```
+
+Deploy from this directory with:
+
+```sh
+npm run deploy
 ```

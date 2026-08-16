@@ -39,7 +39,7 @@ the requested host and renders a plain `Hello, {sitename}` page, where
 `{sitename}` is that host verbatim — no login, no database, no app logic.
 
 Keep the host parsing in one small function; later tasks replace the echo
-behaviour with real routing (apex → instance finder, subdomain → student app)
+behaviour with real routing (apex → instance finder, hostname → student app)
 built on the same parsing.
 
 **Acceptance Criteria:**
@@ -51,10 +51,10 @@ built on the same parsing.
 
 The apex serves an instance finder asking for an email. On submit, the Worker
 takes the slug from the email's local part, lowercased with anything invalid
-in a hostname stripped, and redirects to the public student subdomain. It
+in a hostname stripped, and redirects to the public student hostname. It
 sends no email and stores no authentication state.
 
-The subdomain homepage is a Svelte page with a link to `/admin`. The
+The student homepage is a Svelte page with a link to `/admin`. The
 recommender remains public, while `/admin` requires a session and offers a
 logout action. A signed-out visit continues to `/admin/login`.
 
@@ -65,7 +65,7 @@ replace this temporary rule. The signed challenge is kept in a short-lived,
 host-only cookie, so no database or one-time enforcement is required yet.
 
 Entering a valid code mints a signed session cookie scoped to that host alone
-— never to `.phones.llmfn.com` — and enters the admin. The code remains valid
+— never to a shared parent domain — and enters the admin. The code remains valid
 for five minutes and may be retried during that window. Invalid, expired, or
 wrong-host challenges are refused.
 
@@ -74,9 +74,9 @@ returning student.
 
 In dev the Worker logs the verification code rather than sending it.
 `local.pipal.in` stands in for the apex, with instances one label below it, so
-hostnames and cookie scoping behave as they do in production. Known apex hosts
-are a constant in the code, so dev and production both work unconfigured; any
-other host is an instance, with the slug as its first label.
+hostname isolation and cookie scoping behave as they do in production. Known
+apex hosts are a constant in the code, and production instance slugs are read
+from the hostname's `-phones.llmfn.com` suffix.
 
 **Acceptance Criteria:**
 
@@ -107,7 +107,7 @@ fallback pages use the same typography, colour, controls, and navigation.
 - [x] The student top navigation links to Admin
 - [x] Svelte diagnostics, tests, and the production build pass
 
-### [TODO] deploy: connect production domains and email
+### [DONE] deploy: connect production domains and email
 
 Once Cloudflare account and DNS access are available, onboard
 `phones.llmfn.com` with Email Service, configure `login@phones.llmfn.com` as
@@ -117,43 +117,19 @@ Cloudflare requests without explicit permission.
 
 **Acceptance Criteria:**
 
-- [ ] The apex and an arbitrary student hostname work over HTTPS
-- [ ] A verification code is delivered through Cloudflare Email Service
+- [x] The apex and an arbitrary student hostname work over HTTPS
+- [x] A verification code is delivered through Cloudflare Email Service
 
 ## Handover
 
-The hostname routing and login tasks are complete in `web/`. The apex only
-finds and redirects to public student instances. Their Svelte homepage links
-to a session-protected admin, where a six-digit email code creates one signed,
-host-only session. Admin logout clears that session. Local development logs
-codes for the `local.pipal.in` hosts, while production uses the `EMAIL`
-binding.
+Production is live at `phones.llmfn.com`, with student instances at
+`<slug>-phones.llmfn.com`. Proxied wildcard DNS, free Universal SSL, the Worker
+routes, `AUTH_SECRET`, and the Cloudflare Email Service `EMAIL` binding are all
+active. The apex and student hostnames return successfully over HTTPS, and
+verification-code email delivery works in production.
 
-All hosted pages now use the shared editorial design system in `web/src/app.css`
-with self-hosted fonts in `web/static/fonts/`. The student homepage mirrors
-the Python app's centred zero state with a phone search bar and an Admin
-link in the top navigation. The search bar is not connected to results yet;
-that belongs with the future recommender API port.
-
-The 30 tests cover slug derivation, instance discovery, temporary Gmail owner
-mapping, code delivery and refusal, cookie scope, admin access and logout, and
-public instance access. Unit tests, Svelte diagnostics, the production build,
-a Wrangler dry run, and whitespace checks pass.
-
-The `<slug>@gmail.com` owner rule is temporary. Replace it with the real
-student mapping as soon as that mapping exists; admin authentication should
-then send only to the mapped owner address. Code attempts and email sends are
-not throttled yet; add limits before the admin controls private or destructive
-functionality.
-
-Live email delivery and production deployment remain deferred. Do not make
-authenticated Cloudflare requests without explicit permission. Production
-needs an `AUTH_SECRET`, Email Service onboarding for
-`login@phones.llmfn.com`, and proxied DNS records for `phones` and `*` pointing
-to the originless placeholder. Free Universal SSL covers both the apex and the
-`<slug>-phones.llmfn.com` instance hostnames.
-
-Wrangler is configured with routes for `phones.llmfn.com/*` and
-`*-phones.llmfn.com/*`; `workers_dev` and version preview URLs are disabled.
-After the remaining secret and email setup, deploy and verify both hostname
-shapes over HTTPS.
+The current student homepage is still the search zero state; its search control
+is not connected to results. The temporary `<slug>@gmail.com` owner mapping
+also remains until a real student mapping is available. Code attempts and email
+sends are not throttled yet, so add limits before admin controls private or
+destructive functionality.
