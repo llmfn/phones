@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { CATALOGUE } from '$lib/server/catalogue';
 import { parseSiteConfig } from '$lib/site-config';
 
 import { POST } from './+server';
@@ -30,6 +31,25 @@ describe('POST /api/recommend', () => {
     expect(body.products.every((phone: { name: string }) => phone.name.toLowerCase().includes('iphone'))).toBe(
       true
     );
+    expect(body.trace).toMatchObject({
+      kind: 'search',
+      input: 'iphone',
+      status: 'success',
+      steps: [
+        {
+          layer: 1,
+          name: 'search_substring_match',
+          label: 'substring match',
+          status: 'success',
+          input: { query: 'iphone', field: 'name', limit: 5 },
+          output: {
+            matched: CATALOGUE.filter((phone) => phone.name.toLowerCase().includes('iphone')).length,
+            returned: 5
+          }
+        }
+      ]
+    });
+    expect(body.trace.steps[0].latency_ms).toBeGreaterThanOrEqual(0);
   });
 
   it('supports empty and unmatched queries', async () => {
@@ -48,5 +68,22 @@ describe('POST /api/recommend', () => {
   it('does not expose the student API on the apex', async () => {
     const { response } = await post({}, 'https://phones.llmfn.com/api/recommend');
     expect(response.status).toBe(404);
+  });
+
+  it('returns pipeline failures as inspectable error turns', async () => {
+    const failedEvent = event({ query: 'iphone' });
+    failedEvent.locals.config = parseSiteConfig({ search: { method: 'bm25' } });
+    const response = await POST(failedEvent as never);
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.products).toEqual([]);
+    expect(body.trace).toMatchObject({
+      kind: 'search',
+      input: 'iphone',
+      steps: [],
+      status: 'error',
+      error: 'BM25 search is not implemented'
+    });
   });
 });

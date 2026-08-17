@@ -31,5 +31,5 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     const message = error instanceof Error ? error.message : String(error);
     return json({ error: message }, { status: 400 });
   }
-  return json(search(query, filters, locals.config));
+  return json(await search(query, filters, locals.config));
 };

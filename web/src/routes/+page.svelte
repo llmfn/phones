@@ -2,8 +2,9 @@
   import { onDestroy } from 'svelte';
 
   import ProductCard from '$lib/components/ProductCard.svelte';
+  import TracePanel from '$lib/components/TracePanel.svelte';
   import { recommend } from '$lib/recommend';
-  import type { Product } from '$lib/schema';
+  import type { Product, TraceTurn } from '$lib/schema';
 
   import type { ActionData, PageData } from './$types';
 
@@ -13,6 +14,7 @@
   let searched = $state(false);
   let loading = $state(false);
   let products = $state<Product[]>([]);
+  let turns = $state<TraceTurn[]>([]);
   let error = $state<string | null>(null);
   let resultVersion = $state(0);
   let activeRequest: AbortController | null = null;
@@ -32,6 +34,10 @@
       const result = await recommend(query, request.signal);
       if (request.signal.aborted) return;
       products = result.products;
+      if (result.trace) {
+        turns.push(result.trace);
+        error = result.trace.status === 'error' ? (result.trace.error ?? 'Search failed') : null;
+      }
       resultVersion += 1;
     } catch (caught) {
       if (request.signal.aborted) return;
@@ -88,7 +94,7 @@
     </main>
   </div>
 {:else}
-  <main class:has-searched={searched} class="student-home">
+  <main class:has-searched={searched} class:has-trace={turns.length > 0} class="student-home">
     <header class="student-topbar">
       <div class="student-brand">
         <a class="wordmark" href="/">Phones</a>
@@ -144,5 +150,7 @@
         {/if}
       </section>
     {/if}
+
+    {#if turns.length}<TracePanel {turns} />{/if}
   </main>
 {/if}

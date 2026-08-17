@@ -98,6 +98,18 @@
   --surface-tint: oklch(93% 0.022 50);
   --danger: oklch(48% 0.14 30);
 
+  --trace-w: clamp(20rem, 30vw, 28rem);
+  --trace-bg: oklch(20% 0.015 50);
+  --trace-border: oklch(30% 0.015 50);
+  --trace-row: oklch(23% 0.015 50);
+  --trace-pre: oklch(16% 0.012 50);
+  --trace-fg: oklch(85% 0.04 55);
+  --trace-muted: oklch(60% 0.03 50);
+  --trace-success: oklch(72% 0.12 145);
+  --trace-fallback: oklch(70% 0.12 80);
+  --trace-error: oklch(62% 0.14 25);
+  --trace-skip: oklch(55% 0.04 50);
+
   --radius-sm: 0.2rem;
   --radius: 0.3rem;
   --radius-lg: 0.5rem;
@@ -217,6 +229,10 @@ a:hover {
   padding: var(--space-4) var(--space-6);
 }
 
+.student-home.has-trace {
+  padding-right: calc(var(--trace-w) + var(--space-6));
+}
+
 .student-topbar {
   position: relative;
   min-height: calc(100vh - var(--space-6));
@@ -244,6 +260,10 @@ a:hover {
   align-items: start;
   justify-content: stretch;
   gap: var(--space-6);
+}
+
+.student-home.has-trace .student-topbar {
+  grid-template-columns: auto minmax(0, 35rem) auto;
 }
 
 .student-home.has-searched .student-brand {
@@ -475,6 +495,274 @@ a:hover {
   color: var(--muted);
 }
 
+/* ---- trace rail ---- */
+
+.trace-rail {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 40;
+  width: var(--trace-w);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  background: var(--trace-bg);
+  color: var(--trace-fg);
+}
+
+.trace-head {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--trace-border);
+}
+
+.trace-title {
+  margin: 0 0 -1px;
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--primary);
+  color: var(--trace-fg);
+  font-family: var(--font-sc);
+  font-size: var(--text-flow--1);
+  font-weight: 400;
+  letter-spacing: 0.07em;
+}
+
+.trace-copy {
+  padding: 2px 7px;
+  border: 1px solid var(--trace-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--trace-muted);
+  cursor: pointer;
+  font-family: var(--font-sc);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.trace-copy:hover {
+  border-color: var(--primary);
+  color: var(--trace-fg);
+}
+
+.trace-turns,
+.turn-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trace-turns {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--trace-border) transparent;
+  scrollbar-width: thin;
+}
+
+.trace-turn {
+  margin-bottom: var(--space-3);
+  padding: 8px 10px;
+  border: 1px solid var(--trace-border);
+  border-left: 3px solid var(--trace-success);
+  border-radius: var(--radius);
+  background: var(--trace-row);
+}
+
+.trace-turn.error {
+  border-left-color: var(--trace-error);
+}
+
+.turn-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-bottom: 8px;
+}
+
+.turn-kind,
+.turn-input,
+.step-label,
+.step-status,
+.trace-latency,
+.io-label {
+  font-family: var(--font-sc);
+  letter-spacing: 0.06em;
+}
+
+.turn-kind {
+  flex: none;
+  color: var(--trace-muted);
+  font-size: 10px;
+}
+
+.turn-input {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+
+.trace-latency {
+  flex: none;
+  color: var(--trace-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.step-item details,
+.step-item summary {
+  margin: 0;
+}
+
+.step-row {
+  width: 100%;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 8px;
+  border-left: 3px solid var(--trace-success);
+  border-bottom: 1px solid var(--trace-border);
+  background: var(--trace-row);
+  cursor: pointer;
+  list-style: none;
+}
+
+.step-row::-webkit-details-marker {
+  display: none;
+}
+
+.step-row:hover {
+  background: var(--trace-pre);
+}
+
+.step-row.fallback {
+  border-left-color: var(--trace-fallback);
+}
+
+.step-row.error {
+  border-left-color: var(--trace-error);
+}
+
+.step-row.skip {
+  border-left-color: var(--trace-skip);
+  opacity: 0.6;
+}
+
+.layer-badge {
+  flex: none;
+  min-width: 21px;
+  color: var(--trace-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.step-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--trace-fg);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-status {
+  color: var(--trace-fallback);
+  font-size: 10px;
+}
+
+.step-row.error .step-status {
+  color: var(--trace-error);
+}
+
+.step-caret {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-right: 2px;
+  border-right: 1.5px solid var(--trace-muted);
+  border-bottom: 1.5px solid var(--trace-muted);
+  transform: rotate(-45deg);
+  transition: transform 120ms ease;
+}
+
+details[open] > .step-row .step-caret {
+  transform: rotate(45deg);
+}
+
+.step-detail {
+  padding: 8px 10px 10px;
+  border-left: 3px solid var(--trace-border);
+  border-bottom: 1px solid var(--trace-border);
+  background: var(--trace-pre);
+}
+
+.step-tabs {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--trace-border);
+}
+
+.step-tab {
+  padding: 0 0 4px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  color: var(--trace-muted);
+  cursor: pointer;
+  font-family: var(--font-sc);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+}
+
+.step-tab.is-active {
+  border-bottom-color: var(--primary);
+  color: var(--trace-fg);
+}
+
+.detail-block + .detail-block {
+  margin-top: 10px;
+}
+
+.io-label {
+  margin-bottom: 4px;
+  padding-left: 8px;
+  border-left: 2px solid var(--primary);
+  font-size: 10px;
+}
+
+.trace-json {
+  max-width: 100%;
+  margin: 0;
+  overflow: auto;
+  color: var(--trace-success);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.turn-empty,
+.turn-error {
+  margin-top: 8px;
+  color: var(--trace-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.turn-error {
+  color: var(--trace-error);
+}
+
 /* ---- apex finder ---- */
 
 .apex-page,
@@ -627,6 +915,20 @@ a:hover {
 }
 
 /* ---- responsive ---- */
+
+@media (max-width: 70rem) {
+  .student-home.has-trace {
+    padding-right: var(--space-6);
+  }
+
+  .trace-rail {
+    position: static;
+    width: min(44rem, 100%);
+    max-height: 70vh;
+    margin: var(--space-6) auto 0;
+    border-radius: var(--radius);
+  }
+}
 
 @media (max-width: 47.5rem) {
   .site-nav {

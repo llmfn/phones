@@ -226,7 +226,7 @@ direction.
 
 ## Tasks
 
-### [TODO] substring-match: serve the pipeline end to end with substring matching
+### [DONE] substring-match: serve the pipeline end to end with substring matching
 
 The whole path, with the smallest engine that visibly works.
 
@@ -264,6 +264,31 @@ dispatching on `locals.config.search.method`, and returning products and the
 trace; the student homepage's search state rendering the result set; and the
 trace panel carrying the Python app's shape.
 
+Implement this in three checkpoints, each independently verifiable:
+
+1. **Search API.** Generate the bundled catalogue from `data/phones/`; define
+   the config, request, and response types; resolve config onto `locals.config`;
+   port `Product.from_entry`; implement the handwritten `search` pipeline and
+   `searchSubstringMatch`; and expose it through `POST /api/recommend`. Verify
+   the endpoint directly: `iphone` returns at most five matching names,
+   `apple` returns none, an empty query returns the first five catalogue rows,
+   every phone can be found by its complete name, and the response carries all
+   colour and storage options needed by a card.
+2. **Search results UI.** Connect the existing student search box to the
+   endpoint and port the Python app's zero-to-search layout, result count,
+   empty/loading/error states, product grid, and card interactions. Colour
+   selection changes the card image locally and storage selection changes its
+   price locally. Verify the transition and interactions in both desktop and
+   narrow layouts. Do not add the filter rail in this checkpoint.
+3. **Trace end to end.** Port the query-scoped trace collector to
+   `AsyncLocalStorage`, wrap the pipeline as `Application.run_query` does,
+   instrument substring matching with one timed step, return the settled turn,
+   and port the Python trace rail: turn grouping, step status and latency,
+   expandable formatted/raw detail, and copy-as-JSON. Omit live polling and
+   engine-specific BM25/semantic detail renderers. Verify that overlapping
+   requests cannot see each other's steps and that pipeline failures return an
+   inspectable error turn.
+
 No filter rail yet — it is driven by facets, so it arrives with them.
 
 Typing `iphone` into a freshly deployed site returns iPhones and shows what it
@@ -272,11 +297,11 @@ because it proves every part of the path at once.
 
 **Acceptance Criteria:**
 
-- [ ] `iphone` returns only phones whose name holds it, `apple` returns nothing,
+- [x] `iphone` returns only phones whose name holds it, `apple` returns nothing,
       and an empty query returns rows
-- [ ] Every phone in `data/phones/` can be found by searching its name
-- [ ] The trace panel shows one step for the query, with the time it took
-- [ ] Overlapping requests never see each other's trace steps
+- [x] Every phone in `data/phones/` can be found by searching its name
+- [x] The trace panel shows one step for the query, with the time it took
+- [x] Overlapping requests never see each other's trace steps
 
 ### [TODO] facets: show what the results hold
 
@@ -426,3 +451,18 @@ shows cosine scores where it showed a missing token.
       fails the load rather than ranking against the old vector
 - [ ] A site selecting this method with no credential configured fails with a
       message naming what is missing
+
+## Handover
+
+`web-search.substring-match` is complete. The generated catalogue, config seam,
+product projection, traced substring pipeline, instance-only endpoint, result
+grid, card interactions, and trace rail now form one end-to-end path. The
+query-scoped collector uses `AsyncLocalStorage`; each response carries a settled
+turn, pipeline failures return an inspectable error turn, and the browser keeps
+completed turns grouped in the rail with formatted/raw detail and copy-as-JSON.
+
+`npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
+from `web/` (15 test files, 52 tests). The overlap test runs two asynchronous
+traces concurrently and verifies that neither receives the other's step. Next
+is `web-search.facets`, which adds result-derived counts and the filter rail's
+first read-only surface.
