@@ -6,7 +6,8 @@ import type { Database, Statement } from '../src/lib/server/database';
 const MIGRATIONS = [
   '../migrations/0001_site_config.sql',
   '../migrations/0002_admin_groups.sql',
-  '../migrations/0003_admin_participants.sql'
+  '../migrations/0003_admin_participants.sql',
+  '../migrations/0004_participant_subdomain_history.sql'
 ];
 
 class TestStatement implements Statement {

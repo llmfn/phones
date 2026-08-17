@@ -129,9 +129,11 @@ Archive a group, making its participant sites read-only.
 
 ## Handover
 
-The admin gate, groups, and participant management are complete. Migration
-`0003_admin_participants.sql` adds participants and preserves a site's revisions
-when its subdomain changes. `/admin/groups/[id]` creates, lists, edits,
+The admin gate, groups, and participant management are complete. Migrations
+`0003_admin_participants.sql` and `0004_participant_subdomain_history.sql` add
+participants and preserve a site's revisions when its subdomain changes; `0004`
+also repairs databases that applied an earlier form of `0003`.
+`/admin/groups/[id]` creates, lists, edits,
 soft-deletes, and restores participants; `/admin` counts active participants.
 Managed subdomains resolve only while active and studio codes go to the stored
 participant email. Existing unmanaged self-signup sites remain available, while

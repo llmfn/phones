@@ -113,4 +113,41 @@ describe('the participant store', () => {
     await expect(loadRevision(existing, 'alice', null)).resolves.toMatchObject({ revision: 1 });
     await expect(listParticipants(existing, group.id)).resolves.toHaveLength(1);
   });
+
+  it('repairs a database that applied participants before subdomain history existed', async () => {
+    const partial = createTestDatabase();
+    await applyMigration(partial, '../migrations/0001_site_config.sql');
+    await applyMigration(partial, '../migrations/0002_admin_groups.sql');
+    await partial.exec(`
+      CREATE TABLE participants (
+        id INTEGER PRIMARY KEY,
+        group_id INTEGER NOT NULL REFERENCES groups(id),
+        name TEXT,
+        email TEXT NOT NULL,
+        subdomain TEXT NOT NULL UNIQUE,
+        status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'deleted')),
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX participants_group_id ON participants(group_id);
+    `);
+    const group = await createGroup(partial, 'edition-03');
+    await partial
+      .prepare(
+        `INSERT INTO participants (group_id, name, email, subdomain, status, created_at)
+         VALUES (?, 'Ada', 'ada@example.com', 'ada', 'active', datetime('now'))`
+      )
+      .bind(group.id)
+      .run();
+    await ensureSite(partial, 'ada');
+
+    await applyMigration(partial, '../migrations/0004_participant_subdomain_history.sql');
+    await updateParticipant(partial, group.id, 1, {
+      name: 'Ada',
+      email: 'ada@example.com',
+      subdomain: 'ada-course'
+    });
+
+    await expect(resolveParticipantSite(partial, 'ada')).resolves.toBeNull();
+    await expect(resolveParticipantSite(partial, 'ada-course')).resolves.toBe('active');
+  });
 });
