@@ -610,7 +610,7 @@ a:hover {
   flex: none;
   color: var(--trace-muted);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .step-item details,
@@ -673,7 +673,7 @@ a:hover {
 
 .step-status {
   color: var(--trace-fallback);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .step-row.error .step-status {
@@ -738,14 +738,58 @@ details[open] > .step-row .step-caret {
   font-size: 10px;
 }
 
+.detail-text {
+  color: var(--trace-success);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.substring-matches {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 2rem;
+  color: var(--trace-fg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.substring-matches li {
+  padding: 2px 0;
+}
+
+.substring-count {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--trace-border);
+  color: var(--trace-fg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.substring-count span {
+  display: block;
+  margin-top: 2px;
+  color: var(--trace-muted);
+  font-size: 10px;
+}
+
+.substring-count.error-count {
+  color: var(--trace-error);
+}
+
 .trace-json {
   max-width: 100%;
   margin: 0;
-  overflow: auto;
+  padding: var(--space-2);
+  background: var(--trace-bg);
+  border-radius: var(--radius-sm);
   color: var(--trace-success);
   font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1.55;
+  font-size: 12px;
+  line-height: 1.65;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -755,7 +799,7 @@ details[open] > .step-row .step-caret {
   margin-top: 8px;
   color: var(--trace-muted);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   overflow-wrap: anywhere;
 }
 

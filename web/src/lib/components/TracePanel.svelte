@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TraceTurn } from '$lib/schema';
+  import type { TraceStep, TraceTurn } from '$lib/schema';
 
   let { turns }: { turns: TraceTurn[] } = $props();
 
@@ -7,6 +7,23 @@
   let copyLabel = $state('copy as JSON');
 
   const formatted = (value: unknown) => JSON.stringify(value, null, 2);
+
+  function substringMatches(step: TraceStep): Array<{ id: string; name: string }> | null {
+    if (step.name !== 'search_substring_match' || !Array.isArray(step.output.shown_matches)) return null;
+    return step.output.shown_matches.filter(
+      (match): match is { id: string; name: string } =>
+        typeof match === 'object' &&
+        match !== null &&
+        'id' in match &&
+        typeof match.id === 'string' &&
+        'name' in match &&
+        typeof match.name === 'string'
+    );
+  }
+
+  function matchCount(step: TraceStep): number {
+    return typeof step.output.matched === 'number' ? step.output.matched : 0;
+  }
 
   async function copyTrace() {
     try {
@@ -37,6 +54,7 @@
         <ol class="turn-steps">
           {#each turn.steps as step, stepIndex}
             {@const key = `${turnIndex}-${stepIndex}`}
+            {@const matches = substringMatches(step)}
             <li class="step-item">
               <details>
                 <summary class={`step-row ${step.status}`}>
@@ -68,6 +86,25 @@
 
                   {#if views[key] === 'raw'}
                     <pre class="trace-json">{formatted(step)}</pre>
+                  {:else if matches}
+                    <div class="detail-block">
+                      <div class="io-label">query as sent</div>
+                      <div class="detail-text">{String(step.input.query ?? '')}</div>
+                    </div>
+                    <div class="detail-block">
+                      <div class="io-label">matches</div>
+                      <ol class="substring-matches">
+                        {#each matches as match}
+                          <li>{match.name}</li>
+                        {/each}
+                      </ol>
+                      <div class:error-count={matchCount(step) === 0} class="substring-count">
+                        {matchCount(step)} matching phone{matchCount(step) === 1 ? '' : 's'}
+                        {#if matches.length < matchCount(step)}
+                          <span>showing first {matches.length} in catalogue order</span>
+                        {/if}
+                      </div>
+                    </div>
                   {:else}
                     <div class="detail-block">
                       <div class="io-label">input</div>

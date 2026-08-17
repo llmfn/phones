@@ -25,9 +25,10 @@ async function post(body: unknown, url?: string) {
 describe('POST /api/recommend', () => {
   it('serves substring results through the configured pipeline', async () => {
     const { response, body } = await post({ query: 'iphone', filters: {} });
+    const matchingIphones = CATALOGUE.filter((phone) => phone.name.toLowerCase().includes('iphone'));
     expect(response.status).toBe(200);
     expect(body.facets).toEqual([]);
-    expect(body.products).toHaveLength(5);
+    expect(body.products).toHaveLength(matchingIphones.length);
     expect(body.products.every((phone: { name: string }) => phone.name.toLowerCase().includes('iphone'))).toBe(
       true
     );
@@ -41,10 +42,11 @@ describe('POST /api/recommend', () => {
           name: 'search_substring_match',
           label: 'substring match',
           status: 'success',
-          input: { query: 'iphone', field: 'name', limit: 5 },
+          input: { query: 'iphone', field: 'name' },
           output: {
-            matched: CATALOGUE.filter((phone) => phone.name.toLowerCase().includes('iphone')).length,
-            returned: 5
+            matched: matchingIphones.length,
+            returned: matchingIphones.length,
+            shown_matches: matchingIphones.slice(0, 10).map((phone) => ({ id: phone.id, name: phone.name }))
           }
         }
       ]
@@ -53,7 +55,7 @@ describe('POST /api/recommend', () => {
   });
 
   it('supports empty and unmatched queries', async () => {
-    expect((await post({ query: '' })).body.products).toHaveLength(5);
+    expect((await post({ query: '' })).body.products).toHaveLength(CATALOGUE.length);
     expect((await post({ query: 'apple' })).body.products).toEqual([]);
   });
 

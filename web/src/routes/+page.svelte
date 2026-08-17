@@ -24,6 +24,7 @@
     query = query.trim();
     searched = true;
     error = null;
+    turns = [];
 
     activeRequest?.abort();
     const request = new AbortController();
@@ -35,7 +36,7 @@
       if (request.signal.aborted) return;
       products = result.products;
       if (result.trace) {
-        turns.push(result.trace);
+        turns = [result.trace];
         error = result.trace.status === 'error' ? (result.trace.error ?? 'Search failed') : null;
       }
       resultVersion += 1;

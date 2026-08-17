@@ -50,12 +50,12 @@ dependency.
 
 A site resolves to the built-in defaults: `search.method` is `substring_match`, every
 prompt is empty. `substring_match` is not a stub that returns nothing — it is substring
-matching on the phone's name, capped at a handful of rows. What someone writes
-before they know about ranking.
+matching on the phone's name, returning every match. What someone writes before
+they know about ranking.
 
 That is a better starting point than an empty engine, for two reasons. An empty
 result set is indistinguishable from a broken endpoint, so it proves nothing
-about the wiring; five real phones prove the catalogue loaded, the projection
+about the wiring; real phones prove the catalogue loaded, the projection
 works, and the grid renders. And it gives the engines that follow something to
 actually beat, so the workshop's arc is three steps rather than two: naive
 substring, then real keyword ranking, then meaning.
@@ -235,15 +235,15 @@ source of truth, with the module regenerated rather than hand-edited — plus th
 projection turning a catalogue document into the product shape a card needs:
 colours, storage options, and the initial selected colour and storage.
 
-The engine: a case-insensitive substring match on the phone's name, capped at a
-handful of rows, in catalogue order. An empty query returns the first rows
-unfiltered, so clearing the box still shows something. It records a trace step
-carrying what it matched on and how many rows matched — small, but enough that
-the trace panel has real content from the first task.
+The engine: a case-insensitive substring match on the phone's name, returning
+every match in catalogue order. An empty query returns the full catalogue, so
+clearing the box still shows everything. It records a trace step carrying what
+it matched on, the first names in catalogue order, and how many rows matched —
+small, but enough that the trace panel has real content from the first task.
 
-There is no ranking here at all, deliberately. The cap takes the first rows in
-catalogue order, so `substring_match`'s "top 5" is arbitrary. Ordering is `bm25`'s
-contribution and this is what it improves on.
+There is no ranking here at all, deliberately. Results stay in catalogue order,
+so their order is arbitrary. Ranking is `bm25`'s contribution and this is what
+it improves on.
 
 The config: its type, its defaults, and `parseSiteConfig`, which takes unknown
 JSON and returns a fully populated config — filling absent fields from the
@@ -270,8 +270,8 @@ Implement this in three checkpoints, each independently verifiable:
    the config, request, and response types; resolve config onto `locals.config`;
    port `Product.from_entry`; implement the handwritten `search` pipeline and
    `searchSubstringMatch`; and expose it through `POST /api/recommend`. Verify
-   the endpoint directly: `iphone` returns at most five matching names,
-   `apple` returns none, an empty query returns the first five catalogue rows,
+   the endpoint directly: `iphone` returns every matching name, `apple` returns
+   none, an empty query returns the full catalogue,
    every phone can be found by its complete name, and the response carries all
    colour and storage options needed by a card.
 2. **Search results UI.** Connect the existing student search box to the
@@ -458,8 +458,9 @@ shows cosine scores where it showed a missing token.
 product projection, traced substring pipeline, instance-only endpoint, result
 grid, card interactions, and trace rail now form one end-to-end path. The
 query-scoped collector uses `AsyncLocalStorage`; each response carries a settled
-turn, pipeline failures return an inspectable error turn, and the browser keeps
-completed turns grouped in the rail with formatted/raw detail and copy-as-JSON.
+turn, pipeline failures return an inspectable error turn, and each new search
+replaces the previous search turn in the rail, with formatted/raw detail and
+copy-as-JSON.
 
 `npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
 from `web/` (15 test files, 52 tests). The overlap test runs two asynchronous
