@@ -10,7 +10,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-export const POST: RequestHandler = async ({ request, locals, url }) => {
+export const POST: RequestHandler = async ({ request, locals, platform, url }) => {
   if (getSite(url).kind !== 'instance') return json({ error: 'Not found' }, { status: 404 });
 
   let body: unknown;
@@ -31,5 +31,5 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     const message = error instanceof Error ? error.message : String(error);
     return json({ error: message }, { status: 400 });
   }
-  return json(await search(query, filters, locals.config));
+  return json(await search(query, filters, locals.config, platform?.env.OPENAI_API_KEY));
 };

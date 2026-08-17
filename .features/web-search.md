@@ -306,7 +306,7 @@ because it proves every part of the path at once.
 - [x] Overlapping requests never see each other's trace steps
 - [x] A copied `?q=` URL restores the search without a full-page navigation
 
-### [TODO] facets: show what the results hold
+### [DONE] facets: show what the results hold
 
 `computeFacets(products) -> Facet[]`, porting `_compute_facets` in
 `phonekit/app.py`: brand counts, colour-family counts carrying the family's hex,
@@ -333,11 +333,11 @@ if that is wrong it is a catalogue-wide decision to take on purpose.
 
 **Acceptance Criteria:**
 
-- [ ] A phone with two options in one colour family contributes twice to that
+- [x] A phone with two options in one colour family contributes twice to that
       family's count
-- [ ] Searching a narrower query changes the counts and the price bounds
+- [x] Searching a narrower query changes the counts and the price bounds
 
-### [TODO] filters: narrow by clicking the rail
+### [DONE] filters: narrow by clicking the rail
 
 `applyFilters(products, filters)`, porting `apply_filters` in
 `phonekit/app.py`: keep each product whose options survive every active
@@ -362,14 +362,14 @@ come back in and nothing else.
 
 **Acceptance Criteria:**
 
-- [ ] Narrowing by brand, colour, and price changes the result set, and clearing
+- [x] Narrowing by brand, colour, and price changes the result set, and clearing
       a filter restores it
-- [ ] A phone filtered to one colour leads with that colour's image, and one
+- [x] A phone filtered to one colour leads with that colour's image, and one
       filtered by price leads with a tier inside the range
-- [ ] The removal counts in the trace and the survivors add up to what went in
-- [ ] A query with no active filter records no filter step
+- [x] The removal counts in the trace and the survivors add up to what went in
+- [x] A query with no active filter records no filter step
 
-### [TODO] bm25: rank by keyword matching
+### [DONE] bm25: rank by keyword matching
 
 The port of `phonekit/search/bm25.py` and `index.py`, whole:
 
@@ -391,7 +391,8 @@ The port of `phonekit/search/bm25.py` and `index.py`, whole:
 Built once per isolate. Every query token must appear for a phone to qualify,
 and results rank by total score. The trace carries what the Python one does:
 catalogue size, average length, `k1`, `b`, per-token match counts and idf
-ordered misses-first, and per-result term counts, lengths, and contributions.
+ordered as in Python — matching tokens by descending idf, then misses — and
+per-result term counts, lengths, and contributions.
 
 This is where a student sees what search buys them. Against `substring_match`, the same
 queries improve for reasons they can point at: `apple` works because the whole
@@ -410,28 +411,29 @@ not repeatable afterwards, so do it here rather than intending to.
 
 **Acceptance Criteria:**
 
-- [ ] `idf` and a token's score contribution match values computed by hand over
+- [x] `idf` and a token's score contribution match values computed by hand over
       a small synthetic corpus, so the arithmetic is checked against the formula
       rather than against another implementation
-- [ ] `apple` returns iPhones and `pro iphone 16` returns the iPhone 16 Pro —
+- [x] `apple` returns iPhones and `pro iphone 16` returns the iPhone 16 Pro —
       the two queries `substring_match` gets wrong
-- [ ] `a phone for my mom` returns nothing, and the trace names the token that
-      no phone holds, with the misses ordered first
-- [ ] A committed golden file of query-to-ranked-ids over the real catalogue is
+- [x] `a phone for my mom` returns nothing, and the trace names the token that
+      no phone holds using the Python trace ordering
+- [x] A committed golden file of query-to-ranked-ids over the real catalogue is
       reproduced exactly
-- [ ] The one-time diff against `phonekit` is run and its result recorded
+- [x] The one-time diff against `phonekit` is run and its result recorded
 
-### [TODO] semantic: rank by embedding similarity
+### [DONE] semantic: rank by embedding similarity
 
 Cosine similarity over per-phone narrative embeddings, with the query embedded
 at request time through a shared OpenAI credential held as a Worker secret, and
 `min_score` cutting the irrelevant tail. The trace shows the top cosine scores,
 how many candidates were ranked, and how many qualified.
 
-The vectors ship as a committed artifact, int8-quantized — 4.2MB of JSON down to
-around 209KB — read once per isolate. Quantization perturbs scores slightly
-without changing what a student sees; the tolerance goes in the test rather than
-being discovered later.
+The vectors ship as a committed artifact, int8-quantized — 4.2MB of float JSON
+down to 208,896 raw vector bytes, represented as around 279KB of base64 so Vite
+can bundle it into the Worker without a runtime asset read. Quantization perturbs
+scores slightly without changing what a student sees; the tolerance goes in the
+test rather than being discovered later.
 
 A TypeScript script generates the artifact: read `data/phones/`, embed each
 narrative, quantize, write. It reads nothing the Python app produces and is run
@@ -446,27 +448,25 @@ shows cosine scores where it showed a missing token.
 
 **Acceptance Criteria:**
 
-- [ ] Quantized and unquantized vectors rank a fixed query identically down to a
+- [x] Quantized and unquantized vectors rank a fixed query identically down to a
       stated depth, so quantization drift is bounded rather than assumed
-- [ ] The vibe query that returns nothing under BM25 returns results here, by
+- [x] The vibe query that returns nothing under BM25 returns results here, by
       changing only the configured method
-- [ ] Editing a narrative in `data/phones/` without regenerating the artifact
+- [x] Editing a narrative in `data/phones/` without regenerating the artifact
       fails the load rather than ranking against the old vector
-- [ ] A site selecting this method with no credential configured fails with a
+- [x] A site selecting this method with no credential configured fails with a
       message naming what is missing
 
 ## Handover
 
-`web-search.substring-match` is complete. The generated catalogue, config seam,
-product projection, traced substring pipeline, instance-only endpoint, result
-grid, card interactions, and trace rail now form one end-to-end path. The
-query-scoped collector uses `AsyncLocalStorage`; each response carries a settled
-turn, pipeline failures return an inspectable error turn, and each new search
-replaces the previous search turn in the rail, with formatted/raw detail and
-copy-as-JSON.
+`web-search` is complete. The Worker supports substring, BM25, and semantic
+ranking before the shared filters and facets. Semantic search embeds each query
+with `text-embedding-3-small` through `OPENAI_API_KEY`, compares it with the
+committed int8 narrative corpus, applies request-scoped `min_score`, and carries
+the Python semantic step and cosine chart in the trace panel.
 
-`npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
-from `web/` (15 test files, 52 tests). The overlap test runs two asynchronous
-traces concurrently and verifies that neither receives the other's step. Next
-is `web-search.facets`, which adds result-derived counts and the filter rail's
-first read-only surface.
+The generated artifact stamps every phone with its narrative hash and model and
+is rejected when either changes. Its fixed `a phone for my mom` audit preserves
+the float top 20 after quantization with maximum observed cosine drift below
+0.001. `npm run check:catalogue`, `npm run check:embeddings`, `npm test`,
+`npm run check`, and `npm run build` pass from `web/` (21 test files, 85 tests).

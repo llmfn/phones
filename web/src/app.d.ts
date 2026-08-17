@@ -21,6 +21,7 @@ declare global {
     interface Platform {
       env: {
         AUTH_SECRET?: string;
+        OPENAI_API_KEY?: string;
         DB?: Database;
         EMAIL?: EmailService;
       };

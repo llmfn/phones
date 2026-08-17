@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "generate:catalogue": "node scripts/generate-catalogue.mjs",
     "check:catalogue": "node scripts/generate-catalogue.mjs --check",
+    "generate:embeddings": "node scripts/generate-semantic-embeddings.ts",
+    "check:embeddings": "node scripts/generate-semantic-embeddings.ts --check",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
     "deploy": "npm run build && wrangler deploy"

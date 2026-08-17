@@ -40,6 +40,12 @@ Cloudflare Email Service. Set the authentication signing secret with:
 npx wrangler secret put AUTH_SECRET
 ```
 
+Semantic search embeds queries with OpenAI. Set its shared credential with:
+
+```sh
+npx wrangler secret put OPENAI_API_KEY
+```
+
 Deploy from this directory with:
 
 ```sh

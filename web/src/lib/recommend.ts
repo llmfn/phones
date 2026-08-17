@@ -1,4 +1,4 @@
-import type { SearchResult } from '$lib/schema';
+import type { Filters, SearchResult } from '$lib/schema';
 
 type Fetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
@@ -13,7 +13,11 @@ export interface RecommendOptions {
   fetcher?: Fetch;
 }
 
-export async function recommend(query: string, options: RecommendOptions = {}): Promise<SearchResult> {
+export async function recommend(
+  query: string,
+  filters: Filters,
+  options: RecommendOptions = {}
+): Promise<SearchResult> {
   const { signal, revision = null, fetcher = fetch } = options;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (revision !== null) headers['X-Phones-Revision'] = String(revision);
@@ -21,7 +25,7 @@ export async function recommend(query: string, options: RecommendOptions = {}): 
   const response = await fetcher('/api/recommend', {
     method: 'POST',
     headers,
-    body: JSON.stringify({ query, filters: {} }),
+    body: JSON.stringify({ query, filters }),
     signal
   });
 
