@@ -262,7 +262,9 @@ the engines that follow are only legible through it.
 The surface: `POST /api/recommend` reading query and filters from the body,
 dispatching on `locals.config.search.method`, and returning products and the
 trace; the student homepage's search state rendering the result set; and the
-trace panel carrying the Python app's shape.
+trace panel carrying the Python app's shape. A submitted query is mirrored to
+`?q=` without reloading the app. Opening that URL runs the search, and browser
+Back and Forward restore searches while preserving parameters such as `?r=`.
 
 Implement this in three checkpoints, each independently verifiable:
 
@@ -302,6 +304,7 @@ because it proves every part of the path at once.
 - [x] Every phone in `data/phones/` can be found by searching its name
 - [x] The trace panel shows one step for the query, with the time it took
 - [x] Overlapping requests never see each other's trace steps
+- [x] A copied `?q=` URL restores the search without a full-page navigation
 
 ### [TODO] facets: show what the results hold
 

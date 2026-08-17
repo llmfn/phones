@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { pushState } from '$app/navigation';
+  import { onDestroy, onMount } from 'svelte';
 
   import ProductCard from '$lib/components/ProductCard.svelte';
   import TracePanel from '$lib/components/TracePanel.svelte';
   import { recommend } from '$lib/recommend';
   import type { Product, TraceTurn } from '$lib/schema';
+  import { readSearchQuery, writeSearchQuery } from '$lib/search-url';
 
   import type { ActionData, PageData } from './$types';
 
@@ -19,9 +21,8 @@
   let resultVersion = $state(0);
   let activeRequest: AbortController | null = null;
 
-  async function search(event: SubmitEvent) {
-    event.preventDefault();
-    query = query.trim();
+  async function runSearch(nextQuery: string) {
+    query = nextQuery.trim();
     searched = true;
     error = null;
     turns = [];
@@ -52,6 +53,42 @@
       }
     }
   }
+
+  function clearSearch() {
+    activeRequest?.abort();
+    activeRequest = null;
+    query = '';
+    searched = false;
+    loading = false;
+    products = [];
+    turns = [];
+    error = null;
+    resultVersion += 1;
+  }
+
+  function search(event: SubmitEvent) {
+    event.preventDefault();
+    const nextUrl = writeSearchQuery(new URL(window.location.href), query);
+    if (nextUrl.href !== window.location.href) pushState(nextUrl, {});
+    void runSearch(query);
+  }
+
+  onMount(() => {
+    if (data.page === 'apex') return;
+
+    function restoreSearch() {
+      const restoredQuery = readSearchQuery(new URL(window.location.href));
+      if (restoredQuery === null) {
+        clearSearch();
+      } else {
+        void runSearch(restoredQuery);
+      }
+    }
+
+    restoreSearch();
+    window.addEventListener('popstate', restoreSearch);
+    return () => window.removeEventListener('popstate', restoreSearch);
+  });
 
   onDestroy(() => activeRequest?.abort());
 </script>
