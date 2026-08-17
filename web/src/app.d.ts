@@ -1,4 +1,5 @@
 import type { Database } from '$lib/server/revisions';
+import type { AdminSession } from '$lib/server/admin-auth';
 import type { SiteConfig } from '$lib/site-config';
 
 declare global {
@@ -6,6 +7,7 @@ declare global {
     interface Locals {
       config: SiteConfig;
       revision: number | null;
+      admin?: AdminSession | null;
     }
 
     interface EmailService {
@@ -21,6 +23,8 @@ declare global {
     interface Platform {
       env: {
         AUTH_SECRET?: string;
+        ADMIN_PASSCODE?: string;
+        ADMIN_SESSION_SECRET?: string;
         OPENAI_API_KEY?: string;
         DB?: Database;
         EMAIL?: EmailService;

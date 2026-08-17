@@ -22,6 +22,14 @@ codes to the terminal. Open `http://local.pipal.in:5173` after starting Vite;
 student instances use `<slug>.local.pipal.in:5173`. Production instances use
 `<slug>-phones.llmfn.com` so Cloudflare Universal SSL covers them.
 
+The instructor console at `http://local.pipal.in:5173/admin` reads its
+credentials from `web/.dev.vars`:
+
+```dotenv
+ADMIN_PASSCODE=replace-with-a-local-passcode
+ADMIN_SESSION_SECRET=replace-with-at-least-32-random-characters
+```
+
 ## Production
 
 The app is live at `https://phones.llmfn.com`; student instances use
@@ -39,6 +47,15 @@ Cloudflare Email Service. Set the authentication signing secret with:
 ```sh
 npx wrangler secret put AUTH_SECRET
 ```
+
+The instructor console uses separate credentials from student studio sessions:
+
+```sh
+npx wrangler secret put ADMIN_PASSCODE
+npx wrangler secret put ADMIN_SESSION_SECRET
+```
+
+`ADMIN_SESSION_SECRET` must be at least 32 characters.
 
 Semantic search embeds queries with OpenAI. Set its shared credential with:
 

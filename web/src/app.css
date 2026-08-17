@@ -210,6 +210,11 @@ a:hover {
   color: var(--primary);
 }
 
+.nav-button {
+  background: transparent;
+  cursor: pointer;
+}
+
 .eyebrow,
 .field-label {
   font-family: var(--font-sc);

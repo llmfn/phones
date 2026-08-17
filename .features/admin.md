@@ -1,5 +1,5 @@
 ---
-status: ready
+status: in-progress
 created: 2026-08-17
 ---
 
@@ -66,13 +66,19 @@ instead.
 
 ## Tasks
 
-### [TODO] login: password-gated admin session
+### [DONE] login: password-gated admin session
 
 Password-gated session for the admin console, same pattern as
 llmfn.com/admin.
 
 - Password field, same gate pattern as llmfn.com/admin
 - Session cookie on successful login
+
+**Acceptance Criteria:**
+
+- [x] Tests cover successful and failed login, invalid sessions, apex-only
+      route protection, and logout
+- [x] Tests, type checks, and the production build pass
 
 ### [TODO] groups: create, list, edit
 
@@ -105,3 +111,11 @@ Archive a group, making its participant sites read-only.
   viewing still works)
 
 ## Handover
+
+The apex-only admin gate is complete. `/admin/login` verifies `ADMIN_PASSCODE`
+and creates a signed 12-hour session using `ADMIN_SESSION_SECRET`; the host-only
+cookie is scoped to `/admin`. The request hook protects the whole admin route
+space before site revision resolution and refuses it on participant hosts.
+Student `/studio` email-code authentication remains independent and unchanged.
+
+Next is `admin.groups`; no admin database schema or D1 access has been added.

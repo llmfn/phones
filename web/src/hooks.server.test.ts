@@ -1,12 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { applyMigrations, createTestDatabase, type TestDatabase } from '../test-support/database';
+import { ADMIN_SESSION_COOKIE, createAdminSession } from '$lib/server/admin-auth';
 import { appendRevision, ensureSite } from '$lib/server/revisions';
 import { parseSiteConfig } from '$lib/site-config';
 import { handle } from './hooks.server';
 
 const BM25 = parseSiteConfig({ search: { method: 'bm25', search_params: {} } });
 const SEMANTIC = parseSiteConfig({ search: { method: 'semantic_search', search_params: {} } });
+const ADMIN_SECRET = 'test-admin-secret-with-at-least-32-characters';
 
 let db: TestDatabase;
 
@@ -77,5 +79,66 @@ describe('site config hook', () => {
         run(request(`https://alice-phones.llmfn.com/?r=${asked}`))
       ).rejects.toMatchObject({ status: 404 });
     }
+  });
+});
+
+describe('admin access hook', () => {
+  function adminEvent(url: string, token?: string, method = 'GET') {
+    return {
+      cookies: {
+        get: vi.fn((name: string) => (name === ADMIN_SESSION_COOKIE ? token : undefined))
+      },
+      locals: {},
+      platform: { env: { ADMIN_SESSION_SECRET: ADMIN_SECRET } },
+      request: new Request(url, { method }),
+      url: new URL(url)
+    };
+  }
+
+  it('redirects a signed-out admin request before resolving site configuration', async () => {
+    const resolve = vi.fn(() => new Response('should not resolve'));
+    const response = await handle({
+      event: adminEvent('https://phones.llmfn.com/admin?r=invalid'),
+      resolve
+    } as never);
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get('location')).toBe('/admin/login');
+    expect(response.headers.get('cache-control')).toBe('private, no-store');
+    expect(response.headers.get('x-robots-tag')).toBe('noindex, nofollow');
+    expect(resolve).not.toHaveBeenCalled();
+  });
+
+  it('allows the login page and authenticated admin requests', async () => {
+    const login = await handle({
+      event: adminEvent('https://phones.llmfn.com/admin/login'),
+      resolve: () => new Response('login')
+    } as never);
+    expect(await login.text()).toBe('login');
+
+    const token = await createAdminSession(ADMIN_SECRET);
+    const event = adminEvent('https://phones.llmfn.com/admin', token);
+    const authenticated = await handle({
+      event,
+      resolve: ({ locals }: { locals: { admin?: { subject: string } } }) =>
+        new Response(locals.admin?.subject)
+    } as never);
+    expect(await authenticated.text()).toBe('admin');
+    expect(authenticated.headers.get('cache-control')).toBe('private, no-store');
+  });
+
+  it('returns 401 for signed-out mutations and 404 on instance hosts', async () => {
+    const mutation = await handle({
+      event: adminEvent('https://phones.llmfn.com/admin/logout', undefined, 'POST'),
+      resolve: () => new Response('should not resolve')
+    } as never);
+    expect(mutation.status).toBe(401);
+
+    await expect(
+      handle({
+        event: adminEvent('https://alice-phones.llmfn.com/admin'),
+        resolve: () => new Response('should not resolve')
+      } as never)
+    ).rejects.toMatchObject({ status: 404 });
   });
 });
