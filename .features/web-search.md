@@ -8,7 +8,7 @@ created: 2026-08-17
 The recommender pipeline running inside the Worker: the config document that
 decides what runs, the bundled catalogue, filters and facets, and the search
 engines a site can select between — served behind `POST /api/recommend` to the
-student's public site and to the admin's Try-it pane.
+student's public site.
 
 This is what makes the student homepage's search box do something. It has been
 a styled control wired to nothing since the hosted app went up.
@@ -83,7 +83,7 @@ rather than trusting a re-run.
 
 ### Addressing a revision
 
-Design settled here, built in `admin.persist`. The seam it plugs into —
+Design settled here, built in `studio.search-panel`. The seam it plugs into —
 `hooks.server.ts` setting `locals.config` — exists from `web-search.substring-match`, so
 this adds a revision argument to a resolution that already happens rather than
 introducing one.
@@ -141,7 +141,7 @@ for a key.
 The config document's *schema* is defined upfront here — its type, its defaults,
 and `parseSiteConfig` — but its *source* starts as a module bundled with the
 Worker, identical for every site. Revisions, the store, and `?r=` addressing
-arrive with `admin.persist`, once there is an admin to write them.
+arrive with `studio.search-panel`, once there is a studio to write them.
 
 **The discipline that makes that swap cheap:** even now, config is resolved per
 request through one seam onto `locals.config`, though the answer never varies.
@@ -149,7 +149,7 @@ Engines read `locals.config` and nothing imports the config module directly. The
 swap is then one function body rather than a refactor of everything that reads
 config — free to do this way from the start, expensive to retrofit.
 
-There is a real consequence: until `admin.persist`, nothing a student does can
+There is a real consequence: until `studio.search-panel`, nothing a student does can
 change their site. This is a build phase with no half-usable intermediate state
 to hand anyone.
 
@@ -164,7 +164,7 @@ index built once per isolate, exactly as `catalog_index()` is `lru_cache`d once
 per process; filters and facets run over the result set in memory. A D1 read
 before every search would buy nothing, because nothing is ever queried — the
 whole catalogue is needed to build the index regardless. D1 arrives with
-`admin.persist`, carrying configuration and nothing else.
+`studio.search-panel`, carrying configuration and nothing else.
 
 ### BM25 is hand-rolled, not FTS5
 
@@ -206,7 +206,7 @@ without threading a parameter through every call. The `nodejs_als` compatibility
 flag is already enabled in `wrangler.jsonc`.
 
 Not carried over in this version: the live polling that lets a panel watch a
-query while it runs. A Worker request is short and the admin renders the trace
+query while it runs. A Worker request is short and the public site renders the trace
 that comes back with the response, so the machinery has nothing to buy yet.
 Named rather than dropped — the step shape is identical, so adding it later
 changes how steps are delivered and not what they are.
@@ -251,7 +251,7 @@ defaults, rejecting values outside the allowed set, and validating
 `search_params` against the selected method. Its source is a bundled module for
 now, but it is resolved per request through one seam onto `locals.config`.
 Engines read configuration only from there and nothing imports the config module
-directly — that rule is what lets `admin.persist` replace the body of the seam
+directly — that rule is what lets `studio.search-panel` replace the body of the seam
 and touch nothing else.
 
 The trace: `phonekit/trace.py` ported onto `AsyncLocalStorage`, with the step
