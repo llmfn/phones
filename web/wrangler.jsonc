@@ -14,9 +14,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "phones",
-      // TODO: replace with the id printed by `wrangler d1 create phones`.
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_name": "llmfn-phones",
+      "database_id": "d0b1adf8-51ae-40de-9588-003ce1c474c3"
     }
   ],
   "assets": {
