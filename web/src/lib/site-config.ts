@@ -1,24 +1,23 @@
-const SEARCH_METHODS = ['substring_match', 'bm25', 'semantic_search'] as const;
+import {
+  DEFAULT_SEARCH_METHOD,
+  DESIGN_OPTIONS,
+  PROMPTS,
+  SEARCH_METHODS,
+  searchMethodSpec,
+  type PromptName,
+  type SearchMethod,
+  type SearchParamSpec
+} from './site-defaults';
 
-export const DESIGN_OPTIONS = {
-  CHIPS_POSITION: ['under_search', 'above_results'],
-  FILTER_UI: ['sidebar', 'popover'],
-  CONVERSATION_UI: ['off', 'left_sidebar']
-} as const;
+export { DESIGN_OPTIONS };
 
-type SearchMethod = (typeof SEARCH_METHODS)[number];
 type DesignOptions = typeof DESIGN_OPTIONS;
 
 type DesignConfig = {
   [Key in keyof DesignOptions]: DesignOptions[Key][number];
 };
 
-interface PromptConfig {
-  rewrite: string;
-  summarize: string;
-  eval: string;
-  chat: string;
-}
+type PromptConfig = Record<PromptName, string>;
 
 type SearchConfig =
   | { method: 'substring_match'; search_params: Record<string, never> }
@@ -31,17 +30,6 @@ export interface SiteConfig {
   search: SearchConfig;
   design: DesignConfig;
 }
-
-export const DEFAULT_SITE_CONFIG: SiteConfig = {
-  version: 1,
-  prompts: { rewrite: '', summarize: '', eval: '', chat: '' },
-  search: { method: 'substring_match', search_params: {} },
-  design: {
-    CHIPS_POSITION: 'under_search',
-    FILTER_UI: 'sidebar',
-    CONVERSATION_UI: 'off'
-  }
-};
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -74,48 +62,67 @@ function finiteNumber(value: unknown, fallback: number, name: string): number {
 
 function parsePrompts(value: unknown): PromptConfig {
   const prompts = objectOrEmpty(value, 'prompts');
-  rejectUnknownKeys(prompts, ['rewrite', 'summarize', 'eval', 'chat'], 'prompts');
-  return {
-    rewrite: stringValue(prompts.rewrite, '', 'prompts.rewrite'),
-    summarize: stringValue(prompts.summarize, '', 'prompts.summarize'),
-    eval: stringValue(prompts.eval, '', 'prompts.eval'),
-    chat: stringValue(prompts.chat, '', 'prompts.chat')
-  };
+  rejectUnknownKeys(
+    prompts,
+    PROMPTS.map((prompt) => prompt.name),
+    'prompts'
+  );
+  const parsed = {} as PromptConfig;
+  for (const prompt of PROMPTS) {
+    parsed[prompt.name] = stringValue(
+      prompts[prompt.name],
+      prompt.default,
+      `prompts.${prompt.name}`
+    );
+  }
+  return parsed;
 }
 
 function parseMethod(value: unknown): SearchMethod {
-  if (value === undefined) return 'substring_match';
-  if (typeof value !== 'string' || !SEARCH_METHODS.includes(value as SearchMethod)) {
-    throw new Error(`search.method must be one of: ${SEARCH_METHODS.join(', ')}`);
+  const methods = SEARCH_METHODS.map((spec) => spec.value);
+  if (value === undefined) return DEFAULT_SEARCH_METHOD;
+  if (typeof value !== 'string' || !methods.includes(value as SearchMethod)) {
+    throw new Error(`search.method must be one of: ${methods.join(', ')}`);
   }
   return value as SearchMethod;
+}
+
+function rangeMessage({ min, max, exclusiveMin }: SearchParamSpec): string {
+  if (min !== undefined && max !== undefined) return `must be between ${min} and ${max}`;
+  if (min !== undefined) return `must be ${exclusiveMin ? 'greater than' : 'at least'} ${min}`;
+  return `must be at most ${max}`;
+}
+
+function checkRange(value: number, param: SearchParamSpec, name: string) {
+  const { min, max, exclusiveMin } = param;
+  const belowMin = min !== undefined && (exclusiveMin ? value <= min : value < min);
+  const aboveMax = max !== undefined && value > max;
+  if (belowMin || aboveMax) throw new Error(`${name} ${rangeMessage(param)}`);
 }
 
 function parseSearch(value: unknown): SearchConfig {
   const search = objectOrEmpty(value, 'search');
   rejectUnknownKeys(search, ['method', 'search_params'], 'search');
   const method = parseMethod(search.method);
+  const spec = searchMethodSpec(method);
   const params = objectOrEmpty(search.search_params, 'search.search_params');
+  rejectUnknownKeys(
+    params,
+    spec.params.map((param) => param.name),
+    `${method} search_params`
+  );
 
-  if (method === 'substring_match') {
-    rejectUnknownKeys(params, [], 'substring_match search_params');
-    return { method, search_params: {} };
-  }
-  if (method === 'bm25') {
-    rejectUnknownKeys(params, ['k1', 'b'], 'bm25 search_params');
-    const k1 = finiteNumber(params.k1, 1.5, 'search.search_params.k1');
-    const b = finiteNumber(params.b, 0.75, 'search.search_params.b');
-    if (k1 <= 0) throw new Error('search.search_params.k1 must be greater than zero');
-    if (b < 0 || b > 1) throw new Error('search.search_params.b must be between zero and one');
-    return { method, search_params: { k1, b } };
+  const search_params: Record<string, number> = {};
+  for (const param of spec.params) {
+    const name = `search.search_params.${param.name}`;
+    const number = finiteNumber(params[param.name], param.default, name);
+    checkRange(number, param, name);
+    search_params[param.name] = number;
   }
 
-  rejectUnknownKeys(params, ['min_score'], 'semantic_search search_params');
-  const minScore = finiteNumber(params.min_score, 0.3, 'search.search_params.min_score');
-  if (minScore < -1 || minScore > 1) {
-    throw new Error('search.search_params.min_score must be between -1 and 1');
-  }
-  return { method, search_params: { min_score: minScore } };
+  // The table and the union above describe the same knobs per method; the
+  // table is what a save is checked against, the union is what callers read.
+  return { method, search_params } as SearchConfig;
 }
 
 function designValue<Key extends keyof DesignOptions>(
@@ -152,3 +159,6 @@ export function parseSiteConfig(value: unknown): SiteConfig {
     design: parseDesign(config.design)
   };
 }
+
+/** The document a site with no revisions of its own serves. */
+export const DEFAULT_SITE_CONFIG: SiteConfig = parseSiteConfig({});

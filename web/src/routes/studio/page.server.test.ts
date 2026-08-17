@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { applyMigrations, createTestDatabase, type TestDatabase } from '../../../test-support/database';
 import { signCredential } from '$lib/server/auth';
 import { listRevisions, loadRevision } from '$lib/server/revisions';
+import { DEFAULT_SITE_CONFIG } from '$lib/site-config';
 
 import { actions, load } from './+page.server';
 
@@ -117,7 +118,10 @@ describe('the search panel', () => {
     await expectRedirect(() => actions.save?.(event({ form: seeded }) as never), '/studio');
 
     await expect(loadRevision(db, 'alice', null)).resolves.toMatchObject({
-      config: { prompts: { rewrite: '' }, design: { FILTER_UI: 'sidebar' } }
+      config: {
+        prompts: { rewrite: DEFAULT_SITE_CONFIG.prompts.rewrite },
+        design: { FILTER_UI: 'sidebar' }
+      }
     });
   });
 });

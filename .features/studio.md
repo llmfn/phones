@@ -31,6 +31,11 @@ One panel per section of the schema — Search, Prompts, Design, Evals — and n
 other entries. A student who has read the config document knows the whole
 studio, and a new section of the schema is a new panel rather than a redesign.
 
+Prompts is the one section that expands: each prompt gets its own rail entry
+and its own page, because each is edited on its own and the editor wants the
+room. The heading still names the section, so the rail still reads as the
+config document.
+
 Evals earns its place in the rail because the case list is configuration: the
 queries and expectations the site is judged against, stored and versioned like
 any other setting. The panel edits the list; running it belongs to `web-evals`
@@ -165,7 +170,7 @@ selected method and nothing else. The frame layout goes to `docs/mockups.md`.
 - [x] The frame works at desktop and phone widths with the panel rail reachable
       by keyboard and focus visible throughout
 
-### [TODO] prompts-panel: edit the prompts
+### [DONE] prompts-panel: edit the prompts
 
 Add the Prompts panel: edit the site's prompts.
 
@@ -175,8 +180,8 @@ what runs a prompt, and when, is not decided here.
 
 **Acceptance Criteria:**
 
-- [ ] A new site's editor shows the default prompt text
-- [ ] Editing a prompt and saving appends a revision, and reopening the panel
+- [x] A new site's editor shows the default prompt text
+- [x] Editing a prompt and saving appends a revision, and reopening the panel
       at that revision shows the edited text
 
 ### [TODO] design-panel: switch the layout flags
@@ -243,8 +248,29 @@ them, so history always starts at 1.
 
 Local D1 comes from `wrangler.dev.toml` through adapter-cloudflare's
 `platformProxy`; tests use `node:sqlite` behind D1's interface, applying the
-real migration (`web/test-support/database.ts`). `npm test` (17 files, 78
-tests), `npm run check`, `npm run build`, and `npm run check:catalogue` pass.
+real migration (`web/test-support/database.ts`).
+
+`studio.prompts-panel` is complete, and brought the shell out of the Search
+route with it. `web/src/lib/server/studio.ts` holds `requireStudio`,
+`loadPanel`, `savePanel`, and `logout`; `web/src/lib/StudioFrame.svelte` holds
+the header and the rail, whose entries are one array. A panel route is now a
+thin `load` plus a `save` that hands its own patch to `savePanel` — which
+builds the patch from the live document, so a panel can only change what it
+edits. Adding Design or Evals is a rail entry and a route.
+
+Each prompt is edited on its own page — `/studio/prompts/[name]`, one rail
+entry per prompt under a Prompts heading, `/studio/prompts` redirecting to the
+first. So the rail is no longer one entry per config section: prompts are
+listed individually because they are edited individually.
+
+Every default and every knob's bounds and copy live in
+`web/src/lib/site-defaults.ts`; `site-config.ts` validates against that table
+and the panels render from it, so `DEFAULT_SITE_CONFIG` is now just
+`parseSiteConfig({})`. Default prompt text is the four files in `prompts/`,
+hardcoded there — `eval` arrives written, the other three as the one-line
+comment naming what the student has to write.
+
+`npm test` (18 files, 85 tests), `npm run check`, and `npm run build` pass.
 
 Two things left for whoever picks this up. **The production database is not
 provisioned**: `wrangler.jsonc` carries a placeholder `database_id`, so
@@ -255,4 +281,4 @@ error turn rather than better results, because those engines land in
 `web-search.bm25` and `web-search.semantic` — the wiring is proven, the engines
 are not there yet.
 
-Next is `studio.prompts-panel`, which adds the second rail entry.
+Next is `studio.design-panel`, which adds the third rail entry.

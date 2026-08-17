@@ -1021,6 +1021,22 @@ details[open] > .step-row .step-caret {
   background: var(--surface-alt);
 }
 
+.studio-rail-group {
+  margin: var(--space-4) 0 var(--space-1);
+  padding: 0 var(--space-3);
+  color: var(--muted);
+  font-family: var(--font-sc);
+  font-size: var(--text-flow--1);
+  letter-spacing: 0.07em;
+}
+
+/* Prompts are edited one at a time, so they read as a list under the heading. */
+.studio-rail-item.is-nested {
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+  padding-left: var(--space-5);
+}
+
 .studio-rail-item.is-current {
   border-left-color: var(--primary);
   background: var(--surface-tint);
@@ -1032,8 +1048,17 @@ details[open] > .step-row .step-caret {
   min-width: 0;
 }
 
+/* The public site's panel is sized for reading; this one holds editors. */
 .studio-panel .editorial-panel {
+  width: 100%;
   padding-top: var(--space-5);
+}
+
+/* Prose keeps a measure of its own, so only the editors take the room. */
+.studio-panel .hint,
+.studio-choice,
+.studio-save {
+  max-width: 42rem;
 }
 
 .studio-form {
@@ -1081,6 +1106,27 @@ details[open] > .step-row .step-caret {
 .studio-param .studio-choice-label {
   grid-column: auto;
   color: var(--muted);
+}
+
+.studio-prompt {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.studio-prompt + .studio-prompt {
+  margin-top: var(--space-4);
+}
+
+.studio-prompt .hint {
+  margin-top: 0;
+}
+
+.studio-prompt textarea.form-input {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--text-flow--1);
+  line-height: 1.6;
+  resize: vertical;
 }
 
 .studio-save {
@@ -1195,6 +1241,16 @@ details[open] > .step-row .step-caret {
     border-left: 0;
     border-bottom: 2px solid transparent;
     border-radius: var(--radius) var(--radius) 0 0;
+    white-space: nowrap;
+  }
+
+  /* One scrolling strip of tabs, so the group heading has nowhere to sit. */
+  .studio-rail-group {
+    display: none;
+  }
+
+  .studio-rail-item.is-nested {
+    padding-left: var(--space-3);
   }
 
   .studio-rail-item.is-current {
