@@ -1,5 +1,11 @@
+import type { SiteConfig } from '$lib/site-config';
+
 declare global {
   namespace App {
+    interface Locals {
+      config: SiteConfig;
+    }
+
     interface EmailService {
       send(message: {
         to: string;

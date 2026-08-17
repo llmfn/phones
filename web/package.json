@@ -7,6 +7,8 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
+    "generate:catalogue": "node scripts/generate-catalogue.mjs",
+    "check:catalogue": "node scripts/generate-catalogue.mjs --check",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
     "deploy": "npm run build && wrangler deploy"
