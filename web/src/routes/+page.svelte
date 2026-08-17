@@ -2,10 +2,11 @@
   import { pushState } from '$app/navigation';
   import { onDestroy, onMount } from 'svelte';
 
+  import FilterRail from '$lib/components/FilterRail.svelte';
   import ProductCard from '$lib/components/ProductCard.svelte';
   import TracePanel from '$lib/components/TracePanel.svelte';
   import { recommend } from '$lib/recommend';
-  import type { Product, TraceTurn } from '$lib/schema';
+  import type { Facet, Product, TraceTurn } from '$lib/schema';
   import { readSearchQuery, writeSearchQuery } from '$lib/search-url';
 
   import type { ActionData, PageData } from './$types';
@@ -16,6 +17,7 @@
   let searched = $state(false);
   let loading = $state(false);
   let products = $state<Product[]>([]);
+  let facets = $state<Facet[]>([]);
   let turns = $state<TraceTurn[]>([]);
   let error = $state<string | null>(null);
   let resultVersion = $state(0);
@@ -36,6 +38,7 @@
       const result = await recommend(query, request.signal);
       if (request.signal.aborted) return;
       products = result.products;
+      facets = result.facets;
       if (result.trace) {
         turns = [result.trace];
         error = result.trace.status === 'error' ? (result.trace.error ?? 'Search failed') : null;
@@ -44,6 +47,7 @@
     } catch (caught) {
       if (request.signal.aborted) return;
       products = [];
+      facets = [];
       resultVersion += 1;
       error = caught instanceof Error ? caught.message : 'Search failed';
     } finally {
@@ -61,6 +65,7 @@
     searched = false;
     loading = false;
     products = [];
+    facets = [];
     turns = [];
     error = null;
     resultVersion += 1;
@@ -166,27 +171,30 @@
     </header>
 
     {#if searched}
-      <section class="student-results" aria-label="Results" aria-busy={loading}>
-        <div class="results-announcement" aria-live="polite">
-          {#if error}
-            <p class="results-error">{error}</p>
-          {:else if products.length || !loading}
-            <div class="results-head">{products.length} result{products.length === 1 ? '' : 's'}</div>
-          {/if}
-        </div>
+      <div class="student-content">
+        <FilterRail {facets} />
+        <section class="student-results" aria-label="Results" aria-busy={loading}>
+          <div class="results-announcement" aria-live="polite">
+            {#if error}
+              <p class="results-error">{error}</p>
+            {:else if products.length || !loading}
+              <div class="results-head">{products.length} result{products.length === 1 ? '' : 's'}</div>
+            {/if}
+          </div>
 
-        {#if !error}
-          {#if !products.length && !loading}
-            <p class="empty">No phones match - try a broader search.</p>
-          {:else}
-            <div class="results-grid">
-              {#each products as product (`${resultVersion}-${product.id}`)}
-                <ProductCard {product} />
-              {/each}
-            </div>
+          {#if !error}
+            {#if !products.length && !loading}
+              <p class="empty">No phones match - try a broader search.</p>
+            {:else}
+              <div class="results-grid">
+                {#each products as product (`${resultVersion}-${product.id}`)}
+                  <ProductCard {product} />
+                {/each}
+              </div>
+            {/if}
           {/if}
-        {/if}
-      </section>
+        </section>
+      </div>
     {/if}
 
     {#if turns.length}<TracePanel {turns} />{/if}

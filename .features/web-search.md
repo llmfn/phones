@@ -306,7 +306,7 @@ because it proves every part of the path at once.
 - [x] Overlapping requests never see each other's trace steps
 - [x] A copied `?q=` URL restores the search without a full-page navigation
 
-### [TODO] facets: show what the results hold
+### [DONE] facets: show what the results hold
 
 `computeFacets(products) -> Facet[]`, porting `_compute_facets` in
 `phonekit/app.py`: brand counts, colour-family counts carrying the family's hex,
@@ -333,9 +333,9 @@ if that is wrong it is a catalogue-wide decision to take on purpose.
 
 **Acceptance Criteria:**
 
-- [ ] A phone with two options in one colour family contributes twice to that
+- [x] A phone with two options in one colour family contributes twice to that
       family's count
-- [ ] Searching a narrower query changes the counts and the price bounds
+- [x] Searching a narrower query changes the counts and the price bounds
 
 ### [TODO] filters: narrow by clicking the rail
 
@@ -457,16 +457,14 @@ shows cosine scores where it showed a missing token.
 
 ## Handover
 
-`web-search.substring-match` is complete. The generated catalogue, config seam,
-product projection, traced substring pipeline, instance-only endpoint, result
-grid, card interactions, and trace rail now form one end-to-end path. The
-query-scoped collector uses `AsyncLocalStorage`; each response carries a settled
-turn, pipeline failures return an inspectable error turn, and each new search
-replaces the previous search turn in the rail, with formatted/raw detail and
-copy-as-JSON.
+`web-search.substring-match` and `web-search.facets` are complete. Search URLs
+are shareable through `?q=`, the API derives brand, colour-option, and price
+facets from each result set, and the student page renders them in a responsive
+read-only rail beside the result cards. Facet computation is deliberately absent
+from the trace because it does not change the result set.
 
 `npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
-from `web/` (15 test files, 52 tests). The overlap test runs two asynchronous
-traces concurrently and verifies that neither receives the other's step. Next
-is `web-search.facets`, which adds result-derived counts and the filter rail's
-first read-only surface.
+from `web/` (17 test files, 60 tests). Synthetic facet tests cover categorical
+ordering, repeated colour-family options, first-family hex selection, all
+storage prices, and empty results. Next is `web-search.filters`, which makes the
+rail interactive and trims products to the surviving options.

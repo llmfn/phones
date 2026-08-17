@@ -27,7 +27,13 @@ describe('POST /api/recommend', () => {
     const { response, body } = await post({ query: 'iphone', filters: {} });
     const matchingIphones = CATALOGUE.filter((phone) => phone.name.toLowerCase().includes('iphone'));
     expect(response.status).toBe(200);
-    expect(body.facets).toEqual([]);
+    expect(body.facets).toEqual(expect.arrayContaining([
+      {
+        type: 'categorical',
+        field: 'brand',
+        values: [{ value: 'Apple', count: matchingIphones.length }]
+      }
+    ]));
     expect(body.products).toHaveLength(matchingIphones.length);
     expect(body.products.every((phone: { name: string }) => phone.name.toLowerCase().includes('iphone'))).toBe(
       true
@@ -56,7 +62,26 @@ describe('POST /api/recommend', () => {
 
   it('supports empty and unmatched queries', async () => {
     expect((await post({ query: '' })).body.products).toHaveLength(CATALOGUE.length);
-    expect((await post({ query: 'apple' })).body.products).toEqual([]);
+    const unmatched = (await post({ query: 'apple' })).body;
+    expect(unmatched.products).toEqual([]);
+    expect(unmatched.facets).toEqual([
+      { type: 'categorical', field: 'brand', values: [] },
+      { type: 'categorical', field: 'color', values: [] },
+      { type: 'range', field: 'price', min: 0, max: 0 }
+    ]);
+  });
+
+  it('scopes facets to each query result set', async () => {
+    const full = (await post({ query: '' })).body.facets;
+    const iphones = (await post({ query: 'iphone' })).body.facets;
+
+    expect(iphones).not.toEqual(full);
+    expect(iphones.find((facet: { field: string }) => facet.field === 'brand').values).toEqual([
+      { value: 'Apple', count: CATALOGUE.filter((phone) => phone.name.toLowerCase().includes('iphone')).length }
+    ]);
+    expect(iphones.find((facet: { field: string }) => facet.field === 'price')).not.toEqual(
+      full.find((facet: { field: string }) => facet.field === 'price')
+    );
   });
 
   it('rejects malformed requests', async () => {
