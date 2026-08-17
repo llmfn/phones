@@ -1,9 +1,12 @@
 ---
-status: done
 created: 2026-08-07
 ---
 
-# Playground (playground)
+# Playground (playground) — archived
+
+Archived 2026-08-17, when the Python app was retired in favour of the Worker
+in `web/`. It shipped complete; this is the record of what was built and why.
+Nothing in the Worker replaces it yet.
 
 A page per mechanism, served by the app itself. You read it top to bottom, and
 each computed table lands where the prose above has just made you want it.

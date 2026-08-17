@@ -1,9 +1,16 @@
 ---
-status: in-progress
 created: 2026-08-07
 ---
 
-# Trace Panel (trace)
+# Trace Panel (trace) — archived
+
+Archived 2026-08-17, when the Python app was retired in favour of the Worker
+in `web/`. Kept as written, including the handover and the unfinished
+`tool-calls` task, as the record of where the work stood.
+
+The panel design here is not abandoned with it: `web-search` ports the trace
+recorder and carries this shape over — steps grouped under the turn that
+produced them, each rendered by what it is rather than as raw JSON.
 
 The X-Ray panel redesigned: a live, session-scoped trace of what the app did to
 answer each turn — steps grouped under the turn that produced them, each step

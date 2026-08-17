@@ -1,9 +1,13 @@
 ---
-status: done
 created: 2026-08-08
 ---
 
-# Explicit Session Messages (explicit-session-messages)
+# Explicit Session Messages (explicit-session-messages) — archived
+
+Archived 2026-08-17, when the Python app was retired in favour of the Worker
+in `web/`. It shipped complete; this is the record of what was built and why.
+The Worker has no chat pipeline yet, so the rule it established — a chat
+implementation writes its own messages — is not yet owned by anything.
 
 Chat pipelines write user and assistant messages themselves so conversation
 state changes are visible where each response is produced.

@@ -1,9 +1,18 @@
 ---
-status: in-progress
 created: 2026-08-08
 ---
 
-# Evals (evals)
+# Evals (evals) — archived
+
+Archived 2026-08-17, when the Python app was retired in favour of the Worker
+in `web/`. Kept as written — including the handover and the two tasks that were
+never done — as the record of where the work stood. Reshaped as `web-evals`.
+
+Its handover holds one finding worth carrying forward rather than burying:
+exact model lookups like `samsung galaxy s24 fe` and `oneplus 13` failed under
+both engines, because cosine similarity does not privilege an exact name. That
+is the hybrid-search argument arriving as a measurement, and it still applies to
+the ported engines.
 
 A flat YAML file of query-and-expectation pairs, scored by an LLM judge against
 whatever a layer returns. Any `app.py` runs it against itself with
