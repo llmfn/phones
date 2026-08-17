@@ -4,8 +4,9 @@ import type { RequestEvent } from '@sveltejs/kit';
 
 import { getAuthSecret, verifyCredential } from '$lib/server/auth';
 import { SESSION_COOKIE } from '$lib/server/cookies';
+import type { Database } from '$lib/server/database';
 import { getSite } from '$lib/server/hosts';
-import { appendRevision, ensureSite, listRevisions, loadRevision, type Database } from './revisions';
+import { appendRevision, ensureSite, listRevisions, loadRevision } from './revisions';
 import { getSitename } from '$lib/server/sitename';
 import { parseSiteConfig, type SiteConfig } from '$lib/site-config';
 

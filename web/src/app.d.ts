@@ -1,5 +1,5 @@
-import type { Database } from '$lib/server/revisions';
 import type { AdminSession } from '$lib/server/admin-auth';
+import type { Database } from '$lib/server/database';
 import type { SiteConfig } from '$lib/site-config';
 
 declare global {

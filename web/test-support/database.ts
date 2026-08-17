@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { DatabaseSync, type StatementSync } from 'node:sqlite';
 
-import type { Database, Statement } from '../src/lib/server/revisions';
+import type { Database, Statement } from '../src/lib/server/database';
 
-const MIGRATIONS = ['../migrations/0001_site_config.sql'];
+const MIGRATIONS = ['../migrations/0001_site_config.sql', '../migrations/0002_admin_groups.sql'];
 
 class TestStatement implements Statement {
   private values: unknown[] = [];

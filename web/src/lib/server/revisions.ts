@@ -1,16 +1,5 @@
 import { DEFAULT_SITE_CONFIG, parseSiteConfig, type SiteConfig } from '$lib/site-config';
-
-/** The slice of D1 this module uses, declared here so a test can stand it up. */
-export interface Statement {
-  bind(...values: unknown[]): Statement;
-  first<Row = Record<string, unknown>>(column?: string): Promise<Row | null>;
-  all<Row = Record<string, unknown>>(): Promise<{ results: Row[] }>;
-  run(): Promise<{ success: boolean; meta: { changes: number; last_row_id: number } }>;
-}
-
-export interface Database {
-  prepare(sql: string): Statement;
-}
+import type { Database } from './database';
 
 export interface Revision {
   revision: number;

@@ -1526,6 +1526,150 @@ details[open] > .step-row .step-caret {
   text-align: center;
 }
 
+/* ---- admin ---- */
+
+.admin-shell {
+  min-height: 100vh;
+}
+
+.admin-header {
+  border-bottom: 1px solid var(--faint);
+}
+
+.admin-header .wordmark span {
+  margin-left: var(--space-2);
+  padding-left: var(--space-2);
+  border-left: 1px solid var(--faint);
+  color: var(--muted);
+  font-size: var(--text-flow--1);
+  font-weight: 400;
+}
+
+.admin-main {
+  width: min(72rem, 100%);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-6);
+}
+
+.admin-page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+.admin-page-head h1,
+.admin-section h2 {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-serif);
+  line-height: 1.15;
+}
+
+.admin-page-head h1 {
+  font-size: var(--text-flow-4);
+}
+
+.admin-section h2 {
+  font-size: var(--text-flow-2);
+}
+
+.admin-create {
+  width: min(28rem, 100%);
+}
+
+.admin-create:not([open]) {
+  width: auto;
+}
+
+.admin-create > summary {
+  width: fit-content;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.admin-create > summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-create-form,
+.admin-rename-form {
+  margin-top: var(--space-4);
+}
+
+.admin-group-list {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--faint);
+  list-style: none;
+}
+
+.admin-group-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--faint);
+}
+
+.admin-group-name,
+.admin-back {
+  color: var(--fg);
+  text-underline-offset: 0.2em;
+}
+
+.admin-group-name {
+  min-width: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-flow-1);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.admin-status {
+  padding: 2px var(--space-2);
+  border: 1px solid var(--faint-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: var(--font-sc);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.admin-status[data-status='active'] {
+  border-color: oklch(72% 0.08 145);
+  color: oklch(42% 0.1 145);
+}
+
+.admin-empty {
+  margin: 0;
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--faint);
+  border-bottom: 1px solid var(--faint);
+  color: var(--muted);
+}
+
+.admin-back {
+  display: inline-block;
+  margin-bottom: var(--space-6);
+}
+
+.admin-group-head {
+  align-items: center;
+  border-bottom: 1px solid var(--faint);
+}
+
+.admin-section {
+  padding-top: var(--space-6);
+}
+
+.admin-rename-form {
+  max-width: 38rem;
+}
+
 /* ---- studio ---- */
 
 .studio {
@@ -1746,6 +1890,35 @@ details[open] > .step-row .step-caret {
 @media (max-width: 47.5rem) {
   .site-nav {
     padding: var(--space-4);
+  }
+
+  .admin-main {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .admin-page-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .admin-create:not([open]),
+  .admin-create > summary {
+    width: 100%;
+  }
+
+  .admin-create > summary {
+    justify-content: center;
+  }
+
+  .admin-group-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .admin-group-row .nav-link {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
   .student-home {

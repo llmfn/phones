@@ -80,13 +80,21 @@ llmfn.com/admin.
       route protection, and logout
 - [x] Tests, type checks, and the production build pass
 
-### [TODO] groups: create, list, edit
+### [DONE] groups: create, list, edit
 
 Create, list, and rename training groups.
 
 - Create a group (name)
 - List groups with status
 - Edit a group's name
+
+**Acceptance Criteria:**
+
+- [x] An existing site-config database accepts the groups migration without
+      changing its revisions
+- [x] Tests cover creating, listing, and renaming groups and refusing invalid
+      names and unknown IDs
+- [x] The list and detail surfaces work at desktop and phone widths
 
 ### [TODO] participants: add, list, edit, restore, soft-delete
 
@@ -112,10 +120,13 @@ Archive a group, making its participant sites read-only.
 
 ## Handover
 
-The apex-only admin gate is complete. `/admin/login` verifies `ADMIN_PASSCODE`
-and creates a signed 12-hour session using `ADMIN_SESSION_SECRET`; the host-only
-cookie is scoped to `/admin`. The request hook protects the whole admin route
-space before site revision resolution and refuses it on participant hosts.
-Student `/studio` email-code authentication remains independent and unchanged.
+The admin gate and group management are complete. Migration
+`0002_admin_groups.sql` adds only the groups table; `$lib/server/groups.ts`
+owns create, list, get, and rename operations. `/admin` lists and creates groups,
+and `/admin/groups/[id]` shows and renames one. The shared D1 interfaces moved
+from the revision store to `$lib/server/database.ts` without changing revision
+behavior.
 
-Next is `admin.groups`; no admin database schema or D1 access has been added.
+Next is `admin.participants`. There is no participant table, participant count,
+or archive action yet. Student `/studio` authentication remains independent and
+unchanged.

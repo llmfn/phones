@@ -312,3 +312,44 @@ row stacks. Nothing is dropped.
 │ Unsaved edits             │
 └───────────────────────────┘
 ```
+
+## 7. Admin groups
+
+The instructor console at the apex lists training groups newest first. Creating
+a group expands the compact action into a name form; selecting a row opens the
+group, where its name can be changed. Participant counts and archive controls
+arrive with their own tasks rather than appearing as inert UI.
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ Phones | Admin                                      Log out │
+├──────────────────────────────────────────────────────────────┤
+│ PHONES / ADMIN                         [ New group ]          │
+│ Training groups.                                           │
+│                                                            │
+│ edition-03                          active          [ Edit ] │
+│ ---------------------------------------------------------- │
+│ edition-02                          archived        [ Edit ] │
+│ ---------------------------------------------------------- │
+│ edition-01                          archived        [ Edit ] │
+└──────────────────────────────────────────────────────────────┘
+```
+
+On a phone, the heading and create control stack, while each group keeps its
+status beside its name and moves Edit onto the following line.
+
+```text
+┌───────────────────────────┐
+│ Phones | Admin    Log out │
+├───────────────────────────┤
+│ PHONES / ADMIN            │
+│ Training groups.          │
+│ [       New group       ] │
+│                           │
+│ edition-03         active │
+│ [ Edit ]                  │
+│ ------------------------- │
+│ edition-02       archived │
+│ [ Edit ]                  │
+└───────────────────────────┘
+```

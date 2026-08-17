@@ -1,4 +1,5 @@
-import { loadRevision, type Database, type LoadedConfig } from '$lib/server/revisions';
+import type { Database } from '$lib/server/database';
+import { loadRevision, type LoadedConfig } from '$lib/server/revisions';
 import { parseSiteConfig } from '$lib/site-config';
 
 /**

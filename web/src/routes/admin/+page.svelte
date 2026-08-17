@@ -1,19 +1,46 @@
+<script lang="ts">
+  import AdminFrame from '$lib/AdminFrame.svelte';
+
+  import type { ActionData, PageData } from './$types';
+
+  let { data, form }: { data: PageData; form: ActionData } = $props();
+</script>
+
 <svelte:head>
   <title>Phones Admin</title>
 </svelte:head>
 
-<div class="auth-page">
-  <header class="site-nav">
-    <a class="wordmark" href="/admin">Phones</a>
-    <form method="POST" action="/admin/logout">
-      <button class="nav-link nav-button" type="submit">Log out</button>
-    </form>
-  </header>
-  <main class="auth-main">
-    <section class="editorial-panel auth-panel">
+<AdminFrame>
+  <section class="admin-page-head">
+    <div>
       <p class="eyebrow">Phones / Admin</p>
       <h1>Training groups.</h1>
-      <p class="auth-copy">Group and participant management will appear here.</p>
-    </section>
-  </main>
-</div>
+    </div>
+
+    <details class="admin-create" open={Boolean(form?.error)}>
+      <summary class="button">New group</summary>
+      <form class="admin-create-form" method="POST" action="?/create">
+        <label class="field-label" for="name">Group name</label>
+        <div class="field-row">
+          <input class="form-input" id="name" name="name" required />
+          <button class="button" type="submit">Create group</button>
+        </div>
+        {#if form?.error}<p class="error" role="alert">{form.error}</p>{/if}
+      </form>
+    </details>
+  </section>
+
+  {#if data.groups.length}
+    <ul class="admin-group-list">
+      {#each data.groups as group (group.id)}
+        <li class="admin-group-row">
+          <a class="admin-group-name" href="/admin/groups/{group.id}">{group.name}</a>
+          <span class="admin-status" data-status={group.status}>{group.status}</span>
+          <a class="nav-link" href="/admin/groups/{group.id}">Edit</a>
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <p class="admin-empty">No training groups yet. Create the first one to begin.</p>
+  {/if}
+</AdminFrame>
