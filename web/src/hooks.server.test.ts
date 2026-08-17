@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { applyMigrations, createTestDatabase, type TestDatabase } from '../test-support/database';
 import { ADMIN_SESSION_COOKIE, createAdminSession } from '$lib/server/admin-auth';
+import { createGroup } from '$lib/server/groups';
+import { createParticipant, setParticipantStatus, updateParticipant } from '$lib/server/participants';
 import { appendRevision, ensureSite } from '$lib/server/revisions';
 import { parseSiteConfig } from '$lib/site-config';
 import { handle } from './hooks.server';
@@ -43,7 +45,7 @@ describe('site config hook', () => {
     );
   });
 
-  it('serves the defaults for a site with nothing saved', async () => {
+  it('preserves public instances created before self-signup sites were persisted', async () => {
     await expect(run(request('https://nobody-phones.llmfn.com/'))).resolves.toBe(
       'substring_match null'
     );
@@ -79,6 +81,28 @@ describe('site config hook', () => {
         run(request(`https://alice-phones.llmfn.com/?r=${asked}`))
       ).rejects.toMatchObject({ status: 404 });
     }
+  });
+
+  it('serves active participants and stops deleted or previous subdomains', async () => {
+    const group = await createGroup(db, 'edition-03');
+    const participant = await createParticipant(db, group.id, 'Ada', 'ada@example.com');
+    await expect(run(request('https://ada-phones.llmfn.com/'))).resolves.toBe(
+      'substring_match 1'
+    );
+
+    await setParticipantStatus(db, group.id, participant.id, 'deleted');
+    await expect(run(request('https://ada-phones.llmfn.com/'))).rejects.toMatchObject({ status: 404 });
+
+    await setParticipantStatus(db, group.id, participant.id, 'active');
+    await updateParticipant(db, group.id, participant.id, {
+      name: 'Ada',
+      email: 'ada@example.com',
+      subdomain: 'ada-course'
+    });
+    await expect(run(request('https://ada-phones.llmfn.com/'))).rejects.toMatchObject({ status: 404 });
+    await expect(run(request('https://ada-course-phones.llmfn.com/'))).resolves.toBe(
+      'substring_match 1'
+    );
   });
 });
 

@@ -9,6 +9,10 @@ export interface Group {
   created_at: string;
 }
 
+export interface GroupSummary extends Group {
+  participant_count: number;
+}
+
 export function groupName(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   const name = value.trim();
@@ -31,10 +35,18 @@ export async function createGroup(db: Database, name: string): Promise<Group> {
   return group;
 }
 
-export async function listGroups(db: Database): Promise<Group[]> {
+export async function listGroups(db: Database): Promise<GroupSummary[]> {
   const { results } = await db
-    .prepare('SELECT id, name, status, created_at FROM groups ORDER BY id DESC')
-    .all<Group>();
+    .prepare(
+      `SELECT groups.id, groups.name, groups.status, groups.created_at,
+              COUNT(participants.id) AS participant_count
+         FROM groups
+         LEFT JOIN participants
+           ON participants.group_id = groups.id AND participants.status = 'active'
+        GROUP BY groups.id
+        ORDER BY groups.id DESC`
+    )
+    .all<GroupSummary>();
   return results;
 }
 

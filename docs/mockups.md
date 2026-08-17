@@ -313,12 +313,13 @@ row stacks. Nothing is dropped.
 └───────────────────────────┘
 ```
 
-## 7. Admin groups
+## 7. Admin groups and participants
 
 The instructor console at the apex lists training groups newest first. Creating
 a group expands the compact action into a name form; selecting a row opens the
-group, where its name can be changed. Participant counts and archive controls
-arrive with their own tasks rather than appearing as inert UI.
+group, where its name can be changed and participants managed. Counts include
+active participants only. Archive controls arrive with their own task rather
+than appearing as inert UI.
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
@@ -327,11 +328,11 @@ arrive with their own tasks rather than appearing as inert UI.
 │ PHONES / ADMIN                         [ New group ]          │
 │ Training groups.                                           │
 │                                                            │
-│ edition-03                          active          [ Edit ] │
+│ edition-03             12 participants  active     [ Edit ] │
 │ ---------------------------------------------------------- │
-│ edition-02                          archived        [ Edit ] │
+│ edition-02             15 participants  archived   [ Edit ] │
 │ ---------------------------------------------------------- │
-│ edition-01                          archived        [ Edit ] │
+│ edition-01             10 participants  archived   [ Edit ] │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -347,9 +348,34 @@ status beside its name and moves Edit onto the following line.
 │ [       New group       ] │
 │                           │
 │ edition-03         active │
+│ 12 participants           │
 │ [ Edit ]                  │
 │ ------------------------- │
 │ edition-02       archived │
+│ 15 participants           │
 │ [ Edit ]                  │
 └───────────────────────────┘
 ```
+
+The group detail lists active participants first and keeps deleted rows visible
+with only a Restore action. Add and Edit expand into forms for name, email, and
+subdomain; the generated subdomain is shown after creation.
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ Phones | Admin                                      Log out │
+├──────────────────────────────────────────────────────────────┤
+│ ← Groups                                                     │
+│ edition-03                                          active   │
+│ Rename group [ edition-03                 ] [ Save name ]    │
+│                                                              │
+│ Participants                         [ Add participant ]     │
+│ Ada Lovelace      ada@course.test    adalovelace active     │
+│                                                [Edit] [Delete]│
+│ Grace Hopper      grace@course.test  grace       deleted    │
+│                                                     [Restore]│
+└──────────────────────────────────────────────────────────────┘
+```
+
+On a phone, participant identity, subdomain, and actions stack. Expanded add
+and edit forms use full-width fields and controls.

@@ -59,6 +59,7 @@ describe('the group store', () => {
     await ensureSite(existing, 'alice');
 
     await applyMigration(existing, '../migrations/0002_admin_groups.sql');
+    await applyMigration(existing, '../migrations/0003_admin_participants.sql');
     await createGroup(existing, 'edition-03');
 
     await expect(loadRevision(existing, 'alice', null)).resolves.toMatchObject({ revision: 1 });

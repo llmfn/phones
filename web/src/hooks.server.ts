@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 
 import { ADMIN_SESSION_COOKIE, verifyAdminSession } from '$lib/server/admin-auth';
 import { getSite } from '$lib/server/hosts';
+import { resolveParticipantSite } from '$lib/server/participants';
 import { resolveSiteConfig } from '$lib/server/site-config';
 
 import type { Handle } from '@sveltejs/kit';
@@ -55,6 +56,11 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     return withAdminHeaders(await resolve(event));
+  }
+
+  if (site.kind === 'instance' && event.platform?.env.DB) {
+    const status = await resolveParticipantSite(event.platform.env.DB, site.slug);
+    if (status === null || status === 'deleted') error(404, 'Site not found');
   }
 
   const revision = readRevision(event.request, event.url);

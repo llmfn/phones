@@ -1608,11 +1608,16 @@ details[open] > .step-row .step-caret {
 
 .admin-group-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
   align-items: center;
   gap: var(--space-5);
   padding: var(--space-4) 0;
   border-bottom: 1px solid var(--faint);
+}
+
+.admin-group-count {
+  color: var(--muted);
+  font-size: var(--text-flow--1);
 }
 
 .admin-group-name,
@@ -1666,8 +1671,115 @@ details[open] > .step-row .step-caret {
   padding-top: var(--space-6);
 }
 
+.admin-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.admin-section-head h2 {
+  margin-top: var(--space-2);
+}
+
 .admin-rename-form {
   max-width: 38rem;
+}
+
+.admin-participant-form {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.admin-participant-form .field-label:not(:first-child) {
+  margin-top: var(--space-2);
+}
+
+.admin-participant-form .field-label span {
+  color: var(--subtle);
+  font-size: var(--text-flow--1);
+}
+
+.admin-participant-form .button {
+  justify-self: start;
+  margin-top: var(--space-2);
+}
+
+.admin-participant-list {
+  border-top: 1px solid var(--faint);
+}
+
+.admin-participant-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--faint);
+}
+
+.admin-participant-row.deleted {
+  background: color-mix(in oklch, var(--faint) 25%, transparent);
+  color: var(--muted);
+}
+
+.admin-participant-summary {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(8rem, 0.7fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.admin-participant-summary strong,
+.admin-participant-summary a {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.admin-participant-summary a {
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: var(--text-flow--1);
+}
+
+.admin-participant-summary code {
+  overflow-wrap: anywhere;
+}
+
+.admin-participant-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.admin-participant-actions details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.admin-participant-actions details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-participant-actions details[open] {
+  grid-column: 1 / -1;
+  width: min(30rem, 100%);
+  margin-top: var(--space-3);
+}
+
+.admin-participant-actions details[open] > summary {
+  text-align: right;
+}
+
+.admin-participant-row:has(.admin-participant-actions details[open]) {
+  grid-template-columns: 1fr;
+}
+
+.admin-delete {
+  color: var(--danger);
 }
 
 /* ---- studio ---- */
@@ -1919,6 +2031,39 @@ details[open] > .step-row .step-caret {
   .admin-group-row .nav-link {
     grid-column: 1 / -1;
     justify-self: start;
+  }
+
+  .admin-group-count {
+    grid-column: 1 / -1;
+  }
+
+  .admin-section-head,
+  .admin-participant-row {
+    display: block;
+  }
+
+  .admin-section-head .admin-create,
+  .admin-participant-actions details[open] {
+    margin-top: var(--space-4);
+  }
+
+  .admin-participant-summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-3);
+  }
+
+  .admin-participant-summary code {
+    grid-row: 2;
+  }
+
+  .admin-participant-summary .admin-status {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .admin-participant-actions {
+    justify-content: flex-start;
+    margin-top: var(--space-3);
   }
 
   .student-home {

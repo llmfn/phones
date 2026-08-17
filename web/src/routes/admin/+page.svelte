@@ -35,6 +35,9 @@
       {#each data.groups as group (group.id)}
         <li class="admin-group-row">
           <a class="admin-group-name" href="/admin/groups/{group.id}">{group.name}</a>
+          <span class="admin-group-count"
+            >{group.participant_count} participant{group.participant_count === 1 ? '' : 's'}</span
+          >
           <span class="admin-status" data-status={group.status}>{group.status}</span>
           <a class="nav-link" href="/admin/groups/{group.id}">Edit</a>
         </li>

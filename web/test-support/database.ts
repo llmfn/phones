@@ -3,7 +3,11 @@ import { DatabaseSync, type StatementSync } from 'node:sqlite';
 
 import type { Database, Statement } from '../src/lib/server/database';
 
-const MIGRATIONS = ['../migrations/0001_site_config.sql', '../migrations/0002_admin_groups.sql'];
+const MIGRATIONS = [
+  '../migrations/0001_site_config.sql',
+  '../migrations/0002_admin_groups.sql',
+  '../migrations/0003_admin_participants.sql'
+];
 
 class TestStatement implements Statement {
   private values: unknown[] = [];
@@ -45,6 +49,7 @@ export interface TestDatabase extends Database {
 /** An in-memory SQLite database wearing D1's interface, for tests. */
 export function createTestDatabase(): TestDatabase {
   const sqlite = new DatabaseSync(':memory:');
+  sqlite.exec('PRAGMA foreign_keys = ON');
   return {
     prepare: (sql: string) => new TestStatement(sqlite.prepare(sql)),
     exec: async (sql: string) => sqlite.exec(sql),

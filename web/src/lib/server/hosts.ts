@@ -2,7 +2,7 @@ export const APEX_HOSTNAMES = ['phones.llmfn.com', 'local.pipal.in'] as const;
 
 const DEFAULT_APEX_HOSTNAME = APEX_HOSTNAMES[0];
 const PRODUCTION_INSTANCE_SUFFIX = '-phones.llmfn.com';
-const MAX_SLUG_LENGTH = 63 - '-phones'.length;
+export const MAX_SLUG_LENGTH = 63 - '-phones'.length;
 const SLUG_PATTERN = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+$/;
 

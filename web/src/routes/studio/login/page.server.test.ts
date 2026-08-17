@@ -1,16 +1,44 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { createLoginChallenge } from '$lib/server/auth';
+import { createGroup } from '$lib/server/groups';
+import { createParticipant } from '$lib/server/participants';
+import { applyMigrations, createTestDatabase } from '../../../../test-support/database';
 
 import { actions, load } from './+page.server';
 
 const SECRET = 'studio-login-test-secret';
 
 describe('studio code login', () => {
-  it('shows the temporary masked Gmail owner', () => {
-    expect(load({ url: new URL('https://alice-phones.llmfn.com/studio/login') } as never)).toEqual({
+  it('shows the temporary masked Gmail owner', async () => {
+    await expect(
+      load({ url: new URL('https://alice-phones.llmfn.com/studio/login') } as never)
+    ).resolves.toEqual({
       maskedEmail: 'a***@gmail.com'
     });
+  });
+
+  it('uses the managed participant email instead of the temporary owner', async () => {
+    const db = createTestDatabase();
+    await applyMigrations(db);
+    const group = await createGroup(db, 'edition-03');
+    await createParticipant(db, group.id, 'Ada', 'ada@course.test');
+
+    await expect(
+      load({
+        platform: { env: { DB: db } },
+        url: new URL('https://ada-phones.llmfn.com/studio/login')
+      } as never)
+    ).resolves.toEqual({ maskedEmail: 'a***@course.test' });
+
+    const log = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+    await actions.send?.({
+      cookies: { set: vi.fn() },
+      platform: { env: { AUTH_SECRET: SECRET, DB: db } },
+      url: new URL('https://ada-phones.llmfn.com/studio/login')
+    } as never);
+    expect(log).toHaveBeenCalledWith(expect.stringMatching(/^Login code for ada@course\.test: \d{6}$/));
+    log.mockRestore();
   });
 
   it('sends a code to the temporary Gmail owner and stores its challenge', async () => {

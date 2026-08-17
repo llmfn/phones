@@ -18,15 +18,24 @@ import {
 } from '$lib/server/cookies';
 import { getMaskedOwnerEmail, getOwnerEmail, getSite } from '$lib/server/hosts';
 import { deliverLoginCode } from '$lib/server/mail';
+import { getParticipantEmail } from '$lib/server/participants';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ url }) => {
+export const load: PageServerLoad = async ({ platform, url }) => {
   const site = getSite(url);
   if (site.kind === 'apex') redirect(303, '/');
 
-  return { maskedEmail: getMaskedOwnerEmail(site.slug) };
+  const email = platform?.env.DB
+    ? await getParticipantEmail(platform.env.DB, site.slug)
+    : null;
+  return { maskedEmail: email ? maskEmail(email) : getMaskedOwnerEmail(site.slug) };
 };
+
+function maskEmail(email: string): string {
+  const separator = email.lastIndexOf('@');
+  return `${email.slice(0, 1)}***${email.slice(separator)}`;
+}
 
 export const actions: Actions = {
   send: async ({ cookies, platform, url }) => {
@@ -42,7 +51,10 @@ export const actions: Actions = {
         secret,
         LOGIN_CODE_TTL_SECONDS
       );
-      await deliverLoginCode(getOwnerEmail(site.slug), code, platform?.env.EMAIL, dev);
+      const recipient = platform?.env.DB
+        ? (await getParticipantEmail(platform.env.DB, site.slug)) ?? getOwnerEmail(site.slug)
+        : getOwnerEmail(site.slug);
+      await deliverLoginCode(recipient, code, platform?.env.EMAIL, dev);
       cookies.set(
         LOGIN_CHALLENGE_COOKIE,
         challenge,

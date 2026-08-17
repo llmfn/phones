@@ -96,7 +96,7 @@ Create, list, and rename training groups.
       names and unknown IDs
 - [x] The list and detail surfaces work at desktop and phone widths
 
-### [TODO] participants: add, list, edit, restore, soft-delete
+### [DONE] participants: add, list, edit, restore, soft-delete
 
 Add, list, edit, restore, and soft-delete participants within a group.
 
@@ -110,6 +110,15 @@ Add, list, edit, restore, and soft-delete participants within a group.
   subdomain stops resolving
 - Restore: status → `active` again, subdomain resolves again
 
+**Acceptance Criteria:**
+
+- [x] An existing site and group database accepts the participant migration
+      without changing saved site revisions
+- [x] Tests cover generated and colliding subdomains, editing, group isolation,
+      soft-delete, restore, host resolution, and participant email login
+- [x] Group lists show active participant counts and group detail works at
+      desktop and phone widths
+
 ### [TODO] group-archive: archive a group
 
 Archive a group, making its participant sites read-only.
@@ -120,13 +129,13 @@ Archive a group, making its participant sites read-only.
 
 ## Handover
 
-The admin gate and group management are complete. Migration
-`0002_admin_groups.sql` adds only the groups table; `$lib/server/groups.ts`
-owns create, list, get, and rename operations. `/admin` lists and creates groups,
-and `/admin/groups/[id]` shows and renames one. The shared D1 interfaces moved
-from the revision store to `$lib/server/database.ts` without changing revision
-behavior.
+The admin gate, groups, and participant management are complete. Migration
+`0003_admin_participants.sql` adds participants and preserves a site's revisions
+when its subdomain changes. `/admin/groups/[id]` creates, lists, edits,
+soft-deletes, and restores participants; `/admin` counts active participants.
+Managed subdomains resolve only while active and studio codes go to the stored
+participant email. Existing unmanaged self-signup sites remain available, while
+retired managed subdomains stay unavailable.
 
-Next is `admin.participants`. There is no participant table, participant count,
-or archive action yet. Student `/studio` authentication remains independent and
-unchanged.
+Next is `admin.group-archive`. Group status is present, but there is no archive
+action or read-only enforcement yet.
