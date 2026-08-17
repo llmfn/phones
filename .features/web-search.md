@@ -369,7 +369,7 @@ come back in and nothing else.
 - [x] The removal counts in the trace and the survivors add up to what went in
 - [x] A query with no active filter records no filter step
 
-### [TODO] bm25: rank by keyword matching
+### [DONE] bm25: rank by keyword matching
 
 The port of `phonekit/search/bm25.py` and `index.py`, whole:
 
@@ -391,7 +391,8 @@ The port of `phonekit/search/bm25.py` and `index.py`, whole:
 Built once per isolate. Every query token must appear for a phone to qualify,
 and results rank by total score. The trace carries what the Python one does:
 catalogue size, average length, `k1`, `b`, per-token match counts and idf
-ordered misses-first, and per-result term counts, lengths, and contributions.
+ordered as in Python — matching tokens by descending idf, then misses — and
+per-result term counts, lengths, and contributions.
 
 This is where a student sees what search buys them. Against `substring_match`, the same
 queries improve for reasons they can point at: `apple` works because the whole
@@ -410,16 +411,16 @@ not repeatable afterwards, so do it here rather than intending to.
 
 **Acceptance Criteria:**
 
-- [ ] `idf` and a token's score contribution match values computed by hand over
+- [x] `idf` and a token's score contribution match values computed by hand over
       a small synthetic corpus, so the arithmetic is checked against the formula
       rather than against another implementation
-- [ ] `apple` returns iPhones and `pro iphone 16` returns the iPhone 16 Pro —
+- [x] `apple` returns iPhones and `pro iphone 16` returns the iPhone 16 Pro —
       the two queries `substring_match` gets wrong
-- [ ] `a phone for my mom` returns nothing, and the trace names the token that
-      no phone holds, with the misses ordered first
-- [ ] A committed golden file of query-to-ranked-ids over the real catalogue is
+- [x] `a phone for my mom` returns nothing, and the trace names the token that
+      no phone holds using the Python trace ordering
+- [x] A committed golden file of query-to-ranked-ids over the real catalogue is
       reproduced exactly
-- [ ] The one-time diff against `phonekit` is run and its result recorded
+- [x] The one-time diff against `phonekit` is run and its result recorded
 
 ### [TODO] semantic: rank by embedding similarity
 
@@ -465,7 +466,14 @@ Filtered products carry only surviving options and lead with the first matching
 colour and storage tier.
 
 `npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
-from `web/` (18 test files, 66 tests). Filter tests cover dimension composition,
-option trimming, lead-field rebuilding, first-cause trace accounting, and the
-absence of an inactive filter step. Next is `web-search.bm25`, which replaces
-catalogue-order substring matching with keyword ranking.
+from `web/` (19 test files, 75 tests). BM25 tests cover hand-calculated scoring,
+whole-record ranking, request-scoped parameters, trace decomposition, and the
+reviewed real-catalogue rankings.
+
+`web-search.bm25` is complete. The Worker now ranks whole-record keyword matches
+with request-scoped `k1` and `b`, while its immutable corpus statistics are built
+once per isolate. The formatted trace carries the Python token table and ranked
+contribution bars. A one-time comparison against `phonekit` produced identical
+full rankings for `apple`, `pro iphone 16`, `samsung 5g`, `pink 512gb`, and
+`a phone for my mom`; those rankings now live in a TypeScript-only golden fixture.
+Next is `web-search.semantic`.

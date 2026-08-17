@@ -151,20 +151,36 @@ describe('POST /api/recommend', () => {
     expect(response.status).toBe(404);
   });
 
-  it('returns pipeline failures as inspectable error turns', async () => {
-    const failedEvent = event({ query: 'iphone' });
-    failedEvent.locals.config = parseSiteConfig({ search: { method: 'bm25' } });
-    const response = await POST(failedEvent as never);
+  it('serves configured BM25 rankings with an inspectable trace', async () => {
+    const bm25Event = event({
+      query: 'pro iphone 16',
+      filters: { brands: ['Apple'] }
+    });
+    bm25Event.locals.config = parseSiteConfig({
+      search: { method: 'bm25' }
+    });
+    const response = await POST(bm25Event as never);
     const body = await response.json();
 
     expect(response.status).toBe(200);
-    expect(body.products).toEqual([]);
+    expect(body.products[0].id).toBe('apple-iphone-16-pro');
     expect(body.trace).toMatchObject({
       kind: 'search',
-      input: 'iphone',
-      steps: [],
-      status: 'error',
-      error: 'BM25 search is not implemented'
+      input: 'pro iphone 16',
+      status: 'success',
+      steps: [
+        {
+          name: 'search_bm25',
+          label: 'keyword search',
+          input: { query: 'pro iphone 16' },
+          output: {
+            catalogue_size: CATALOGUE.length,
+            k1: 1.5,
+            b: 0.75
+          }
+        },
+        { name: 'apply_filters' }
+      ]
     });
   });
 });

@@ -9,6 +9,33 @@
   const formatted = (value: unknown) => JSON.stringify(value, null, 2);
   const inr = new Intl.NumberFormat('en-IN');
   const filterColors = ['var(--trace-success)', 'var(--primary)', 'var(--trace-fallback)', 'var(--trace-error)'];
+  const tokenColors = [
+    'var(--primary)',
+    'var(--trace-success)',
+    'var(--trace-fallback)',
+    'var(--trace-fg)',
+    'var(--trace-error)'
+  ];
+
+  interface BM25Token {
+    token: string;
+    matches: number;
+    weight: number;
+  }
+
+  interface BM25ResultToken {
+    token: string;
+    count: number;
+    score: number;
+  }
+
+  interface BM25Result {
+    id: string;
+    name: string;
+    score: number;
+    length: number;
+    tokens: BM25ResultToken[];
+  }
 
   function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -29,6 +56,58 @@
 
   function matchCount(step: TraceStep): number {
     return typeof step.output.matched === 'number' ? step.output.matched : 0;
+  }
+
+  function bm25Detail(step: TraceStep) {
+    if (step.name !== 'search_bm25' || !Array.isArray(step.output.tokens)) {
+      return null;
+    }
+
+    const tokens = step.output.tokens.filter(
+      (value): value is BM25Token =>
+        isRecord(value) &&
+        typeof value.token === 'string' &&
+        typeof value.matches === 'number' &&
+        typeof value.weight === 'number'
+    );
+    if (!tokens.length) return null;
+
+    const ranked = Array.isArray(step.output.top_scores)
+      ? step.output.top_scores.filter(
+          (value): value is BM25Result =>
+            isRecord(value) &&
+            typeof value.id === 'string' &&
+            typeof value.name === 'string' &&
+            typeof value.score === 'number' &&
+            typeof value.length === 'number' &&
+            Array.isArray(value.tokens)
+        )
+      : [];
+    const colors: Record<string, string> = {};
+    for (const token of tokens) {
+      if (token.matches > 0) {
+        colors[token.token] =
+          tokenColors[Object.keys(colors).length % tokenColors.length];
+      }
+    }
+    const axis =
+      Math.max(0, ...ranked.map((result) => result.score)) * 1.05 || 1;
+
+    return {
+      tokens,
+      ranked,
+      colors,
+      axis,
+      catalogueSize:
+        typeof step.output.catalogue_size === 'number'
+          ? step.output.catalogue_size
+          : 0,
+      results:
+        typeof step.output.results === 'number' ? step.output.results : 0,
+      averageLength: step.output.average_length,
+      k1: step.output.k1,
+      b: step.output.b
+    };
   }
 
   function filterSummary(step: TraceStep): string | null {
@@ -94,6 +173,7 @@
           {#each turn.steps as step, stepIndex}
             {@const key = `${turnIndex}-${stepIndex}`}
             {@const matches = substringMatches(step)}
+            {@const bm25 = bm25Detail(step)}
             {@const filters = filterDetail(step)}
             {@const summary = filterSummary(step)}
             <li class="step-item">
@@ -126,6 +206,110 @@
 
                   {#if views[key] === 'raw'}
                     <pre class="trace-json">{formatted(step)}</pre>
+                  {:else if bm25}
+                    <div class="detail-block">
+                      <div class="io-label">query as sent</div>
+                      <div class="detail-text">
+                        {String(step.input.query ?? '')}
+                      </div>
+                    </div>
+                    <div class="detail-block">
+                      <div class="io-label">tokens</div>
+                      <ul class="token-matches">
+                        <li class="token-row is-head">
+                          <span class="token">token</span>
+                          <span class="token-count">in catalogue</span>
+                          <span class="token-weight">weight</span>
+                        </li>
+                        {#each bm25.tokens as token}
+                          <li
+                            class:is-miss={token.matches === 0}
+                            class="token-row"
+                          >
+                            <span class="token">
+                              {#if token.matches}
+                                <span
+                                  class="token-swatch"
+                                  style:background={bm25.colors[token.token]}
+                                ></span>
+                              {/if}
+                              <span>{token.token}</span>
+                            </span>
+                            <span class="token-count">
+                              {token.matches
+                                ? `${token.matches} of ${bm25.catalogueSize} phones`
+                                : 'no matches'}
+                            </span>
+                            <span class="token-weight">
+                              {token.matches ? token.weight.toFixed(2) : '—'}
+                            </span>
+                          </li>
+                        {/each}
+                        <li
+                          class:is-miss={bm25.results === 0}
+                          class="token-row is-total"
+                        >
+                          <span class="token">
+                            {bm25.tokens.length === 1
+                              ? 'holding that token'
+                              : 'holding every token'}
+                          </span>
+                          <span class="token-count">
+                            {bm25.results} phones
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    {#if bm25.ranked.length}
+                      <div class="detail-block">
+                        <div class="io-label">what that ranked</div>
+                        <ol class="rank-chart">
+                          {#each bm25.ranked as result}
+                            <li class="rank-row">
+                              <span class="rank-name">{result.name}</span>
+                              <span class="rank-score">
+                                {result.score.toFixed(2)}
+                              </span>
+                              <span class="rank-track">
+                                {#each result.tokens as token}
+                                  <span
+                                    class="rank-bar"
+                                    style:width={`${
+                                      (token.score / bm25.axis) * 100
+                                    }%`}
+                                    style:background={
+                                      bm25.colors[token.token] ??
+                                      'var(--primary)'
+                                    }
+                                    title={`${token.token}: ${token.score}`}
+                                  ></span>
+                                {/each}
+                              </span>
+                              <span class="rank-meta">
+                                {result.tokens
+                                  .map((token) => {
+                                    return `${token.token} ×${token.count}`;
+                                  })
+                                  .concat(`${result.length} words`)
+                                  .join(' · ')}
+                              </span>
+                            </li>
+                          {/each}
+                        </ol>
+                        <div class="rank-legend">
+                          bar = each token's share of the score · rare words
+                          weigh more, repeats saturate, long records dilute
+                        </div>
+                      </div>
+                    {/if}
+                    <dl class="bm25-settings">
+                      <dt>average length</dt>
+                      <dd>{String(bm25.averageLength)}</dd>
+                      <dt>k1</dt>
+                      <dd>{String(bm25.k1)}</dd>
+                      <dt>b</dt>
+                      <dd>{String(bm25.b)}</dd>
+                    </dl>
                   {:else if filters}
                     {#if filters.applied.length}
                       <div class="detail-block">
