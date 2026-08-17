@@ -1,7 +1,52 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
+
+  import ProductCard from '$lib/components/ProductCard.svelte';
+  import { recommend } from '$lib/recommend';
+  import type { Product } from '$lib/schema';
+
   import type { ActionData, PageData } from './$types';
 
   let { data, form }: { data: PageData; form: ActionData } = $props();
+
+  let query = $state('');
+  let searched = $state(false);
+  let loading = $state(false);
+  let products = $state<Product[]>([]);
+  let error = $state<string | null>(null);
+  let resultVersion = $state(0);
+  let activeRequest: AbortController | null = null;
+
+  async function search(event: SubmitEvent) {
+    event.preventDefault();
+    query = query.trim();
+    searched = true;
+    error = null;
+
+    activeRequest?.abort();
+    const request = new AbortController();
+    activeRequest = request;
+    loading = true;
+
+    try {
+      const result = await recommend(query, request.signal);
+      if (request.signal.aborted) return;
+      products = result.products;
+      resultVersion += 1;
+    } catch (caught) {
+      if (request.signal.aborted) return;
+      products = [];
+      resultVersion += 1;
+      error = caught instanceof Error ? caught.message : 'Search failed';
+    } finally {
+      if (activeRequest === request) {
+        activeRequest = null;
+        loading = false;
+      }
+    }
+  }
+
+  onDestroy(() => activeRequest?.abort());
 </script>
 
 <svelte:head>
@@ -43,10 +88,13 @@
     </main>
   </div>
 {:else}
-  <main class="student-home">
+  <main class:has-searched={searched} class="student-home">
     <header class="student-topbar">
-      <a class="wordmark" href="/">Phones</a>
-      <form class="search" role="search" onsubmit={(event) => event.preventDefault()}>
+      <div class="student-brand">
+        <a class="wordmark" href="/">Phones</a>
+        {#if loading}<span class="spinner" role="status" aria-label="Loading"></span>{/if}
+      </div>
+      <form class="search" role="search" onsubmit={search}>
         <svg
           class="search-icon"
           viewBox="0 0 24 24"
@@ -65,11 +113,36 @@
           placeholder="Find a phone - describe what you need"
           autocomplete="off"
           aria-label="Search phones"
+          bind:value={query}
         />
       </form>
       <nav class="tool-links" aria-label="Student tools">
         <a class="nav-link" href="/admin">Admin</a>
       </nav>
     </header>
+
+    {#if searched}
+      <section class="student-results" aria-label="Results" aria-busy={loading}>
+        <div class="results-announcement" aria-live="polite">
+          {#if error}
+            <p class="results-error">{error}</p>
+          {:else if products.length || !loading}
+            <div class="results-head">{products.length} result{products.length === 1 ? '' : 's'}</div>
+          {/if}
+        </div>
+
+        {#if !error}
+          {#if !products.length && !loading}
+            <p class="empty">No phones match - try a broader search.</p>
+          {:else}
+            <div class="results-grid">
+              {#each products as product (`${resultVersion}-${product.id}`)}
+                <ProductCard {product} />
+              {/each}
+            </div>
+          {/if}
+        {/if}
+      </section>
+    {/if}
   </main>
 {/if}
