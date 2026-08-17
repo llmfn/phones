@@ -1,13 +1,15 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { CATALOGUE } from '$lib/server/catalogue';
 import { parseSiteConfig } from '$lib/site-config';
+import semanticArtifact from '$lib/server/search/semantic-embeddings.generated.json';
 
 import { POST } from './+server';
 
 function event(body: unknown, url = 'https://alice-phones.llmfn.com/api/recommend') {
   return {
     locals: { config: parseSiteConfig({}) },
+    platform: { env: { OPENAI_API_KEY: undefined as string | undefined } },
     request: new Request(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -180,6 +182,67 @@ describe('POST /api/recommend', () => {
           }
         },
         { name: 'apply_filters' }
+      ]
+    });
+  });
+
+  it('serves configured semantic rankings through the shared OpenAI credential', async () => {
+    const bytes = Int8Array.from(atob(semanticArtifact.audit.query_base64), (character) => {
+      const byte = character.charCodeAt(0);
+      return byte > 127 ? byte - 256 : byte;
+    });
+    const vector = Array.from(bytes, (value) => value * semanticArtifact.audit.query_scale);
+    const request = vi.fn(async () => {
+      return new Response(JSON.stringify({ data: [{ index: 0, embedding: vector }] }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    });
+    vi.stubGlobal('fetch', request);
+
+    const semanticEvent = event({ query: semanticArtifact.audit.query, filters: {} });
+    semanticEvent.locals.config = parseSiteConfig({
+      search: { method: 'semantic_search', search_params: { min_score: 0.3 } }
+    });
+    semanticEvent.platform.env.OPENAI_API_KEY = 'shared-secret';
+    const response = await POST(semanticEvent as never);
+    const body = await response.json();
+    vi.unstubAllGlobals();
+
+    expect(response.status).toBe(200);
+    expect(body.products.length).toBeGreaterThan(0);
+    expect(body.products[0].id).toBe(semanticArtifact.audit.float_top_ids[0]);
+    expect(body.trace).toMatchObject({
+      status: 'success',
+      steps: [
+        {
+          name: 'search_semantic',
+          label: 'semantic search',
+          output: { ranked_candidates: CATALOGUE.length }
+        }
+      ]
+    });
+    expect(request).toHaveBeenCalledOnce();
+  });
+
+  it('returns an inspectable semantic failure without the shared credential', async () => {
+    const semanticEvent = event({ query: 'a phone for my mom', filters: {} });
+    semanticEvent.locals.config = parseSiteConfig({
+      search: { method: 'semantic_search' }
+    });
+    const response = await POST(semanticEvent as never);
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.products).toEqual([]);
+    expect(body.trace).toMatchObject({
+      status: 'error',
+      error: 'OPENAI_API_KEY is not configured',
+      steps: [
+        {
+          name: 'search_semantic',
+          status: 'error',
+          output: { error: 'OPENAI_API_KEY is not configured' }
+        }
       ]
     });
   });

@@ -37,6 +37,12 @@
     tokens: BM25ResultToken[];
   }
 
+  interface SemanticCandidate {
+    id: string;
+    name: string;
+    cosine: number;
+  }
+
   function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
@@ -110,6 +116,31 @@
     };
   }
 
+  function semanticDetail(step: TraceStep) {
+    if (step.name !== 'search_semantic' || !Array.isArray(step.output.shown_scores)) {
+      return null;
+    }
+    const candidates = step.output.shown_scores.filter(
+      (value): value is SemanticCandidate =>
+        isRecord(value) &&
+        typeof value.id === 'string' &&
+        typeof value.name === 'string' &&
+        typeof value.cosine === 'number'
+    );
+    if (!candidates.length) return null;
+    const minScore = typeof step.input.min_score === 'number' ? step.input.min_score : 0;
+    const dropped = minScore > 0 && candidates.some(({ cosine }) => cosine < minScore);
+    return {
+      candidates,
+      minScore,
+      dropped,
+      model: step.input.model,
+      traceTopN: step.input.trace_top_n,
+      rankedCandidates: step.output.ranked_candidates,
+      qualifying: step.output.qualifying
+    };
+  }
+
   function filterSummary(step: TraceStep): string | null {
     if (step.name !== 'apply_filters') return null;
     const before = step.input.in;
@@ -174,6 +205,7 @@
             {@const key = `${turnIndex}-${stepIndex}`}
             {@const matches = substringMatches(step)}
             {@const bm25 = bm25Detail(step)}
+            {@const semantic = semanticDetail(step)}
             {@const filters = filterDetail(step)}
             {@const summary = filterSummary(step)}
             <li class="step-item">
@@ -206,6 +238,53 @@
 
                   {#if views[key] === 'raw'}
                     <pre class="trace-json">{formatted(step)}</pre>
+                  {:else if semantic}
+                    <div class="detail-block">
+                      <div class="io-label">query as sent</div>
+                      <div class="detail-text">{String(step.input.query ?? '')}</div>
+                    </div>
+                    <div class="detail-block">
+                      <div class="io-label">cosine ranking</div>
+                      <ol class="cand-chart">
+                        {#each semantic.candidates as candidate}
+                          <li
+                            class:is-below={semantic.dropped && candidate.cosine < semantic.minScore}
+                            class="cand-row"
+                          >
+                            <span class="cand-name">{candidate.name || candidate.id}</span>
+                            <span
+                              class:has-cutoff={semantic.dropped}
+                              class="cand-track"
+                              style:--cutoff={`${semantic.minScore * 100}%`}
+                            >
+                              <span
+                                class="cand-bar"
+                                style:width={`${Math.max(0, Math.min(1, candidate.cosine)) * 100}%`}
+                              ></span>
+                            </span>
+                            <span class="cand-score">{candidate.cosine.toFixed(3)}</span>
+                          </li>
+                        {/each}
+                      </ol>
+                      {#if semantic.dropped}
+                        <div class="cand-legend">
+                          dimmed candidates scored below the dashed line — min score
+                          {semantic.minScore} — and were dropped
+                        </div>
+                      {/if}
+                    </div>
+                    <dl class="semantic-settings">
+                      <dt>model</dt>
+                      <dd>{String(semantic.model)}</dd>
+                      <dt>minimum score</dt>
+                      <dd>{semantic.minScore}</dd>
+                      <dt>trace top n</dt>
+                      <dd>{String(semantic.traceTopN)}</dd>
+                      <dt>ranked candidates</dt>
+                      <dd>{String(semantic.rankedCandidates)}</dd>
+                      <dt>qualifying</dt>
+                      <dd>{String(semantic.qualifying)}</dd>
+                    </dl>
                   {:else if bm25}
                     <div class="detail-block">
                       <div class="io-label">query as sent</div>

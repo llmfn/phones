@@ -422,17 +422,18 @@ not repeatable afterwards, so do it here rather than intending to.
       reproduced exactly
 - [x] The one-time diff against `phonekit` is run and its result recorded
 
-### [TODO] semantic: rank by embedding similarity
+### [DONE] semantic: rank by embedding similarity
 
 Cosine similarity over per-phone narrative embeddings, with the query embedded
 at request time through a shared OpenAI credential held as a Worker secret, and
 `min_score` cutting the irrelevant tail. The trace shows the top cosine scores,
 how many candidates were ranked, and how many qualified.
 
-The vectors ship as a committed artifact, int8-quantized — 4.2MB of JSON down to
-around 209KB — read once per isolate. Quantization perturbs scores slightly
-without changing what a student sees; the tolerance goes in the test rather than
-being discovered later.
+The vectors ship as a committed artifact, int8-quantized — 4.2MB of float JSON
+down to 208,896 raw vector bytes, represented as around 279KB of base64 so Vite
+can bundle it into the Worker without a runtime asset read. Quantization perturbs
+scores slightly without changing what a student sees; the tolerance goes in the
+test rather than being discovered later.
 
 A TypeScript script generates the artifact: read `data/phones/`, embed each
 narrative, quantize, write. It reads nothing the Python app produces and is run
@@ -447,33 +448,25 @@ shows cosine scores where it showed a missing token.
 
 **Acceptance Criteria:**
 
-- [ ] Quantized and unquantized vectors rank a fixed query identically down to a
+- [x] Quantized and unquantized vectors rank a fixed query identically down to a
       stated depth, so quantization drift is bounded rather than assumed
-- [ ] The vibe query that returns nothing under BM25 returns results here, by
+- [x] The vibe query that returns nothing under BM25 returns results here, by
       changing only the configured method
-- [ ] Editing a narrative in `data/phones/` without regenerating the artifact
+- [x] Editing a narrative in `data/phones/` without regenerating the artifact
       fails the load rather than ranking against the old vector
-- [ ] A site selecting this method with no credential configured fails with a
+- [x] A site selecting this method with no credential configured fails with a
       message naming what is missing
 
 ## Handover
 
-`web-search.substring-match`, `web-search.facets`, and `web-search.filters` are
-complete. Search URLs are shareable through `?q=`; the interactive rail now
-re-queries by brand, colour, and price, displays removable active-filter chips,
-and retains stable price bounds while narrowed responses recompute their facets.
-Filtered products carry only surviving options and lead with the first matching
-colour and storage tier.
+`web-search` is complete. The Worker supports substring, BM25, and semantic
+ranking before the shared filters and facets. Semantic search embeds each query
+with `text-embedding-3-small` through `OPENAI_API_KEY`, compares it with the
+committed int8 narrative corpus, applies request-scoped `min_score`, and carries
+the Python semantic step and cosine chart in the trace panel.
 
-`npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
-from `web/` (19 test files, 75 tests). BM25 tests cover hand-calculated scoring,
-whole-record ranking, request-scoped parameters, trace decomposition, and the
-reviewed real-catalogue rankings.
-
-`web-search.bm25` is complete. The Worker now ranks whole-record keyword matches
-with request-scoped `k1` and `b`, while its immutable corpus statistics are built
-once per isolate. The formatted trace carries the Python token table and ranked
-contribution bars. A one-time comparison against `phonekit` produced identical
-full rankings for `apple`, `pro iphone 16`, `samsung 5g`, `pink 512gb`, and
-`a phone for my mom`; those rankings now live in a TypeScript-only golden fixture.
-Next is `web-search.semantic`.
+The generated artifact stamps every phone with its narrative hash and model and
+is rejected when either changes. Its fixed `a phone for my mom` audit preserves
+the float top 20 after quantization with maximum observed cosine drift below
+0.001. `npm run check:catalogue`, `npm run check:embeddings`, `npm test`,
+`npm run check`, and `npm run build` pass from `web/` (21 test files, 85 tests).
