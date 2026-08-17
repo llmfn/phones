@@ -337,7 +337,7 @@ if that is wrong it is a catalogue-wide decision to take on purpose.
       family's count
 - [x] Searching a narrower query changes the counts and the price bounds
 
-### [TODO] filters: narrow by clicking the rail
+### [DONE] filters: narrow by clicking the rail
 
 `applyFilters(products, filters)`, porting `apply_filters` in
 `phonekit/app.py`: keep each product whose options survive every active
@@ -362,12 +362,12 @@ come back in and nothing else.
 
 **Acceptance Criteria:**
 
-- [ ] Narrowing by brand, colour, and price changes the result set, and clearing
+- [x] Narrowing by brand, colour, and price changes the result set, and clearing
       a filter restores it
-- [ ] A phone filtered to one colour leads with that colour's image, and one
+- [x] A phone filtered to one colour leads with that colour's image, and one
       filtered by price leads with a tier inside the range
-- [ ] The removal counts in the trace and the survivors add up to what went in
-- [ ] A query with no active filter records no filter step
+- [x] The removal counts in the trace and the survivors add up to what went in
+- [x] A query with no active filter records no filter step
 
 ### [TODO] bm25: rank by keyword matching
 
@@ -457,14 +457,15 @@ shows cosine scores where it showed a missing token.
 
 ## Handover
 
-`web-search.substring-match` and `web-search.facets` are complete. Search URLs
-are shareable through `?q=`, the API derives brand, colour-option, and price
-facets from each result set, and the student page renders them in a responsive
-read-only rail beside the result cards. Facet computation is deliberately absent
-from the trace because it does not change the result set.
+`web-search.substring-match`, `web-search.facets`, and `web-search.filters` are
+complete. Search URLs are shareable through `?q=`; the interactive rail now
+re-queries by brand, colour, and price, displays removable active-filter chips,
+and retains stable price bounds while narrowed responses recompute their facets.
+Filtered products carry only surviving options and lead with the first matching
+colour and storage tier.
 
 `npm run check:catalogue`, `npm test`, `npm run check`, and `npm run build` pass
-from `web/` (17 test files, 60 tests). Synthetic facet tests cover categorical
-ordering, repeated colour-family options, first-family hex selection, all
-storage prices, and empty results. Next is `web-search.filters`, which makes the
-rail interactive and trims products to the surviving options.
+from `web/` (18 test files, 66 tests). Filter tests cover dimension composition,
+option trimming, lead-field rebuilding, first-cause trace accounting, and the
+absence of an inactive filter step. Next is `web-search.bm25`, which replaces
+catalogue-order substring matching with keyword ranking.

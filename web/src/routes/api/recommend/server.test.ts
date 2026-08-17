@@ -84,6 +84,60 @@ describe('POST /api/recommend', () => {
     );
   });
 
+  it('filters products, trims options, and reports consistent removals', async () => {
+    const full = (await post({ query: '', filters: {} })).body;
+    const source = full.products.find(
+      (product: { colors: unknown[]; storage_options: unknown[] }) =>
+        product.colors.length > 1 && product.storage_options.length > 1
+    );
+    expect(source).toBeDefined();
+    const color = source.colors[1];
+    const storage = source.storage_options[1];
+
+    const filtered = (
+      await post({
+        query: '',
+        filters: {
+          brands: [source.brand],
+          colors: [color.family],
+          price: { min: storage.price, max: storage.price }
+        }
+      })
+    ).body;
+    const survivor = filtered.products.find((product: { id: string }) => product.id === source.id);
+
+    expect(survivor).toMatchObject({
+      image: color.image,
+      color_family: color.family,
+      price: storage.price,
+      storage_gb: storage.gb,
+      variant_id: `${source.id}-${color.family}-${storage.gb}`
+    });
+    expect(survivor.colors.every((option: { family: string }) => option.family === color.family)).toBe(true);
+    expect(survivor.storage_options.every((option: { price: number }) => option.price === storage.price)).toBe(true);
+    expect(filtered.facets.find((facet: { field: string }) => facet.field === 'price')).toMatchObject({
+      min: storage.price,
+      max: storage.price
+    });
+
+    const filterStep = filtered.trace.steps.find((step: { name: string }) => step.name === 'apply_filters');
+    const removed = Object.values(filterStep.output.removed as Record<string, number>).reduce(
+      (total: number, count) => total + count,
+      0
+    );
+    expect(filterStep.input.in).toBe(full.products.length);
+    expect(filterStep.output.kept + removed).toBe(filterStep.input.in);
+    expect(full.trace.steps.some((step: { name: string }) => step.name === 'apply_filters')).toBe(false);
+  });
+
+  it('restores the full result set when filters are cleared', async () => {
+    const filtered = (await post({ query: '', filters: { brands: ['Apple'] } })).body;
+    const cleared = (await post({ query: '', filters: {} })).body;
+
+    expect(filtered.products.length).toBeLessThan(cleared.products.length);
+    expect(cleared.products).toHaveLength(CATALOGUE.length);
+  });
+
   it('rejects malformed requests', async () => {
     expect((await post('{')).response.status).toBe(400);
     expect((await post({ query: 42 })).body).toEqual({ error: 'query must be a string' });
