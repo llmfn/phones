@@ -1,8 +1,19 @@
-import { parseSiteConfig, type SiteConfig } from '$lib/site-config';
+import { loadRevision, type Database, type LoadedConfig } from '$lib/server/revisions';
+import { parseSiteConfig } from '$lib/site-config';
 
-// Revisions replace this bundled document as the source; callers keep using this seam.
-const BUNDLED_SITE_CONFIG = {};
-
-export function resolveSiteConfig(): SiteConfig {
-  return parseSiteConfig(BUNDLED_SITE_CONFIG);
+/**
+ * Resolve a site's configuration, at a revision when one is asked for.
+ *
+ * Returns null for a revision the site does not have, so the caller can 404
+ * rather than quietly serving the live one instead.
+ */
+export async function resolveSiteConfig(
+  db: Database | undefined,
+  slug: string | null,
+  revision: number | null
+): Promise<LoadedConfig | null> {
+  if (!db || !slug) {
+    return revision === null ? { config: parseSiteConfig({}), revision: null } : null;
+  }
+  return loadRevision(db, slug, revision);
 }

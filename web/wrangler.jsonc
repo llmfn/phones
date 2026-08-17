@@ -11,6 +11,14 @@
     { "pattern": "*-phones.llmfn.com/*", "zone_name": "llmfn.com" }
   ],
   "send_email": [{ "name": "EMAIL" }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "phones",
+      // TODO: replace with the id printed by `wrangler d1 create phones`.
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
   "assets": {
     "binding": "ASSETS",
     "directory": ".svelte-kit/cloudflare"

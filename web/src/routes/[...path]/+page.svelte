@@ -11,7 +11,7 @@
 <div class="message-page">
   <header class="site-nav">
     <a class="wordmark" href="/">Phones</a>
-    <a class="nav-link" href="/admin">Admin</a>
+    <a class="nav-link" href="/studio">llmfn studio</a>
   </header>
   <main class="message-main">
     <section class="editorial-panel message-panel">

@@ -33,7 +33,7 @@
     loading = true;
 
     try {
-      const result = await recommend(query, request.signal);
+      const result = await recommend(query, { signal: request.signal, revision: data.revision });
       if (request.signal.aborted) return;
       products = result.products;
       if (result.trace) {
@@ -161,7 +161,7 @@
         />
       </form>
       <nav class="tool-links" aria-label="Student tools">
-        <a class="nav-link" href="/admin">Admin</a>
+        <a class="nav-link" href="/studio">llmfn studio</a>
       </nav>
     </header>
 

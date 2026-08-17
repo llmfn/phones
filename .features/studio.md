@@ -1,5 +1,5 @@
 ---
-status: draft
+status: in-progress
 created: 2026-08-17
 ---
 
@@ -142,7 +142,7 @@ the history plus a second browser tab already answers it.
 
 ## Tasks
 
-### [TODO] search-panel: build the studio shell with the Search panel
+### [DONE] search-panel: build the studio shell with the Search panel
 
 Build the studio shell with its first panel: Search, where the student selects
 the search method their site uses.
@@ -155,14 +155,14 @@ selected method and nothing else. The frame layout goes to `docs/mockups.md`.
 
 **Acceptance Criteria:**
 
-- [ ] Choosing a method and saving changes what the public site returns for the
+- [x] Choosing a method and saving changes what the public site returns for the
       same query
-- [ ] Two saves racing each other take distinct revision numbers
-- [ ] A slug with no rows serves the defaults, an unknown revision 404s, and
+- [x] Two saves racing each other take distinct revision numbers
+- [x] A slug with no rows serves the defaults, an unknown revision 404s, and
       the header wins over `?r=` when they disagree
-- [ ] Params belonging to a different method are refused with an error naming
+- [x] Params belonging to a different method are refused with an error naming
       the field
-- [ ] The frame works at desktop and phone widths with the panel rail reachable
+- [x] The frame works at desktop and phone widths with the panel rail reachable
       by keyboard and focus visible throughout
 
 ### [TODO] prompts-panel: edit the prompts
@@ -223,3 +223,36 @@ The live revision is marked.
       appends a new one that becomes live
 - [ ] Each row opens the public site at its own revision
 - [ ] The list works at desktop and phone widths under keyboard navigation
+
+## Handover
+
+`studio.search-panel` is complete. `/studio` replaces `/admin` (the old
+addresses 308 to the new ones) and holds the shell — header, rail, panel — with
+the Search panel as its first entry. Configuration now comes from D1: `site`
+and `siteconfig` in `web/migrations/0001_site_config.sql`, read and written
+through `web/src/lib/server/revisions.ts`. `appendRevision` derives the number
+inside a single insert, with `UNIQUE (site_id, revision)` behind it.
+
+`hooks.server.ts` is the only place a revision is resolved — `X-Phones-Revision`
+first, then `?r=`, unknown or malformed is a 404 — and it sets `locals.config`
+and `locals.revision`. `resolveSiteConfig` still fronts it, so nothing else
+reads the store on the request path. Opening a site pins the API to the
+revision the page was rendered at. A slug with no rows serves the defaults; the
+first authenticated studio visit creates the site and seeds revision 1 with
+them, so history always starts at 1.
+
+Local D1 comes from `wrangler.dev.toml` through adapter-cloudflare's
+`platformProxy`; tests use `node:sqlite` behind D1's interface, applying the
+real migration (`web/test-support/database.ts`). `npm test` (17 files, 78
+tests), `npm run check`, `npm run build`, and `npm run check:catalogue` pass.
+
+Two things left for whoever picks this up. **The production database is not
+provisioned**: `wrangler.jsonc` carries a placeholder `database_id`, so
+`wrangler d1 create phones`, pasting the id, and
+`wrangler d1 migrations apply phones --remote` have to happen before a deploy.
+And selecting `bm25` or `semantic_search` currently makes the site return an
+error turn rather than better results, because those engines land in
+`web-search.bm25` and `web-search.semantic` — the wiring is proven, the engines
+are not there yet.
+
+Next is `studio.prompts-panel`, which adds the second rail entry.

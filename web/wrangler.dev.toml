@@ -1,0 +1,13 @@
+# Local-dev bindings only. adapter-cloudflare's platformProxy reads this during
+# `npm run dev` / `npm run preview` to emulate platform.env (miniflare-backed,
+# state persisted under .wrangler/). Production bindings live in wrangler.jsonc;
+# pointing the proxy at that file would make it stand up the email and asset
+# bindings too, which local dev has no use for.
+name = "llmfn-phones"
+compatibility_date = "2026-08-14"
+compatibility_flags = ["nodejs_als"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "phones"
+database_id = "phones-local-dev"

@@ -210,3 +210,105 @@ row loads that case's trace into the panel.
 
 On narrow screens the trace returns to normal document flow below the case
 list, matching the home page's responsive trace behavior.
+
+
+## 6. Studio
+
+The student's console at `/studio`, on their own hostname, behind their session.
+It edits configuration and nothing else — there is no query box and no results
+here, because the public site is the only place the site runs. The working loop
+is two tabs: save here, reload there.
+
+The header names the site, the revision being viewed and whether it is live, and
+links to the public site at that revision. One rail entry per section of the
+config document — Search, Prompts, Design, Evals — and no other entries; a rail
+entry appears once its panel is built.
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ alice-phones                    rev 7 live        View app > │
+├──────────────┬───────────────────────────────────────────────┤
+│ Search     | │  SEARCH                                       │
+│ Prompts      │  How your site finds phones.                  │
+│ Design       │                                               │
+│ Evals        │  SEARCH METHOD                                │
+│              │   o substring_match                           │
+│              │     Case-insensitive match on the phone name. │
+│              │   * bm25                                      │
+│              │     Keyword ranking over the whole record.    │
+│              │   o semantic_search                           │
+│              │     Cosine similarity over each narrative.    │
+│              │                                               │
+│              │  PARAMETERS                                   │
+│              │   k1 - term frequency saturation              │
+│              │   [ 1.5                          ]            │
+│              │   b - length normalisation                    │
+│              │   [ 0.75                         ]            │
+│              │  ---------------------------------------------│
+│              │  WHAT CHANGED                                 │
+│              │   [ Switched to keyword ranking  ]            │
+│              │   [ SAVE ]   Unsaved edits                    │
+└──────────────┴───────────────────────────────────────────────┘
+```
+
+Notes:
+
+- Only the selected method's parameters are shown. Choosing another method
+  swaps them; there is never a knob on screen that the site would ignore.
+- Every save appends a revision and makes it live. There is no draft state and
+  no publish button, so a panel is either matching what is saved or holding
+  unsaved edits — and the line beside Save says which. The note is what makes
+  the history readable later.
+- Clicking the revision indicator opens the history (see `.features/studio.md`).
+
+## 6a. Studio at a past revision
+
+Opening the studio at `?r=3` shows that revision's configuration, read only.
+The controls are disabled rather than hidden, so the shape of the configuration
+is still legible, and the save row is gone entirely.
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ alice-phones                    rev 3 archived    View app > │
+├──────────────┬───────────────────────────────────────────────┤
+│ Search     | │  SEARCH                                       │
+│              │  How your site finds phones.                  │
+│              │  Revision 3 is not live, so it is read only.  │
+│              │  Revision 7 is what your site serves.         │
+│              │                                               │
+│              │  SEARCH METHOD          (disabled)            │
+│              │   * substring_match                           │
+│              │   o bm25                                      │
+│              │   o semantic_search                           │
+└──────────────┴───────────────────────────────────────────────┘
+```
+
+**View app** carries `?r=3`, so the pair of tabs stays on the same revision.
+
+## 6b. Studio at phone width
+
+The rail turns from a column into a strip of tabs above the panel, and the save
+row stacks. Nothing is dropped.
+
+```text
+┌───────────────────────────┐
+│ alice-phones              │
+│ rev 7 live     View app > │
+├───────────────────────────┤
+│ [Search] Prompts  Design  │
+├───────────────────────────┤
+│ SEARCH                    │
+│ How your site finds       │
+│ phones.                   │
+│                           │
+│ SEARCH METHOD             │
+│  o substring_match        │
+│  * bm25                   │
+│  o semantic_search        │
+│                           │
+│ WHAT CHANGED              │
+│ [                       ] │
+│ [         SAVE          ] │
+│ Unsaved edits             │
+└───────────────────────────┘
+```

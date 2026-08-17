@@ -1,9 +1,11 @@
+import type { Database } from '$lib/server/revisions';
 import type { SiteConfig } from '$lib/site-config';
 
 declare global {
   namespace App {
     interface Locals {
       config: SiteConfig;
+      revision: number | null;
     }
 
     interface EmailService {
@@ -19,6 +21,7 @@ declare global {
     interface Platform {
       env: {
         AUTH_SECRET?: string;
+        DB?: Database;
         EMAIL?: EmailService;
       };
     }

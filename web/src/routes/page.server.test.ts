@@ -2,9 +2,10 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { actions, load } from './+page.server';
 
-function event(url: string) {
+function event(url: string, revision: number | null = null) {
   return {
     cookies: { get: vi.fn() },
+    locals: { revision },
     request: new Request(url),
     url: new URL(url)
   };
@@ -21,7 +22,14 @@ describe('apex discovery routing', () => {
   it('serves an instance without requiring a session', () => {
     expect(load(event('https://alice-phones.llmfn.com/') as never)).toMatchObject({
       page: 'app',
-      sitename: 'alice-phones.llmfn.com'
+      sitename: 'alice-phones.llmfn.com',
+      revision: null
+    });
+  });
+
+  it('passes the resolved revision to the page', () => {
+    expect(load(event('https://alice-phones.llmfn.com/?r=3', 3) as never)).toMatchObject({
+      revision: 3
     });
   });
 

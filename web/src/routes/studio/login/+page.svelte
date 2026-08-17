@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>Admin sign in</title>
+  <title>Studio sign in</title>
 </svelte:head>
 
 <div class="auth-page">
@@ -15,8 +15,8 @@
   </header>
   <main class="auth-main">
     <section class="editorial-panel auth-panel">
-      <p class="eyebrow">Phones / Admin</p>
-      <h1>Sign in to edit your app.</h1>
+      <p class="eyebrow">Phones / Studio</p>
+      <h1>Sign in to your studio.</h1>
 
       {#if form?.sent}
         <p class="auth-copy">

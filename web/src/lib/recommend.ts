@@ -6,10 +6,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-export async function recommend(query: string, signal?: AbortSignal, fetcher: Fetch = fetch): Promise<SearchResult> {
+export interface RecommendOptions {
+  signal?: AbortSignal;
+  /** Pins the request to a revision, so a page opened at `?r=` stays there. */
+  revision?: number | null;
+  fetcher?: Fetch;
+}
+
+export async function recommend(query: string, options: RecommendOptions = {}): Promise<SearchResult> {
+  const { signal, revision = null, fetcher = fetch } = options;
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (revision !== null) headers['X-Phones-Revision'] = String(revision);
+
   const response = await fetcher('/api/recommend', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ query, filters: {} }),
     signal
   });

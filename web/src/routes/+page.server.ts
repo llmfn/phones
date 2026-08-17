@@ -5,14 +5,14 @@ import { getSitename } from '$lib/server/sitename';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ request, url }) => {
+export const load: PageServerLoad = ({ locals, request, url }) => {
   const site = getSite(url);
 
   if (site.kind === 'instance') {
-    return { page: 'app' as const, sitename: getSitename(request) };
+    return { page: 'app' as const, sitename: getSitename(request), revision: locals.revision };
   }
 
-  return { page: 'apex' as const, sitename: getSitename(request) };
+  return { page: 'apex' as const, sitename: getSitename(request), revision: null };
 };
 
 export const actions: Actions = {
